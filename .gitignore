@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+.env
+track_2a/runs/*
+!track_2a/runs/.gitkeep
+track_2a/data/*
+!track_2a/data/.gitkeep
