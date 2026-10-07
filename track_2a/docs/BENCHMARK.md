@@ -1,143 +1,73 @@
 # SwissGov-RSD Benchmark Notes
 
-This file records the current technical understanding of the benchmark from the official repository and ACL paper. Pin exact revisions when M1 begins.
+Verified in S1 against the pinned dataset revision and evaluator commit (see
+[SOURCES.md](SOURCES.md)). Items marked *unverified* are still assumptions.
 
 ## Task
 
-Given two related documents in different languages, predict a semantic-difference score for each benchmark token.
+Given two related documents in different languages, predict a semantic-difference score for each benchmark token. Symmetric differences and asymmetric ones (additions, omissions) are in scope.
 
-Evaluated pairs:
+Evaluated pairs: EN–DE, EN–FR, EN–IT.
 
-- EN–DE
-- EN–FR
-- EN–IT
+Primary metric (UZH brief): token-level Spearman per language pair, macro-averaged over the three pairs. Secondary: computational efficiency, innovation/creativity.
 
-Primary metric: token-level Spearman correlation per language pair, macro-averaged for the challenge.
+## Data (verified)
 
-## Gold representation
+HF `ZurichNLP/SwissGov-RSD` publishes `data/<lang>/dev_<lang>.jsonl` and `test_<lang>.jsonl`. Dev holds 168 documents per language. The same 168 English documents are paired with DE, FR and IT (multi-parallel). Fields per record: `id` (`admin_<lang>_<n>`), `text_a` (EN), `text_b`, their `_untokenized` variants, `labels_a`, `labels_b`, `page_en`, `page_other`, `subset`.
 
-The official evaluation loader constructs each sample from:
+Dev token totals (whitespace tokens): EN 65,320 per pair; DE 61,101; FR 77,585; IT 71,008. Per-side length ranges from 60 to 1,993 tokens. Every dev label vector has exactly one value per whitespace token; no dev document has a fully masked side b.
 
-```text
-text_a
-text_b
-labels_a
-labels_b
-```
+All dev sources are federal (`admin.ch` domains: bfe, bk, sbfi, seco, uvek, bakom, www). No document is cantonal, so a canton pilot needs external material (S4).
 
-The benchmark token sequence used by the evaluation code is derived from whitespace splitting of the stored text:
+## Gold representation (verified)
 
-```python
-text_a.split()
-text_b.split()
-```
+Tokens are `text.split()` (Python whitespace split) on the stored text. `tokens.py` reproduces this and adds character offsets.
 
-This makes deterministic token bookkeeping possible without asking a model to reproduce tokenization.
+Gold labels are already **difference** scores in [0, 1]; `-1` marks punctuation. Gold is never a similarity scale.
 
-## Human annotation shape
+## Official evaluation (verified, `scripts/evaluate_predictions_admin.py`)
 
-The paper describes semantic differences as annotated spans with ordinal severity. Differences may be asymmetric, which naturally represents additions and omissions.
+Per language:
+1. Load predictions and gold.
+2. If a prediction vector is shorter or longer than gold, **pad with 0.0 or truncate** (and count it).
+3. Concatenate `labels_a` for every document, and `labels_b` unless the gold `labels_b` is entirely `-1`.
+4. Drop positions whose gold label is `-1`.
+5. Compute global Spearman and Kendall with `nlpstats.correlate(level="global")`, plus a 1-resample bootstrap interval.
 
-This is important for B2: a span-level semantic IR is compatible with the conceptual annotation process even though final evaluation is token-level.
+Observed behaviours that our wrapper handles explicitly:
+- The script prints per-language values only. **There is no macro average in the code**; `evaluation.macro_average` adds the brief's macro mean and refuses when a language is missing or undefined.
+- `--split` defaults to `full`, and `full` contains test gold. Our code never calls the script's `main`, never reads `full`, and passes only dev gold.
+- When the split gold is shorter than the predictions, the script re-reads `gold_labels/full` to filter. Our wrapper avoids that path.
+- **Constant prediction vectors crash the official code.** The `nlpstats` bootstrap gets only NaN samples and `np.percentile([])` raises `IndexError`. This reproduces under both the official pins (numpy 2.0.2, scipy 1.13.1) and our lock. Our evaluator returns `None` with a reason instead of a number.
+- Length repair is replaced by `LengthMismatchError`. Exact-length predictions are a precondition.
+- LLM prediction files have ids in `list_to_drop.txt` (34 ids) removed before scoring. The UZH brief does not say whether final judging drops them (Need N-RULES-2).
 
-## Official evaluation
+Parity: `tests/test_s1_evaluation.py` executes the pinned `compute_correlations` against our implementation. It covers hand fixtures, 25 seeded random vectors with heavy ties and masking, and real dev gold with synthetic predictions for all three languages plus the macro average. Agreement is at 1e-10 or tighter.
 
-The released evaluator:
+## Scale reconciliation (verified)
 
-1. loads predictions and gold labels;
-2. aligns prediction vectors to gold vector lengths;
-3. ignores gold labels equal to `-1`;
-4. concatenates token labels across samples for a language pair;
-5. computes global Spearman (and also Kendall in the repository script).
+| Scale | Range | Meaning | Where |
+|---|---|---|---|
+| Similarity | 0–5, -1 | published prompt output; 5 = equivalent | `prompt_templates/template_*_admin.txt` |
+| Severity | 0–5 | our IR (`difference_ir.schema.json`); 0 = no difference | `contracts.py`, `projection.py` |
+| Difference | 0–1, gold -1 | evaluated scale | gold labels, predictions |
 
-Our adapter should avoid relying on the evaluator's padding/truncation repair behavior. Prediction length should be correct by construction.
-
-## Published LLM prompting
-
-The repository prompt templates ask the model to return each input token paired with a semantic **similarity** score:
-
-- 5 = complete equivalence
-- 3–4 = close semantic similarity
-- 1–2 = partial/slight similarity
-- 0 = no semantic relation
-- -1 = punctuation
-
-The repository then maps positive similarity labels to difference scores:
-
-```text
-5 → 0.0 difference
-4 → 0.2
-3 → 0.4
-2 → 0.6
-1 → 0.8
-0 → 1.0
--1 → -1
-```
-
-This published baseline requires the LLM to regenerate token-label pairs for the whole input. The repository includes parsing/repair logic for missing, malformed, short or long outputs.
+`difference = 1 - similarity/5 = severity/5`. This matches the official `map_label_from_positive_to_negative`, which is tested against the pinned function. Uncovered tokens project to severity 0, i.e. difference 0.0. Spearman is rank-based, so the linear choice affects artefact readability, not the score.
 
 ## B0 interpretation
 
-B0 should intentionally preserve the spirit of the published direct baseline:
+B0 should preserve the spirit of the published direct baseline (the UZH brief asks participants to reproduce a paper baseline with their Apertus model):
 
 ```text
-document pair
-→ Apertus
-→ token-level scores
-→ strict validation
-→ official-format predictions
-→ evaluation
+document pair → Apertus → token-level similarity → official mapping → exact-length predictions → evaluation
 ```
 
-We should record schema failures and length repair rather than hiding them.
+S1 manifest documents have 88–267 tokens per side. The published prompt makes the model regenerate every token with a label, so output length grows with document length. The model card claims a 262,144-token context. The endpoint's actual context and output limits are *unverified* until a live request succeeds. Documents that do not fit must be recorded as explicit failures; any chunked variant needs a different strategy name.
 
 ## B2 interpretation
 
-B2 asks Apertus for sparse semantic decisions over bounded evidence:
-
-```text
-aligned spans
-→ Apertus
-→ sparse semantic differences
-→ deterministic projection
-→ exact token vector
-```
-
-Initial projection rule:
-
-- uncovered token = 0;
-- tokens covered by one difference = its severity;
-- overlapping differences = maximum severity;
-- additions/omissions may have a span on only one side.
-
-The exact severity scale used internally must be reconciled carefully with the official prediction format in M1.
-
-## Key experimental decomposition
-
-B2a tests only localisation:
-
-```text
-difference span = 1
-other tokens = 0
-```
-
-B2 then adds ordinal severity.
-
-This separates two hypotheses:
-
-1. sparse semantic localisation is better than direct token scoring;
-2. Apertus can also rank the magnitude of those differences usefully.
+Unchanged: aligned spans → Apertus sparse differences → deterministic projection → exact token vector. Uncovered = 0. Overlaps take the max severity. Additions and omissions may be one-sided. Severity converts with `severity/5`.
 
 ## Test-set rule
 
-The provided test set must not enter development in any form. Normal project code rejects `test` in development paths. Final evaluation should use a separate, explicit invocation added only once the challenge procedure is confirmed.
-
-## Primary sources
-
-- Repository: https://github.com/ZurichNLP/SwissGov-RSD
-- Paper: https://aclanthology.org/2026.acl-long.1437/
-- Dataset: https://huggingface.co/datasets/ZurichNLP/SwissGov-RSD
-- Evaluator: https://github.com/ZurichNLP/SwissGov-RSD/blob/master/scripts/evaluate_predictions_admin.py
-- Prediction parser: https://github.com/ZurichNLP/SwissGov-RSD/blob/master/evaluation/predictions.py
-- Evaluation utilities: https://github.com/ZurichNLP/SwissGov-RSD/blob/master/evaluation/utils.py
-- Prompt templates: https://github.com/ZurichNLP/SwissGov-RSD/tree/master/prompt_templates
+The provided test set must not enter development in any form. The brief adds: no training, no prompt examples and no tuning against it, or the result is disqualified. The adapter registers no test file. Every entry point rejects any split other than `train`/`dev` before I/O, and `train` raises `SplitUnavailableError`.
