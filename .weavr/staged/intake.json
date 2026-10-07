@@ -1,0 +1,704 @@
+{
+  "status": "staged-not-applied",
+  "projectRegistration": {
+    "name": "Hack Apertus UZH",
+    "repo": "blackmath88/apertushackathon-uzh",
+    "intent": "Deliver reproducible Apertus SwissGov-RSD submission with B0/B2 evaluation and evidence report"
+  },
+  "missions": [
+    {
+      "schema": "weavr.mission/v0",
+      "id": "apertus-uzh-s1",
+      "title": "Apertus UZH S1: Contract, data and Apertus readiness",
+      "kind": "ship",
+      "intent": "Deliver S1 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #2.",
+      "requires": {
+        "capabilities": [
+          "repo.read",
+          "repo.write",
+          "tests"
+        ],
+        "independentReviewer": true
+      },
+      "prefers": {
+        "subscriptionBacked": true
+      },
+      "scope": {
+        "writePaths": [
+          "track_2a/**",
+          "Makefile",
+          ".gitignore",
+          ".github/workflows/ci.yml",
+          "Dockerfile",
+          ".dockerignore",
+          "README.md"
+        ]
+      },
+      "acceptance": [
+        "Rules and source revisions pinned",
+        "Train/dev guard rejects before I/O",
+        "Exact token mapping and evaluator parity fixture pass",
+        "Real Apertus smoke evidenced or explicit compute blocker; no false completion"
+      ],
+      "exclusions": [
+        "No test data during development",
+        "No unrelated architecture or orchestration changes",
+        "No automatic merge, deployment, publication or portal submission"
+      ],
+      "authority": {
+        "architectureChange": "ask",
+        "dependencyInstall": "allowed",
+        "merge": "forbidden",
+        "externalService": "ask"
+      },
+      "stopConditions": [
+        "Scope expansion required",
+        "Credentials or compute unavailable for dependent live work",
+        "Test policy or license conflict"
+      ],
+      "escalation": [
+        "Human-only Weavr gate",
+        "Missing evidence or reviewer conflict"
+      ]
+    },
+    {
+      "schema": "weavr.mission/v0",
+      "id": "apertus-uzh-s2",
+      "title": "Apertus UZH S2: Direct baseline and Docker",
+      "kind": "ship",
+      "intent": "Deliver S2 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #3.",
+      "requires": {
+        "capabilities": [
+          "repo.read",
+          "repo.write",
+          "tests"
+        ],
+        "independentReviewer": true
+      },
+      "prefers": {
+        "subscriptionBacked": true
+      },
+      "scope": {
+        "writePaths": [
+          "track_2a/**",
+          "Makefile",
+          ".gitignore",
+          ".github/workflows/ci.yml",
+          "Dockerfile",
+          ".dockerignore",
+          "README.md"
+        ]
+      },
+      "acceptance": [
+        "Strict B0 official-format predictions",
+        "Docker clean-checkout execution and deterministic checks pass",
+        "Real tiny dev baseline evidenced"
+      ],
+      "exclusions": [
+        "No test data during development",
+        "No unrelated architecture or orchestration changes",
+        "No automatic merge, deployment, publication or portal submission"
+      ],
+      "authority": {
+        "architectureChange": "ask",
+        "dependencyInstall": "allowed",
+        "merge": "forbidden",
+        "externalService": "ask"
+      },
+      "stopConditions": [
+        "Scope expansion required",
+        "Credentials or compute unavailable for dependent live work",
+        "Test policy or license conflict"
+      ],
+      "escalation": [
+        "Human-only Weavr gate",
+        "Missing evidence or reviewer conflict"
+      ]
+    },
+    {
+      "schema": "weavr.mission/v0",
+      "id": "apertus-uzh-s3",
+      "title": "Apertus UZH S3: Semantic compiler comparison",
+      "kind": "ship",
+      "intent": "Deliver S3 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #4.",
+      "requires": {
+        "capabilities": [
+          "repo.read",
+          "repo.write",
+          "tests"
+        ],
+        "independentReviewer": true
+      },
+      "prefers": {
+        "subscriptionBacked": true
+      },
+      "scope": {
+        "writePaths": [
+          "track_2a/**",
+          "Makefile",
+          ".gitignore",
+          ".github/workflows/ci.yml",
+          "Dockerfile",
+          ".dockerignore",
+          "README.md"
+        ]
+      },
+      "acceptance": [
+        "B2a/B2 bounded alignment and validated IR",
+        "UNKNOWN, asymmetric spans and projection tested",
+        "Same-manifest B0/B2 comparison with coverage and cost"
+      ],
+      "exclusions": [
+        "No test data during development",
+        "No unrelated architecture or orchestration changes",
+        "No automatic merge, deployment, publication or portal submission"
+      ],
+      "authority": {
+        "architectureChange": "ask",
+        "dependencyInstall": "allowed",
+        "merge": "forbidden",
+        "externalService": "ask"
+      },
+      "stopConditions": [
+        "Scope expansion required",
+        "Credentials or compute unavailable for dependent live work",
+        "Test policy or license conflict"
+      ],
+      "escalation": [
+        "Human-only Weavr gate",
+        "Missing evidence or reviewer conflict"
+      ]
+    },
+    {
+      "schema": "weavr.mission/v0",
+      "id": "apertus-uzh-s4",
+      "title": "Apertus UZH S4: Evidence explorer and canton pilot",
+      "kind": "ship",
+      "intent": "Deliver S4 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #5.",
+      "requires": {
+        "capabilities": [
+          "repo.read",
+          "repo.write",
+          "tests"
+        ],
+        "independentReviewer": true
+      },
+      "prefers": {
+        "subscriptionBacked": true
+      },
+      "scope": {
+        "writePaths": [
+          "track_2a/**",
+          "Makefile",
+          ".gitignore",
+          ".github/workflows/ci.yml",
+          "Dockerfile",
+          ".dockerignore",
+          "README.md"
+        ]
+      },
+      "acceptance": [
+        "Portable escaped accessible static report",
+        "Authoritative canton pairs or documented availability limitation",
+        "External pilot separated from gold-scored benchmark"
+      ],
+      "exclusions": [
+        "No test data during development",
+        "No unrelated architecture or orchestration changes",
+        "No automatic merge, deployment, publication or portal submission"
+      ],
+      "authority": {
+        "architectureChange": "ask",
+        "dependencyInstall": "allowed",
+        "merge": "forbidden",
+        "externalService": "ask"
+      },
+      "stopConditions": [
+        "Scope expansion required",
+        "Credentials or compute unavailable for dependent live work",
+        "Test policy or license conflict"
+      ],
+      "escalation": [
+        "Human-only Weavr gate",
+        "Missing evidence or reviewer conflict"
+      ]
+    },
+    {
+      "schema": "weavr.mission/v0",
+      "id": "apertus-uzh-s5",
+      "title": "Apertus UZH S5: Validation and freeze",
+      "kind": "ship",
+      "intent": "Deliver S5 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #6.",
+      "requires": {
+        "capabilities": [
+          "repo.read",
+          "repo.write",
+          "tests"
+        ],
+        "independentReviewer": true
+      },
+      "prefers": {
+        "subscriptionBacked": true
+      },
+      "scope": {
+        "writePaths": [
+          "track_2a/**",
+          "Makefile",
+          ".gitignore",
+          ".github/workflows/ci.yml",
+          "Dockerfile",
+          ".dockerignore",
+          "README.md"
+        ]
+      },
+      "acceptance": [
+        "Broader predeclared dev validation and repeatability evidence",
+        "Fresh-checkout checks pass",
+        "Frozen default and held-out test isolation verified"
+      ],
+      "exclusions": [
+        "No test data during development",
+        "No unrelated architecture or orchestration changes",
+        "No automatic merge, deployment, publication or portal submission"
+      ],
+      "authority": {
+        "architectureChange": "ask",
+        "dependencyInstall": "allowed",
+        "merge": "forbidden",
+        "externalService": "ask"
+      },
+      "stopConditions": [
+        "Scope expansion required",
+        "Credentials or compute unavailable for dependent live work",
+        "Test policy or license conflict"
+      ],
+      "escalation": [
+        "Human-only Weavr gate",
+        "Missing evidence or reviewer conflict"
+      ]
+    },
+    {
+      "schema": "weavr.mission/v0",
+      "id": "apertus-uzh-s6",
+      "title": "Apertus UZH S6: Submission candidate",
+      "kind": "ship",
+      "intent": "Deliver S6 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #7.",
+      "requires": {
+        "capabilities": [
+          "repo.read",
+          "repo.write",
+          "tests"
+        ],
+        "independentReviewer": true
+      },
+      "prefers": {
+        "subscriptionBacked": true
+      },
+      "scope": {
+        "writePaths": [
+          "track_2a/**",
+          "Makefile",
+          ".gitignore",
+          ".github/workflows/ci.yml",
+          "Dockerfile",
+          ".dockerignore",
+          "README.md"
+        ]
+      },
+      "acceptance": [
+        "Measured technical report and reproduction package",
+        "UZH deliverables checklist verified",
+        "PR and owner submission checklist ready"
+      ],
+      "exclusions": [
+        "No test data during development",
+        "No unrelated architecture or orchestration changes",
+        "No automatic merge, deployment, publication or portal submission"
+      ],
+      "authority": {
+        "architectureChange": "ask",
+        "dependencyInstall": "allowed",
+        "merge": "forbidden",
+        "externalService": "ask"
+      },
+      "stopConditions": [
+        "Scope expansion required",
+        "Credentials or compute unavailable for dependent live work",
+        "Test policy or license conflict"
+      ],
+      "escalation": [
+        "Human-only Weavr gate",
+        "Missing evidence or reviewer conflict"
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "schema": "weavr.github-command/v0",
+      "id": "2026-10-07-apertus-uzh-create-apertus-uzh-s1-v1",
+      "kind": "create_mission",
+      "payload": {
+        "contract": {
+          "schema": "weavr.mission/v0",
+          "id": "apertus-uzh-s1",
+          "title": "Apertus UZH S1: Contract, data and Apertus readiness",
+          "kind": "ship",
+          "intent": "Deliver S1 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #2.",
+          "requires": {
+            "capabilities": [
+              "repo.read",
+              "repo.write",
+              "tests"
+            ],
+            "independentReviewer": true
+          },
+          "prefers": {
+            "subscriptionBacked": true
+          },
+          "scope": {
+            "writePaths": [
+              "track_2a/**",
+              "Makefile",
+              ".gitignore",
+              ".github/workflows/ci.yml",
+              "Dockerfile",
+              ".dockerignore",
+              "README.md"
+            ]
+          },
+          "acceptance": [
+            "Rules and source revisions pinned",
+            "Train/dev guard rejects before I/O",
+            "Exact token mapping and evaluator parity fixture pass",
+            "Real Apertus smoke evidenced or explicit compute blocker; no false completion"
+          ],
+          "exclusions": [
+            "No test data during development",
+            "No unrelated architecture or orchestration changes",
+            "No automatic merge, deployment, publication or portal submission"
+          ],
+          "authority": {
+            "architectureChange": "ask",
+            "dependencyInstall": "allowed",
+            "merge": "forbidden",
+            "externalService": "ask"
+          },
+          "stopConditions": [
+            "Scope expansion required",
+            "Credentials or compute unavailable for dependent live work",
+            "Test policy or license conflict"
+          ],
+          "escalation": [
+            "Human-only Weavr gate",
+            "Missing evidence or reviewer conflict"
+          ]
+        }
+      }
+    },
+    {
+      "schema": "weavr.github-command/v0",
+      "id": "2026-10-07-apertus-uzh-create-apertus-uzh-s2-v1",
+      "kind": "create_mission",
+      "payload": {
+        "contract": {
+          "schema": "weavr.mission/v0",
+          "id": "apertus-uzh-s2",
+          "title": "Apertus UZH S2: Direct baseline and Docker",
+          "kind": "ship",
+          "intent": "Deliver S2 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #3.",
+          "requires": {
+            "capabilities": [
+              "repo.read",
+              "repo.write",
+              "tests"
+            ],
+            "independentReviewer": true
+          },
+          "prefers": {
+            "subscriptionBacked": true
+          },
+          "scope": {
+            "writePaths": [
+              "track_2a/**",
+              "Makefile",
+              ".gitignore",
+              ".github/workflows/ci.yml",
+              "Dockerfile",
+              ".dockerignore",
+              "README.md"
+            ]
+          },
+          "acceptance": [
+            "Strict B0 official-format predictions",
+            "Docker clean-checkout execution and deterministic checks pass",
+            "Real tiny dev baseline evidenced"
+          ],
+          "exclusions": [
+            "No test data during development",
+            "No unrelated architecture or orchestration changes",
+            "No automatic merge, deployment, publication or portal submission"
+          ],
+          "authority": {
+            "architectureChange": "ask",
+            "dependencyInstall": "allowed",
+            "merge": "forbidden",
+            "externalService": "ask"
+          },
+          "stopConditions": [
+            "Scope expansion required",
+            "Credentials or compute unavailable for dependent live work",
+            "Test policy or license conflict"
+          ],
+          "escalation": [
+            "Human-only Weavr gate",
+            "Missing evidence or reviewer conflict"
+          ]
+        }
+      }
+    },
+    {
+      "schema": "weavr.github-command/v0",
+      "id": "2026-10-07-apertus-uzh-create-apertus-uzh-s3-v1",
+      "kind": "create_mission",
+      "payload": {
+        "contract": {
+          "schema": "weavr.mission/v0",
+          "id": "apertus-uzh-s3",
+          "title": "Apertus UZH S3: Semantic compiler comparison",
+          "kind": "ship",
+          "intent": "Deliver S3 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #4.",
+          "requires": {
+            "capabilities": [
+              "repo.read",
+              "repo.write",
+              "tests"
+            ],
+            "independentReviewer": true
+          },
+          "prefers": {
+            "subscriptionBacked": true
+          },
+          "scope": {
+            "writePaths": [
+              "track_2a/**",
+              "Makefile",
+              ".gitignore",
+              ".github/workflows/ci.yml",
+              "Dockerfile",
+              ".dockerignore",
+              "README.md"
+            ]
+          },
+          "acceptance": [
+            "B2a/B2 bounded alignment and validated IR",
+            "UNKNOWN, asymmetric spans and projection tested",
+            "Same-manifest B0/B2 comparison with coverage and cost"
+          ],
+          "exclusions": [
+            "No test data during development",
+            "No unrelated architecture or orchestration changes",
+            "No automatic merge, deployment, publication or portal submission"
+          ],
+          "authority": {
+            "architectureChange": "ask",
+            "dependencyInstall": "allowed",
+            "merge": "forbidden",
+            "externalService": "ask"
+          },
+          "stopConditions": [
+            "Scope expansion required",
+            "Credentials or compute unavailable for dependent live work",
+            "Test policy or license conflict"
+          ],
+          "escalation": [
+            "Human-only Weavr gate",
+            "Missing evidence or reviewer conflict"
+          ]
+        }
+      }
+    },
+    {
+      "schema": "weavr.github-command/v0",
+      "id": "2026-10-07-apertus-uzh-create-apertus-uzh-s4-v1",
+      "kind": "create_mission",
+      "payload": {
+        "contract": {
+          "schema": "weavr.mission/v0",
+          "id": "apertus-uzh-s4",
+          "title": "Apertus UZH S4: Evidence explorer and canton pilot",
+          "kind": "ship",
+          "intent": "Deliver S4 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #5.",
+          "requires": {
+            "capabilities": [
+              "repo.read",
+              "repo.write",
+              "tests"
+            ],
+            "independentReviewer": true
+          },
+          "prefers": {
+            "subscriptionBacked": true
+          },
+          "scope": {
+            "writePaths": [
+              "track_2a/**",
+              "Makefile",
+              ".gitignore",
+              ".github/workflows/ci.yml",
+              "Dockerfile",
+              ".dockerignore",
+              "README.md"
+            ]
+          },
+          "acceptance": [
+            "Portable escaped accessible static report",
+            "Authoritative canton pairs or documented availability limitation",
+            "External pilot separated from gold-scored benchmark"
+          ],
+          "exclusions": [
+            "No test data during development",
+            "No unrelated architecture or orchestration changes",
+            "No automatic merge, deployment, publication or portal submission"
+          ],
+          "authority": {
+            "architectureChange": "ask",
+            "dependencyInstall": "allowed",
+            "merge": "forbidden",
+            "externalService": "ask"
+          },
+          "stopConditions": [
+            "Scope expansion required",
+            "Credentials or compute unavailable for dependent live work",
+            "Test policy or license conflict"
+          ],
+          "escalation": [
+            "Human-only Weavr gate",
+            "Missing evidence or reviewer conflict"
+          ]
+        }
+      }
+    },
+    {
+      "schema": "weavr.github-command/v0",
+      "id": "2026-10-07-apertus-uzh-create-apertus-uzh-s5-v1",
+      "kind": "create_mission",
+      "payload": {
+        "contract": {
+          "schema": "weavr.mission/v0",
+          "id": "apertus-uzh-s5",
+          "title": "Apertus UZH S5: Validation and freeze",
+          "kind": "ship",
+          "intent": "Deliver S5 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #6.",
+          "requires": {
+            "capabilities": [
+              "repo.read",
+              "repo.write",
+              "tests"
+            ],
+            "independentReviewer": true
+          },
+          "prefers": {
+            "subscriptionBacked": true
+          },
+          "scope": {
+            "writePaths": [
+              "track_2a/**",
+              "Makefile",
+              ".gitignore",
+              ".github/workflows/ci.yml",
+              "Dockerfile",
+              ".dockerignore",
+              "README.md"
+            ]
+          },
+          "acceptance": [
+            "Broader predeclared dev validation and repeatability evidence",
+            "Fresh-checkout checks pass",
+            "Frozen default and held-out test isolation verified"
+          ],
+          "exclusions": [
+            "No test data during development",
+            "No unrelated architecture or orchestration changes",
+            "No automatic merge, deployment, publication or portal submission"
+          ],
+          "authority": {
+            "architectureChange": "ask",
+            "dependencyInstall": "allowed",
+            "merge": "forbidden",
+            "externalService": "ask"
+          },
+          "stopConditions": [
+            "Scope expansion required",
+            "Credentials or compute unavailable for dependent live work",
+            "Test policy or license conflict"
+          ],
+          "escalation": [
+            "Human-only Weavr gate",
+            "Missing evidence or reviewer conflict"
+          ]
+        }
+      }
+    },
+    {
+      "schema": "weavr.github-command/v0",
+      "id": "2026-10-07-apertus-uzh-create-apertus-uzh-s6-v1",
+      "kind": "create_mission",
+      "payload": {
+        "contract": {
+          "schema": "weavr.mission/v0",
+          "id": "apertus-uzh-s6",
+          "title": "Apertus UZH S6: Submission candidate",
+          "kind": "ship",
+          "intent": "Deliver S6 of track_2a/docs/SUBMISSION_ROADMAP.md; linked GitHub issue #7.",
+          "requires": {
+            "capabilities": [
+              "repo.read",
+              "repo.write",
+              "tests"
+            ],
+            "independentReviewer": true
+          },
+          "prefers": {
+            "subscriptionBacked": true
+          },
+          "scope": {
+            "writePaths": [
+              "track_2a/**",
+              "Makefile",
+              ".gitignore",
+              ".github/workflows/ci.yml",
+              "Dockerfile",
+              ".dockerignore",
+              "README.md"
+            ]
+          },
+          "acceptance": [
+            "Measured technical report and reproduction package",
+            "UZH deliverables checklist verified",
+            "PR and owner submission checklist ready"
+          ],
+          "exclusions": [
+            "No test data during development",
+            "No unrelated architecture or orchestration changes",
+            "No automatic merge, deployment, publication or portal submission"
+          ],
+          "authority": {
+            "architectureChange": "ask",
+            "dependencyInstall": "allowed",
+            "merge": "forbidden",
+            "externalService": "ask"
+          },
+          "stopConditions": [
+            "Scope expansion required",
+            "Credentials or compute unavailable for dependent live work",
+            "Test policy or license conflict"
+          ],
+          "escalation": [
+            "Human-only Weavr gate",
+            "Missing evidence or reviewer conflict"
+          ]
+        }
+      }
+    }
+  ]
+}
