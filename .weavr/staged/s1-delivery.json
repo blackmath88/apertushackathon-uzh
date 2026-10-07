@@ -1,0 +1,118 @@
+{
+  "schema": "apertus.s1-delivery-preparation/v1",
+  "status": "staged-not-activated-not-dispatched",
+  "repository": "blackmath88/apertushackathon-uzh",
+  "missionId": "apertus-uzh-s1",
+  "githubIssue": 2,
+  "inspectedBaseCommit": "026678009ae98a015833ded2596ec8f713bf0877",
+  "basePinPolicy": "Resolve the exact authorized base at activation; record it in Weavr and the Faictory workspace. The inspected SHA is evidence, not a substitute for that future pin.",
+  "contractPath": "track_2a/docs/S1_DELIVERY_CONTRACT.md",
+  "authority": {
+    "implementation": "pending-S1-activation-and-dispatch",
+    "review": "read-only-independent-Codex",
+    "approval": "human",
+    "integration": "human",
+    "nextMission": "explicit-human-intent-and-current-Weavr-gates"
+  },
+  "writePaths": [
+    "track_2a/src/uzh_rsd/splits.py",
+    "track_2a/src/uzh_rsd/cli.py",
+    "track_2a/src/uzh_rsd/data_adapter.py",
+    "track_2a/src/uzh_rsd/tokens.py",
+    "track_2a/src/uzh_rsd/evaluation.py",
+    "track_2a/src/uzh_rsd/severity.py",
+    "track_2a/src/uzh_rsd/apertus_smoke.py",
+    "track_2a/src/uzh_rsd/contracts.py",
+    "track_2a/src/uzh_rsd/projection.py",
+    "track_2a/schemas/difference_ir.schema.json",
+    "track_2a/tests/test_scaffold.py",
+    "track_2a/tests/test_s1_*.py",
+    "track_2a/tests/fixtures/s1/**",
+    "track_2a/manifests/s1-dev.json",
+    "track_2a/pyproject.toml",
+    "track_2a/requirements-s1.lock",
+    "track_2a/Makefile",
+    "track_2a/docs/SOURCES.md",
+    "track_2a/docs/BENCHMARK.md",
+    "track_2a/docs/SUBMISSION_CHECKLIST.md",
+    "track_2a/docs/S1_EVIDENCE.md",
+    "track_2a/docs/STATUS.md"
+  ],
+  "acceptance": [
+    "S1-RULES: Official UZH/template requirements, train/dev dataset and evaluator revisions, license/provenance and unresolved rule questions are recorded with source evidence.",
+    "S1-SPLIT: Every loader, CLI and cache path rejects every split except train/dev before filesystem/network I/O; no all-split acquisition or held-out test access occurs.",
+    "S1-TOKENS: Canonical source/target tokens and offsets preserve official order and exact vector lengths, including Unicode, punctuation and repeated tokens; mismatch fails without padding/truncation.",
+    "S1-MANIFEST: A fixed 5–10-pair dev manifest records IDs, language counts, source revision and content hashes; shortfall becomes an unresolved Need, not invented data; gold is absent from inference input.",
+    "S1-EVAL: A synthetic parity fixture agrees with the pinned official evaluator, including -1 masking, ties, undefined constant correlations and per-language/macro aggregation; no unofficial numeric score substitutes for parity.",
+    "S1-SCALE: Documented similarity/difference conversion and internal severity agree with the pinned evaluator and pass explicit mapping/range tests.",
+    "S1-RUNTIME: One opt-in real Apertus request records returned model identity, request settings, bounded attempts, latency and safe evidence; missing access/model/context/budget stays BLOCKED and never counts as a passing live check.",
+    "S1-REVIEW: Independent Codex review of the exact candidate commit/diff digest reruns required checks, reports each criterion and unresolved Needs, and makes a recommendation only; human approval and integration remain separate."
+  ],
+  "requiredCheckCommands": [
+    {
+      "command": "make test",
+      "expectedExit": 0,
+      "requirement": "all regression and S1 contract suites pass; record names/counts so zero discovered tests cannot count"
+    },
+    {
+      "command": "PYTHONPATH=track_2a/src python3 -m unittest discover -s track_2a/tests -p 'test_s1_*.py' -v",
+      "expectedExit": 0,
+      "requirement": "positive test count and observed split/token/manifest/evaluator/severity/provider contract coverage"
+    },
+    {
+      "command": "PYTHONPATH=track_2a/src python3 -m uzh_rsd.cli --strategy dry-run --split test",
+      "expectedExit": "nonzero",
+      "requirement": "test split refused; dedicated I/O spies additionally prove no loader/cache/network I/O"
+    }
+  ],
+  "liveCheck": {
+    "status": "required-for-S1-PASS; conditional-on-approved-access",
+    "implementationEntrypoint": "uzh_rsd.apertus_smoke (to be implemented in S1)",
+    "environment": [
+      "LLM_NAME",
+      "LLM_BASE_URL",
+      "LLM_API_KEY"
+    ],
+    "requestLimit": "one logical request, no retry by default; any retries/cost ceiling must come from approved configuration",
+    "evidence": "actual returned model identity and provenance; no credential/header serialization; unavailable measurements remain unavailable"
+  },
+  "reviewPacketRequiredFields": [
+    "repository",
+    "missionId",
+    "intentRevision",
+    "baseCommit",
+    "candidateCommit",
+    "diffDigest",
+    "changedPaths",
+    "checkCommands",
+    "checkExitCodes",
+    "checkLogDigests",
+    "acceptanceEvidence",
+    "findings",
+    "unresolvedNeeds",
+    "builderIdentity",
+    "reviewerIdentity",
+    "reviewAttemptId",
+    "recommendation"
+  ],
+  "closure": {
+    "recommendations": [
+      "PASS",
+      "REVISE",
+      "BLOCKED"
+    ],
+    "pass": "Every required criterion verified, including real smoke; independent review recommends PASS; no unresolved blocking Need. PASS remains advisory.",
+    "blocked": "Missing runtime, official parity, source/license/rule evidence or current control-plane state remains BLOCKED. Partial plumbing evidence can still be submitted.",
+    "revision": "New bounded attempt; new capture/verification/review on any changed digest; no automatic replay or broadened scope.",
+    "nextStage": "S2 requires separate human decision, explicit integration and exact resulting commit pin, fresh canonical Weavr read and explicit next-Mission authorization."
+  },
+  "readinessBlockers": [
+    "Live Weavr Project/Mission/Need/Run state has not been authenticated/read in this session.",
+    "Repository ingress secret and deployed create_mission validator remain unverified.",
+    "Faictory evaluation baseline PR #16 is open; review PR #15 is based on the superseded baseline and latest CI is cancelled.",
+    "Native Faictory Codex review adapter and Weavr-to-Faictory execution/evidence bridge are not demonstrated on current main.",
+    "Claude and Codex availability/authentication in the chosen runner remain unverified.",
+    "Approved Apertus endpoint/model identity/request budget and official source/evaluator access remain unverified."
+  ],
+  "notifications": "Mobile install/JSON handoff is reported merged by owner; background notifications are excluded from this delivery test."
+}

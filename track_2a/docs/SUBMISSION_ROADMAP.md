@@ -3,6 +3,9 @@
 Agreed scope: 7 October 2026. Target: submission-ready candidate by 15 October; recorded deadline 16 October 2026, 12:00 Europe/Zurich. Verify the current UZH-specific rules in M1.
 Starting evidence: main 654b58ee131efd21e47c1aabe27f020832a97aac; scaffold only, no open PRs; issue #1 defines core MVP. No Observatory or Weavr configuration found in inspected tree. No live Weavr read tool available here; mission state is unverified.
 
+## Current execution boundary (S1 only)
+The current owner instruction restricts work to S1. Read [S1_DELIVERY_CONTRACT.md](S1_DELIVERY_CONTRACT.md) and `.weavr/staged/s1-delivery.json` for its narrowed scope, required checks and human gates. S2–S6 remain roadmap goals and are not current execution authority. The older all-stage continuity wording below is superseded by this boundary. Activation and dispatch have not been requested by this preparation.
+
 ## Product and contribution
 Apertus-powered semantic difference detector for multilingual government documents, delivered as a reproducible CLI/container plus a static evidence explorer. It compares direct token scoring (B0) against sparse semantic decisions projected deterministically to benchmark tokens (B2a/B2).
 The deliverable must contain real measured results, source-linked examples, honest limitations and an exact rerun path. B2 winning is not a prerequisite: a rigorous negative comparison is acceptable. A fixture-only system is not a complete submission.
@@ -95,11 +98,11 @@ Submission checklist must enumerate UZH-specific requirements, each with status,
 Prepare final PR(s), candidate commit and release notes; owner controls merge, visibility/license decisions, publishing and portal submission.
 
 ## Claude Code routing and continuity contract
-This document authorizes implementation of the scoped project through S6 in feature branches, tests, artifacts and PR creation. It does not dispatch Weavr or bypass existing gates.
+This document describes the submission goal through S6. Current work is S1 readiness refinement only; future S1 implementation requires verified canonical authority and explicit dispatch. Each later stage requires its own accepted, refined envelope and explicit next-Mission authorization. The roadmap does not dispatch Weavr or bypass human gates.
 Before edits, inspect current Git/PR state and AGENTS.md; observe user changes. When Weavr project/mission exists, inspect current state and work only inside its accepted envelope. Approved Weavr writes use fresh .weavr/inbox commands. If unavailable, record unverified state rather than fabricate it; do not create new orchestration infrastructure.
 Claude owns coding decisions and evidence within scope. Deterministic local tools own bookkeeping/test execution; Apertus owns runtime semantics. Supporting model usage must be documented and comply with challenge rules. Never replace real Apertus evidence with Claude-generated results.
 Routing mod may select capable workers only under existing user-approved routing/cost policies. No automatic purchases, premium fallback, mission dispatch, scope expansion or integration.
-Proceed to next milestone when its code/evidence gate passes; do not request routine approval repeatedly. If compute blocks live gates, continue independent tests/docs/report/packaging and mark downstream readiness conditional.
+Do not proceed to another milestone merely because code/evidence checks pass. Independent Codex review is advisory; human approval and integration, a pin to the resulting commit, a fresh canonical Weavr read and explicit next-Mission authorization are required. If compute blocks a required live gate, keep S1 BLOCKED; independent plumbing may continue only inside the accepted S1 scope. Later-stage docs/report/packaging are deferred.
 At each milestone save docs/STATUS.md: milestone, commit/branch, changed modules, checks/results, artifact IDs/hashes, blockers and next legal step. Maintain checklist, use meaningful commits and PR evidence. Do not close parent issue until all required deliverables are verified; partial completion is explicit.
 Stop dependent work for test-policy conflict, unavailable credentials/compute, provider restrictions, license constraints or required scope changes. Continue independent authorized tasks.
 No automatic merge, deployment, public visibility change or final submission. These are owner decisions.
