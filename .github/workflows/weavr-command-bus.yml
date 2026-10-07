@@ -1,0 +1,79 @@
+name: Weavr command bus
+
+on:
+  push:
+    paths:
+      - ".weavr/inbox/*.json"
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  forward:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Forward Weavr commands
+        env:
+          WEAVR_INGRESS_TOKEN: ${{ secrets.WEAVR_GITHUB_INGRESS_TOKEN }}
+          WEAVR_INGRESS_URL: https://weavr-control.imbodi55.workers.dev/api/github/commands
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${WEAVR_INGRESS_TOKEN:-}" ]]; then
+            echo "Missing repository secret WEAVR_GITHUB_INGRESS_TOKEN" >&2
+            exit 1
+          fi
+
+          if [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
+            mapfile -t files < <(
+              git diff-tree --no-commit-id --name-only --diff-filter=A -r "$GITHUB_SHA" -- '.weavr/inbox/*.json'
+            )
+          else
+            mapfile -t files < <(
+              find .weavr/inbox -maxdepth 1 -type f -name '*.json' -print 2>/dev/null | sort
+            )
+          fi
+
+          if [[ "${#files[@]}" -eq 0 ]]; then
+            echo "No Weavr command files to reconcile."
+            exit 0
+          fi
+
+          for file in "${files[@]}"; do
+            file="${file#./}"
+            echo "Forwarding $file"
+
+            jq \
+              --arg repo "$GITHUB_REPOSITORY" \
+              --arg sha "$GITHUB_SHA" \
+              --arg path "$file" \
+              --arg ref "$GITHUB_REF" \
+              --arg actor "$GITHUB_ACTOR" \
+              '. + {
+                repository: $repo,
+                provenance: {
+                  commitSha: $sha,
+                  path: $path,
+                  ref: $ref,
+                  actor: $actor
+                }
+              }' "$file" > /tmp/weavr-command.json
+
+            curl --fail-with-body --silent --show-error \
+              --request POST \
+              --header "Authorization: Bearer $WEAVR_INGRESS_TOKEN" \
+              --header "Content-Type: application/json" \
+              --data-binary @/tmp/weavr-command.json \
+              "$WEAVR_INGRESS_URL"
+
+            echo
+          done
