@@ -17,3 +17,12 @@ Exploration → minimum reproducible B0/B2 experiment.
 - Deterministic software owns ingestion, split enforcement, schema validation, projection, evaluation, caching, and experiment metadata.
 
 See [track_2a/docs/PLAN.md](track_2a/docs/PLAN.md).
+
+## Challenge sources
+
+- [Full challenge brief](docs/challenge-source/CHALLENGE.md)
+- [Source provenance](docs/challenge-source/source.json)
+- [Links and requirements](docs/challenge-source/README.md)
+- [Shared knowledge and ideas](https://github.com/blackmath88/hackpertus/blob/main/docs/challenges/UZH.md)
+
+Official requirements and our exploratory ideas are separate. This repository stays private during development; source publication requirements are recorded for a later release decision.
