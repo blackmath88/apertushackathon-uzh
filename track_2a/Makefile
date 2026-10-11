@@ -1,13 +1,49 @@
-.PHONY: run test s1-setup s1-fetch s1-validate s1-manifest s1-check s1-smoke s1-smoke-live
+.PHONY: run test reproduce docker-build evaluate mvp-setup hf-launch-dry hf-launch hf-collect hf-spend s1-setup s1-fetch s1-validate s1-manifest s1-check s1-smoke s1-smoke-live
 SHELL := /bin/bash
 
 VENV ?= .venv
 PYTHON ?= $(if $(wildcard $(VENV)/bin/python),$(VENV)/bin/python,python3)
 RUN = PYTHONPATH=src $(PYTHON)
 
-# Scaffold dry run; the Docker-based judge entrypoint is S2 scope.
-run:
-	$(RUN) -m uzh_rsd.cli --strategy dry-run --split dev
+IMAGE ?= uzh-rsd-lost-in-switzerland:local
+# Committed measured run that `make reproduce` re-scores offline.
+RESULT ?= $(notdir $(lastword $(sort $(wildcard results/2*))))
+
+docker-build:
+	docker build -t $(IMAGE) .
+
+# Judge entrypoint: B0 + B2 on the fixed dev manifest against the Apertus
+# endpoint in LLM_NAME / LLM_BASE_URL / LLM_API_KEY, then evaluation.
+# Without those variables it stops with a clear BLOCKED message (exit 3).
+run: docker-build
+	mkdir -p runs
+	docker run --rm -e LLM_NAME -e LLM_BASE_URL -e LLM_API_KEY -v "$(CURDIR)/runs:/app/runs" $(IMAGE) run
+
+# No model needed: re-parse and re-score the committed raw Apertus responses.
+reproduce: docker-build
+	@test -n "$(RESULT)" || { echo "no committed run under results/"; exit 1; }
+	docker run --rm --entrypoint sh $(IMAGE) -c "python -m uzh_rsd.cli fetch >/dev/null && python -m uzh_rsd.cli evaluate --run results/$(RESULT)"
+
+# Local scoring of a run directory or a run id under runs/.
+evaluate:
+	$(RUN) -m uzh_rsd.cli evaluate --run $(RUN_ID)
+
+# Owner machine: venv with evaluator parity deps + huggingface_hub (HF Jobs).
+mvp-setup: s1-setup
+	$(VENV)/bin/pip install -r requirements-hf.txt
+
+# HF batch GPU (owner machine, uses the saved `hf auth login` token).
+hf-launch-dry:
+	$(RUN) -m uzh_rsd.hf_launch launch --dry-run
+
+hf-launch:
+	$(RUN) -m uzh_rsd.hf_launch launch --confirm-spend $(HF_ARGS)
+
+hf-collect:
+	$(RUN) -m uzh_rsd.hf_launch collect --wait --run-id $(RUN_ID)
+
+hf-spend:
+	$(RUN) -m uzh_rsd.hf_launch spend
 
 test:
 	$(RUN) -m unittest discover -s tests -v

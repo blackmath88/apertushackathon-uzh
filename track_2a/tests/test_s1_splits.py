@@ -105,7 +105,7 @@ class AdapterRejectsBeforeIOTests(unittest.TestCase):
 
 class CliTests(unittest.TestCase):
     def test_cli_refuses_test_split_before_any_command_runs(self):
-        for command in ("dry-run", *cli.S1_COMMANDS):
+        for command in ("dry-run", *cli.S1_COMMANDS, *cli.MVP_COMMANDS):
             # argparse's gettext may stat system locale catalogs on Python 3.12.
             # Isolate that stdlib presentation detail, not any data/network path.
             # All application I/O traps and the evaluator trap remain active.
