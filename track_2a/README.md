@@ -1,33 +1,14 @@
 # Track 2A — UZH SwissGov-RSD
 
-This directory is the submission workspace for the UZH SwissGov-RSD challenge.
+Submission workspace for **Lost in Switzerland**: direct Apertus token scoring (B0) versus structured semantic spans with deterministic token projection (B2).
 
-## Research question
-
-Can Apertus perform better when cross-lingual semantic differences are compiled into a small, typed span-level representation and then deterministically projected to token scores, instead of asking the model to score every token directly?
-
-## First comparison
-
-- **B0 — Direct Apertus:** document pair → Apertus → token scores.
-- **B2 — Semantic compiler:** document pair → alignment → Apertus sparse difference spans → deterministic token projection.
-- **B2a — Binary span localisation:** diagnostic before severity prediction.
-
-## Run
+Read [MVP_PLAN.md](docs/MVP_PLAN.md) and [STATUS.md](docs/STATUS.md) first. The older research plan and staged delivery trial are historical context.
 
 ```bash
-make run
-make test
+make s1-setup
+make s1-fetch s1-validate s1-check
 ```
 
-The scaffold currently performs a dry run only. Model integration and dataset ingestion are deliberately not implemented until the baseline adapter is explicit.
+The dev adapter and evaluator exist. `make run` is still a synthetic scaffold demonstration; real B0/B2 and Docker packaging remain to build. Apertus access is pending.
 
-## Non-negotiables
-
-- Apertus is the semantic model used by the submitted solution.
-- Test data does not enter development.
-- Raw source data is never overwritten.
-- Model outputs are derived artifacts, not canonical observations.
-- Normal code owns split enforcement, schemas, token bookkeeping, projection, evaluation, metadata and caching.
-- `UNKNOWN` / abstention remains legal where the semantic decision is unresolved.
-
-See [docs/PLAN.md](docs/PLAN.md).
+Never use test data in development, download all splits, leak labels into prompts, fabricate measurements, or silently repair prediction lengths. Preserve model failures and uncertainty in the reported results.

@@ -1,5 +1,7 @@
 # Hack Apertus UZH — submission roadmap and execution contract
 
+> **Historical plan.** For the 11 October submission focus, read [MVP_PLAN.md](MVP_PLAN.md) and [STATUS.md](STATUS.md). The broader canton/factory scope below is deferred. This document and staged commands do not authorize dispatch or change canonical Weavr state.
+
 Agreed scope: 7 October 2026. Target: submission-ready candidate by 15 October; recorded deadline 16 October 2026, 12:00 Europe/Zurich. Verify the current UZH-specific rules in M1.
 Starting evidence: main 654b58ee131efd21e47c1aabe27f020832a97aac; scaffold only, no open PRs; issue #1 defines core MVP. No Observatory or Weavr configuration found in inspected tree. No live Weavr read tool available here; mission state is unverified.
 

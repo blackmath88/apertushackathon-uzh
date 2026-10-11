@@ -1,0 +1,152 @@
+{
+  "schema": "uzh-rsd.dev-manifest/v1",
+  "rule": {
+    "version": "s1-dev-manifest-v1",
+    "documents": 3,
+    "tokens_per_side": [
+      40,
+      400
+    ],
+    "excluded_ids_source": "SwissGov-RSD list_to_drop.txt",
+    "excluded_ids_sha256": "3bd489505875ecc0800685f1b732f84dad7b7c25380f63612cadcfbe2732857a",
+    "ordering": "sha256('<version>|<doc_index>') ascending; gold labels not consulted"
+  },
+  "split": "dev",
+  "dataset": {
+    "repo": "ZurichNLP/SwissGov-RSD",
+    "revision": "f16aa0536811b8c0cf975fede21eec5996e4b3c1",
+    "files": {
+      "de": {
+        "path": "data/de/dev_de.jsonl",
+        "git_oid": "3f1fba69325ee5ad933064cb53be22739925fa56",
+        "size": 2300724
+      },
+      "fr": {
+        "path": "data/fr/dev_fr.jsonl",
+        "git_oid": "07ad1df22a4a69b043e4b477dff030ab2e261e9e",
+        "size": 2489668
+      },
+      "it": {
+        "path": "data/it/dev_it.jsonl",
+        "git_oid": "991e5aeb51761d256d51010976d0296b5551d6e5",
+        "size": 2387999
+      }
+    }
+  },
+  "counts": {
+    "en-de": 3,
+    "en-fr": 3,
+    "en-it": 3
+  },
+  "entries": [
+    {
+      "id": "admin_de_43",
+      "pair": "en-de",
+      "doc_index": 43,
+      "page_en": "https___www.bk.admin.ch_bk_en_home_bk_arbeitenbeiderbundeskanzlei_berufsbildung.html",
+      "page_other": "https___www.bk.admin.ch_bk_de_home_bk_arbeitenbeiderbundeskanzlei_berufsbildung.html",
+      "tokens_a": 88,
+      "tokens_b": 89,
+      "text_a_sha256": "081d372189b11921e48322e8a75a3b7b767ea32a662fa42935d2d995b03ad8b4",
+      "text_b_sha256": "5b95e95642f9089ed21c4b84ba061f1ffc9ea75653a3b9966e4970cd5d370256",
+      "gold_sha256": "113228c6193822b128c892869c499f1335a7f1f258f9c959874ea1367ccbac7c"
+    },
+    {
+      "id": "admin_de_136",
+      "pair": "en-de",
+      "doc_index": 136,
+      "page_en": "https___www.bfe.admin.ch_bfe_en_home_efficiency_mobility_tyres.html",
+      "page_other": "https___www.bfe.admin.ch_bfe_de_home_effizienz_mobilitaet_reifen.html",
+      "tokens_a": 226,
+      "tokens_b": 198,
+      "text_a_sha256": "0f004f93f6f6c92160a953ddaaa46bef3f7007c2caac906a43dec2b8f58b7871",
+      "text_b_sha256": "25162fa4c72e0deed7a66dd664f5b8af88e5916f259f758f06067711ce9d0775",
+      "gold_sha256": "e77287602c4a41c1bd4c4e9b7cbdec658b622d574e449088265204d07bdc5905"
+    },
+    {
+      "id": "admin_de_197",
+      "pair": "en-de",
+      "doc_index": 197,
+      "page_en": "https___www.seco.admin.ch_seco_en_home_seco_Bilder_und_Logos_EricScheidegger.html",
+      "page_other": "https___www.seco.admin.ch_seco_de_home_seco_Bilder_und_Logos_EricScheidegger.html",
+      "tokens_a": 250,
+      "tokens_b": 233,
+      "text_a_sha256": "50f58b3e8a1aa133334694a734699ffdfa427888dba0ebd5bf09cd83fda890be",
+      "text_b_sha256": "7109c2083560d8a9cfd0442fb9c60336aef5144b7cb9856489c76bf942363616",
+      "gold_sha256": "54061039d890971ea91d3be19a396df4e65da959fe18efeae691dbad11ab84a5"
+    },
+    {
+      "id": "admin_fr_43",
+      "pair": "en-fr",
+      "doc_index": 43,
+      "page_en": "https___www.bk.admin.ch_bk_en_home_bk_arbeitenbeiderbundeskanzlei_berufsbildung.html",
+      "page_other": "https___www.bk.admin.ch_bk_fr_home_chancellerie-federale_arbeitenbeiderbundeskanzlei_berufsbildung.html",
+      "tokens_a": 88,
+      "tokens_b": 93,
+      "text_a_sha256": "081d372189b11921e48322e8a75a3b7b767ea32a662fa42935d2d995b03ad8b4",
+      "text_b_sha256": "2a20864f8a44e0f6fe8de585c8b23f47de18a059ae6b375283df1adf94ef29ab",
+      "gold_sha256": "166fd236079a1b69f162a579f1c3b2f549a1f84a8b9f7c6114dca8461eac3947"
+    },
+    {
+      "id": "admin_fr_136",
+      "pair": "en-fr",
+      "doc_index": 136,
+      "page_en": "https___www.bfe.admin.ch_bfe_en_home_efficiency_mobility_tyres.html",
+      "page_other": "https___www.bfe.admin.ch_bfe_fr_home_efficacite_mobilite_pneus.html",
+      "tokens_a": 226,
+      "tokens_b": 263,
+      "text_a_sha256": "0f004f93f6f6c92160a953ddaaa46bef3f7007c2caac906a43dec2b8f58b7871",
+      "text_b_sha256": "68fa659142ec0a17ad2bc983d10085a2e836b4d6f144f5debcb028c222eeadf1",
+      "gold_sha256": "c7efbbf4945a7790525fe630ae510fef58673376791cc4d1de90a03aaf737653"
+    },
+    {
+      "id": "admin_fr_197",
+      "pair": "en-fr",
+      "doc_index": 197,
+      "page_en": "https___www.seco.admin.ch_seco_en_home_seco_Bilder_und_Logos_EricScheidegger.html",
+      "page_other": "https___www.seco.admin.ch_seco_fr_home_seco_Bilder_und_Logos_EricScheidegger.html",
+      "tokens_a": 250,
+      "tokens_b": 267,
+      "text_a_sha256": "50f58b3e8a1aa133334694a734699ffdfa427888dba0ebd5bf09cd83fda890be",
+      "text_b_sha256": "9e11c9b12427cae5abdc28b662430f800cba9c8e725a054623a10d2bca54a183",
+      "gold_sha256": "11aedd1e30d97168d8bacc0d956e4cc008c331f2b5b214840e4fe4b21e479a37"
+    },
+    {
+      "id": "admin_it_43",
+      "pair": "en-it",
+      "doc_index": 43,
+      "page_en": "https___www.bk.admin.ch_bk_en_home_bk_arbeitenbeiderbundeskanzlei_berufsbildung.html",
+      "page_other": "https___www.bk.admin.ch_bk_it_home_la-cancelleria-federale_arbeitenbeiderbundeskanzlei_berufsbildung.html",
+      "tokens_a": 88,
+      "tokens_b": 95,
+      "text_a_sha256": "081d372189b11921e48322e8a75a3b7b767ea32a662fa42935d2d995b03ad8b4",
+      "text_b_sha256": "63fc5acb81d00a7683eb701c00294706e37363a8f8012ff0adc4f9d5647f9fcc",
+      "gold_sha256": "52000718bc8e701d6f6f042d43813de48eb3e4535860cd7735bcdc8c30e7f3a7"
+    },
+    {
+      "id": "admin_it_136",
+      "pair": "en-it",
+      "doc_index": 136,
+      "page_en": "https___www.bfe.admin.ch_bfe_en_home_efficiency_mobility_tyres.html",
+      "page_other": "https___www.bfe.admin.ch_bfe_it_home_efficienza_mobilita_pneumatici.html",
+      "tokens_a": 226,
+      "tokens_b": 228,
+      "text_a_sha256": "0f004f93f6f6c92160a953ddaaa46bef3f7007c2caac906a43dec2b8f58b7871",
+      "text_b_sha256": "00c50ab331644d9a2a4aadf16491105cbd78b1f5efa10c00e26861e92fd42cc4",
+      "gold_sha256": "86b2420c62dae07a19ff6f48d7396d2f6eaf74033618acbe7c899a69da1bc909"
+    },
+    {
+      "id": "admin_it_197",
+      "pair": "en-it",
+      "doc_index": 197,
+      "page_en": "https___www.seco.admin.ch_seco_en_home_seco_Bilder_und_Logos_EricScheidegger.html",
+      "page_other": "https___www.seco.admin.ch_seco_it_home_seco_Bilder_und_Logos_EricScheidegger.html",
+      "tokens_a": 250,
+      "tokens_b": 254,
+      "text_a_sha256": "50f58b3e8a1aa133334694a734699ffdfa427888dba0ebd5bf09cd83fda890be",
+      "text_b_sha256": "7e9f0279f2e016a097fb73609feb943afff6dddbc94bf2373c44eb39cd99d8d9",
+      "gold_sha256": "40cd2fe13b64f2ec87335e4796b2d09af0c7856aa27519f1b673feb13cbfde90"
+    }
+  ],
+  "manifest_sha256": "61e0e98b7a9347716f4a71bc002364a600993c7346d6046e4f8d65899059a835"
+}

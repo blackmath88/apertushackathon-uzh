@@ -1,0 +1,6 @@
+# S1 evaluator-parity dependencies (runtime code is stdlib-only).
+# Verified with Python 3.13 (this lock) and with the official SwissGov-RSD pins
+# numpy==2.0.2 / scipy==1.13.1 on Python 3.11; see docs/S1_EVIDENCE.md.
+nlpstats==0.0.1
+numpy==2.5.3
+scipy==1.18.1
