@@ -1,5 +1,7 @@
 # Build and Experiment Plan
 
+> **Historical plan.** For the 11 October submission focus, read [MVP_PLAN.md](MVP_PLAN.md) and [STATUS.md](STATUS.md). The broader canton/factory scope below is deferred. This document and staged commands do not authorize dispatch or change canonical Weavr state.
+
 Status: bootstrap / pre-baseline  
 Hack Apertus build window: 1–16 October 2026  
 Submission deadline: 16 October 2026, 12:00 CEST

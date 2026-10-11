@@ -106,12 +106,16 @@ class AdapterRejectsBeforeIOTests(unittest.TestCase):
 class CliTests(unittest.TestCase):
     def test_cli_refuses_test_split_before_any_command_runs(self):
         for command in ("dry-run", *cli.S1_COMMANDS):
-            with self.subTest(command=command), IOSpy() as spy, mock.patch("sys.stderr", new_callable=io.StringIO) as stderr:
-                with mock.patch.object(evaluation, "fetch_official", side_effect=AssertionError("fetch")):
-                    exit_code = cli.main([command, "--split", "test"])
-            self.assertEqual(exit_code, 2)
-            self.assertIn("not available in development", stderr.getvalue())
-            self.assertEqual(spy.calls, [])
+            # argparse's gettext may stat system locale catalogs on Python 3.12.
+            # Isolate that stdlib presentation detail, not any data/network path.
+            # All application I/O traps and the evaluator trap remain active.
+            with self.subTest(command=command), mock.patch.object(cli.argparse, "_", lambda message: message):
+                with IOSpy() as spy, mock.patch("sys.stderr", new_callable=io.StringIO) as stderr:
+                    with mock.patch.object(evaluation, "fetch_official", side_effect=AssertionError("fetch")):
+                        exit_code = cli.main([command, "--split", "test"])
+                self.assertEqual(exit_code, 2)
+                self.assertIn("not available in development", stderr.getvalue())
+                self.assertEqual(spy.calls, [])
 
 
 if __name__ == "__main__":

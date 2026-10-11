@@ -1,0 +1,12 @@
+{
+  "schema": "hack-apertus-source/v1",
+  "id": "uzh",
+  "source_url": null,
+  "source_entrypoint": "https://hackapertus.notion.site/getting-started-guide-onlinehack",
+  "capture_method": "user_pasted_text_transcribed_markdown",
+  "captured_at": "2026-10-08T15:18:19.492924+00:00",
+  "sha256": "5159c4c368bb05b115f3d25c5a715e47d39723e2f0d267c770eb6ec80e862477",
+  "review_status": "imported_source_not_reconciled_with_live_notion",
+  "completeness": "full supplied brief; formatting normalised for pasted chat text; source inconsistencies retained",
+  "source_commit": null
+}

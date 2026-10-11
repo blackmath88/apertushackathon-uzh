@@ -1,5 +1,7 @@
 # Weavr intake and Codex review handoff
 
+> **Historical plan.** For the 11 October submission focus, read [MVP_PLAN.md](MVP_PLAN.md) and [STATUS.md](STATUS.md). The broader canton/factory scope below is deferred. This document and staged commands do not authorize dispatch or change canonical Weavr state.
+
 Status: repository preparation completed; live registration/ingress/runner unverified.
 Authoritative project roadmap: SUBMISSION_ROADMAP.md; tracking issue #8.
 Repository: blackmath88/apertushackathon-uzh.

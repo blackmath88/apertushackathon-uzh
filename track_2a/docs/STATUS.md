@@ -1,30 +1,20 @@
-# Status
+# Status — 11 October 2026
 
-## S1 — contract, data and runtime readiness
+## Integrated foundation; live model work pending
 
-- **State:** implemented; **BLOCKED on live Apertus smoke** (no endpoint credentials). Awaiting independent review and owner decision.
-- **Branch / commits:** `claude/quirky-babbage-wi047n`; implementation `e907ad2`, evidence docs in the following commit (see the PR head).
-- **Changed modules:** `splits.py`, `tokens.py` (new), `data_adapter.py` (new), `evaluation.py` (new), `severity.py` (new), `apertus_smoke.py` (new), `cli.py`; tests `test_s1_*.py` plus synthetic fixtures; `manifests/s1-dev.json`; `Makefile`; `requirements-s1.lock`; docs.
-- **Checks:** fresh clone, `make s1-check`: 56 tests OK, 0 skipped, manifest reproduces, test split refused; also passes under the official numpy/scipy pins. Details in [S1_EVIDENCE.md](S1_EVIDENCE.md).
-- **Artefacts:** manifest `manifest_sha256` `61e0e98b7a9347716f4a71bc002364a600993c7346d6046e4f8d65899059a835`; dataset `ZurichNLP/SwissGov-RSD@f16aa0536811b8c0cf975fede21eec5996e4b3c1`; evaluator `ZurichNLP/SwissGov-RSD@1807a42100e742ed03d337c54c4b9ea86995f565`.
-- **Blockers:** N-COMPUTE-1 (Apertus endpoint, model id, budget); N-RULES-1…5; N-LIC-1.
+Current scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2. The owner authorized cleanup and integration and is arranging Apertus access.
 
-## How to reproduce
+- Implemented: pinned dev adapter, canonical whitespace tokens and offsets, strict score validation, gold/inference separation, nine-pair manifest, official evaluator parity, scale conversion and opt-in smoke check.
+- Reviewed: PR #11 at `d98566f54eb0eaa5459de55e1103104c93548587`, plus the Python 3.12 test repair and cleanup in its follow-up commit. See [review evidence](CLEANUP_REVIEW_2026-10-11.md).
+- Verified here: 56 tests pass, zero skips; manifest reproduces; dev contains 168 pairs per language; test split refused. Review used Python 3.12.14 / NumPy 2.3.5 / SciPy 1.17.0 / nlpstats 0.0.1 after downloaded SciPy wheels crashed. The original lock needs target-host verification; original builder results remain historical evidence in S1_EVIDENCE.md.
+- **Blocked:** actual Apertus readiness. No live call, model predictions or measured model score exists. S1 runtime acceptance remains incomplete.
+- **Not implemented:** B0, B2, prediction export, final Docker judge entrypoint and measured technical report. `make run` remains a synthetic demonstration.
+- **Deferred:** canton pilot, B2a/B3, extra tracks and the factory trial. Older plans are retained with superseded-scope notices.
 
-```bash
-cd track_2a
-make s1-setup      # ignored .venv with nlpstats/numpy/scipy
-make s1-fetch      # dev files + pinned official evaluator files (no test data)
-make s1-validate   # dev counts and token totals
-make s1-check      # full suite (no skips allowed), manifest rebuild, test-split refusal
-make s1-smoke      # writes a BLOCKED record unless configured; sends nothing
-# with an approved endpoint:
-export LLM_NAME=swiss-ai/Apertus-v1.5-8B LLM_BASE_URL=https://… LLM_API_KEY=…
-make s1-smoke-live # exactly one request; record in runs/ (ignored)
-```
+## Next actions
 
-## Next legal step
+1. Owner configures an approved Apertus endpoint locally using `LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY` and runs `make -C track_2a s1-smoke-live` once. Share only the redacted outcome.
+2. Build the paper B0 and prediction writer from refreshed main, starting with one pair then the fixed nine pairs. Resolve official output/judge rules before declaring compatibility.
+3. Add one B2 approach and compare on identical dev inputs; package and document actual results. Follow MVP_PLAN.md for acceptance and cut lines.
 
-1. Owner provides or approves an Apertus endpoint, then runs `make s1-smoke-live` once. Attach the redacted record to the PR.
-2. Independent Codex review of the PR head.
-3. Owner approves and integrates S1. S2 (B0 baseline + Docker) starts only after integration and explicit authorization. **S2 has not been started.**
+No Weavr state was changed or accepted by merging code. Repository integration is not a completed Mission, a waived compute Need, public release or final submission.

@@ -1,0 +1,73 @@
+make: Entering directory '/workspace/scratch/42807ba8f996/uzh/track_2a'
+test_identity_rules (test_s1_apertus_smoke.HelperTests.test_identity_rules) ... ok
+test_safe_endpoint_strips_credentials_and_query (test_s1_apertus_smoke.HelperTests.test_safe_endpoint_strips_credentials_and_query) ... ok
+test_http_error_is_single_attempt_failure (test_s1_apertus_smoke.SmokeTests.test_http_error_is_single_attempt_failure) ... ok
+test_identity_mismatch (test_s1_apertus_smoke.SmokeTests.test_identity_mismatch) ... ok
+test_malformed_response (test_s1_apertus_smoke.SmokeTests.test_malformed_response) ... ok
+test_missing_configuration_blocks_without_request (test_s1_apertus_smoke.SmokeTests.test_missing_configuration_blocks_without_request) ... ok
+test_missing_usage_is_recorded_as_unavailable (test_s1_apertus_smoke.SmokeTests.test_missing_usage_is_recorded_as_unavailable) ... ok
+test_mock_success_records_identity_usage_latency_but_is_not_live (test_s1_apertus_smoke.SmokeTests.test_mock_success_records_identity_usage_latency_but_is_not_live) ... ok
+test_retries_require_approved_configuration (test_s1_apertus_smoke.SmokeTests.test_retries_require_approved_configuration) ... ok
+test_timeout_is_explicit_failure (test_s1_apertus_smoke.SmokeTests.test_timeout_is_explicit_failure) ... ok
+test_without_confirmation_no_request_is_sent (test_s1_apertus_smoke.SmokeTests.test_without_confirmation_no_request_is_sent) ... ok
+test_fetch_downloads_one_pinned_dev_url_and_verifies (test_s1_data_adapter.AdapterTests.test_fetch_downloads_one_pinned_dev_url_and_verifies) ... ok
+test_label_length_mismatch_in_source_fails (test_s1_data_adapter.AdapterTests.test_label_length_mismatch_in_source_fails) ... ok
+test_load_separates_inference_inputs_from_gold (test_s1_data_adapter.AdapterTests.test_load_separates_inference_inputs_from_gold) ... ok
+test_load_without_fetch_fails_clearly (test_s1_data_adapter.AdapterTests.test_load_without_fetch_fails_clearly) ... ok
+test_tampered_download_is_rejected_and_not_written (test_s1_data_adapter.AdapterTests.test_tampered_download_is_rejected_and_not_written) ... ok
+test_selection_is_deterministic_bounded_and_respects_exclusions (test_s1_data_adapter.ManifestSelectionTests.test_selection_is_deterministic_bounded_and_respects_exclusions) ... ok
+test_selection_is_gold_blind (test_s1_data_adapter.ManifestSelectionTests.test_selection_is_gold_blind) ... ok
+test_shortfall_is_an_error_not_invented_data (test_s1_data_adapter.ManifestSelectionTests.test_shortfall_is_an_error_not_invented_data) ... ok
+test_counts_and_exact_label_lengths (test_s1_data_adapter.RealDevDataTests.test_counts_and_exact_label_lengths) ... ok
+test_tracked_manifest_matches_rule_and_contains_no_labels (test_s1_data_adapter.RealDevDataTests.test_tracked_manifest_matches_rule_and_contains_no_labels) ... ok
+test_official_cannot_score_constant_predictions (test_s1_evaluation.OfficialParityTests.test_official_cannot_score_constant_predictions) ... /workspace/scratch/42807ba8f996/review-env/lib/python3.12/site-packages/nlpstats/correlations/correlations.py:16: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  return spearmanr(*args)[0]
+ok
+test_real_dev_gold_with_synthetic_predictions_per_language_and_macro (test_s1_evaluation.OfficialParityTests.test_real_dev_gold_with_synthetic_predictions_per_language_and_macro) ... ok
+test_seeded_random_vectors_including_heavy_ties (test_s1_evaluation.OfficialParityTests.test_seeded_random_vectors_including_heavy_ties) ... ok
+test_synthetic_fixture_with_ties_and_masking (test_s1_evaluation.OfficialParityTests.test_synthetic_fixture_with_ties_and_masking) ... ok
+test_assembly_masks_gold_punctuation_and_skips_fully_masked_side_b (test_s1_evaluation.OurEvaluatorTests.test_assembly_masks_gold_punctuation_and_skips_fully_masked_side_b) ... ok
+test_hand_computed_spearman (test_s1_evaluation.OurEvaluatorTests.test_hand_computed_spearman) ... ok
+test_language_result_reports_reason (test_s1_evaluation.OurEvaluatorTests.test_language_result_reports_reason) ... ok
+test_length_mismatch_is_fatal_not_repaired (test_s1_evaluation.OurEvaluatorTests.test_length_mismatch_is_fatal_not_repaired) ... ok
+test_macro_requires_all_three_defined_languages (test_s1_evaluation.OurEvaluatorTests.test_macro_requires_all_three_defined_languages) ... ok
+test_undefined_cases_return_none_not_a_number (test_s1_evaluation.OurEvaluatorTests.test_undefined_cases_return_none_not_a_number) ... ok
+test_matches_pinned_official_function (test_s1_severity.OfficialMappingParityTests.test_matches_pinned_official_function) ... ok
+test_invalid_values_rejected (test_s1_severity.ScaleTests.test_invalid_values_rejected) ... ok
+test_projected_ir_converts_to_official_scale (test_s1_severity.ScaleTests.test_projected_ir_converts_to_official_scale) ... ok
+test_published_similarity_table (test_s1_severity.ScaleTests.test_published_similarity_table) ... ok
+test_severity_is_mirror_of_similarity (test_s1_severity.ScaleTests.test_severity_is_mirror_of_similarity) ... ok
+test_severity_range_maps_to_gold_range (test_s1_severity.ScaleTests.test_severity_range_maps_to_gold_range) ... ok
+test_absent_data_dir_does_not_change_rejection (test_s1_splits.AdapterRejectsBeforeIOTests.test_absent_data_dir_does_not_change_rejection) ... ok
+test_no_test_split_source_is_registered (test_s1_splits.AdapterRejectsBeforeIOTests.test_no_test_split_source_is_registered) ... ok
+test_path_url_fetch_and_load_refuse_test_without_io (test_s1_splits.AdapterRejectsBeforeIOTests.test_path_url_fetch_and_load_refuse_test_without_io) ... ok
+test_train_is_policy_legal_but_has_no_official_source (test_s1_splits.AdapterRejectsBeforeIOTests.test_train_is_policy_legal_but_has_no_official_source) ... ok
+test_cli_refuses_test_split_before_any_command_runs (test_s1_splits.CliTests.test_cli_refuses_test_split_before_any_command_runs) ... ok
+test_everything_else_is_rejected (test_s1_splits.GuardTests.test_everything_else_is_rejected) ... ok
+test_train_and_dev_are_allowed (test_s1_splits.GuardTests.test_train_and_dev_are_allowed) ... ok
+test_offsets_recover_each_token_from_original_text (test_s1_tokens.TokenizeTests.test_offsets_recover_each_token_from_original_text) ... ok
+test_rejects_non_string (test_s1_tokens.TokenizeTests.test_rejects_non_string) ... ok
+test_repeated_tokens_get_distinct_offsets (test_s1_tokens.TokenizeTests.test_repeated_tokens_get_distinct_offsets) ... ok
+test_tokens_match_official_split_for_every_case (test_s1_tokens.TokenizeTests.test_tokens_match_official_split_for_every_case) ... ok
+test_unicode_whitespace_splits_but_zero_width_space_does_not (test_s1_tokens.TokenizeTests.test_unicode_whitespace_splits_but_zero_width_space_does_not) ... ok
+test_exact_length_passes_and_mismatch_never_pads_or_truncates (test_s1_tokens.VectorTests.test_exact_length_passes_and_mismatch_never_pads_or_truncates) ... ok
+test_punctuation_mask_only_allowed_for_gold (test_s1_tokens.VectorTests.test_punctuation_mask_only_allowed_for_gold) ... ok
+test_rejects_invalid_values (test_s1_tokens.VectorTests.test_rejects_invalid_values) ... ok
+test_overlaps_take_max_severity (test_scaffold.ProjectionTests.test_overlaps_take_max_severity) ... ok
+test_sparse_difference_projects_deterministically (test_scaffold.ProjectionTests.test_sparse_difference_projects_deterministically) ... ok
+test_dev_is_allowed (test_scaffold.SplitGuardTests.test_dev_is_allowed) ... ok
+test_test_is_rejected (test_scaffold.SplitGuardTests.test_test_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 56 tests in 3.415s
+
+OK
+PYTHONPATH=src /workspace/scratch/42807ba8f996/review-env/bin/python -m uzh_rsd.cli manifest --split dev --check
+{
+  "status": "ok",
+  "check": "manifest reproduces",
+  "manifest_sha256": "61e0e98b7a9347716f4a71bc002364a600993c7346d6046e4f8d65899059a835"
+}
+error: Split 'test' is not available in development. Only train/dev are legal before final evaluation.
+test split refused (expected)
+make: Leaving directory '/workspace/scratch/42807ba8f996/uzh/track_2a'
