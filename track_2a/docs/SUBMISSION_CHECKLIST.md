@@ -1,45 +1,44 @@
 # Submission checklist — Hack Apertus Track 2A, UZH SwissGov-RSD
 
-Rules transcribed from the sources pinned in [SOURCES.md](SOURCES.md) on
-2026-10-07. Status reflects S1 only. Later stages fill in the artefact column.
+These rules come from the pinned sources in [SOURCES.md](SOURCES.md): the UZH brief in `docs/challenge-source/CHALLENGE.md` and the HackApertus template at `7f23822`. Status is as of 11 October 2026, on the B0/B2 MVP branch.
 
-Legend: ✅ verified · 🟡 partial / in progress · ⬜ not started (later stage) · ⛔ blocked
+Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not started · ⛔ blocked / owner decision
 
-## Event-level requirements
+## Event and template
 
-| # | Requirement (source) | Status | Evidence / owner stage |
+| # | Requirement | Status | Evidence / next step |
 |---|---|---|---|
-| E1 | Submit on hackapertus.ch/online-hack/submissions by **16 Oct 2026 12:00 CEST**, no extension (how-to-submit) | ⬜ | Human, after S6 |
-| E2 | Follow the template repo: keep `track_2a/` as-is, delete other tracks (template README) | 🟡 | Layout kept; S6 to confirm |
-| E3 | `make run` from the project root on a clean checkout runs the project **in Docker** (template, how-to-submit) | ⬜ | S2 |
-| E4 | Use `LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY` (template README) | 🟡 | `apertus_smoke.py` reads exactly these; S2 for the pipeline |
-| E5 | Follow the specified input/output format; run end-to-end when judges run it (how-to-submit) | ⬜ | S2/S5 |
-| E6 | `data/` ≤ 100 MB (template) | ✅ | Raw data is ignored, never committed; tracked `data/` holds only `.gitkeep` |
-| E7 | Solution built with the Apertus family; other open-weight models only as support, described in the report (Track 2 page) | 🟡 | Only Apertus is configured; no supporting model used in S1 |
-| E8 | Open source; CC BY 4.0 per template report, Terms §6 (template) | ⬜ | Owner decision on visibility/licence (repo currently private) |
-| E9 | Fill `technical_report.md` sections 1–8 (template) | ⬜ | S6 |
-| E10 | No secrets or model weights committed (template `.gitignore`) | ✅ | Credentials only via env; smoke record redacts key, userinfo and query (tested) |
+| E1 | Submit at hackapertus.ch/online-hack/submissions by **16 Oct 2026, 12:00 CEST** (not Devpost) | ⬜ | Owner, after results |
+| E2 | Keep `track_2a/` as-is; delete other tracks | ✅ | Only `track_2a/` exists |
+| E3 | `make run` from the project root on a clean checkout runs the project **in Docker** | 🟡 | Docker image + root `make run` implemented. Without an endpoint it stops with BLOCKED (exit 3); the full path ran in the container against a mock endpoint. Re-verify on a clean normal host (this sandbox needed a registry mirror). |
+| E4 | Model access via `LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY` | ✅ | `backends.OpenAICompatibleBackend`; key never recorded (tested) |
+| E5 | Follow the input/output format; runs end to end when judges run it | 🟡 | Official encoder-style predictions `{id,text_a,text_b,labels_a,labels_b}` per language. Judges also need a working Apertus v1.5 endpoint (see N-JUDGE-1). |
+| E6 | `data/` ≤ 100 MB | ✅ | Raw data ignored; fetched at run time |
+| E7 | Built with Apertus; other open models only in support roles, described | ✅ | Only Apertus v1.5 8B; no other model anywhere |
+| E8 | Open source, CC BY 4.0 | ⛔ | Owner: make the repo public; decide on committing dev-text-bearing run artefacts |
+| E9 | `technical_report.md` sections 1–8 | 🟡 | Draft complete except measured results |
+| E10 | No secrets or weights committed | ✅ | Token only as an HF Jobs secret; ledger and launch records hold no token |
 
-## UZH challenge requirements
+## UZH challenge
 
-| # | Requirement (track-2a-uzh page) | Status | Evidence / owner stage |
+| # | Requirement | Status | Evidence / next step |
 |---|---|---|---|
-| U1 | Data from HF or GitHub `ZurichNLP/SwissGov-RSD` | ✅ | HF revision `f16aa05…` pinned; dev loader verified (504 records) |
-| U2 | **Test set must not enter development in any form** (training, prompt examples, tuning), or disqualification | ✅ (S1) | No test file registered; split guard tested with I/O spies; CLI refuses `--split test` |
-| U3 | Primary metric: token-level Spearman per pair, macro over EN–DE/FR/IT; provided evaluation script defines preprocessing and punctuation | ✅ | Parity with pinned `compute_correlations`; macro added as in the brief |
-| U4 | Models: Apertus v1.5 8B or 70B | ⛔ | Endpoint access missing (see blockers) |
-| U5 | Reproduce a baseline from the SwissGov paper with your Apertus model | ⬜ | S2 (B0 from `template_*_admin.txt`) |
-| U6 | Deliverables: code/reproducible implementation, **model predictions**, short method description; optional demo/visualisation and adapters | ⬜ | S2–S6 |
-| U7 | Secondary criteria: computational efficiency, innovation/creativity | ⬜ | S2/S3 run records (calls, latency, tokens) |
+| U1 | Data from `ZurichNLP/SwissGov-RSD` | ✅ | Pinned HF revision, dev only |
+| U2 | **Test set never used in development** | ✅ | No test path in code; split guard before I/O, covering every CLI command (tests) |
+| U3 | Token-level Spearman per pair, macro over DE/FR/IT; official preprocessing | ✅ | Parity with the pinned official `compute_correlations`; cross-check reported with every result |
+| U4 | Apertus v1.5 8B or 70B | 🟡 | `swiss-ai/Apertus-v1.5-8B@a411d83`; owner verified an HF GPU job (`6acbc1d5…`). Our measured run is pending. |
+| U5 | Reproduce a paper baseline with your Apertus model | 🟡 | B0 implemented from the upstream admin templates and parser; deviations documented. Measurement pending. |
+| U6 | Code, **model predictions**, short method description | 🟡 | Code ✅, method ✅ (report). Predictions are exported per run; the first real run is pending. |
+| U7 | Secondary: efficiency, innovation | 🟡 | Calls, prompt/completion tokens, latency and truncations recorded per call |
 
-## Open Needs (unresolved rules)
+## Open questions and blockers
 
-| ID | Question | Why it matters | Ask |
+| ID | Question | Impact | Owner action |
 |---|---|---|---|
-| N-RULES-1 | How do judges evaluate on the held-out test? Do teams submit test predictions, or do judges run `make run`? | Determines whether we ever run inference on test, and how | UZH Q&A 8 Oct 12:00, or the Q&A doc |
-| N-RULES-2 | Are the 34 `list_to_drop.txt` ids excluded in final scoring for LLM systems? | The official script drops them for LLM prediction files only | UZH Q&A |
-| N-RULES-3 | Is `text_*` (whitespace-tokenised) the required input, or may systems read `*_untokenized`? | Prompt construction and offset mapping | UZH Q&A |
-| N-RULES-4 | Official prediction file format for submission (encoder-style `{id,text_a,text_b,labels_a,labels_b}` assumed) | Export format in S2 | UZH Q&A |
-| N-RULES-5 | Is span/chunk decomposition plus deterministic projection fully valid? (PLAN.md Q1) | B2 validity; the brief lists decomposition/chunking as encouraged, which suggests yes | Confirm at Q&A |
-| N-LIC-1 | The SwissGov-RSD repo has no top-level licence | We fetch the evaluator at run time instead of vendoring it | Ask UZH, or keep run-time fetch |
-| N-COMPUTE-1 | Approved Apertus endpoint, model id and budget | Live smoke, and every S2+ gate | Owner: CSCS key (distribution closed 6 Oct), HF credits, or own deployment |
+| N-RUN-1 | First measured B0/B2 GPU run | No results until it runs | Run `make -C track_2a hf-launch` on the Mac (see README) |
+| N-JUDGE-1 | Which Apertus v1.5 endpoint can judges use for `make run`? Swisscom auth failed; HF/Featherless returned 1010; HF Jobs is batch, not an endpoint. | Live judge rerun may be impossible. `make reproduce` re-scores committed raw outputs without a model. | Ask organisers, or document the reproduce path |
+| N-RULES-1 | How is the held-out test evaluated (teams submit predictions vs judges run code)? | Whether we ever run on test, and how | UZH Q&A / organisers |
+| N-RULES-2 | Are the 34 `list_to_drop.txt` ids excluded for LLM systems? | Manifest already excludes them | Confirm |
+| N-RULES-4 | Exact prediction file format | We export the encoder-style format | Confirm |
+| N-LIC-1 | Upstream repo has no top-level licence | Evaluator and prompts are fetched at run time, not vendored | Keep, or ask UZH |
+| N-PUB-1 | Publication of dev-text-bearing artefacts (raw responses, predictions) | Required "model predictions" contain dev text | Owner decision before going public |
