@@ -6,7 +6,7 @@ Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 
 - **Run `20261012T062327Z-ff965461`** (HF job `6acc7ce1095c578089328f6d`, COMPLETED). Evidence is in [`results/20261012T062327Z-ff965461/`](../results/20261012T062327Z-ff965461/results.md) and the findings in [technical report §5](../technical_report.md#5-evaluation).
   - 18 of 18 calls returned: no call failures, no deadline skips, no upload failures.
-  - Running time 994 s. Before that the job waited 53 min for hardware, which is not billed.
+  - Running time 994 s. Before that the job waited 53 min for hardware, which is not billed. Recovered logs of the two earlier smoke jobs are in `prior_jobs/`.
 - **Coverage.** B2 has valid output for 9 of 9 documents. B0 has it for 3 of 9: three responses were truncated at 4096 tokens (`*_197`) and three were malformed JSON that stopped normally (`*_136`).
 - **Matched comparison (n = 3):** macro Spearman 0.136 for B0 and 0.138 for B2, a tie.
   - B2 over all 9 of its documents reaches macro 0.175.
@@ -42,13 +42,13 @@ Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 |---|---|---|---|
 | `6acbc136fee2c90070199598` | manual smoke, ERROR | 53 s | $0.09 |
 | `6acbc1d5fee2c90070199649` | manual smoke, COMPLETED | 123 s | $0.09 |
-| `6acc7ce1095c578089328f6d` | B0/B2 run, COMPLETED | 994 s | $0.51 |
-| **Total** | | | **$0.69** of the $3.00 cap |
+| `6acc7ce1095c578089328f6d` | B0/B2 run, COMPLETED | 994 s | $0.57 |
+| **Total** | | | **$0.75** of the $3.00 cap |
 
 How the bounds are computed:
 
 - Price: `l40sx1` at $0.03/min, from the HF API on 12 October.
 - HF bills per minute, only while a job is Starting or Running.
 - The two smoke bounds also include their scheduling time, rounded up to whole minutes.
-- The B0/B2 bound rounds its running time up to whole minutes.
+- The B0/B2 bound rounds its running time up to whole minutes, then adds 2 min for billed Starting time that may fall before `started_at` (the largest pre-start overhead observed on this image was 101 s).
 - The HF billing page was not checked, so these are upper bounds, not invoices. Details are in [`compute.json`](../results/20261012T062327Z-ff965461/compute.json).

@@ -1,0 +1,26 @@
+GPU: NVIDIA L40S
+Loading Apertus. The first download may take several minutes.
+
+processor_config.json:   0%|          | 0.00/763 [00:00<?, ?B/s][Aprocessor_config.json: 100%|██████████| 763/763 [00:00<00:00, 4.76MB/s]
+
+chat_template.jinja:   0%|          | 0.00/16.6k [00:00<?, ?B/s][Achat_template.jinja: 100%|██████████| 16.6k/16.6k [00:00<00:00, 65.2MB/s]
+
+config.json:   0%|          | 0.00/2.61k [00:00<?, ?B/s][Aconfig.json: 100%|██████████| 2.61k/2.61k [00:00<00:00, 6.44MB/s]
+
+tokenizer_config.json:   0%|          | 0.00/2.03k [00:00<?, ?B/s][Atokenizer_config.json: 100%|██████████| 2.03k/2.03k [00:00<00:00, 9.32MB/s]
+
+tokenizer.json: reconstructing file:   0%|          |  0.00B / 44.0MB            [Atokenizer.json: downloading bytes:           |  0.00B            tokenizer.json: downloading bytes: ██████████| 5.93MB,  582kB/s  tokenizer.json: downloading bytes: ██████████| 5.93MB,  582kB/s  
+tokenizer.json: reconstructing file: 100%|██████████| 44.0MB / 44.0MB, 4.33MB/s  
+
+special_tokens_map.json:   0%|          | 0.00/552 [00:00<?, ?B/s][Aspecial_tokens_map.json: 100%|██████████| 552/552 [00:00<00:00, 2.58MB/s]
+Traceback (most recent call last):
+  File "<string>", line 12, in <module>
+  File "/opt/venv/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py", line 402, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 4285, in from_pretrained
+    device_map = check_and_set_device_map(device_map)  # warn, error and fix the device map
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/transformers/integrations/accelerate.py", line 135, in check_and_set_device_map
+    raise ValueError(
+ValueError: Using a `device_map`, `tp_plan`, `torch.device` context manager or setting `torch.set_default_device(device)` requires `accelerate`. You can install it with `pip install accelerate`

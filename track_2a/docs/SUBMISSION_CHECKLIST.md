@@ -35,10 +35,10 @@ Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not s
 
 | ID | Question | Impact | Owner action |
 |---|---|---|---|
-| N-RUN-1 | ~~First measured B0/B2 GPU run~~ | Done 12 Oct: run `20261012T062327Z-ff965461`; total HF compute ≤ $0.69 | Decide whether to fund an expanded, predeclared dev slice (new compute authorisation needed) |
+| N-RUN-1 | ~~First measured B0/B2 GPU run~~ | Done 12 Oct: run `20261012T062327Z-ff965461`; total HF compute ≤ $0.75 | Decide whether to fund an expanded, predeclared dev slice (new compute authorisation needed) |
 | N-JUDGE-1 | Which Apertus v1.5 endpoint can judges use for `make run`? Swisscom auth failed; HF/Featherless returned 1010; HF Jobs is batch, not an endpoint. | Live judge rerun may be impossible. `make reproduce` re-scores committed raw outputs without a model. | Ask organisers, or document the reproduce path |
 | N-RULES-1 | How is the held-out test evaluated (teams submit predictions vs judges run code)? | Whether we ever run on test, and how | UZH Q&A / organisers |
 | N-RULES-2 | Are the 34 `list_to_drop.txt` ids excluded for LLM systems? | Manifest already excludes them | Confirm |
 | N-RULES-4 | Exact prediction file format | We export the encoder-style format | Confirm |
 | N-LIC-1 | Upstream repo has no top-level licence | Evaluator and prompts are fetched at run time, not vendored | Keep, or ask UZH |
-| N-PUB-1 | Publication of dev-text-bearing artefacts (raw responses, predictions) | Required "model predictions" contain dev text | Owner decision before going public |
+| N-PUB-1 | Publication of dev-text-bearing artefacts (raw responses, predictions) | Required "model predictions" contain dev text. They are now committed on `feat/b0-b2-mvp` in `results/20261012T062327Z-ff965461/`; the repository is **private** (checked 12 Oct). | Owner decision before the repository goes public |

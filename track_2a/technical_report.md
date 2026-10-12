@@ -93,7 +93,7 @@ Views, with no silent filling or dropping:
 
 ### Measured pilot: run `20261012T062327Z-ff965461`
 
-- **Model and hardware:** Apertus v1.5 8B `a411d83`, bf16, transformers `5.14.0.dev0`, on 1× NVIDIA L40S. HF job `6acc7ce1095c578089328f6d` ran from 07:16:56 to 07:33:31 UTC on 12 October 2026, 994 s billed running time.
+- **Model and hardware:** Apertus v1.5 8B `a411d83`, bf16, transformers `5.14.0.dev0`, on 1× NVIDIA L40S. HF job `6acc7ce1095c578089328f6d` ran from 07:16:56 to 07:33:31 UTC on 12 October 2026, 994 s running time, after 53 min waiting for hardware. Total HF compute for the project is at most $0.75; see `compute.json`.
 - **Provenance:** source commit `19b6183`. The bundle sha256 `ff965461…` was verified inside the job.
 - **Calls:** 18 attempted, 0 failed, 0 skipped at the deadline.
 - **Re-scoring:** re-scoring the committed `raw.jsonl` offline reproduces `results.json` and the predictions byte for byte.
