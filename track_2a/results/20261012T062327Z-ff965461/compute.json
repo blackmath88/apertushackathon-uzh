@@ -1,0 +1,21 @@
+{
+  "schema": "uzh-rsd.compute-reconciliation/v1",
+  "recorded_utc": "2026-10-12T07:45:00+00:00",
+  "price": {"flavor": "l40sx1", "usd_per_min": 0.03, "source": "hf jobs hardware / list_jobs_hardware(), checked 2026-10-12 before launch"},
+  "billing_rule": "HF Jobs pricing docs: billed per minute only while a Job is Starting or Running; no charge while waiting for hardware (SCHEDULING).",
+  "exact_billing_checked": false,
+  "jobs": [
+    {"job_id": "6acbc136fee2c90070199598", "run_id": null, "created_utc": "2026-10-11T17:02:46Z", "stage": "ERROR",
+     "what": "manual Apertus smoke attempt; failed on device_map without accelerate", "scheduling_secs": 101, "running_secs": 53,
+     "upper_bound_usd": 0.09, "basis": "total_secs (154, incl. scheduling) rounded up to 3 min x $0.03"},
+    {"job_id": "6acbc1d5fee2c90070199649", "run_id": null, "created_utc": "2026-10-11T17:05:25Z", "stage": "COMPLETED",
+     "what": "manual Apertus smoke (GPU: NVIDIA L40S, SMOKE_TEST_OK)", "scheduling_secs": 3, "running_secs": 123,
+     "upper_bound_usd": 0.09, "basis": "total_secs (126, incl. scheduling) rounded up to 3 min x $0.03"},
+    {"job_id": "6acc7ce1095c578089328f6d", "run_id": "20261012T062327Z-ff965461", "created_utc": "2026-10-12T06:23:29Z", "stage": "COMPLETED",
+     "what": "B0/B2 measured run (this directory); timeout 45 min, attempts 1, ceiling $1.35", "scheduling_secs": 3206, "running_secs": 994,
+     "upper_bound_usd": 0.51, "basis": "running_secs 994 rounded up to 17 min x $0.03 (unrounded $0.497); 53.4 min SCHEDULING not billed per docs"}
+  ],
+  "total_upper_bound_usd": 0.69,
+  "authorised_cap_usd": 3.0,
+  "incremental_cap_this_run_usd": 1.35
+}

@@ -1,0 +1,111 @@
+
+runs/20261012T062327Z-ff965461/input/bun(…): reconstructing file:   0%|          |  0.00B / 34.4kB            [Aruns/20261012T062327Z-ff965461/input/bun(…): downloading bytes:           |  0.00B            runs/20261012T062327Z-ff965461/input/bun(…): downloading bytes: ██████████| 34.4kB,   ???B/s  runs/20261012T062327Z-ff965461/input/bun(…): downloading bytes: ██████████| 34.4kB,   ???B/s  
+runs/20261012T062327Z-ff965461/input/bun(…): reconstructing file: 100%|██████████| 34.4kB / 34.4kB,   ???B/s  
+
+processor_config.json:   0%|          | 0.00/763 [00:00<?, ?B/s][Aprocessor_config.json: 100%|██████████| 763/763 [00:00<00:00, 3.01MB/s]
+
+chat_template.jinja:   0%|          | 0.00/16.6k [00:00<?, ?B/s][Achat_template.jinja: 100%|██████████| 16.6k/16.6k [00:00<00:00, 62.2MB/s]
+
+config.json:   0%|          | 0.00/2.61k [00:00<?, ?B/s][Aconfig.json: 100%|██████████| 2.61k/2.61k [00:00<00:00, 14.2MB/s]
+
+tokenizer_config.json:   0%|          | 0.00/2.03k [00:00<?, ?B/s][Atokenizer_config.json: 100%|██████████| 2.03k/2.03k [00:00<00:00, 17.6MB/s]
+
+tokenizer.json: reconstructing file:   0%|          |  0.00B / 44.0MB            [Atokenizer.json: downloading bytes:           |  0.00B            tokenizer.json: downloading bytes: ██████████| 5.93MB,  583kB/s  tokenizer.json: downloading bytes: ██████████| 5.93MB,  583kB/s  
+tokenizer.json: reconstructing file: 100%|██████████| 44.0MB / 44.0MB, 4.33MB/s  
+
+special_tokens_map.json:   0%|          | 0.00/552 [00:00<?, ?B/s][Aspecial_tokens_map.json: 100%|██████████| 552/552 [00:00<00:00, 5.33MB/s]
+
+model.safetensors.index.json:   0%|          | 0.00/100k [00:00<?, ?B/s][Amodel.safetensors.index.json: 100%|██████████| 100k/100k [00:00<00:00, 168MB/s]
+
+Downloading bytes:           |  0.00B            [A
+Reconstructing (incomplete total...): |          |  0.00B /  0.00B            [A
+Fetching 6 files:   0%|          | 0/6 [00:00<?, ?it/s][A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 13.4GB            [A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 13.4GB            [A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 14.3GB            [A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 18.4GB            [A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 18.4GB            [A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 18.4GB            [A
+Downloading bytes:           |  151MB,   ???B/s  [A
+Reconstructing (incomplete total...):   0%|          | 31.9MB / 18.4GB,   ???B/s  [A
+Downloading bytes: ▎         |  525MB,  144MB/s  [A
+Reconstructing (incomplete total...):   3%|▎         |  461MB / 18.4GB, 27.7MB/s  [A
+Downloading bytes: ▌         | 1.04GB,  276MB/s  [A
+Reconstructing (incomplete total...):   4%|▍         |  788MB / 18.4GB,  249MB/s  [A
+Downloading bytes: ▉         | 1.63GB,  384MB/s  [A
+Reconstructing (incomplete total...):   7%|▋         | 1.28GB / 18.4GB,  283MB/s  [A
+Downloading bytes: █▎        | 2.38GB,  463MB/s  [A
+Reconstructing (incomplete total...):  13%|█▎        | 2.37GB / 18.4GB,  349MB/s  [A
+Downloading bytes: █▊        | 3.25GB,  562MB/s  [A
+Reconstructing (incomplete total...):  18%|█▊        | 3.31GB / 18.4GB,  600MB/s  [A
+Downloading bytes: ██▎       | 4.34GB,  665MB/s  [A
+Reconstructing (incomplete total...):  22%|██▏       | 4.08GB / 18.4GB,  669MB/s  [A
+Downloading bytes: ███       | 5.52GB,  801MB/s  [A
+Downloading bytes: ███       | 5.52GB, 1.04GB/s  [A
+Downloading bytes: ███       | 5.52GB, 1.04GB/s  [A
+Downloading bytes: ███▋      | 6.81GB, 1.04GB/s  [A
+Reconstructing (incomplete total...):  28%|██▊       | 5.09GB / 18.4GB,  591MB/s  [A
+Downloading bytes: ████▎     | 7.94GB, 1.11GB/s  [A
+Reconstructing (incomplete total...):  31%|███▏      | 5.79GB / 18.4GB,  676MB/s  [A
+Reconstructing (incomplete total...):  37%|███▋      | 6.88GB / 18.4GB,  420MB/s  [A
+Downloading bytes: ████▉     | 9.06GB, 1.10GB/s  [A
+Reconstructing (incomplete total...):  42%|████▏     | 7.69GB / 18.4GB,  328MB/s  [A
+Downloading bytes: █████▍    | 9.89GB,  392MB/s  [A
+Downloading bytes: █████▍    | 9.92GB,  170MB/s  [A
+Reconstructing (incomplete total...):  47%|████▋     | 8.71GB / 18.4GB,  195MB/s  [A
+Downloading bytes: █████▋    | 10.4GB,  170MB/s  [A
+Downloading bytes: ██████    | 11.1GB,  171MB/s  [A
+Reconstructing (incomplete total...):  50%|████▉     | 9.19GB / 18.4GB,  228MB/s  [A
+Downloading bytes: ██████▎   | 11.6GB,  215MB/s  [A
+Downloading bytes: ██████▊   | 12.5GB,  165MB/s  [A
+Reconstructing (incomplete total...):  60%|█████▉    | 11.0GB / 18.4GB,  168MB/s  [A
+Downloading bytes: ███████   | 13.0GB,  227MB/s  [A
+Downloading bytes: ███████▏  | 13.3GB,  122MB/s  [A
+Reconstructing (incomplete total...):  63%|██████▎   | 11.7GB / 18.4GB,  157MB/s  [A
+Downloading bytes: ███████▍  | 13.7GB,  131MB/s  [A
+Reconstructing (incomplete total...):  65%|██████▍   | 11.9GB / 18.4GB,  168MB/s  [A
+Reconstructing (incomplete total...):  70%|███████   | 12.9GB / 18.4GB,  129MB/s  [A
+Downloading bytes: ███████▋  | 14.2GB,  145MB/s  [A
+Downloading bytes: ████████  | 14.8GB,  105MB/s  [A
+Reconstructing (incomplete total...):  72%|███████▏  | 13.3GB / 18.4GB,  168MB/s  [A
+Reconstructing (incomplete total...):  74%|███████▎  | 13.5GB / 18.4GB,  141MB/s  [A
+Reconstructing (incomplete total...):  79%|███████▉  | 14.6GB / 18.4GB,  116MB/s  [A
+Fetching 6 files:  17%|█▋        | 1/6 [01:09<05:46, 69.28s/it][A
+Downloading bytes: ████████▎ | 15.2GB,  146MB/s  [A
+Downloading bytes: ████████▌ | 15.8GB, 88.9MB/s  [A
+Reconstructing (incomplete total...):  86%|████████▋ | 15.9GB / 18.4GB,  186MB/s  [A
+Reconstructing (incomplete total...):  94%|█████████▍| 17.3GB / 18.4GB,  238MB/s  [A
+Reconstructing (incomplete total...): 100%|██████████| 18.4GB / 18.4GB,  254MB/s  [A
+Fetching 6 files:  33%|███▎      | 2/6 [01:20<02:21, 35.41s/it][AFetching 6 files: 100%|██████████| 6/6 [01:20<00:00, 13.50s/it]
+
+Downloading bytes: ██████████| 16.1GB,  124MB/s  [A
+Download complete: : ██████████| 16.1GB,  124MB/s  [A
+Reconstruction complete: 100%|██████████| 18.4GB / 18.4GB,  278MB/s               [A[transformers] CUDA-fused xIELU not available (No module named 'xielu') – falling back to a Python version.
+For CUDA xIELU (experimental), `pip install git+https://github.com/nickjbrowning/XIELU`
+Download complete: : ██████████| 16.1GB,  124MB/s  
+Reconstruction complete: 100%|██████████| 18.4GB / 18.4GB,  278MB/s  
+
+Loading weights:   0%|          | 0/924 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 924/924 [00:00<00:00, 4974.75it/s]
+
+generation_config.json:   0%|          | 0.00/157 [00:00<?, ?B/s][Ageneration_config.json: 100%|██████████| 157/157 [00:00<00:00, 1.29MB/s]
+[  138.1s] b0 admin_de_43 returned tokens=1143 finish=stop latency=36.906
+[  148.4s] b2 admin_de_43 returned tokens=313 finish=stop latency=10.008
+[  189.9s] b0 admin_fr_43 returned tokens=1275 finish=stop latency=40.827
+[  201.9s] b2 admin_fr_43 returned tokens=363 finish=stop latency=11.542
+[  240.2s] b0 admin_it_43 returned tokens=1191 finish=stop latency=37.898
+[  247.9s] b2 admin_it_43 returned tokens=227 finish=stop latency=7.279
+[  293.0s] b0 admin_de_136 returned tokens=1388 finish=stop latency=44.669
+[  316.6s] b2 admin_de_136 returned tokens=732 finish=stop latency=23.245
+[  411.1s] b0 admin_fr_136 returned tokens=2955 finish=stop latency=94.104
+[  438.0s] b2 admin_fr_136 returned tokens=824 finish=stop latency=26.444
+[  524.6s] b0 admin_it_136 returned tokens=2705 finish=stop latency=86.311
+[  548.3s] b2 admin_it_136 returned tokens=719 finish=stop latency=23.029
+[  679.4s] b0 admin_de_197 returned tokens=4096 finish=length latency=130.632
+[  697.3s] b2 admin_de_197 returned tokens=550 finish=stop latency=17.661
+[  828.6s] b0 admin_fr_197 returned tokens=4096 finish=length latency=130.814
+[  844.5s] b2 admin_fr_197 returned tokens=481 finish=stop latency=15.446
+[  975.7s] b0 admin_it_197 returned tokens=4096 finish=length latency=130.617
+[  991.2s] b2 admin_it_197 returned tokens=473 finish=stop latency=15.158
+No files have been modified since last commit. Skipping to prevent empty commit.
+[base64 result bundle omitted; identical to raw.jsonl + run_meta.json]
+{"run_id": "20261012T062327Z-ff965461", "status": "finished", "counts": {"attempted": 18, "call_failed": 0, "skipped_deadline": 0}, "elapsed_s": 991.6, "upload_failures": 0, "error": null}

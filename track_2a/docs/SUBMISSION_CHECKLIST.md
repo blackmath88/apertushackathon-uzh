@@ -1,6 +1,6 @@
 # Submission checklist — Hack Apertus Track 2A, UZH SwissGov-RSD
 
-These rules come from the pinned sources in [SOURCES.md](SOURCES.md): the UZH brief in `docs/challenge-source/CHALLENGE.md` and the HackApertus template at `7f23822`. Status is as of 11 October 2026, on the B0/B2 MVP branch.
+These rules come from the pinned sources in [SOURCES.md](SOURCES.md): the UZH brief in `docs/challenge-source/CHALLENGE.md` and the HackApertus template at `7f23822`. Status is as of 12 October 2026, on the B0/B2 MVP branch.
 
 Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not started · ⛔ blocked / owner decision
 
@@ -16,8 +16,8 @@ Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not s
 | E6 | `data/` ≤ 100 MB | ✅ | Raw data ignored; fetched at run time |
 | E7 | Built with Apertus; other open models only in support roles, described | ✅ | Only Apertus v1.5 8B; no other model anywhere |
 | E8 | Open source, CC BY 4.0 | ⛔ | Owner: make the repo public; decide on committing dev-text-bearing run artefacts |
-| E9 | `technical_report.md` sections 1–8 | 🟡 | Draft complete except measured results |
-| E10 | No secrets or weights committed | ✅ | Token only as an HF Jobs secret; ledger and launch records hold no token |
+| E9 | `technical_report.md` sections 1–8 | 🟡 | Measured pilot (run `20261012T062327Z-ff965461`) filled into §1, §5 and §6. Team name/members and the final expanded dev comparison are still open. |
+| E10 | No secrets or weights committed | ✅ | Token only as an HF Jobs secret; ledger and launch records hold no token. Committed run artefacts were scanned (no `hf_` tokens, keys or auth headers). |
 
 ## UZH challenge
 
@@ -26,16 +26,16 @@ Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not s
 | U1 | Data from `ZurichNLP/SwissGov-RSD` | ✅ | Pinned HF revision, dev only |
 | U2 | **Test set never used in development** | ✅ | No test path in code; split guard before I/O, covering every CLI command (tests) |
 | U3 | Token-level Spearman per pair, macro over DE/FR/IT; official preprocessing | ✅ | Parity with the pinned official `compute_correlations`; cross-check reported with every result |
-| U4 | Apertus v1.5 8B or 70B | 🟡 | `swiss-ai/Apertus-v1.5-8B@a411d83`; owner verified an HF GPU job (`6acbc1d5…`). Our measured run is pending. |
-| U5 | Reproduce a paper baseline with your Apertus model | 🟡 | B0 implemented from the upstream admin templates and parser; deviations documented. Measurement pending. |
-| U6 | Code, **model predictions**, short method description | 🟡 | Code ✅, method ✅ (report). Predictions are exported per run; the first real run is pending. |
-| U7 | Secondary: efficiency, innovation | 🟡 | Calls, prompt/completion tokens, latency and truncations recorded per call |
+| U4 | Apertus v1.5 8B or 70B | ✅ | `swiss-ai/Apertus-v1.5-8B@a411d83` measured on HF Jobs L40S: run `20261012T062327Z-ff965461`, job `6acc7ce1…`. 18/18 calls returned. |
+| U5 | Reproduce a paper baseline with your Apertus model | 🟡 | B0 measured. Only 3 of 9 documents are valid: 3 truncated at 4096 tokens, 3 malformed JSON. Matched macro 0.136; paper protocol 0.268 is a zero-fill artefact. Expanded dev slice still open. |
+| U6 | Code, **model predictions**, short method description | 🟡 | Code ✅, method ✅, dev predictions ✅ in `results/20261012T062327Z-ff965461/predictions/`. The judge's prediction format (N-RULES-4) and test-time procedure (N-RULES-1) are unconfirmed. |
+| U7 | Secondary: efficiency, innovation | ✅ | Measured: B2 used 4,682 completion tokens and 150 s of generation; B0 used 22,945 tokens and 733 s, on the same 9 documents |
 
 ## Open questions and blockers
 
 | ID | Question | Impact | Owner action |
 |---|---|---|---|
-| N-RUN-1 | First measured B0/B2 GPU run | No results until it runs | Run `make -C track_2a hf-launch` on the Mac (see README) |
+| N-RUN-1 | ~~First measured B0/B2 GPU run~~ | Done 12 Oct: run `20261012T062327Z-ff965461`; total HF compute ≤ $0.69 | Decide whether to fund an expanded, predeclared dev slice (new compute authorisation needed) |
 | N-JUDGE-1 | Which Apertus v1.5 endpoint can judges use for `make run`? Swisscom auth failed; HF/Featherless returned 1010; HF Jobs is batch, not an endpoint. | Live judge rerun may be impossible. `make reproduce` re-scores committed raw outputs without a model. | Ask organisers, or document the reproduce path |
 | N-RULES-1 | How is the held-out test evaluated (teams submit predictions vs judges run code)? | Whether we ever run on test, and how | UZH Q&A / organisers |
 | N-RULES-2 | Are the 34 `list_to_drop.txt` ids excluded for LLM systems? | Manifest already excludes them | Confirm |
