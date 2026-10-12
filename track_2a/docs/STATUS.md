@@ -34,7 +34,7 @@ Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 
 - **Larger dev slice.** Only the nine-document pilot is measured. A larger, predeclared dev slice is needed before any claim about which method correlates better.
 - **Judge endpoint.** No Apertus endpoint for `make run` is confirmed (N-JUDGE-1).
-- **Docker clean checkout.** `make reproduce` from a clean checkout on a normal host is recorded in the submission checklist (E3).
+- **Live Docker run.** `make run` has not run against a real Apertus endpoint, because none is available to judges (N-JUDGE-1). From a clean clone, the offline `make reproduce` path was verified on 12 Oct (checklist E3).
 
 ## Compute (all Hack Apertus HF Jobs on account `metamax88`)
 

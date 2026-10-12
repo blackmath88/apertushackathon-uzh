@@ -10,7 +10,7 @@ Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not s
 |---|---|---|---|
 | E1 | Submit at hackapertus.ch/online-hack/submissions by **16 Oct 2026, 12:00 CEST** (not Devpost) | ⬜ | Owner, after results |
 | E2 | Keep `track_2a/` as-is; delete other tracks | ✅ | Only `track_2a/` exists |
-| E3 | `make run` from the project root on a clean checkout runs the project **in Docker** | 🟡 | Docker image + root `make run` implemented. Without an endpoint it stops with BLOCKED (exit 3); the full path ran in the container against a mock endpoint. Re-verify on a clean normal host (this sandbox needed a registry mirror). |
+| E3 | `make run` from the project root on a clean checkout runs the project **in Docker** | 🟡 | Docker image + root `make run` implemented. Without an endpoint it stops with BLOCKED (exit 3); the full path ran in the container against a mock endpoint. On 12 Oct, verified from a clean clone of `2adaeda` on the owner's Mac (Docker Desktop): `make -C track_2a reproduce` exits 0 and reproduces the committed scores exactly, and root `make run` without `LLM_*` stops with BLOCKED (inner exit 3). A live `make run` against a real endpoint is still blocked by N-JUDGE-1. |
 | E4 | Model access via `LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY` | ✅ | `backends.OpenAICompatibleBackend`; key never recorded (tested) |
 | E5 | Follow the input/output format; runs end to end when judges run it | 🟡 | Official encoder-style predictions `{id,text_a,text_b,labels_a,labels_b}` per language. Judges also need a working Apertus v1.5 endpoint (see N-JUDGE-1). |
 | E6 | `data/` ≤ 100 MB | ✅ | Raw data ignored; fetched at run time |
