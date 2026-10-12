@@ -243,7 +243,7 @@ def collect(args) -> int:
     _rewrite_ledger(entries)
     print(f"results source: {source}; ledger committed spend ${committed_usd(entries)}")
     if (run_dir / "raw.jsonl").exists():
-        print(f"next: make -C track_2a evaluate RUN={args.run_id}")
+        print(f"next: make -C track_2a evaluate RUN_ID={args.run_id}")
         return 0
     return 1
 
