@@ -102,3 +102,20 @@ Coordinator: Claude Code desktop session (requested Opus 5.5), applying `orchest
 | E-6 | Plan accuracy (unpinned test files, route discriminator, submission default), `verify_run` and source robustness | done | `7a38bb3`: s1-check 120 OK / 0 skips; Docker e2e 13/13 at `7a38bb3` (prediction sha256 `c9e635cd…`/`e7c109dc…`/`0018c5c8…`, identical to `ef50e10`); frozen diff vs `3966e86` empty |
 
 Review: self-review only, covering code head `7a38bb3` and the docs-only head that adds this line. The independent gate stays open (no eligible read-only, credential-isolated route). PR #12 body is replaced after this commit, with `isDraft` read back. Workers: none started by this pass. Scratch worktree `e2e`, its synthetic `final_runs/e2e-*` output (gitignored) and the local branch are removed after push.
+
+---
+
+# Fifth pass — 13 Oct 2026, 17:06 CEST (HF final integration and one real final B2 run; owner-approved spend)
+
+Coordinator: Claude Code desktop session (requested Opus 5.5), `orchestrate-work` plus `route-orca-work` 1.0.0. Base `8ed92ed` (matched). Worktree `apertushackathon-uzh.worktrees/hf`. **Routes:** Nebuchdnezzar did not answer (local/Morrow unavailable); no Mistral harness; local Orca workers share unrelated credentials (unchanged since the fourth pass). **No Orca delegation; no workers started.** Weavr live state not readable; no governance acceptance claimed.
+
+| ID | Work | Status | Evidence |
+|---|---|---|---|
+| R-1 | Locate and pin the official test files | done | `ZurichNLP/SwissGov-RSD@1807a42` `data/evaluation/gold_labels/test/`; 56 per language; git blobs verified |
+| R-2 | HF final mode (`hf_job --final-*`, `hf_launch final` / `collect-final`), provisional contract status | done | `a0d3476` (freeze); 10 HF tests; s1-check 130 OK |
+| R-3 | Upstream output contract (synthetic) | done | `tests/upstream_eval_contract.py`; `docs/review/upstream_eval_contract_2026-10-13.json` |
+| R-4 | Mechanical test fetch and conversion (private, outside VCS) | done | 168 records; input `7db64ddc…`; contract `c37eaaee…`; fetch script sha256 `6fc2b046…` (scratch) |
+| R-5 | Preflight and launch of exactly one job | done | `6ace4b04c66288145222d55c` launched 15:15:16Z; about 74 min scheduling; running 4,402 s; terminal ERROR (exit 4 = incomplete) |
+| R-6 | Collect and verify | done | from the private repo; 168/168 returned, ids in order, hashes consistent; 88 parsed, 80 unparseable (76 length); `--verify` rejects; no predictions; cost ≤ $2.26; cumulative $2.94 ledger / $3.01 conservative |
+
+Workers: none. The GPU job is verified terminal (ERROR). No replacement launched. Remaining budget about $1.49 under the $4.50 cap. Review: self-review only; the independent gate is open.

@@ -79,7 +79,7 @@ Still open (do not assume): the meaning of "full-set order", the 34 dropped IDs,
 |---|---|
 | Frozen system | Branch head at approval time (record the SHA). B2 `b2-spans-v1`, `parse_b2`, `project_differences`, 40-token cap, `max_new_tokens` 1024, greedy, one attempt per call. No B0 on test unless the organisers ask. |
 | Model | `swiss-ai/Apertus-v1.5-8B`. Revision `a411d83` (as the pilot) on the HF route; on an endpoint route the revision is whatever the provider serves, recorded as *declared*. |
-| Data preparation | **Test files are not pinned and have not been located or inspected.** The repo pins only the dev files of `ZurichNLP/SwissGov-RSD@f16aa05` (`data/{de,fr,it}/dev_*.jsonl`); its adapter records no test file at that revision. The UZH page says both the HF and GitHub repos contain the test set, but the path, revision and hashes are unknown. Step: the owner approves, then locates and downloads the test files manually (outside the dev code, which still refuses `test`) and runs `python -m uzh_rsd.final_input --source de=… --source fr=… --source it=… --out prep/`. The converter records each source sha256. It assumes dev-row field names and the `admin_{lang}_` ID prefix; if test rows differ it fails closed and needs a small, reviewed adjustment. Nothing is scored; labels are not read. |
+| Data preparation | *(Superseded by the fifth-pass section: the test files are pinned at `1807a42`.)* **Test files are not pinned and have not been located or inspected.** The repo pins only the dev files of `ZurichNLP/SwissGov-RSD@f16aa05` (`data/{de,fr,it}/dev_*.jsonl`); its adapter records no test file at that revision. The UZH page says both the HF and GitHub repos contain the test set, but the path, revision and hashes are unknown. Step: the owner approves, then locates and downloads the test files manually (outside the dev code, which still refuses `test`) and runs `python -m uzh_rsd.final_input --source de=… --source fr=… --source it=… --out prep/`. The converter records each source sha256. It assumes dev-row field names and the `admin_{lang}_` ID prefix; if test rows differ it fails closed and needs a small, reviewed adjustment. Nothing is scored; labels are not read. |
 | Contract | Copy `prep/contract.draft.json`; set `order`, `decisions` and `evidence` from the organiser reply; `status: confirmed`. |
 
 **Route A: OpenAI-compatible Apertus endpoint.** Supported now, no code change. Command: `make run MODE=final FINAL_CONTRACT=… FINAL_INPUT=prep/final_input.jsonl FINAL_OUT_DIR=final_runs FINAL_RUN_ID=test-<date> FINAL_ARGS="--timeout-s 55 --model-revision <stated>"` with `LLM_*` set.
@@ -121,7 +121,65 @@ Still open (do not assume): the meaning of "full-set order", the 34 dropped IDs,
 3. Choose the route: A only if a working, credentialed Apertus endpoint exists; otherwise B (recommended), which first needs the adapter implemented and reviewed.
 4. Approve spend: the Route B ceiling above, or Route A provider terms.
 
-## DRAFT — NOT SENT: one consolidated message to the UZH challenge provider / organisers
+## Final test run (fifth pass, 13 Oct): data location, output contract, launch record
+
+**Correction.** Earlier passes said the test files were unpinned and possibly unavailable. They exist in the official GitHub repository, `ZurichNLP/SwissGov-RSD` branch `master`, pinned at commit `1807a42100e742ed03d337c54c4b9ea86995f565`, under `data/evaluation/gold_labels/test/gold_admin_{de,fr,it}.jsonl`. The evaluator reads them from there, and `full/` and `dev/` sit alongside. The HF dataset revision the dev adapter pins has no test file; that statement was about the HF revision only.
+
+**Pinned test files** (downloaded mechanically on 13 Oct; git blob and size checked against the tree at `1807a42`; kept private outside version control). Only counts, hashes, field names and ID-order checks were printed.
+
+| File | Records | sha256 | Fields |
+|---|---|---|---|
+| `test/gold_admin_de.jsonl` | 56 | `bd24bd606763…` | dev-gold fields incl. `annotator_tag`, `chunk_id` |
+| `test/gold_admin_fr.jsonl` | 56 | `fb9b91ba3e24…` | `id, labels_a, labels_b, page_en, page_other, subset, text_a, text_b` |
+| `test/gold_admin_it.jsonl` | 56 | `edb60ce85761…` | same as fr |
+
+- IDs are unique, `admin_{lang}_` prefixed, and the tokenized text is whitespace-normalised and non-empty.
+- **The test IDs appear in the same relative order as in `full/`** (224 per language).
+- 5 test IDs per language are on `list_to_drop.txt`.
+
+**Output contract.** Each line notes whether the source is the organisers (text), the pinned upstream evaluator run on synthetic data (code; [evidence](review/upstream_eval_contract_2026-10-13.json), `tests/upstream_eval_contract.py`), or our own assumption.
+
+- *Organiser text:* judges score on test; run the final system on test at the end; include predictions and reproducible code; "Include the full-set order".
+- *Upstream code:*
+  - Predictions are read from `<prefix><lang>.jsonl.jsonl`, or `.jsonl` when the path contains `llm_predictions`, in the encoder schema `{id, text_a, text_b, labels_a, labels_b}`.
+  - With `--split test`, a test-only file in **test-file order** is scored directly. A 224-document file in **full order** is filtered by position to the same rows.
+  - **Alignment is positional; IDs are ignored.** Misordered files crash, or would mis-score silently if lengths matched. A count matching neither split fails.
+  - `list_to_drop` IDs are dropped only when the path contains `llm`; then a file containing test IDs on the list fails.
+  - Gold `-1` (punctuation) is masked; a fully masked side b is skipped.
+  - Per-document length mismatches are padded or truncated by the evaluator. Ours never mismatch: lengths are validated.
+- *Our assumptions (contract status `owner_approved_provisional`, NOT organiser-confirmed):*
+  - Predict all 56 test documents per language in test-file order, dropping nothing.
+  - The test predictions are required under either reading of "full-set order". A 224-document file would also need dev predictions, which this run does not produce.
+  - Renaming `predictions_<lang>.jsonl` to the evaluator's filename pattern is a packaging step.
+
+**Frozen implementation:** `a0d3476` (130 tests OK, 0 skips; HF final mode tested with a fake backend, uploader and API). Gold-blind input: 168 records, sha256 `7db64ddc…`; contract sha256 `c37eaaee…`.
+
+**Launch record (one job, approved by the owner):**
+
+| Item | Value |
+|---|---|
+| Job / run | `6ace4b04c66288145222d55c` / `final-20261013T151513Z-7a0073d8`, launched 2026-10-13T15:15:16Z |
+| Model | `swiss-ai/Apertus-v1.5-8B` @ `a411d838600baf0e3635a3daf66fb7c55fc97bb6` (TransformersBackend, the pilot's image) |
+| Hardware and price | `l40sx1` at $0.03/min (HF API at launch) |
+| Timeout and ceiling | 108 min; ceiling (108 + 2 min Starting allowance) × $0.03 = **$3.30** |
+| Prior spend | $0.75 (conservative; the ledger's actuals sum to $0.68); cumulative bound $4.05 ≤ the $4.50 cap |
+| Output | private dataset `metamax88/uzh-rsd-runs` under `runs/<run id>/final/` (bundle sha256 `7a0073d8…`) |
+| Retries | `attempts=1`; no automatic retry or replacement |
+
+**Outcome (collected 13 Oct; evidence in [review/final-20261013T151513Z-7a0073d8](review/final-20261013T151513Z-7a0073d8/))**
+
+- **Job:** `6ace4b04c66288145222d55c`. It waited about 74 min for hardware (not billed), then ran **4,402 s** and ended with stage **ERROR, exit code 4**. That is the designed "incomplete run" exit, not a crash.
+- **Cost:** upper bound **$2.26**, from running time plus the Starting allowance (not an invoice). Cumulative committed spend is $2.94 by ledger actuals, or $3.01 conservative; about $1.49 of the $4.50 cap remains.
+- **Calls:** 168/168 attempted and returned; 0 transport failures; raw records are in contract order; response hashes are consistent between `raw.jsonl` and `diagnostics.json`.
+- **B2 parse results:**
+  - **88/168 parsed** (de 31, fr 29, it 28 out of 56 each).
+  - **80 unparseable**: 76 truncated at the frozen `max_new_tokens` 1024 (`finish_reason: length`), 4 malformed despite `stop`.
+- **Result:** `final_meta.json` status **incomplete**, **no prediction files** (nothing zero-filled), and `python -m uzh_rsd.final --verify` **rejects** the run.
+- **Why the pilot didn't show this:** its dev manifest bounded documents to 40–400 tokens per side. Test pairs run up to 5,365 tokens (median 650), and longer documents produce more difference items than 1024 output tokens can hold.
+- **Storage:** raw responses (with test texts) and the prepared input are private: HF dataset `metamax88/uzh-rsd-runs` and the owner machine. Only IDs, hashes and counts are committed.
+- **Not done, by instruction:** no retry, no method change, no test scoring.
+
+: one consolidated message to the UZH challenge provider / organisers
 
 > Subject: Track 2A (UZH SwissGov-RSD) — five short questions before submission
 >
