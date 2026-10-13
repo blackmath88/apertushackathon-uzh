@@ -226,16 +226,30 @@ class ExecutionTests(FinalTestCase):
         self.assertIn("syn_it_9: unparseable", result["problems"])
         self.assertFalse((self.out / "predictions").exists())
 
-    def test_interrupted_run_stays_incomplete(self):
+    def meta(self):
+        return json.loads((self.out / "final_meta.json").read_text())
+
+    def test_keyboard_interrupt_marks_incomplete_and_exits_130(self):
         class Crash(FakeBackend):
             def generate(self, prompt, max_new_tokens):
                 if len(self.prompts) == 2:
                     raise KeyboardInterrupt
                 return super().generate(prompt, max_new_tokens)
-        with self.assertRaises(KeyboardInterrupt):
-            self.run_main(backend=Crash())
-        self.assertEqual(json.loads((self.out / "final_meta.json").read_text())["status"], "incomplete")
+        code, result = self.run_main(backend=Crash())
+        self.assertEqual((code, result["status"]), (final.EXIT_INTERRUPTED, "interrupted"))
+        self.assertEqual(self.meta()["status"], "incomplete")
+        self.assertEqual(self.meta()["interrupted"]["type"], "KeyboardInterrupt")
         self.assertFalse((self.out / "predictions").exists())
+        self.assertEqual(len((self.out / "raw.jsonl").read_text().splitlines()), 2)  # evidence kept
+
+    def test_ordinary_exception_marks_incomplete_and_exits_4(self):
+        class Boom(FakeBackend):
+            def generate(self, prompt, max_new_tokens):
+                raise RuntimeError("backend bug")
+        code, result = self.run_main(backend=Boom())
+        self.assertEqual((code, result["status"]), (final.EXIT_INCOMPLETE, "incomplete"))
+        self.assertEqual(self.meta()["interrupted"]["type"], "RuntimeError")
+        self.assertFalse(final.verify_run(self.out)[0])
 
     def test_interruption_while_writing_predictions_leaves_no_predictions_dir(self):
         real_sha = final._sha256
@@ -243,10 +257,43 @@ class ExecutionTests(FinalTestCase):
             if (self.out / "predictions.partial").exists():
                 raise KeyboardInterrupt
             return real_sha(data)
-        with mock.patch.object(final, "_sha256", crash_while_writing_predictions), self.assertRaises(KeyboardInterrupt):
-            self.run_main(backend=FakeBackend())
-        self.assertEqual(json.loads((self.out / "final_meta.json").read_text())["status"], "incomplete")
+        with mock.patch.object(final, "_sha256", crash_while_writing_predictions):
+            code, _ = self.run_main(backend=FakeBackend())
+        self.assertEqual(code, final.EXIT_INTERRUPTED)
+        self.assertEqual(self.meta()["status"], "incomplete")
         self.assertFalse((self.out / "predictions").exists())
+        self.assertTrue((self.out / "predictions.partial").exists())  # kept for diagnosis
+        self.assertFalse(final.verify_run(self.out)[0])
+
+    def test_window_after_rename_before_commit_is_rejected_by_verify(self):
+        real_write = final._write_meta
+        def crash_on_commit(out_dir, meta):
+            if meta.get("status") == "complete":
+                raise KeyboardInterrupt
+            real_write(out_dir, meta)
+        with mock.patch.object(final, "_write_meta", crash_on_commit):
+            code, _ = self.run_main(backend=FakeBackend())
+        self.assertEqual(code, final.EXIT_INTERRUPTED)
+        self.assertTrue((self.out / "predictions" / "predictions_de.jsonl").exists())  # files exist ...
+        self.assertEqual(self.meta()["status"], "incomplete")                          # ... but not committed
+        accepted, reasons = final.verify_run(self.out)
+        self.assertFalse(accepted)
+        self.assertTrue(any("not 'complete'" in reason for reason in reasons))
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            self.assertEqual(final.main(["--verify", str(self.out)]), final.EXIT_INCOMPLETE)
+        self.assertEqual(json.loads(buffer.getvalue())["status"], "rejected")
+
+    def test_verify_accepts_complete_run_and_rejects_tampering(self):
+        self.assertEqual(self.run_main(backend=FakeBackend())[0], final.EXIT_OK)
+        self.assertEqual(final.verify_run(self.out), (True, []))
+        path = self.out / "predictions" / "predictions_de.jsonl"
+        lines = path.read_text().splitlines()
+        path.write_text("\n".join(reversed(lines)) + "\n")
+        accepted, reasons = final.verify_run(self.out)
+        self.assertFalse(accepted)
+        self.assertTrue(any("sha256" in reason for reason in reasons))
+        self.assertTrue(any("order" in reason for reason in reasons))
 
     def test_malformed_prediction_vectors_are_rejected(self):
         item = final.load_final_input(self.input_path, contract())[0]

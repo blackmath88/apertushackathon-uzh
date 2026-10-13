@@ -56,7 +56,7 @@ SUPPORTED_LAYOUTS = frozenset({"per_language_jsonl"})
 ENDPOINT_ENV = ("LLM_NAME", "LLM_BASE_URL", "LLM_API_KEY")
 TRACK_ROOT = Path(__file__).resolve().parents[2]
 PROTECTED_DIRS = ("results", "diagnostics", "manifests", "data")
-EXIT_OK, EXIT_INVALID, EXIT_BLOCKED, EXIT_INCOMPLETE = 0, 2, 3, 4
+EXIT_OK, EXIT_INVALID, EXIT_BLOCKED, EXIT_INCOMPLETE, EXIT_INTERRUPTED = 0, 2, 3, 4, 130
 
 
 class FinalBlocked(Exception):
@@ -168,8 +168,12 @@ def _source_commit() -> dict:
             return subprocess.run(["git", "-C", str(TRACK_ROOT), *args], capture_output=True, text=True, check=True).stdout.strip()
         except (OSError, subprocess.CalledProcessError):
             return None
+    commit = git("rev-parse", "HEAD")
+    if commit is None and os.environ.get("UZH_SOURCE_COMMIT"):
+        # Docker image without git: the host passes its checkout's commit; recorded as declared.
+        return {"commit": os.environ["UZH_SOURCE_COMMIT"], "src_dirty": None, "source": "declared by host via UZH_SOURCE_COMMIT"}
     status = git("status", "--porcelain", "--", "src")
-    return {"commit": git("rev-parse", "HEAD"), "src_dirty": None if status is None else bool(status)}
+    return {"commit": commit, "src_dirty": None if status is None else bool(status), "source": "git"}
 
 
 def _now() -> str:
@@ -201,12 +205,29 @@ def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence
         "invocation": invocation,
         "contract": {"sha256": _sha256(contract_bytes), "evidence": contract["evidence"], "decisions": contract["decisions"]},
         "input": {"sha256": _sha256(input_bytes), "documents": len(items),
-                  "per_language": dict(Counter(item.language for item in items))},
+                  "per_language": dict(Counter(item.language for item in items)),
+                  "order": [item.id for item in items]},
         "output_schema": PREDICTION_SCHEMA,
         "started_utc": _now(),
     }
     _write_meta(out_dir, meta)
+    try:
+        return _execute(backend, items, out_dir, run_id, meta)
+    except BaseException as error:
+        # Any exception or interrupt before the final metadata commit leaves the run
+        # incomplete. Evidence already on disk (raw.jsonl, diagnostics, even a renamed
+        # predictions/ directory) is kept for diagnosis; final_meta.json decides.
+        meta.update(status="incomplete", interrupted={"type": type(error).__name__}, finished_utc=_now())
+        try:
+            _write_meta(out_dir, meta)
+        except Exception:  # pragma: no cover - best effort; the earlier "incomplete" meta remains
+            pass
+        if isinstance(error, Exception):
+            return {"status": "incomplete", "out_dir": str(out_dir), "interrupted": type(error).__name__}, EXIT_INCOMPLETE
+        raise
 
+
+def _execute(backend, items: Sequence[InferenceInput], out_dir: Path, run_id: str, meta: dict) -> tuple[dict, int]:
     counts = run_inference(backend, items, ("b2",), out_dir / "raw.jsonl", run_id=run_id)
     raw = {record["id"]: record for record in read_raw(out_dir / "raw.jsonl")}
     documents, predictions, problems = [], {}, []
@@ -255,9 +276,52 @@ def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence
             path.write_text("".join(line + "\n" for line in lines), encoding="utf-8")
             files[path.name] = {"records": len(lines), "sha256": _sha256(path.read_bytes())}
     target.rename(out_dir / "predictions")
-    meta.update(status="complete", prediction_files=files)
-    _write_meta(out_dir, meta)
+    # An interruption here leaves predictions/ present with an "incomplete" meta;
+    # verify_run() rejects that state.
+    _write_meta(out_dir, {**meta, "status": "complete", "prediction_files": files})
     return {"status": "complete", "out_dir": str(out_dir), "prediction_files": files, "counts": counts}, EXIT_OK
+
+
+# --- acceptance ------------------------------------------------------------------
+
+
+def verify_run(out_dir: Path) -> tuple[bool, list[str]]:
+    """Accept a run only from its committed metadata, never from the presence of files."""
+    out_dir = Path(out_dir)
+    reasons: list[str] = []
+    meta_path = out_dir / "final_meta.json"
+    if not meta_path.exists():
+        return False, ["final_meta.json missing"]
+    meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    if meta.get("schema") != META_SCHEMA:
+        reasons.append("unexpected metadata schema")
+    if meta.get("status") != "complete":
+        reasons.append(f"status is {meta.get('status')!r}, not 'complete'")
+    if (out_dir / "predictions.partial").exists():
+        reasons.append("staging directory predictions.partial/ present")
+    listed = meta.get("prediction_files") or {}
+    target = out_dir / "predictions"
+    actual = {path.name for path in target.glob("*")} if target.exists() else set()
+    if set(listed) != actual:
+        reasons.append(f"prediction files differ from metadata: listed {sorted(listed)}, present {sorted(actual)}")
+    order = (meta.get("input") or {}).get("order") or []
+    seen = []
+    for name, info in sorted(listed.items()):
+        path = target / name
+        if not path.exists():
+            continue
+        if _sha256(path.read_bytes()) != info.get("sha256"):
+            reasons.append(f"{name}: sha256 differs from metadata")
+        ids = [json.loads(line)["id"] for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        if len(ids) != info.get("records"):
+            reasons.append(f"{name}: {len(ids)} records, metadata says {info.get('records')}")
+        expected = [identifier for identifier in order if identifier in set(ids)]
+        if ids != expected:
+            reasons.append(f"{name}: record order differs from the contract order")
+        seen.extend(ids)
+    if listed and sorted(seen) != sorted(order):
+        reasons.append("predicted ids differ from the input order recorded in metadata")
+    return not reasons, reasons
 
 
 # --- entry point -----------------------------------------------------------------
@@ -265,9 +329,11 @@ def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence
 
 def main(argv: list[str] | None = None, *, backend_factory=None) -> int:
     parser = argparse.ArgumentParser(prog="python -m uzh_rsd.final", description="Final B2 inference on an explicit, gold-blind input (no scoring).")
-    parser.add_argument("--contract", type=Path, required=True, help="organiser-confirmed output contract (JSON)")
-    parser.add_argument("--input", type=Path, required=True, help="gold-blind input JSONL: id, language, text_a, text_b")
-    parser.add_argument("--out", type=Path, required=True, help="new run directory (must not exist)")
+    parser.add_argument("--verify", type=Path, default=None, metavar="RUN_DIR",
+                        help="only check an existing run: accepted iff final_meta.json is complete and the files match it")
+    parser.add_argument("--contract", type=Path, help="organiser-confirmed output contract (JSON)")
+    parser.add_argument("--input", type=Path, help="gold-blind input JSONL: id, language, text_a, text_b")
+    parser.add_argument("--out", type=Path, help="new run directory (must not exist)")
     parser.add_argument("--timeout-s", type=float, default=300.0, help="per-request timeout; one attempt per call")
     parser.add_argument("--model-revision", default=None, help="declared model revision, recorded as declared (not verified)")
     args = parser.parse_args(argv)
@@ -275,6 +341,13 @@ def main(argv: list[str] | None = None, *, backend_factory=None) -> int:
     def emit(result: dict, code: int) -> int:
         print(json.dumps(result, indent=2, ensure_ascii=False))
         return code
+
+    if args.verify is not None:
+        accepted, reasons = verify_run(args.verify)
+        return emit({"status": "accepted" if accepted else "rejected", "run_dir": str(args.verify), "reasons": reasons},
+                    EXIT_OK if accepted else EXIT_INCOMPLETE)
+    if not (args.contract and args.input and args.out):
+        parser.error("--contract, --input and --out are required (or use --verify RUN_DIR)")
 
     # 1. Configuration only: contract, endpoint variables, output path. No input read, no backend.
     try:
@@ -309,7 +382,10 @@ def main(argv: list[str] | None = None, *, backend_factory=None) -> int:
              "note": "A model name does not pin weights; the provider-side revision is unknown unless the provider states it."}
     run_id = out_dir.name
     invocation = "python -m uzh_rsd.final " + " ".join(argv if argv is not None else sys.argv[1:])
-    result, code = run_final(backend, contract, contract_bytes, items, input_bytes, out_dir, run_id=run_id, invocation=invocation, model=model)
+    try:
+        result, code = run_final(backend, contract, contract_bytes, items, input_bytes, out_dir, run_id=run_id, invocation=invocation, model=model)
+    except KeyboardInterrupt:
+        return emit({"status": "interrupted", "out_dir": str(out_dir), "note": "final_meta.json marked incomplete"}, EXIT_INTERRUPTED)
     return emit(result, code)
 
 
