@@ -99,4 +99,6 @@ Coordinator: Claude Code desktop session (requested Opus 5.5), applying `orchest
 | E-4 | Real-run plan (routes A and B, cost, ceiling, decisions); docs corrections | done | JUDGE_READINESS "Real-run plan"; this commit |
 | E-5 | Verification | done | s1-check 120 OK / 0 skips; `git diff 3966e86 -- results/ diagnostics/` empty; Docker `make reproduce` exit 0 (identical metrics); pilot `make run` BLOCKED exit 3 |
 
-Review: self-review only; the independent gate stays open (no eligible read-only, credential-isolated route). Workers: none started by this pass. Scratch worktree `e2e`, its synthetic `final_runs/e2e-*` output (gitignored) and the local branch are removed after push.
+| E-6 | Plan accuracy (unpinned test files, route discriminator, submission default), `verify_run` and source robustness | done | `7a38bb3`: s1-check 120 OK / 0 skips; Docker e2e 13/13 at `7a38bb3` (prediction sha256 `c9e635cd…`/`e7c109dc…`/`0018c5c8…`, identical to `ef50e10`); frozen diff vs `3966e86` empty |
+
+Review: self-review only, covering code head `7a38bb3` and the docs-only head that adds this line. The independent gate stays open (no eligible read-only, credential-isolated route). PR #12 body is replaced after this commit, with `isDraft` read back. Workers: none started by this pass. Scratch worktree `e2e`, its synthetic `final_runs/e2e-*` output (gitignored) and the local branch are removed after push.
