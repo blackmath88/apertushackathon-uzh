@@ -20,7 +20,7 @@ The complete Perplexity report mentioned in the governing brief was not present 
 2. **Coarse projection is costly.** Broadcasting a perfect decision across a sentence or passage should lose substantial rank correlation. If A3/A4 are weak relative to A1, another sentence-level classifier is not the next experiment.
 3. **Small boundary errors matter.** Expansion/contraction and soft decay should quantify sensitivity to token boundaries without model inference.
 4. **Continuous alignment is a viable deterministic baseline.** Gold-blind DiffAlign should exceed the frozen full-sample B2/B3 default-zero baselines while producing a finite value for every official token.
-5. **Apertus is conditional.** Experiment C is justified only if A and B leave semantic recognition as the leading bottleneck. Otherwise no model calls are made.
+5. **Apertus is conditional.** Experiment C can begin only after A and B are complete and the coordinator accepts their gate. It remains a capability probe, not a benchmark result: native support and label tokenization are inspected first, then at most 24 calls test order and label controls.
 
 Oracle outputs are diagnostics only. They are never passed to prompts, alignment, routing, production features, or submission predictions. A8 is likewise gold-derived: it modulates positive-token severity with deterministic token salience (numeric/URL/case/length) to test whether continuous within-span attribution can reduce ties; it is not a deployable feature.
 
@@ -40,3 +40,9 @@ Alternatives not selected:
 - **Custom lexical alignment:** smallest in code, but scientifically weaker cross-lingually and unnecessary given a directly relevant licensed implementation.
 
 No dependency was vendored. Upstream prediction bytes are cached under ignored `data/`, while immutable filtered results and their hashes are committed.
+
+## Capability-only Apertus result
+
+After A/B were committed and their prerequisite gate was accepted, llama.cpp commit `7ab4ee7` was inspected through its native endpoints. The three numeric labels are single tokens, and unconstrained chat completions return their first-token log-probabilities; grammar/schema constraints were rejected for measurement because they condition the distribution on allowed outputs. The implementation follows the primary [llama.cpp server API documentation](https://github.com/ggml-org/llama.cpp/tree/7ab4ee7/examples/server).
+
+The one-attempt, development-only probe used 16 of the permitted 24 calls: four balanced passage pairs under normal/reversed order and base/rotated labels. All responses were valid single-token labels with complete candidate distributions, but condition accuracy was 0.75/0.75/0.75/0.50 and semantic stability was only 0.875 for each control. The result is therefore **operational but not benchmark-ready** and does not override the A/B conclusion that token-level projection, followed by stronger explicit alignment, is the next scientific target.

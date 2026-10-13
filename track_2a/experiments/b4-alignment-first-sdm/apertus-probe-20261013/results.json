@@ -1,0 +1,99 @@
+{
+  "schema": "uzh-rsd.b4-apertus-probe/v1",
+  "created_utc": "2026-10-13T17:16:15+00:00",
+  "split": "dev",
+  "scope": "capability probe only",
+  "model": "apertus-v1.5-8b-text-q8_0",
+  "model_sha256": "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d",
+  "llama_cpp_commit": "7ab4ee7",
+  "budget": {
+    "ceiling": 24,
+    "planned": 16,
+    "actual": 16,
+    "attempts_per_condition": 1
+  },
+  "capabilities": {
+    "health": {
+      "status": "ok"
+    },
+    "model": {
+      "id": "apertus-v1.5-8b-text-q8_0",
+      "aliases": [
+        "apertus-v1.5-8b-text-q8_0"
+      ],
+      "tags": [],
+      "object": "model",
+      "created": 1791911770,
+      "owned_by": "llamacpp",
+      "meta": {
+        "vocab_type": 2,
+        "n_vocab": 131272,
+        "n_ctx": 8192,
+        "n_ctx_train": 262144,
+        "n_embd": 4096,
+        "n_params": 8054976576,
+        "size": 8559218944,
+        "ftype": "Q8_0"
+      }
+    },
+    "tokenization": {
+      "0": [
+        {
+          "id": 1048,
+          "piece": "0"
+        }
+      ],
+      "1": [
+        {
+          "id": 1049,
+          "piece": "1"
+        }
+      ],
+      "2": [
+        {
+          "id": 1050,
+          "piece": "2"
+        }
+      ]
+    },
+    "chat_template_caps": {
+      "supports_object_arguments": true,
+      "supports_parallel_tool_calls": true,
+      "supports_preserve_reasoning": false,
+      "supports_reasoning_effort": false,
+      "supports_string_content": true,
+      "supports_system_role": true,
+      "supports_tool_calls": true,
+      "supports_tools": true,
+      "supports_typed_content": true
+    },
+    "default_n_probs": 0,
+    "native_observations": {
+      "chat_completions": true,
+      "tokenize_endpoint": true,
+      "schema_or_grammar_constraints": true,
+      "top_token_logprobs": true,
+      "constraint_probability_warning": "grammar filters the candidate set, so constrained probabilities are conditional and not an unbiased original-label distribution"
+    }
+  },
+  "counts": {
+    "valid_one_token": 16,
+    "calls": 16,
+    "candidate_distributions_complete": 16
+  },
+  "condition_accuracy": {
+    "base": 0.75,
+    "order_reversed": 0.75,
+    "labels_rotated": 0.75,
+    "order_reversed_labels_rotated": 0.5
+  },
+  "order_semantic_stability": 0.875,
+  "label_permutation_semantic_stability": 0.875,
+  "latency": {
+    "wall_s": 5.703686,
+    "sum_call_s": 5.703437,
+    "median_call_s": 0.314765
+  },
+  "verdict": "operational_but_not_benchmark_ready",
+  "interpretation": "Native unconstrained one-token scoring is operational, but this tiny probe does not validate a benchmark method: semantic decisions changed under both order reversal and label permutation. Unconstrained first-token logprobs are comparable across labels only when all candidates are returned; grammar-constrained probabilities would be conditional on the grammar."
+}

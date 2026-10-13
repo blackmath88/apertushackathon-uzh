@@ -1,4 +1,4 @@
-.PHONY: audit run test reproduce docker-build evaluate mvp-setup hf-launch-dry hf-launch hf-collect hf-spend s1-setup s1-fetch s1-validate s1-manifest s1-check s1-smoke s1-smoke-live b4-oracle b4-alignment b4-check
+.PHONY: audit run test reproduce docker-build evaluate mvp-setup hf-launch-dry hf-launch hf-collect hf-spend s1-setup s1-fetch s1-validate s1-manifest s1-check s1-smoke s1-smoke-live b4-oracle b4-alignment b4-probe b4-check
 SHELL := /bin/bash
 
 VENV ?= .venv
@@ -128,6 +128,13 @@ b4-oracle:
 b4-alignment:
 	$(RUN) -m uzh_rsd.b4 alignment --manifest $(B4_MANIFEST) --cache data/upstream/diffalign --out $(B4_OUT)-alignment --split dev
 
+# Capability-only: exactly 16 local calls. Requires explicit confirmation and the
+# pinned Apertus runtime already listening on loopback port 11436.
+b4-probe:
+	@test "$(CONFIRM_B4_PROBE)" = yes || { echo "BLOCKED: set CONFIRM_B4_PROBE=yes; this makes 16 model calls"; exit 3; }
+	$(RUN) -m uzh_rsd.b4_probe --base-url http://127.0.0.1:11436 --out $(B4_OUT)-probe --split dev
+
 b4-check:
 	$(RUN) -m unittest tests.test_b4 -v
+	$(RUN) -m unittest tests.test_b4_probe -v
 	@if $(RUN) -m uzh_rsd.b4 oracle --manifest $(B4_MANIFEST) --out $(B4_OUT)-forbidden --split test; then echo "B4 accepted test split"; exit 1; else echo "B4 test split refused (expected)"; fi

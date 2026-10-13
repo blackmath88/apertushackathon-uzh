@@ -4,7 +4,7 @@
 
 Address **token-level projection next**. Exact positive locations with binary severity retain macro Spearman 0.999284, but perfect sentence broadcast drops to 0.534211 and eight-passage broadcast to 0.378722. This is a much larger controlled loss than severity quantisation, and it explains why another passage classifier cannot by itself solve the official token-ranking objective.
 
-Alignment is the second bottleneck: gold-blind continuous DiffAlign improves over the identical-ID B2 full-sample baseline but reaches only 0.187117. Explicit counterpart evidence and better structural alignment are justified; another semantic classifier is not. Experiment C was therefore not run.
+Alignment is the second bottleneck: gold-blind continuous DiffAlign improves over the identical-ID B2 full-sample baseline but reaches only 0.187117. Explicit counterpart evidence and better structural alignment are justified; another semantic classifier is not. The subsequently authorized Experiment C capability probe showed that local one-token scoring works, but its control instability does not change this decision.
 
 ## Experiment A — oracle representation bottleneck
 
@@ -50,10 +50,21 @@ B4 uses 18,485 evaluated tokens, masks 2,669 official punctuation positions, has
 
 ## Experiment C capability verdict
 
-Not executed. A and B completed, but their decision gates do not justify semantic-classifier calls: projection loses 0.465073 macro points even with perfect sentence decisions, while alignment-only already improves the identical-ID deterministic baseline. Native endpoint/tokenization inspection and the permitted ≤24-call bias probe remain future work only if a downstream decision specifically requires semantic recognition.
+After A and B were frozen, the coordinator authorized a capability-only probe. Native inspection preceded inference: llama.cpp exposed `/health`, `/v1/models`, `/props`, `/tokenize`, `/apply-template`, chat completions, JSON-schema/grammar controls, and top-token log-probabilities. Labels `0`, `1`, and `2` are each exactly one token (IDs 1048, 1049, and 1050), and the applied chat template begins generation directly after the assistant marker. Grammar was deliberately not used because it renormalizes over the allowed set and would make label probabilities conditional rather than preserve the model's unconstrained distribution. These behaviors follow the official [llama.cpp server documentation](https://github.com/ggml-org/llama.cpp/tree/7ab4ee7/examples/server) and were verified against commit `7ab4ee7` before calls.
 
-No Apertus runtime was started, port 11436 remained stopped, and calls were zero. Morrow remained listening on loopback port 11435 and was not touched.
+The frozen smoke set contains four development-only pairs (two equivalent, two different) and four conditions: base, reversed passage order, rotated label mapping, and both controls together. Each condition was attempted once, without rationale or prompt search: 16 calls total against the permitted 24-call ceiling, no retries, and no test data.
+
+| Condition | Accuracy | Calls | Valid one-token outputs |
+|---|---:|---:|---:|
+| Base | 0.75 | 4 | 4/4 |
+| Order reversed | 0.75 | 4 | 4/4 |
+| Labels rotated | 0.75 | 4 | 4/4 |
+| Order reversed + labels rotated | 0.50 | 4 | 4/4 |
+
+All 16 top-20 lists contained the three candidate labels. Semantic stability was 0.875 under order reversal and 0.875 under label permutation: one of eight paired decisions changed for each control. The honest verdict is **operational but not benchmark-ready**. Native unconstrained one-token probabilities are extractable, but this tiny capability probe is not an accuracy estimate and the observed control sensitivity argues against promoting Experiment C to a benchmark method.
+
+The 16 calls took 5.703686 wall seconds (0.314765-second median request) after approximately 6.96 seconds of model startup, using local Apertus-v1.5-8B Q8_0 on `SYCL0`; no cloud or paid compute was used. The isolated server bound only to `127.0.0.1:11436` and was stopped immediately afterward. Morrow remained at the same PID 1240 on loopback port 11435 and was not touched.
 
 ## Reproduction and integrity
 
-See `README.md` for exact commands. Every output vector has exact official-token length and finite `[0,1]` values. The code validates the frozen manifest byte hash, text and gold fingerprints, upstream IDs/text/lengths, upstream file SHA-256, evaluator file hashes, and output-directory immutability. Gold is absent from the B prediction loader's API and joined only for scoring.
+See `README.md` for exact commands. Every output vector has exact official-token length and finite `[0,1]` values. The code validates the frozen manifest byte hash, text and gold fingerprints, upstream IDs/text/lengths, upstream file SHA-256, evaluator file hashes, and output-directory immutability. Gold is absent from the B prediction loader's API and joined only for scoring. Experiment C records complete prompts, raw outputs, label log-probabilities, timings, model and runtime pins, and content hashes; its code refuses non-dev splits, non-loopback endpoints, any port other than 11436, and output overwrites.
