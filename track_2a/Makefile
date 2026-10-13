@@ -1,4 +1,4 @@
-.PHONY: run test reproduce docker-build evaluate mvp-setup hf-launch-dry hf-launch hf-collect hf-spend s1-setup s1-fetch s1-validate s1-manifest s1-check s1-smoke s1-smoke-live
+.PHONY: audit run test reproduce docker-build evaluate mvp-setup hf-launch-dry hf-launch hf-collect hf-spend s1-setup s1-fetch s1-validate s1-manifest s1-check s1-smoke s1-smoke-live
 SHELL := /bin/bash
 
 VENV ?= .venv
@@ -27,6 +27,10 @@ reproduce: docker-build
 # Local scoring of a run directory or a run id under runs/.
 evaluate:
 	$(RUN) -m uzh_rsd.cli evaluate --run $(RUN_ID)
+
+# Accounting supplement for a committed run (no model, no scores): writes only diagnostics/<run id>/.
+audit:
+	$(RUN) -m uzh_rsd.cli audit --run results/$(RESULT)
 
 # Owner machine: venv with evaluator parity deps + huggingface_hub (HF Jobs).
 mvp-setup: s1-setup

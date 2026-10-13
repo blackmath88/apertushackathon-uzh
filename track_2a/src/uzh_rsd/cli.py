@@ -12,7 +12,7 @@ from .projection import project_differences
 from .splits import SplitNotAllowedError, assert_development_split
 
 S1_COMMANDS = ("fetch", "validate", "manifest", "smoke")
-MVP_COMMANDS = ("infer", "evaluate", "run")
+MVP_COMMANDS = ("infer", "evaluate", "run", "audit")
 TRACK_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_MANIFEST = TRACK_ROOT / "manifests" / "s1-dev.json"
 RUNS_DIR = TRACK_ROOT / "runs"
@@ -129,6 +129,18 @@ def _evaluate(args) -> dict:
             "macro_matched": {m: v["macro"] for m, v in results["views"]["matched"].items()}}
 
 
+def _audit(args, argv) -> dict:
+    from .audit import write_audit
+    from .runner import load_manifest
+
+    run_dir = _resolve_run(args.run, args.runs_dir)
+    out_dir = args.out or TRACK_ROOT / "diagnostics" / run_dir.name
+    invocation = "python -m uzh_rsd.cli " + " ".join(argv if argv is not None else sys.argv[1:])
+    audit = write_audit(run_dir, out_dir, load_manifest(args.manifest), invocation)
+    return {"status": "ok", "out_dir": str(out_dir), "run_directory_unchanged": audit["inputs"]["run_directory_unchanged"],
+            "b0": audit["summary"]["b0"], "b2_items": audit["summary"]["b2"]["items"], "b2_excerpts": audit["summary"]["b2"]["excerpts"]}
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="SwissGov-RSD experiment CLI (dev split only)")
     parser.add_argument("command", nargs="?", default="dry-run", choices=("dry-run", *S1_COMMANDS, *MVP_COMMANDS))
@@ -139,7 +151,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--confirm-live", action="store_true", help="smoke: allow exactly one real endpoint request")
     parser.add_argument("--methods", default="b0,b2", help="infer/run: comma-separated methods")
     parser.add_argument("--run-id", default=None, help="infer/run: run directory name under runs/")
-    parser.add_argument("--run", default=None, help="evaluate: run id or run directory")
+    parser.add_argument("--run", default=None, help="evaluate/audit: run id or run directory")
+    parser.add_argument("--out", type=Path, default=None, help="audit: output directory (default diagnostics/<run id>)")
     parser.add_argument("--runs-dir", type=Path, default=RUNS_DIR)
     parser.add_argument("--limit", type=int, default=None, help="infer/run: first N manifest entries only")
     args = parser.parse_args(argv)
@@ -172,6 +185,11 @@ def main(argv: list[str] | None = None) -> int:
             print("error: evaluate needs --run", file=sys.stderr)
             return 2
         result = _evaluate(args)
+    elif args.command == "audit":
+        if not args.run:
+            print("error: audit needs --run", file=sys.stderr)
+            return 2
+        result = _audit(args, argv)
     else:  # run: fetch, endpoint inference, evaluation (endpoint checked first)
         if all(os.environ.get(name) for name in ENDPOINT_ENV):
             _fetch(split)
