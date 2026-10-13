@@ -17,17 +17,17 @@ Trusted base: `9874189` (fetched from origin; local checkout fast-forwarded from
 
 | ID | Owner / route | Base | Writable paths | Depends | Status | Evidence | Review commit | Blockers |
 |---|---|---|---|---|---|---|---|---|
-| A | subagent (general-purpose, `[tier:deep]`) | 9874189 | scratch `packet_A_findings.md` only | — | done, settled (completed ~4.4 min) | [review/packet_A_audit_2026-10-13.md](review/packet_A_audit_2026-10-13.md); 2 major (disclosure), 4 minor | self-review by coordinator (claims A1, A6 re-checked against `results.json`, `methods.py`, test) | none |
-| B | subagent (general-purpose, `[tier:standard]`) | 9874189 | scratch `JUDGE_READINESS.md`, `PUBLICATION_REVIEW.md` | — | done, settled (completed ~1.2 min) | [JUDGE_READINESS.md](JUDGE_READINESS.md), [PUBLICATION_REVIEW.md](PUBLICATION_REVIEW.md); coordinator added 13 Oct D observations + visibility re-check | self-review | Notion challenge pages unreadable; admin.ch terms not read |
-| C | coordinator | 9874189 + A/B | `track_2a/docs/*`, README, technical_report.md, PR body; `src/uzh_rsd/` + tests only for evidenced defects | A, B | done | report disclosure (A1–A3), test assertion (A6), STATUS/checklist/README, [review summary](review/REVIEW_2026-10-13.md); scorer output repair deferred (would break re-score identity) | self-review | — |
-| D | coordinator (offline) | 9874189 (clean worktree) and candidate tree | none (verification only) | C | done with gaps | s1-check 83 OK/0 skip on base and candidate; venv re-score byte-identical; BLOCKED exit 3 | self-review | Docker daemon not running → Docker `make reproduce`/`make run` not re-run; no independent review route qualified |
+| A | subagent (general-purpose, `[tier:deep]`) | 9874189 | scratch `packet_A_findings.md` only | — | done, settled (completed ~4.4 min) | [review/packet_A_audit_2026-10-13.md](review/packet_A_audit_2026-10-13.md); 2 major (disclosure), 4 minor | `662e14d` (self-review; claims A1, A6 re-checked against `results.json`, `methods.py`, test) | none |
+| B | subagent (general-purpose, `[tier:standard]`) | 9874189 | scratch `JUDGE_READINESS.md`, `PUBLICATION_REVIEW.md` | — | done, settled (completed ~1.2 min) | [JUDGE_READINESS.md](JUDGE_READINESS.md), [PUBLICATION_REVIEW.md](PUBLICATION_REVIEW.md); coordinator added 13 Oct D observations + visibility re-check | `662e14d` (self-review) | Notion challenge pages unreadable; admin.ch terms not read |
+| C | coordinator | 9874189 + A/B | `track_2a/docs/*`, README, technical_report.md, PR body; `src/uzh_rsd/` + tests only for evidenced defects | A, B | done | report disclosure (A1–A3), test assertion (A6), STATUS/checklist/README, [review summary](review/REVIEW_2026-10-13.md); scorer output repair deferred (would break re-score identity) | `662e14d` (self-review) | — |
+| D | coordinator (offline) | 9874189 (clean worktree) and candidate tree | none (verification only) | C | done | s1-check 83 OK/0 skip on base and candidate; venv re-score byte-identical; Docker `make reproduce` exit 0 (same metrics) and Docker `make run` BLOCKED exit 3 at `662e14d` | self-review of `662e14d` | no independent review route qualified (blackmath88/weavr#128 still a draft) |
 
 ## Usage and routes (observed)
 
 - Coordinator: Claude Code desktop, requested model Opus 5.5; usage not read back.
 - Subagents A/B: Agent tool on the same host and credentials. Tier tags were passed for the routing mod; the effective model was not read back. Reported subagent token totals were about 108k (A) and 83k (B), from harness task metadata.
 - No paid API, GPU or HF calls. No savings are claimed.
-- Workers settled: both completed before integration. No live workers remain. Scratch worktree `wt-d` (detached at 9874189, outside the repo) remains in the coordinator scratchpad.
+- Workers settled: both completed before integration. No live workers remain. Scratch worktree `wt-d` was removed. `wt-e` (detached at `662e14d`, in the coordinator scratchpad) is removed after this commit.
 
 ## Next action
 
