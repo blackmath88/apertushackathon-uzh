@@ -36,6 +36,8 @@ To commit a run: `cp -r runs/<run id> results/` (drop nothing: raw.jsonl, run_me
 
 ## Start here
 
+- [Orca handoff — submission preparation, 13 October](track_2a/docs/ORCA_HANDOFF_2026-10-13.md): work packets, review gates and owner decisions; no new compute authorized.
+
 - [MVP plan](track_2a/docs/MVP_PLAN.md) · [Status](track_2a/docs/STATUS.md) · [Submission checklist](track_2a/docs/SUBMISSION_CHECKLIST.md)
 - [Technical report draft](track_2a/technical_report.md)
 - [Challenge brief](docs/challenge-source/CHALLENGE.md) · [Sources](track_2a/docs/SOURCES.md)
