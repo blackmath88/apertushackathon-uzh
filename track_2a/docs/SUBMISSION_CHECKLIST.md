@@ -1,6 +1,6 @@
 # Submission checklist — Hack Apertus Track 2A, UZH SwissGov-RSD
 
-These rules come from the pinned sources in [SOURCES.md](SOURCES.md): the UZH brief in `docs/challenge-source/CHALLENGE.md` and the HackApertus template at `7f23822`. Status is as of 12 October 2026, on the B0/B2 MVP branch.
+These rules come from the pinned sources in [SOURCES.md](SOURCES.md): the UZH brief in `docs/challenge-source/CHALLENGE.md` and the HackApertus template at `7f23822`. Status is as of 13 October 2026, on the B0/B2 MVP branch (review pass: [ORCA_TASK_LEDGER.md](ORCA_TASK_LEDGER.md)).
 
 Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not started · ⛔ blocked / owner decision
 
@@ -15,7 +15,7 @@ Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not s
 | E5 | Follow the input/output format; runs end to end when judges run it | 🟡 | Official encoder-style predictions `{id,text_a,text_b,labels_a,labels_b}` per language. Judges also need a working Apertus v1.5 endpoint (see N-JUDGE-1). |
 | E6 | `data/` ≤ 100 MB | ✅ | Raw data ignored; fetched at run time |
 | E7 | Built with Apertus; other open models only in support roles, described | ✅ | Only Apertus v1.5 8B; no other model anywhere |
-| E8 | Open source, CC BY 4.0 | ⛔ | Owner: make the repo public; decide on committing dev-text-bearing run artefacts |
+| E8 | Open source (T&C: code Apache-2.0, docs CC BY 4.0) | ⛔ | Owner decision, see [PUBLICATION_REVIEW.md](PUBLICATION_REVIEW.md): no LICENSE file exists yet; the unscoped CC BY line in the report could be read as covering third-party text (admin.ch source text, unlicensed upstream prompts embedded in `raw.jsonl`). Repo PRIVATE (re-checked 13 Oct). |
 | E9 | `technical_report.md` sections 1–8 | 🟡 | Measured pilot (run `20261012T062327Z-ff965461`) filled into §1, §5 and §6. Team name/members and the final expanded dev comparison are still open. |
 | E10 | No secrets or weights committed | ✅ | Token only as an HF Jobs secret; ledger and launch records hold no token. Committed run artefacts were scanned (no `hf_` tokens, keys or auth headers). |
 
@@ -36,9 +36,9 @@ Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not s
 | ID | Question | Impact | Owner action |
 |---|---|---|---|
 | N-RUN-1 | ~~First measured B0/B2 GPU run~~ | Done 12 Oct: run `20261012T062327Z-ff965461`; total HF compute ≤ $0.75 | Decide whether to fund an expanded, predeclared dev slice (new compute authorisation needed) |
-| N-JUDGE-1 | Which Apertus v1.5 endpoint can judges use for `make run`? Swisscom auth failed; HF/Featherless returned 1010; HF Jobs is batch, not an endpoint. | Live judge rerun may be impossible. `make reproduce` re-scores committed raw outputs without a model. | Ask organisers, or document the reproduce path |
+| N-JUDGE-1 | Which Apertus v1.5 endpoint can judges use for `make run`? Swisscom auth failed; HF/Featherless returned 1010; HF Jobs is batch, not an endpoint. | Live judge rerun may be impossible. `make reproduce` re-scores committed raw outputs without a model. | Organiser message drafted, **not sent**: [JUDGE_READINESS.md](JUDGE_READINESS.md). Live endpoint execution never performed against real Apertus. |
 | N-RULES-1 | How is the held-out test evaluated (teams submit predictions vs judges run code)? | Whether we ever run on test, and how | UZH Q&A / organisers |
 | N-RULES-2 | Are the 34 `list_to_drop.txt` ids excluded for LLM systems? | Manifest already excludes them | Confirm |
 | N-RULES-4 | Exact prediction file format | We export the encoder-style format | Confirm |
 | N-LIC-1 | Upstream repo has no top-level licence | Evaluator and prompts are fetched at run time, not vendored | Keep, or ask UZH |
-| N-PUB-1 | Publication of dev-text-bearing artefacts (raw responses, predictions) | Required "model predictions" contain dev text. They are now committed on `feat/b0-b2-mvp` in `results/20261012T062327Z-ff965461/`; the repository is **private** (checked 12 Oct). | Owner decision before the repository goes public |
+| N-PUB-1 | Publication of dev-text-bearing artefacts (options in [PUBLICATION_REVIEW.md](PUBLICATION_REVIEW.md)) (raw responses, predictions) | Required "model predictions" contain dev text. They are now committed on `feat/b0-b2-mvp` in `results/20261012T062327Z-ff965461/`; the repository is **private** (checked 12 Oct). | Owner decision before the repository goes public |

@@ -104,6 +104,7 @@ class PipelineTests(unittest.TestCase):
                 score = results["views"][view][method]
                 self.assertIsNotNone(score["macro"])
                 for entry in score["per_language"].values():
+                    self.assertIn("official_spearman", entry, "official evaluator cross-check missing; run `make s1-setup` for its dependencies")
                     self.assertAlmostEqual(entry["spearman"], entry["official_spearman"], places=10)
         self.assertIn("Matched documents", (self.tmp / "run" / "results.md").read_text())
 

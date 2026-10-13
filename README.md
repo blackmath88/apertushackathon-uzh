@@ -6,7 +6,7 @@ Hack Apertus 2026 · Track 2A · one submission, one measured B0/B2 comparison.
 
 ## Current state
 
-B0, B2, scoring, Docker `make run` and the HF GPU runner are implemented and tested. **First measured pilot committed** (12 Oct 2026, run `20261012T062327Z-ff965461`, nine dev documents). B2 produced valid output for 9 of 9 documents and B0 for 3 of 9. On the 3 matched documents, macro Spearman is 0.136 for B0 and 0.138 for B2, a tie. B2 used about 20 % of B0's tokens. This is indicative, not a benchmark. See [results](track_2a/results/20261012T062327Z-ff965461/results.md) and [STATUS](track_2a/docs/STATUS.md).
+B0, B2, scoring, Docker `make run` and the HF GPU runner are implemented and tested. **First measured pilot committed** (12 Oct 2026, run `20261012T062327Z-ff965461`, nine dev documents). B2 produced valid output for 9 of 9 documents and B0 for 3 of 9. On the 3 matched documents, macro Spearman is 0.136 for B0 and 0.138 for B2, a tie. B2 used about 20 % of B0's tokens. This is indicative, not a benchmark. **Status: candidate prepared with blockers.** `make run` has never run against a real Apertus endpoint, and the judge contract is unconfirmed; see [judge readiness](track_2a/docs/JUDGE_READINESS.md) and the [13 Oct review](track_2a/docs/review/REVIEW_2026-10-13.md). See [results](track_2a/results/20261012T062327Z-ff965461/results.md) and [STATUS](track_2a/docs/STATUS.md).
 
 ## Commands
 

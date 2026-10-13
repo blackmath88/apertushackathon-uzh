@@ -1,4 +1,6 @@
-# Status — 12 October 2026 (B0/B2 MVP branch)
+# Status — 13 October 2026 (B0/B2 MVP branch)
+
+**Candidate prepared with blockers.** Live endpoint judge execution has never been performed against a real Apertus endpoint, and the official evaluation contract is unconfirmed. Review pass 13 Oct: [review](review/REVIEW_2026-10-13.md), [judge readiness](JUDGE_READINESS.md), [publication review](PUBLICATION_REVIEW.md), [task ledger](ORCA_TASK_LEDGER.md).
 
 Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 
@@ -8,7 +10,8 @@ Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
   - 18 of 18 calls returned: no call failures, no deadline skips, no upload failures.
   - Running time 994 s. Before that the job waited 53 min for hardware, which is not billed. Recovered logs of the two earlier smoke jobs are in `prior_jobs/`.
 - **Coverage.** B2 has valid output for 9 of 9 documents. B0 has it for 3 of 9: three responses were truncated at 4096 tokens (`*_197`) and three were malformed JSON that stopped normally (`*_136`).
-- **Matched comparison (n = 3):** macro Spearman 0.136 for B0 and 0.138 for B2, a tie.
+- **Matched comparison (n = 3, one document per language sharing one English source):** macro Spearman 0.136 for B0 and 0.138 for B2, a tie.
+  - B2 dropped 14 excerpts over its 40-token cap (6 of 7 unprojected items) and could not locate 4 more in `admin_fr_43`.
   - B2 over all 9 of its documents reaches macro 0.175.
   - B2 used about 20 % of B0's completion tokens and generation time.
   - B0's paper-protocol 0.268 comes from zero-filled documents (6 of 9) creating a between-document offset; it is not token-level skill.

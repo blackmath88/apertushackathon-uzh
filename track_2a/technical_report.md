@@ -69,6 +69,7 @@ Prompt `b2-spans-v1` is zero-shot. It sends both texts and asks for `{"differenc
 - Each excerpt is located as a contiguous whitespace-token sequence: an exact match first, then a case- and quote-insensitive one.
 - Every occurrence of an ambiguous excerpt is marked, and the ambiguity is counted.
 - An unlocatable excerpt is dropped and counted.
+- An excerpt longer than 40 whitespace tokens (`B2_MAX_EXCERPT_TOKENS`, `methods.py`) is dropped before location and counted as `spans_too_long`. The prompt asks for at most 15 words.
 - Severity outside 1–5 makes the item invalid, and it is counted.
 - An unknown kind becomes `UNKNOWN`; it is counted and still projected.
 - Projection reuses `projection.py`: the maximum severity per token, uncovered tokens 0, then `difference = severity / 5`.
@@ -100,6 +101,8 @@ Views, with no silent filling or dropping:
 
 **Matched documents (like-for-like, n = 3: `admin_{de,fr,it}_43`)**
 
+These are one document per language, and all three share the same English source. They are B0's shortest document (88 English tokens), and each per-language Spearman covers about 160–170 unmasked tokens. They are not three independent samples, and B2 is compared on the one case where B0 survived.
+
 | Setup | EN–DE | EN–FR | EN–IT | Macro |
 |---|---|---|---|---|
 | B0 paper baseline | 0.143 | 0.133 | 0.132 | **0.136** |
@@ -124,10 +127,16 @@ Views, with no silent filling or dropping:
   - `*_197` (all three languages) reached `max_new_tokens` = 4096, giving truncated JSON.
   - `*_136` (all three languages) stopped normally but are malformed JSON. Apertus dropped opening brackets, e.g. `"\'s", 0]`, `"of", 1]`. Neither `json.loads` nor `ast.literal_eval` can read this, and upstream `eval` would fail too.
   - None of the three parsed documents is strictly valid. In them, 46 of 541 tokens (8.5 %) fell back to "no difference" (upstream fallback, similarity 5). The model gave a `-1` (punctuation) label to 9 tokens, which are scored 0 (deviation 3).
-- **B2.** All nine parsed. 41 difference items; 34 projected onto tokens. Excerpts: 62 located exactly, 0 by normalised match, 4 not found (all in `admin_fr_43`), 1 ambiguous. No invalid items, severities or kinds.
+- **B2.** All nine parsed. 41 difference items; 34 projected onto tokens. Excerpts: 62 located exactly, 0 by normalised match, 4 not found (all in `admin_fr_43`), 1 ambiguous (`admin_de_197`, severity 1, 4 occurrences marked), and **14 dropped as longer than the 40-token cap**. The cap, not location failure, explains 6 of the 7 unprojected items. This count is in `results.json` (`spans_too_long`) but missing from `results.md`, whose renderer predates this review. The committed file is left unchanged (see [review](docs/review/REVIEW_2026-10-13.md)). No invalid items, severities or kinds.
 - **Official-evaluator parity.** For all 18 per-language cells across the three views, our Spearman equals the pinned official `compute_correlations` to within 5.6e-17.
 
-**Interpretation.** With n = 3 matched documents, B0 and B2 are indistinguishable on correlation. B2's EN–FR matched score is negative, driven by `admin_fr_43`, where four excerpts could not be located. The clear, measured difference is **robustness and cost**:
+**Interpretation.** With n = 3 matched documents, B0 and B2 are indistinguishable on correlation. B2's EN–FR matched score (−0.093) rests on the single document `admin_fr_43`, where four excerpts could not be located:
+
+- two de-spaced `www . stelle . admin . ch` URLs;
+- one curly apostrophe changed to a straight one;
+- one garbled copy.
+
+As a diagnostic only, not a repair, placing them by hand gives about +0.02. So they do not fully account for the negative score. The clear, measured difference is **robustness and cost**:
 
 - B2 returned usable output for every document.
 - B2 used about 20 % of B0's completion tokens and generation time.
@@ -168,7 +177,15 @@ This supports continuing with B2 on a larger, predeclared dev slice. It does not
 
 ## License
 
-Creative Commons Attribution 4.0 (CC-BY-4.0). All HackApertus projects are open-sourced.
+- **Our documentation and report:** Creative Commons Attribution 4.0 (CC BY 4.0), per the HackApertus terms.
+- **Our code:** intended Apache-2.0, per the HackApertus terms. No LICENSE file has been added yet; that is an owner decision.
+- **Third-party material keeps its own terms.** None of the following is relicensed by this repository:
+  - SwissGov-RSD labels (CC BY 4.0, ZurichNLP).
+  - Source texts (© Swiss federal authorities, admin.ch terms of use).
+  - Upstream SwissGov-RSD prompts and evaluator (no top-level licence). They are fetched at run time, and the prompt text is also embedded in committed `raw.jsonl`.
+  - Apertus model and outputs (Apache-2.0, gated access).
+
+Open publication questions are in [PUBLICATION_REVIEW.md](docs/PUBLICATION_REVIEW.md).
 
 ## References
 
