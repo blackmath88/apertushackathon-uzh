@@ -5,11 +5,12 @@ import tempfile
 import unittest
 from hashlib import sha256
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from uzh_rsd.live_government_pilot import (
-    PAIR_STATES, analyze_pair, build_demo, capture_html, extract_content, render_viewer,
+    PAIR_STATES, analyze_pair, build_demo, capture_html, extract_content, main, render_viewer,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,6 +54,18 @@ class LiveGovernmentPilotTest(unittest.TestCase):
             self.assertFalse(written["analysis"]["spearman_claim"])
             self.assertEqual(written["analysis"]["candidates"][0]["status"], "UNRESOLVED")
             self.assertEqual(written["analysis"]["pair_status"], "HUMAN_VERIFIED")
+
+    def test_policy_blocked_direct_entrypoint_returns_three_without_scout(self):
+        with tempfile.TemporaryDirectory() as tmp, patch(
+            "uzh_rsd.live_government_pilot.scout"
+        ) as live_scout:
+            output = Path(tmp) / "blocked.json"
+            code = main([
+                "live", "--confirm-live", "--policy", str(POLICY), "--out", str(output),
+            ])
+            self.assertEqual(code, 3)
+            self.assertEqual(json.loads(output.read_text())["status"], "POLICY_BLOCKED")
+            live_scout.assert_not_called()
 
     def test_viewer_escapes_content_and_has_safe_source_links(self):
         with tempfile.TemporaryDirectory() as tmp:

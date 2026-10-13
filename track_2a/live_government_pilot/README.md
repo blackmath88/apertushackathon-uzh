@@ -22,16 +22,25 @@ PYTHONPATH=src python -m uzh_rsd.live_government_pilot demo \
   --policy live_government_pilot/v1/policy/bfe-policy-review-20261013.json \
   --out live_government_pilot/v1/demo
 
-# Explicit live entrypoint. Under the committed policy it writes/prints a
-# POLICY_BLOCKED manifest and exits 3 without requesting a content page.
+# Direct live module entrypoint. Under the committed policy it writes/prints a
+# POLICY_BLOCKED manifest and the Python process exits 3 without a page request.
 PYTHONPATH=src python -m uzh_rsd.live_government_pilot live --confirm-live \
   --policy live_government_pilot/v1/policy/bfe-policy-review-20261013.json \
   --out runs/live-government-pilot.json
+
+# Make invokes that same command. The recipe command returns 3; GNU Make then
+# reports the failed recipe and exits 2 (GNU Make's wrapper status).
+make federal-pilot-live
 
 # Local viewer; stop with Ctrl-C.
 python -m http.server 8765 --directory live_government_pilot/v1/demo
 curl --fail http://127.0.0.1:8765/viewer.html >/dev/null
 ```
+
+The two exit codes describe different processes: direct callers of
+`python -m uzh_rsd.live_government_pilot live ...` receive **3**, while callers
+of `make federal-pilot-live` receive **2** from GNU Make. Both paths remain
+`POLICY_BLOCKED` and make zero BFE content-page requests.
 
 Raw response and capture storage is content-addressed under `runs/` or a generated `raw/` directory and is gitignored. The committed demo manifest contains only synthetic fixture excerpts. If reuse permission is later documented, create a new immutable policy review rather than editing this one, then run the same bounded entrypoint; profile constraints remain max 20 pages, depth 2, at least two seconds per host, exact HTTPS hosts, fail-closed robots and redirect revalidation.
 

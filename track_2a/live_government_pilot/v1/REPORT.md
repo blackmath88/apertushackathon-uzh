@@ -53,15 +53,16 @@ Method: `deterministic-lexical-structural-v1`, explicitly non-Apertus. It uses n
 
 ## Verification
 
-Focused tests:
+Focused tests, including the no-network direct-entrypoint exit contract:
 
 ```text
 PYTHONPATH=src python -m unittest tests.test_zurich_pilot tests.test_government_scout tests.test_live_government_pilot -v
-Ran 18 tests in 0.008s
+Ran 19 tests in 0.008s
 OK
 ```
 
-After repository-isolated setup and a pinned **dev-only** fetch:
+The initial delivery's repository-wide gate, before the exit-contract regression
+test was added, used repository-isolated setup and a pinned **dev-only** fetch:
 
 ```text
 make mvp-setup s1-fetch
@@ -71,6 +72,9 @@ OK
 manifest reproduces: 61e0e98b7a9347716f4a71bc002364a600993c7346d6046e4f8d65899059a835
 test split refused (expected)
 ```
+
+This narrow repair re-ran the 19 focused offline tests and deterministic demo;
+it did not access UZH test data or rerun scientific work.
 
 No official UZH test content or metadata was accessed, enumerated, opened or used. The guard's refusal path was tested only with the literal split name already present in repository tests.
 
@@ -82,13 +86,30 @@ Viewer verification used a real Orca embedded browser against `http://127.0.0.1:
 cd track_2a
 make federal-pilot-demo
 
-# Expected POLICY_BLOCKED exit 3 and no content request under current review:
+# Direct module: prints/writes POLICY_BLOCKED and exits 3.
+PYTHONPATH=src python -m uzh_rsd.live_government_pilot live --confirm-live \
+  --policy live_government_pilot/v1/policy/bfe-policy-review-20261013.json \
+  --out runs/live-government-pilot.json
+
+# Make wrapper: the recipe command returns 3, then GNU Make exits 2.
+# No content request occurs on either path under the current policy review.
 make federal-pilot-live
 
 # Start, smoke and stop the viewer:
 python -m http.server 8765 --bind 127.0.0.1 --directory live_government_pilot/v1/demo
 curl --fail http://127.0.0.1:8765/viewer.html >/dev/null
 # Ctrl-C stops the server.
+```
+
+The direct module's exit code 3 is the application-level blocked contract.
+GNU Make does not propagate that recipe status unchanged: after reporting
+`Error 3`, it exits with status 2 to its caller.
+
+Independent offline verification recorded:
+
+```text
+direct_module_exit=3
+make_wrapper_exit=2
 ```
 
 Architecture concepts are attributed to `blackmath88/accessibility-red-team`: bounded prioritized discovery, strict scope, content-addressed provenance, explicit triage states and escaped static reports. Its repository exposes no licence, so this is a clean-room Python implementation and copies no source code.
