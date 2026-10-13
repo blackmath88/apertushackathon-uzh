@@ -171,7 +171,8 @@ def _source_commit() -> dict:
     commit = git("rev-parse", "HEAD")
     if commit is None and os.environ.get("UZH_SOURCE_COMMIT"):
         # Docker image without git: the host passes its checkout's commit; recorded as declared.
-        return {"commit": os.environ["UZH_SOURCE_COMMIT"], "src_dirty": None, "source": "declared by host via UZH_SOURCE_COMMIT"}
+        dirty = {"true": True, "false": False}.get(os.environ.get("UZH_SOURCE_DIRTY", ""))
+        return {"commit": os.environ["UZH_SOURCE_COMMIT"], "src_dirty": dirty, "source": "declared by host via UZH_SOURCE_COMMIT"}
     status = git("status", "--porcelain", "--", "src")
     return {"commit": commit, "src_dirty": None if status is None else bool(status), "source": "git"}
 

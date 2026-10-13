@@ -12,12 +12,45 @@ RESULT ?= $(notdir $(lastword $(sort $(wildcard results/2*))))
 docker-build:
 	docker build -t $(IMAGE) .
 
-# Judge entrypoint: B0 + B2 on the fixed dev manifest against the Apertus
-# endpoint in LLM_NAME / LLM_BASE_URL / LLM_API_KEY, then evaluation.
-# Without those variables it stops with a clear BLOCKED message (exit 3).
-run: docker-build
+# Judge entrypoint, two explicit modes.
+#
+# MODE=pilot (default, unchanged): B0 + B2 on the fixed dev manifest against the
+#   Apertus endpoint in LLM_NAME / LLM_BASE_URL / LLM_API_KEY, then evaluation.
+#   Without those variables it stops with BLOCKED (exit 3).
+# MODE=final: final B2 inference only (no scoring) via `python -m uzh_rsd.final`.
+#   Needs FINAL_CONTRACT and FINAL_INPUT (mounted read-only), FINAL_OUT_DIR (host
+#   directory, mounted read-write) and FINAL_RUN_ID (a new subdirectory). It checks
+#   them before building and never falls back to the pilot or cached predictions.
+#   The contract must be confirmed, otherwise uzh_rsd.final stops with BLOCKED.
+MODE ?= pilot
+FINAL_ARGS ?=
+SOURCE_COMMIT := $(shell git rev-parse HEAD 2>/dev/null)
+SOURCE_DIRTY := $(if $(SOURCE_COMMIT),$(if $(shell git status --porcelain -- src 2>/dev/null),true,false))
+
+run:
+ifeq ($(MODE),pilot)
+	$(MAKE) docker-build
 	mkdir -p runs
 	docker run --rm -e LLM_NAME -e LLM_BASE_URL -e LLM_API_KEY -v "$(CURDIR)/runs:/app/runs" $(IMAGE) run
+else ifeq ($(MODE),final)
+	@missing=""; for v in FINAL_CONTRACT FINAL_INPUT FINAL_OUT_DIR FINAL_RUN_ID; do \
+	  eval "val=\$${$$v}"; [ -n "$$val" ] || missing="$$missing $$v"; done; \
+	  if [ -n "$$missing" ]; then echo "BLOCKED: MODE=final needs$$missing (no fallback to the pilot)"; exit 3; fi
+	@test -f "$(FINAL_CONTRACT)" || { echo "BLOCKED: FINAL_CONTRACT $(FINAL_CONTRACT) not found"; exit 3; }
+	@test -f "$(FINAL_INPUT)" || { echo "BLOCKED: FINAL_INPUT $(FINAL_INPUT) not found"; exit 3; }
+	@test ! -e "$(FINAL_OUT_DIR)/$(FINAL_RUN_ID)" || { echo "BLOCKED: $(FINAL_OUT_DIR)/$(FINAL_RUN_ID) exists; final runs never overwrite"; exit 3; }
+	$(MAKE) docker-build
+	mkdir -p "$(FINAL_OUT_DIR)"
+	docker run --rm --user "$$(id -u):$$(id -g)" --add-host=host.docker.internal:host-gateway \
+	  -e LLM_NAME -e LLM_BASE_URL -e LLM_API_KEY -e UZH_SOURCE_COMMIT=$(SOURCE_COMMIT) -e UZH_SOURCE_DIRTY=$(SOURCE_DIRTY) \
+	  -v "$(abspath $(FINAL_CONTRACT)):/final/contract.json:ro" \
+	  -v "$(abspath $(FINAL_INPUT)):/final/input.jsonl:ro" \
+	  -v "$(abspath $(FINAL_OUT_DIR)):/final/out" \
+	  --entrypoint python $(IMAGE) -m uzh_rsd.final \
+	  --contract /final/contract.json --input /final/input.jsonl --out /final/out/$(FINAL_RUN_ID) $(FINAL_ARGS)
+else
+	@echo "BLOCKED: unknown MODE=$(MODE); use MODE=pilot (default) or MODE=final"; exit 3
+endif
 
 # No model needed: re-parse and re-score the committed raw Apertus responses.
 reproduce: docker-build

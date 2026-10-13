@@ -356,10 +356,26 @@ class IsolationTests(unittest.TestCase):
                 with self.subTest(command=command), redirect_stdout(io.StringIO()):
                     self.assertEqual(cli.main([command, "--split", "test"]), 2)
 
-    def test_final_is_not_wired_into_dev_cli_or_make(self):
+    def test_final_is_explicit_mode_only(self):
         self.assertNotIn("final", cli.MVP_COMMANDS + cli.S1_COMMANDS)
-        makefiles = (TRACK / "Makefile").read_text() + (TRACK.parent / "Makefile").read_text()
-        self.assertNotIn("uzh_rsd.final", makefiles)
+        makefile = (TRACK / "Makefile").read_text()
+        self.assertIn("MODE ?= pilot", makefile)  # default stays the dev pilot
+        self.assertEqual(makefile.count("$(IMAGE) -m uzh_rsd.final"), 1)
+        self.assertLess(makefile.index("ifeq ($(MODE),pilot)"), makefile.index("else ifeq ($(MODE),final)"))
+        self.assertLess(makefile.index("else ifeq ($(MODE),final)"), makefile.index("$(IMAGE) -m uzh_rsd.final"))
+
+    def test_make_final_mode_blocks_before_build_without_configuration(self):
+        for extra, expected in (([], "needs FINAL_CONTRACT FINAL_INPUT FINAL_OUT_DIR FINAL_RUN_ID"),
+                                (["FINAL_CONTRACT=/nonexistent", "FINAL_INPUT=/x", "FINAL_OUT_DIR=/tmp", "FINAL_RUN_ID=r"], "not found")):
+            with self.subTest(extra=extra):
+                proc = subprocess.run(["make", "-s", "-C", str(TRACK), "run", "MODE=final", *extra], capture_output=True, text=True,
+                                      env={k: v for k, v in os.environ.items() if not k.startswith("FINAL_")})
+                self.assertNotEqual(proc.returncode, 0)
+                self.assertIn(expected, proc.stdout)
+                self.assertNotIn("docker build", proc.stdout + proc.stderr)
+        proc = subprocess.run(["make", "-s", "-C", str(TRACK), "run", "MODE=bogus"], capture_output=True, text=True)
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("unknown MODE", proc.stdout)
 
 
 if __name__ == "__main__":
