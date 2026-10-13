@@ -215,7 +215,7 @@ def _cluster_key(record_id: str) -> str:
 
 
 def _bootstrap(records: Sequence[tuple[InferenceInput, GoldLabels]], baseline: Mapping[str, Mapping],
-               method: Mapping[str, Mapping], *, iterations: int = 1000) -> dict:
+               method: Mapping[str, Mapping], *, iterations: int = 500) -> dict:
     clusters: dict[str, list] = defaultdict(list)
     for record in records:
         clusters[_cluster_key(record[0].id)].append(record)
@@ -315,8 +315,8 @@ def score_a(selector_path: Path, baseline_path: Path, frozen_manifest_path: Path
                 "policy": policy, "budget_groups_per_document": budget, "coverage": "30/30",
                 "metrics": metrics, "delta_over_unmodified": macro - baseline_metrics["macro_spearman"],
                 "selection_quality": _selection_quality(records, positions),
-                "bootstrap": _bootstrap(records, baseline, predictions),
-                "document_sensitivity": _sensitivity(records, baseline, predictions),
+                "bootstrap": _bootstrap(records, baseline, predictions) if policy == "suspicious_v1" else None,
+                "document_sensitivity": _sensitivity(records, baseline, predictions) if policy == "suspicious_v1" else None,
             }
             methods.append(row)
             for item, _gold in records:
