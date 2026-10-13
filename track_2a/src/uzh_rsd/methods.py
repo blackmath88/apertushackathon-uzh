@@ -136,7 +136,7 @@ def _normalise(token: str) -> str:
     return token.casefold().strip("\"'«»“”„‘’`")
 
 
-def locate(tokens: Sequence[str], excerpt: str) -> tuple[list[TokenSpan], str]:
+def locate(tokens: Sequence[str], excerpt: str, *, max_excerpt_tokens: int = B2_MAX_EXCERPT_TOKENS) -> tuple[list[TokenSpan], str]:
     """All occurrences of the excerpt's whitespace tokens in ``tokens``.
 
     Exact match first, then a case/quote-insensitive match. Returns the spans
@@ -145,7 +145,7 @@ def locate(tokens: Sequence[str], excerpt: str) -> tuple[list[TokenSpan], str]:
     parts = excerpt.split()
     if not parts:
         return [], "empty"
-    if len(parts) > B2_MAX_EXCERPT_TOKENS:
+    if len(parts) > max_excerpt_tokens:
         return [], "too_long"
     for mode, key in (("exact", lambda t: t), ("normalised", _normalise)):
         target = [key(part) for part in parts]
@@ -166,7 +166,7 @@ def _severity(value: object) -> float | None:
     return number
 
 
-def parse_b2(item: InferenceInput, content: str | None) -> MethodOutput:
+def parse_b2(item: InferenceInput, content: str | None, *, max_excerpt_tokens: int = B2_MAX_EXCERPT_TOKENS) -> MethodOutput:
     if content is None:
         return MethodOutput("b2", item.id, "call_failed")
     data, mode = load_json_object(content)
@@ -200,7 +200,7 @@ def parse_b2(item: InferenceInput, content: str | None) -> MethodOutput:
             counts["unknown_kind"] += 1
         located = []
         for side_tokens, excerpt in ((item.text_a.tokens, entry.get("a", "")), (item.text_b.tokens, entry.get("b", ""))):
-            spans, match = locate(side_tokens, excerpt)
+            spans, match = locate(side_tokens, excerpt, max_excerpt_tokens=max_excerpt_tokens)
             if match in ("exact", "normalised"):
                 counts[f"spans_{match}"] += 1
                 if len(spans) > 1:

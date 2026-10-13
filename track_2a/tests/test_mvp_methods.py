@@ -106,6 +106,27 @@ class B2ParseTests(unittest.TestCase):
         self.assertEqual(locate(tokens, "price")[1], "not_found")
         self.assertEqual(locate(tokens, "   ")[1], "empty")
 
+    def test_projection_cap_is_the_only_difference_between_p0_and_p1(self):
+        tokens = tuple(f"t{i}" for i in range(170))
+        excerpt = " ".join(tokens[:80])
+        self.assertEqual(locate(tokens, excerpt, max_excerpt_tokens=40)[1], "too_long")
+        spans, mode = locate(tokens, excerpt, max_excerpt_tokens=160)
+        self.assertEqual((mode, [(s.start, s.end) for s in spans]), ("exact", [(0, 80)]))
+
+    def test_ambiguous_strict_match_reports_every_real_occurrence(self):
+        spans, mode = locate(("a", "b", "a", "b"), "a b", max_excerpt_tokens=160)
+        self.assertEqual(mode, "exact")
+        self.assertEqual([(span.start, span.end) for span in spans], [(0, 2), (2, 4)])
+
+    def test_no_offsets_are_fabricated_for_unmatched_excerpt(self):
+        doc = item()
+        output = parse_b2(doc, json.dumps({"differences": [
+            {"a": "words that are absent", "b": "", "kind": "OMISSION", "severity": 5}
+        ]}), max_excerpt_tokens=160)
+        self.assertEqual(output.diagnostics["projected"], 0)
+        self.assertEqual(output.diagnostics["spans_not_found"], 1)
+        self.assertEqual(output.diff_a, [0.0] * len(doc.text_a))
+
     def test_projection_and_counts(self):
         doc = item()
         content = json.dumps({"differences": [
