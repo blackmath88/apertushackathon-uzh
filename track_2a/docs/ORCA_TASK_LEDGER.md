@@ -116,3 +116,15 @@ prompt/parser tuning, retries, fuzzy matching, or invented offsets. The Q8 GGUF
 is not claimed equivalent to the frozen BF16/HF pilot. Morrow stayed live and
 unchanged on 11435; the worker-started 11436 server was stopped after the run.
 Frozen pilot artifacts were hash-checked before and after and remained identical.
+
+---
+
+# B3 Semantic Decision Middleware — 13 Oct 2026, Nebuchadnezzar
+
+| ID | Owner / route | Base | Status | Evidence / limitations |
+|---|---|---|---|---|
+| B3-SDM | Orca dispatched Codex worker `task_1028b45cd9cd`; documented `orca-cli` + supervised orchestration fallback | `5892e50` = `origin/feat/b3-semantic-decision-middleware` | pre-inference checkpoint frozen | Dedicated branch `blackmath88/b3-sdm-implementation`; stdlib-first `uzh_rsd.sdm`; exact PR #14 30-ID manifest; 230 tasks, 219 model / 11 structural, 0 overflow, estimated 889.216 s. Local Q8 inference is permitted only after this checkpoint commit. |
+
+Controls: no official test inspection, Zürich crawl, HF job, cloud endpoint,
+paid compute, fallback model, retry, gold-informed routing, JSON repair or
+invented offset. The contract-only Zürich adapter performs no network access.
