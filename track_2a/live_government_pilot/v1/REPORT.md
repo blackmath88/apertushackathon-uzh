@@ -61,13 +61,13 @@ Ran 19 tests in 0.008s
 OK
 ```
 
-The initial delivery's repository-wide gate, before the exit-contract regression
-test was added, used repository-isolated setup and a pinned **dev-only** fetch:
+The repository-wide gate, including the exit-contract regression test, used
+repository-isolated setup and a pinned **dev-only** fetch:
 
 ```text
 make mvp-setup s1-fetch
 make s1-check
-Ran 148 tests in 8.029s
+Ran 149 tests in 7.648s
 OK
 manifest reproduces: 61e0e98b7a9347716f4a71bc002364a600993c7346d6046e4f8d65899059a835
 test split refused (expected)
