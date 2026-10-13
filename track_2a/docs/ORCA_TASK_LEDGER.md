@@ -123,7 +123,7 @@ Frozen pilot artifacts were hash-checked before and after and remained identical
 
 | ID | Owner / route | Base | Status | Evidence / limitations |
 |---|---|---|---|---|
-| B3-SDM | Orca dispatched Codex worker `task_1028b45cd9cd`; documented `orca-cli` + supervised orchestration fallback | `5892e50` = `origin/feat/b3-semantic-decision-middleware` | done; settlement pending coordinator receipt | Dedicated branch `blackmath88/b3-sdm-implementation`; pre-inference checkpoint `f6d620c`; exact PR #14 30-ID manifest; 230 tasks, 219 model / 11 structural, 0 overflow. One local Q8 run: 219 calls, 442.277 s, 42 valid classifier responses, 0/30 complete semantic decisions, 30/30 exact vectors, 177 UNKNOWN, 0 abstentions. Verdict **NOT SUPPORTED**; [report](../experiments/b3-sdm/local-q8-20261013/report.md). |
+| B3-SDM | Orca dispatched Codex worker `task_1028b45cd9cd`; documented `orca-cli` + supervised orchestration fallback | `5892e50` = `origin/feat/b3-semantic-decision-middleware` | implementation complete; settlement pending coordinator receipt | Dedicated branch `blackmath88/b3-sdm-implementation`; draft PR [#16](https://github.com/blackmath88/apertushackathon-uzh/pull/16); pre-inference checkpoint `f6d620c`; exact PR #14 30-ID manifest; 230 tasks, 219 model / 11 structural, 0 overflow. One local Q8 run: 219 calls, 442.277 s, 42 valid classifier responses, 0/30 complete semantic decisions, 30/30 exact vectors, 177 UNKNOWN, 0 abstentions. Verdict **NOT SUPPORTED**; [report](../experiments/b3-sdm/local-q8-20261013/report.md). |
 
 Controls: no official test inspection, Zürich crawl, HF job, cloud endpoint,
 paid compute, fallback model, retry, gold-informed routing, JSON repair or
