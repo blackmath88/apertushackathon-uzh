@@ -1,42 +1,56 @@
 # Publication review
 
-Prepared 2026-10-13 by Packet B (read-only research subagent), integrated by the coordinator; no visibility change, deletion or history rewrite is proposed. Repo visibility re-checked 13 Oct via `gh repo view`: PRIVATE. Not legal advice.
+First pass on 13 Oct 2026 by the Packet B subagent; second pass the same day by the coordinator, which added the log and Docker inventory and a recommendation. No visibility change, deletion, history rewrite or operative licence is made here. Repo visibility on 13 Oct (`gh repo view`): **PRIVATE**. Not legal advice.
 
 ## Inventory
+
 | Material | Licence / status | Source | Status |
 |---|---|---|---|
-| Labels (SwissGov-RSD) | CC BY 4.0 | HF dataset page, retrieved 2026-10-13 ("cc-by-4.0"); SOURCES.md cites dataset `LICENSE.md` | Confirmed (page); `LICENSE.md` itself not re-read. HF page states a single cc-by-4.0, SOURCES says the text part differs: reconcile. |
-| Source text (Swiss federal websites) | (c) Swiss federal authorities, admin.ch terms of use | SOURCES.md citing dataset `LICENSE.md` | Unresolved: admin.ch terms not read; redistribution conditions unknown. |
-| Apertus v1.5 8B (and 70B, unused) | Apache-2.0, gated | SOURCES.md (HF cards, 2026-10-07) | Confirmed by repo notes; gated-access terms not re-read. Model outputs: no stated restriction found; unresolved. No weights committed. |
-| Upstream prompts and evaluator (GitHub ZurichNLP/SwissGov-RSD @1807a42) | No top-level licence; only `rsd/LICENSE` (MIT, (c) 2023 Univ. of Zurich) for `rsd/` | SOURCES.md | Fetched at run time into ignored `data/`, hash-checked, not vendored (per SOURCES.md). Prompt text is embedded in `raw.jsonl` `prompt` fields, which are committed (see below): this is a copy of unlicensed upstream text. Unresolved. |
-| HackApertus template | Apache-2.0 | template README, retrieved 2026-10-13 | Confirmed. |
-| Own code | No LICENSE file anywhere in repo (searched outside `.venv`) | find, 2026-10-13 | Gap. T&C: code Apache-2.0 on submission (hackapertus.ch/terms-and-conditions, retrieved 2026-10-13). |
-| Own docs/report | `technical_report.md` states "Creative Commons Attribution 4.0 (CC-BY-4.0). All HackApertus projects are open-sourced." (line ~171) | repo | T&C: non-code docs CC-BY-4.0 (confirmed). |
+| Labels (SwissGov-RSD) | CC BY 4.0 | HF dataset card, retrieved 13 Oct ("cc-by-4.0"); SOURCES.md cites dataset `LICENSE.md` | Card confirmed; `LICENSE.md` not re-read. SOURCES says the text part has different terms: reconcile. |
+| Source text (Swiss federal websites) | © Swiss federal authorities, admin.ch terms of use | SOURCES.md, citing the dataset `LICENSE.md` | **Unresolved:** admin.ch terms not read; redistribution conditions unknown. |
+| Apertus v1.5 8B | Apache-2.0, gated | SOURCES.md (HF cards, 7 Oct) | Recorded in repo notes; gated-access terms not re-read. No weights committed. |
+| Upstream prompts and evaluator (`ZurichNLP/SwissGov-RSD` @ `1807a42`) | No top-level licence; `rsd/LICENSE` (MIT) covers only `rsd/` | SOURCES.md | Fetched at run time and hash-checked, not vendored. **However, the full prompt text is embedded in committed `raw.jsonl`.** |
+| HackApertus template | Apache-2.0 | template README, 13 Oct | Confirmed. |
+| Hackathon terms | Code Apache-2.0, docs CC BY 4.0; keep pre-existing third-party material separate | hackapertus.ch/terms-and-conditions, 13 Oct | Confirmed by the first pass. |
+| Own code | **No LICENSE file** | repo search, 13 Oct | Gap. The terms expect Apache-2.0 on submission. |
+| Own docs / report | The report's licence section is scoped (13 Oct, `662e14d`): our docs CC BY 4.0, code intended Apache-2.0, third-party material keeps its terms | `technical_report.md` §License | Done. Not an operative licence grant for code until a LICENSE file is added. |
 
-## Committed text-bearing artifacts (`track_2a/results/20261012T062327Z-ff965461/`)
-- `raw.jsonl`: per call full prompt (incl. upstream template and few-shot examples), dev source tokens of 9 documents, model output. Contains third-party source text, upstream prompt text and Apertus output.
-- `predictions/` (b0, b2): tokens/text and labels (labels CC BY 4.0 derivative; text third party).
-- `job.log`, `prior_jobs/`, `launch.json`, `compute.json`, `run_meta.json`, `results.*`: logs/metadata; `job.log` and `prior_jobs` may echo model output or prompts (not checked for text). Checklist records a secret scan clean (12 Oct, unverified here).
-- `Dockerfile` copies `results/` into the image, so any image distribution also carries these.
-- Prior commits on the branch contain the same data; history rewriting is out of scope.
+## Text-bearing files (inspected 13 Oct)
 
-## CC BY wording and ownership
-`technical_report.md` ("Creative Commons Attribution 4.0 ... All HackApertus projects") sits repo-wide with no scoping. Read literally it could imply the whole repo, including embedded dev source text (c) Swiss federal authorities and upstream prompts, is CC BY 4.0 from us. Per T&C, one should "keep separate" pre-existing material one will not open-source. Needed: a notice (e.g. NOTICE/README section) that third-party material keeps its own terms, and an explicit per-file scope. Not yet written; owner decision.
+| Path | Third-party text? | Notes |
+|---|---|---|
+| `results/<run>/raw.jsonl` (167 KB) | **Yes:** full prompts, containing upstream template text, few-shot examples and the 9 dev source documents (EN + DE/FR/IT), plus Apertus outputs | The only file needed for offline replay |
+| `results/<run>/predictions/{b0,b2}/*.jsonl` | **Yes:** `text_a` / `text_b` of each valid document (e.g. `admin_fr_136`, 1.2 k chars) plus our labels | The "model predictions" deliverable |
+| `results/<run>/job.log`, `prior_jobs/*.log` | No dataset or model text found (searched for prompt markers, JSON keys, `admin.ch`). The B0/B2 job log has document IDs, token counts and latencies. | Smoke log contains a `SMOKE_TEST_OK` marker; a full manual read was not done |
+| `results/<run>/{results.json,results.md,run_meta.json,launch.json,compute.json}` | No; metadata and scores | |
+| `diagnostics/<run>/audit_supplement.*` | No; excerpts are referenced by sha256 and token length | Added 13 Oct |
+| Docker image (`Dockerfile`) | **Yes:** `COPY results` puts `raw.jsonl` and predictions into the image. `data/`, `runs/`, `tests/`, `docs/` are excluded by `.dockerignore`. | No image has been published. Pushing an image would redistribute the same text. |
+| Git history | Same files since `2adaeda` | History rewriting is out of scope. |
 
-## Options (owner decision)
-1. Publish as is with an added third-party notice (risk: redistributing admin.ch text and upstream prompts without confirmed permission).
-2. Publish code + docs + aggregate scores/metadata, and exclude text-bearing artifacts from the public tree or ship them only as hashes/ids plus the `make reproduce` fetch path. Cached replay then needs the raw file, so this would change what `make reproduce` can do.
-3. Keep private, grant read access to judges/organisers only, if the rules allow (unconfirmed; submission rule says open source).
-4. Ask UZH/organisers for permission for dev text + prompt redistribution first, then pick 1 or 2.
-These options need not delete or rewrite anything; evidence stays on the private branch.
+## Recommended path (owner decision)
+
+**Ask first, then publish with a third-party notice (option 4 → 1).**
+
+1. Send the consolidated organiser message ([JUDGE_READINESS.md](JUDGE_READINESS.md)). Its question 5 asks whether committed raw outputs containing dev source text and the upstream prompt text are acceptable in the public repository.
+2. Meanwhile prepare, without committing to it yet:
+   - a `LICENSE` (Apache-2.0) for our code;
+   - a `NOTICE` / README section stating that the dataset labels are CC BY 4.0 (ZurichNLP), source texts are © Swiss federal authorities, upstream prompts and evaluator are ZurichNLP material without a stated licence, and none of these is relicensed.
+3. If UZH agrees, or does not object before the deadline, make the repository public as the terms require.
+
+Why this path: the hackathon requires open source and model predictions, and predictions in the official format inherently contain the dataset text. The dataset, source texts included, is already publicly distributed on Hugging Face (card: cc-by-4.0, with the text terms still to be reconciled). The open risk is the upstream prompt text (no licence), and the provider can resolve that in one answer.
+
+## Alternatives
+
+- **Publish as is, with the notice.** Fastest. Carries the unconfirmed prompt-text redistribution risk.
+- **Publish without text-bearing artefacts.** Keep `raw.jsonl` and predictions private, or replace them with IDs plus hashes. This breaks `make reproduce` and the predictions deliverable, so it is not recommended unless UZH objects.
+- **Stay private and grant judges access.** Conflicts with the open-source requirement; only if the organisers explicitly allow it.
 
 ## Unresolved permission questions
-1. Does admin.ch terms of use permit redistributing the dev text excerpts, and under what attribution? (not read)
-2. May the upstream template text (no licence) be committed inside `raw.jsonl`? Ask UZH (N-LIC-1).
-3. Do dataset `LICENSE.md` and the HF card agree (CC BY 4.0 labels, text (c) authorities vs "cc-by-4.0")?
-4. Do hackathon rules require open source on submission even where third-party material is restricted? (T&C: keep separate; submitted datasets must state per-item licences.)
-5. Are Apertus gated-model terms compatible with publishing outputs? (not re-read)
-6. Which repo LICENSE file(s) to add and who is the rightsholder (team name/members open)?
-7. Do committed logs contain anything beyond the scanned secrets?
 
-Sources retrieved 2026-10-13: hackapertus.ch/terms-and-conditions; github.com/HackApertus/project-template; huggingface.co/datasets/ZurichNLP/SwissGov-RSD. Notion pages unreadable.
+1. Do the admin.ch terms permit redistributing the dev excerpts, and with what attribution? (not read)
+2. May the upstream template text (no licence) appear inside committed `raw.jsonl`? (N-LIC-1; ask UZH)
+3. Do the dataset `LICENSE.md` and the HF card agree?
+4. Rightsholder name for LICENSE/NOTICE: team name and members are an owner input.
+5. Are the Apertus gated-model terms compatible with publishing its outputs? (not re-read)
+
+Sources retrieved 13 Oct: hackapertus.ch/terms-and-conditions; github.com/HackApertus/project-template; huggingface.co/datasets/ZurichNLP/SwissGov-RSD; hackapertus.notion.site (track and submission pages).

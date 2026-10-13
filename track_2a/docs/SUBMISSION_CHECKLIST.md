@@ -1,6 +1,6 @@
 # Submission checklist — Hack Apertus Track 2A, UZH SwissGov-RSD
 
-These rules come from the pinned sources in [SOURCES.md](SOURCES.md): the UZH brief in `docs/challenge-source/CHALLENGE.md` and the HackApertus template at `7f23822`. Status is as of 13 October 2026, on the B0/B2 MVP branch (review pass: [ORCA_TASK_LEDGER.md](ORCA_TASK_LEDGER.md)).
+These rules come from the pinned sources in [SOURCES.md](SOURCES.md): the UZH brief in `docs/challenge-source/CHALLENGE.md` and the HackApertus template at `7f23822`. Status is as of 13 October 2026 (second pass), on the B0/B2 MVP branch (review pass: [ORCA_TASK_LEDGER.md](ORCA_TASK_LEDGER.md)).
 
 Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not started · ⛔ blocked / owner decision
 
@@ -27,8 +27,8 @@ Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not s
 | U2 | **Test set never used in development** | ✅ | No test path in code; split guard before I/O, covering every CLI command (tests) |
 | U3 | Token-level Spearman per pair, macro over DE/FR/IT; official preprocessing | ✅ | Parity with the pinned official `compute_correlations`; cross-check reported with every result |
 | U4 | Apertus v1.5 8B or 70B | ✅ | `swiss-ai/Apertus-v1.5-8B@a411d83` measured on HF Jobs L40S: run `20261012T062327Z-ff965461`, job `6acc7ce1…`. 18/18 calls returned. |
-| U5 | Reproduce a paper baseline with your Apertus model | 🟡 | B0 measured. Only 3 of 9 documents are valid: 3 truncated at 4096 tokens, 3 malformed JSON. Matched macro 0.136; paper protocol 0.268 is a zero-fill artefact. Expanded dev slice still open. |
-| U6 | Code, **model predictions**, short method description | 🟡 | Code ✅, method ✅, dev predictions ✅ in `results/20261012T062327Z-ff965461/predictions/`. The judge's prediction format (N-RULES-4) and test-time procedure (N-RULES-1) are unconfirmed. |
+| U5 | Reproduce a paper baseline with your Apertus model | 🟡 | B0 measured. Only 3 of 9 documents are parseable, and none is strictly valid (46/541 fallback tokens): 3 truncated at 4096 tokens, 3 malformed JSON. Matched macro 0.136; paper protocol 0.268 is a zero-fill artefact. Expanded dev slice still open. |
+| U6 | Code, **model predictions**, short method description | ⛔ | Code ✅, method ✅, dev predictions ✅ in `results/20261012T062327Z-ff965461/predictions/`. The judge's prediction format (N-RULES-4) is unconfirmed. The UZH Q&A asks for **test** predictions in full-set order (N-RULES-1); none exist. |
 | U7 | Secondary: efficiency, innovation | ✅ | Measured: B2 used 4,682 completion tokens and 150 s of generation; B0 used 22,945 tokens and 733 s, on the same 9 documents |
 
 ## Open questions and blockers
@@ -36,8 +36,8 @@ Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not s
 | ID | Question | Impact | Owner action |
 |---|---|---|---|
 | N-RUN-1 | ~~First measured B0/B2 GPU run~~ | Done 12 Oct: run `20261012T062327Z-ff965461`; total HF compute ≤ $0.75 | Decide whether to fund an expanded, predeclared dev slice (new compute authorisation needed) |
-| N-JUDGE-1 | Which Apertus v1.5 endpoint can judges use for `make run`? Swisscom auth failed; HF/Featherless returned 1010; HF Jobs is batch, not an endpoint. | Live judge rerun may be impossible. `make reproduce` re-scores committed raw outputs without a model. | Organiser message drafted, **not sent**: [JUDGE_READINESS.md](JUDGE_READINESS.md). Live endpoint execution never performed against real Apertus. |
-| N-RULES-1 | How is the held-out test evaluated (teams submit predictions vs judges run code)? | Whether we ever run on test, and how | UZH Q&A / organisers |
+| N-JUDGE-1 | Which Apertus v1.5 endpoint can judges use for `make run`? Swisscom auth failed; HF/Featherless returned 1010; HF Jobs is batch, not an endpoint. | A live judge rerun is unconfirmed, not proven impossible. A CSCS API exists with a 60 s gateway timeout, which 5 of 9 B0 pilot calls exceeded on the L40S. `make reproduce` re-scores committed raw outputs with no model inference. | Organiser message drafted, **not sent**: [JUDGE_READINESS.md](JUDGE_READINESS.md). Live endpoint execution never performed against real Apertus. |
+| N-RULES-1 | How is the held-out test evaluated? | **Answered in the UZH Q&A (read 13 Oct):** judges score on the test split; teams run on test only at the end and include predictions in "full-set order". The repo is dev-only and has no test predictions. | **Blocker.** Owner: authorize a separate final-evaluation path and a test run (new compute). Clarify "full-set order" (message drafted in [JUDGE_READINESS.md](JUDGE_READINESS.md)). |
 | N-RULES-2 | Are the 34 `list_to_drop.txt` ids excluded for LLM systems? | Manifest already excludes them | Confirm |
 | N-RULES-4 | Exact prediction file format | We export the encoder-style format | Confirm |
 | N-LIC-1 | Upstream repo has no top-level licence | Evaluator and prompts are fetched at run time, not vendored | Keep, or ask UZH |

@@ -1,6 +1,6 @@
 # Status — 13 October 2026 (B0/B2 MVP branch)
 
-**Candidate prepared with blockers.** Live endpoint judge execution has never been performed against a real Apertus endpoint, and the official evaluation contract is unconfirmed. Review pass 13 Oct: [review](review/REVIEW_2026-10-13.md), [judge readiness](JUDGE_READINESS.md), [publication review](PUBLICATION_REVIEW.md), [task ledger](ORCA_TASK_LEDGER.md).
+**Candidate prepared with blockers.** Live endpoint judge execution has never been performed against a real Apertus endpoint, and the official evaluation contract is unconfirmed. Corrections on 13 Oct, second pass: "valid" became "parseable" for B0; "a tie" became near-equality; B2 loss accounting now has explicit units ([audit supplement](../diagnostics/20261012T062327Z-ff965461/audit_supplement.md)); replay network needs stated; test-split judging added as a blocker. Review pass 13 Oct: [review](review/REVIEW_2026-10-13.md), [judge readiness](JUDGE_READINESS.md), [publication review](PUBLICATION_REVIEW.md), [task ledger](ORCA_TASK_LEDGER.md).
 
 Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 
@@ -9,9 +9,9 @@ Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 - **Run `20261012T062327Z-ff965461`** (HF job `6acc7ce1095c578089328f6d`, COMPLETED). Evidence is in [`results/20261012T062327Z-ff965461/`](../results/20261012T062327Z-ff965461/results.md) and the findings in [technical report §5](../technical_report.md#5-evaluation).
   - 18 of 18 calls returned: no call failures, no deadline skips, no upload failures.
   - Running time 994 s. Before that the job waited 53 min for hardware, which is not billed. Recovered logs of the two earlier smoke jobs are in `prior_jobs/`.
-- **Coverage.** B2 has valid output for 9 of 9 documents. B0 has it for 3 of 9: three responses were truncated at 4096 tokens (`*_197`) and three were malformed JSON that stopped normally (`*_136`).
-- **Matched comparison (n = 3, one document per language sharing one English source):** macro Spearman 0.136 for B0 and 0.138 for B2, a tie.
-  - B2 dropped 14 excerpts over its 40-token cap (6 of 7 unprojected items) and could not locate 4 more in `admin_fr_43`.
+- **Coverage.** B2 output is parseable for 9 of 9 documents. B0 output is parseable for 3 of 9: three responses were truncated at 4096 tokens (`*_197`) and three were malformed JSON that stopped normally (`*_136`). None of the three parseable B0 documents is strictly valid: 46 of 541 tokens fell back to "no difference".
+- **Matched comparison (n = 3, one document per language sharing one English source):** macro Spearman 0.136 for B0 and 0.138 for B2. Nearly equal; no accuracy advantage is demonstrated.
+  - Of B2's 41 items, 30 were projected completely, 4 partially (one excerpt located, the other not) and 7 not at all. The 7 unprojected items are 6 with both excerpts over the 40-token cap and 1 with both excerpts not found (`admin_fr_43`). Counted per excerpt (two per item): 14 over the cap (12 in unprojected items, 2 in partial ones) and 4 not found (2 + 2), all 4 in `admin_fr_43`. Accounting: [audit supplement](../diagnostics/20261012T062327Z-ff965461/audit_supplement.md).
   - B2 over all 9 of its documents reaches macro 0.175.
   - B2 used about 20 % of B0's completion tokens and generation time.
   - B0's paper-protocol 0.268 comes from zero-filled documents (6 of 9) creating a between-document offset; it is not token-level skill.
@@ -30,14 +30,15 @@ Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 - **Scoring.** Matched / available / paper-protocol views with coverage and usage, official-format prediction export, official evaluator cross-check.
 - **Backends.** OpenAI-compatible endpoint (judge path, tested against mock HTTP); transformers (HF batch GPU, now measured on L40S).
 - **HF Jobs launcher.** Private dataset repo `metamax88/uzh-rsd-runs` for bundle and results; privacy was verified, and an anonymous request gets HTTP 401. Results upload after every call, with a log-bundle fallback. A spend ledger enforces a hard ceiling, and `attempts=1`.
-- **Docker.** `make run` builds and runs the image. Without `LLM_*` it stops with BLOCKED (exit 3). `make reproduce` re-scores committed raw responses offline.
-- **Checks.** On the Mac with Python 3.13, `make s1-check` gives 83 tests and zero skips. The manifest reproduces and the test split is refused.
+- **Docker.** `make run` builds and runs the image. Without `LLM_*` it stops with BLOCKED (exit 3). `make reproduce` re-scores committed raw responses with no model inference. It still needs network access for the base image and the pinned dev data/evaluator files.
+- **Checks.** On the Mac with Python 3.13, `make s1-check` gives 87 tests and zero skips (83 before the 13 Oct audit-supplement tests). The manifest reproduces and the test split is refused.
 
 ## Not yet done
 
 - **Larger dev slice.** Only the nine-document pilot is measured. A larger, predeclared dev slice is needed before any claim about which method correlates better.
 - **Judge endpoint.** No Apertus endpoint for `make run` is confirmed (N-JUDGE-1).
-- **Live Docker run.** `make run` has not run against a real Apertus endpoint, because none is available to judges (N-JUDGE-1). From a clean clone, the offline `make reproduce` path was verified on 12 Oct (checklist E3).
+- **Live Docker run.** `make run` has not run against a real Apertus endpoint: no endpoint for judges is confirmed (N-JUDGE-1), which does not mean none exists. The UZH Q&A mentions a CSCS inference API with a 60 s gateway timeout. Docker `make reproduce` was verified from a clean clone on 12 Oct and again at `662e14d` on 13 Oct.
+- **Test-split predictions (N-RULES-1, new 13 Oct).** The UZH Q&A says judges score on the test split and teams run their system on it at the end. This repo has no final-evaluation path and no test predictions. Adding them needs an owner decision and new compute; see [JUDGE_READINESS.md](JUDGE_READINESS.md).
 
 ## Compute (all Hack Apertus HF Jobs on account `metamax88`)
 
