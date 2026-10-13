@@ -46,6 +46,8 @@ Coordinator: Claude Code desktop session (requested Opus 5.5), owner's Mac. **Ro
 | S2-3 | Bounded source research (about 10 min) | done | Notion track and submission pages plus the UZH Q&A doc are readable. **Judges score on the test split (N-RULES-1, new blocker)**; a CSCS API with a 60 s gateway timeout exists. Submission form fields were not inspected (no form interaction); FAQ did not render. |
 | S2-4 | Publication inventory + recommended path | done | [PUBLICATION_REVIEW.md](PUBLICATION_REVIEW.md); logs contain no dataset or model text; the Docker image carries `raw.jsonl` and predictions |
 | S2-5 | Next-experiment protocol (not run) | done | [NEXT_EXPERIMENT_PROTOCOL.md](NEXT_EXPERIMENT_PROTOCOL.md) |
-| S2-6 | Verification, PR body, push | see the review commit row in the [review](review/REVIEW_2026-10-13.md) second-pass section | — |
+| S2-6 | Verification, PR body, push | done | Code fix `67b7326`; final head = the commit adding this row (read back from the PR after push; reported in the PR body and handoff). s1-check 89 OK / 0 skips; frozen evidence diff vs `d30559c` empty; Docker reproduce exit 0 / run BLOCKED on the `6766a70`-equivalent tree; PR #12 body replaced, `isDraft` read back true |
 
 Review: **self-review only**; the independent review gate remains open. No paid compute, model inference, organiser contact, merge or visibility change.
+
+Second pass settled: no workers were started, so none remain. The scratch worktree `prep2` and local branch `prep/audit-supplement-20261013` are removed after push; the main checkout is fast-forwarded to the final head. Open owner action: inspect the submission form's Track 2A fields (not inspected, deadline 16 Oct 12:00 CEST).

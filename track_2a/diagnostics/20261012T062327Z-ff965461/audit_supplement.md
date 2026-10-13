@@ -3,7 +3,7 @@
 Accounting diagnostic re-read from frozen raw responses with unchanged parsers. No scores; not a new experiment.
 
 - raw.jsonl sha256 `d0e49eac0a9f917d47ca700a41a69fe4c16a73000326185aeae8a40aa0b68f8c`; run directory unchanged: True
-- code commit `43eb63ccf720791b564045bcdb97eefcc674b459` (src dirty: False); invocation: `python -m uzh_rsd.cli audit --run results/20261012T062327Z-ff965461`
+- code commit `67b732605a90fa3bd44be8f5598787c63b73dc35` (src dirty: False); invocation: `python -m uzh_rsd.cli audit --run results/20261012T062327Z-ff965461`
 
 ## B0
 

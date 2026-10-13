@@ -31,7 +31,7 @@ Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 - **Backends.** OpenAI-compatible endpoint (judge path, tested against mock HTTP); transformers (HF batch GPU, now measured on L40S).
 - **HF Jobs launcher.** Private dataset repo `metamax88/uzh-rsd-runs` for bundle and results; privacy was verified, and an anonymous request gets HTTP 401. Results upload after every call, with a log-bundle fallback. A spend ledger enforces a hard ceiling, and `attempts=1`.
 - **Docker.** `make run` builds and runs the image. Without `LLM_*` it stops with BLOCKED (exit 3). `make reproduce` re-scores committed raw responses with no model inference. It still needs network access for the base image and the pinned dev data/evaluator files.
-- **Checks.** On the Mac with Python 3.13, `make s1-check` gives 87 tests and zero skips (83 before the 13 Oct audit-supplement tests). The manifest reproduces and the test split is refused.
+- **Checks.** On the Mac with Python 3.13, `make s1-check` gives 89 tests and zero skips (83 before the 13 Oct audit-supplement tests). The manifest reproduces and the test split is refused.
 
 ## Not yet done
 
