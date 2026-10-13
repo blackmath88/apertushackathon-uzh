@@ -7,6 +7,12 @@
     "worker_terminal": "term_952ae3a7-947f-4d22-95d0-b2d5dade9f23",
     "coordinator_terminal": "term_cd63a69b-33ce-4197-bd48-722351837e4a"
   },
+  "delivery": {
+    "branch": "blackmath88/b5-competitive-semantic-alignment",
+    "base": "blackmath88/b4-alignment-first-sdm",
+    "draft_pr": "https://github.com/blackmath88/apertushackathon-uzh/pull/19",
+    "evidence_package_commit": "430d777"
+  },
   "downloads": [
     {
       "artifact": "ZurichNLP/SwissGov-RSD pinned dev files plus official evaluator source",

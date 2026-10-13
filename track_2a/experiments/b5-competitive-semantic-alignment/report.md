@@ -10,6 +10,8 @@
 
 This was supervised Orca run `run_158bac75bf36`, Task `task_6e2fa3b39103`, Dispatch `ctx_9bf06ed898d3`, worker `term_952ae3a7-947f-4d22-95d0-b2d5dade9f23`, coordinator `term_cd63a69b-33ce-4197-bd48-722351837e4a`. The worktree began at exact PR #17 head `25380bf280bf6639c71ebbff0a927ceef6e2fffc` on branch `blackmath88/b5-competitive-semantic-alignment`.
 
+Delivery is draft PR [#19](https://github.com/blackmath88/apertushackathon-uzh/pull/19), stacked only on `blackmath88/b4-alignment-first-sdm`. The complete pre-delivery evidence package is commit `430d777`; the PR head adds only this delivery pointer and its refreshed package checksum.
+
 The required order was enforced. The selector was committed at `dd4141f` before A gold scoring. Gate A reported the exact condition and uncertainty through a blocking coordinator ask; the reply authorized B. The B availability/cost/parameter freeze was committed at `231423a` before the 8.06 GB model download. Gate B was then reported through a second blocking ask; the coordinator ordered "Stop and package," so no C action occurred.
 
 ## Experiment A — oracle intervention
