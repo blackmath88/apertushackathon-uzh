@@ -13,9 +13,10 @@ from pathlib import Path
 import re
 import sys
 from urllib.parse import urlsplit
+from urllib.request import build_opener, ProxyHandler
 
 from .observatory_capture import digest, save_capture, verify_document, write_new
-from .zurich_pilot import Captured, normalize_url, scout
+from .zurich_pilot import Captured, NoRedirects, normalize_url, scout
 
 
 def now():
@@ -60,7 +61,7 @@ def accepted_pairs(documents, reviews):
             raise ValueError("review timestamp needs timezone")
         de = documents[normalize_url(review["de"])]
         en = documents[normalize_url(review["en"])]
-        if not (de.get("language") or "").startswith("de") or not (en.get("language") or "").startswith("en"):
+        if not re.fullmatch(r"de(?:-[a-z0-9]{2,8})*", de.get("language") or "") or not re.fullmatch(r"en(?:-[a-z0-9]{2,8})*", en.get("language") or ""):
             raise ValueError("pair language metadata does not match DE/EN")
         if de["status"] != "ok" or en["status"] != "ok":
             raise ValueError("pair requires usable extracted content")
@@ -94,6 +95,7 @@ def make_bundle(root, reviews):
 
 
 def seal(bundle):
+    bundle["model_calls"] = sum(p["analysis"].get("model_calls", 0) for p in bundle["pairs"])
     bundle["bundle_digest"] = digest({k: v for k, v in bundle.items() if k != "bundle_digest"})
 
 
@@ -102,16 +104,43 @@ def check_bundle(bundle):
         raise ValueError("not a pilot bundle")
     if digest({k: v for k, v in bundle.items() if k != "bundle_digest"}) != bundle.get("bundle_digest"):
         raise ValueError("bundle integrity mismatch")
+    if not isinstance(bundle.get("pairs"), list) or not isinstance(bundle.get("unpaired"), list):
+        raise ValueError("invalid bundle collections")
+    seen_pairs = set()
     for p in bundle["pairs"]:
+        if p["pair_id"] in seen_pairs:
+            raise ValueError("duplicate pair identity")
+        seen_pairs.add(p["pair_id"])
         for lang in ("de", "en"):
             verify_document(p[lang])
             normalize_url(p[lang]["url"])
         expected = accepted_pairs({p["de"]["url"]: p["de"], p["en"]["url"]: p["en"]}, [p["pairing_review"]])[0]
         if p["pair_id"] != expected["pair_id"] or p["revision"] != expected["revision"]:
             raise ValueError("pair identity mismatch")
+        analysis = p["analysis"]
+        if analysis.get("status") not in {"not_run", "ok", "unparseable", "call_failed", "unresolved"}:
+            raise ValueError("unknown analysis state")
+        if not isinstance(analysis.get("candidates"), list):
+            raise ValueError("invalid candidate collection")
+        if analysis["status"] != "ok" and analysis["candidates"]:
+            raise ValueError("unresolved analysis cannot carry accepted candidate output")
+        for candidate in analysis["candidates"]:
+            if candidate.get("review_state") not in {"candidate", "unresolved"}:
+                raise ValueError("model records cannot claim human review authority")
+            for lang in ("de", "en"):
+                for span in candidate[lang]["locations"]:
+                    start, end = span["start"], span["end"]
+                    if type(start) is not int or type(end) is not int or not 0 <= start < end <= len(p[lang]["text"]):
+                        raise ValueError("invalid evidence location")
+                    expected_blocks = [b["id"] for b in p[lang]["blocks"] if b["start"] < end and b["end"] > start]
+                    if span["block_ids"] != expected_blocks:
+                        raise ValueError("evidence block references mismatch")
     for doc in bundle["unpaired"]:
         verify_document(doc)
         normalize_url(doc["url"])
+    expected_calls = sum(p["analysis"].get("model_calls", 0) for p in bundle["pairs"])
+    if type(bundle.get("model_calls")) is not int or bundle["model_calls"] != expected_calls:
+        raise ValueError("model-call accounting mismatch")
     return bundle
 
 
@@ -132,7 +161,7 @@ def localize(doc, excerpt):
 def method_provenance():
     from .prompts import B2_PROMPT_VERSION
     here = Path(__file__).parent
-    return {"method": "b2", "prompt_version": B2_PROMPT_VERSION, "adapter_version": "lis-b2-evidence-v1",
+    return {"method": "b2", "prompt_version": B2_PROMPT_VERSION, "adapter_version": "lis-b2-evidence-v2",
             "tokenization": "str.split/character-offsets-v1", "projection_excerpt_limit": 40,
             "source_hashes": {name: sha256((here / name).read_bytes()).hexdigest() for name in
                               ("prompts.py", "methods.py", "tokens.py", "observatory.py")},
@@ -159,7 +188,12 @@ def analyze_pair(pair, backend, runtime):
                 "candidates": [], "model_calls": 0, "provenance": provenance}
     prompt = render_b2(item)
     generated = backend.generate(prompt, 1024)
-    parsed = parse_b2(item, generated.text)
+    try:
+        parsed = parse_b2(item, generated.text)
+    except (ValueError, TypeError, OverflowError, RecursionError) as exc:
+        # Preserve the exact raw output; never repair the frozen scientific parser.
+        from .methods import MethodOutput
+        parsed = MethodOutput("b2", item.id, "unparseable", diagnostics={"pilot_validation_error": type(exc).__name__})
     data, mode = load_json_object(generated.text) if generated.text is not None else (None, "call_failed")
     candidates = []
     if parsed.status == "ok":
@@ -172,7 +206,7 @@ def analyze_pair(pair, backend, runtime):
             kind, severity = entry.get("kind"), entry.get("severity")
             if not isinstance(a, str) or not isinstance(b, str):
                 issues.append("invalid_excerpt_type")
-            if kind not in {"CHANGE", "ADDITION", "OMISSION"}:
+            if not isinstance(kind, str) or kind not in {"CHANGE", "ADDITION", "OMISSION"}:
                 issues.append("unknown_kind")
             if isinstance(severity, bool) or not isinstance(severity, (int, float)) or not math.isfinite(severity) or not 1 <= severity <= 5:
                 issues.append("invalid_severity")
@@ -223,9 +257,15 @@ def replay(bundle):
     """Re-derive candidate localisation from saved raw B2 output, zero calls."""
     from .backends import Generation
     check_bundle(bundle)
+    replayed, unresolved_attempts = 0, 0
     for pair in bundle["pairs"]:
         analysis = pair["analysis"]
         if analysis["status"] == "not_run":
+            continue
+        if analysis.get("reason") in {"attempt_exception", "interrupted_attempt"}:
+            if "raw_text" in analysis and sha256(analysis["raw_text"].encode()).hexdigest() != analysis.get("raw_sha256"):
+                raise ValueError("unresolved attempt raw hash mismatch")
+            unresolved_attempts += 1
             continue
         for name, expected in analysis["provenance"]["source_hashes"].items():
             if name not in {"prompts.py", "methods.py", "tokens.py", "observatory.py"}:
@@ -239,7 +279,9 @@ def replay(bundle):
         keys = ("status", "reason", "candidates", "diagnostics", "prompt_sha256", "raw_sha256", "provenance", "model_calls", "finish_reason")
         if any(repeated.get(key) != analysis.get(key) for key in keys):
             raise ValueError("saved analysis replay mismatch")
-    return {"replayed_pairs": len(bundle["pairs"]), "new_model_calls": 0, "new_website_requests": 0}
+        replayed += 1
+    return {"replayed_pairs": replayed, "not_run_pairs": sum(p["analysis"]["status"] == "not_run" for p in bundle["pairs"]),
+            "unresolved_attempts": unresolved_attempts, "new_model_calls": 0, "new_website_requests": 0}
 
 
 def reextract(root, out):
@@ -344,11 +386,35 @@ def main(argv=None):
     s.add_argument("--reviewer", required=True)
     s.add_argument("--rationale", required=True)
     s.add_argument("--out", type=Path, required=True)
+    s = sub.add_parser("local-run", help="verified local endpoint → saved attempts → evidence desk")
+    s.add_argument("--bundle", type=Path, required=True)
+    s.add_argument("--runtime", type=Path, required=True)
+    s.add_argument("--endpoint", default="http://127.0.0.1:11436/v1")
+    s.add_argument("--model", required=True)
+    s.add_argument("--gguf", type=Path, help="optional local GGUF hash verification")
+    s.add_argument("--confirm-local-inference", action="store_true")
+    s.add_argument("--out", type=Path, required=True)
+    s = sub.add_parser("serve", help="read-only local evidence desk; no model endpoints")
+    s.add_argument("--html", type=Path, required=True)
+    s.add_argument("--port", type=int, default=8765)
     args = p.parse_args(argv)
     try:
         if getattr(args, "out", None) and args.out.exists():
             raise ValueError("output already exists; use a fresh path")
-        if args.command == "capture":
+        if args.command == "serve":
+            from .observatory_run import serve_viewer
+            serve_viewer(args.html, args.port)
+        elif args.command == "local-run":
+            if not args.confirm_local_inference:
+                print("BLOCKED: local-run requires --confirm-local-inference; zero requests")
+                return 3
+            from .observatory_run import run_local
+            meta = run_local(check_bundle(json.loads(args.bundle.read_text())), args.out, args.endpoint, args.model,
+                             json.loads(args.runtime.read_text()), gguf=args.gguf)
+            print(json.dumps({"state": meta["state"], "model_calls": meta["model_calls"],
+                              "model_output_coverage": meta["model_output_coverage"], "viewer": str(args.out / "index.html")}))
+            return (0 if meta["model_output_coverage"] == "all_pairs_parseable" else 4) if meta["state"] == "attempts_completed" else 3
+        elif args.command == "capture":
             if not args.confirm_live or not args.personal_use_only:
                 print("BLOCKED: capture needs --confirm-live --personal-use-only; zero requests")
                 return 3
@@ -389,7 +455,8 @@ def main(argv=None):
                         not runtime.get("runtime_revision") or runtime.get("model_family") != "Apertus"):
                     raise ValueError("runtime pin needs Apertus model SHA-256 and runtime revision")
                 from .backends import OpenAICompatibleBackend
-                backend = OpenAICompatibleBackend(args.endpoint, args.model, "local", timeout_s=90)
+                backend = OpenAICompatibleBackend(args.endpoint, args.model, "local", timeout_s=90,
+                                                   opener=build_opener(ProxyHandler({}), NoRedirects()).open)
                 # Reserve output BEFORE calls. Each pair checkpoint survives interruption.
                 args.out.mkdir(parents=True, exist_ok=False)
                 for pair in bundle["pairs"]:
@@ -412,7 +479,7 @@ def main(argv=None):
             else:
                 print(json.dumps({"verified": True, "pairs": len(bundle["pairs"]), "model_calls": bundle["model_calls"]}))
         return 0
-    except (ValueError, KeyError, OSError, StopIteration, RuntimeError) as exc:
+    except (ValueError, KeyError, OSError, StopIteration, RuntimeError, TypeError, IndexError) as exc:
         print("BLOCKED: " + type(exc).__name__ + ": " + str(exc), file=sys.stderr)
         return 3
 

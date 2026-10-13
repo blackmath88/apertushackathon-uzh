@@ -6,6 +6,7 @@ HTML locations are character offsets in decoded UTF-8, not DOM byte offsets.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime
 from hashlib import sha256
 from html.parser import HTMLParser
 import json
@@ -214,9 +215,26 @@ def verify_document(document, root: Path | None = None):
         raise ValueError("text digest mismatch")
     if document["capture_id"] != digest([document["url"], document["retrieved_at_utc"], document["html_sha256"], document["extraction_version"]]):
         raise ValueError("capture identity mismatch")
-    for block in document["blocks"]:
+    if not isinstance(document.get("blocks"), list) or not isinstance(document.get("text"), str):
+        raise ValueError("invalid document shape")
+    stamp = datetime.fromisoformat(document["retrieved_at_utc"])
+    if stamp.tzinfo is None:
+        raise ValueError("capture timestamp needs timezone")
+    if document["text"] != "\n".join(b["text"] for b in document["blocks"]):
+        raise ValueError("blocks do not cover the complete extracted text")
+    ids, cursor = set(), 0
+    for index, block in enumerate(document["blocks"]):
+        if block["id"] in ids:
+            raise ValueError("duplicate block identity")
+        ids.add(block["id"])
+        if (type(block["start"]) is not int or type(block["end"]) is not int or
+                block["start"] != cursor or block["end"] != cursor + len(block["text"]) or not block["text"]):
+            raise ValueError("invalid block boundaries")
         if document["text"][block["start"]:block["end"]] != block["text"]:
             raise ValueError("block offset mismatch")
+        cursor = block["end"] + 1
+    if document["status"] not in {"ok", "unresolved"} or (document["status"] == "ok") != bool(document["blocks"]):
+        raise ValueError("document status/coverage mismatch")
     if root is not None:
         raw = (root / "html" / (document["html_sha256"] + ".html")).read_bytes()
         if sha256(raw).hexdigest() != document["html_sha256"]:

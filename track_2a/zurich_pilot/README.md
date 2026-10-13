@@ -18,6 +18,31 @@ This pilot is independent of the SwissGov-RSD benchmark and judge entrypoints. I
 
 From `track_2a`, use `PYTHONPATH=src python -m uzh_rsd.observatory --help`.
 
+### Reading desk v2
+
+The offline viewer now offers **Read sources**, **Source values**, and **Review candidates**. Search page contents or search within the selected pair; jump independently to German/English headings; select block numbers for exact evidence locations. Source values are literal dates, times, phone values and numbers with contexts/offsets—not a discrepancy detector. A value occurring on one side alone is not a verified omission.
+
+Review drafts are retained in browser storage when available, scoped to the exact bundle digest. Export/import is available when browser storage is restricted. Imported drafts are never silently promoted to confirmed records. Bundle exports preserve the original numeric serialization and pass Python integrity verification.
+
+### One-command local analysis
+
+After exporting a capture bundle and verifying the existing Nebuchadnezzar runtime, this is the preferred execution path:
+
+```sh
+PYTHONPATH=src python -m uzh_rsd.observatory local-run \
+  --bundle runs/capture-bundle.json --runtime runs/runtime.json \
+  --model "$LLM_NAME" --confirm-local-inference --out runs/zurich-local
+
+PYTHONPATH=src python -m uzh_rsd.observatory serve \
+  --html runs/zurich-local/index.html --port 8765
+```
+
+The first command checks the loopback endpoint's reported model ID before any generation request, preserves immutable attempt intents/raw checkpoints and writes `run.json`, `bundle.json`, and `index.html`. An unavailable/mismatched endpoint still yields a reading desk with a BLOCKED status and zero generation calls. A transport failure stops the batch; interruption records an unsettled attempt and never retries it. Completed attempts and parseable model-output coverage are separate from semantic reliability, which remains unestablished. Exit 0 means all pairs returned parseable, untruncated model output; exit 4 means attempts completed with unresolved output; exit 3 means blocked/incomplete. No equivalence or human verification is implied by these statuses.
+
+`runtime.json` must contain actual `model_family: Apertus`, a full `model_sha256`, and `runtime_revision`. Optional `--gguf /actual/model.gguf` verifies that local file against the pin. Endpoint model listing is an observed ID, **not attestation of served weights**. Local requests disable environment proxies and automatic redirects. The command never starts/reconfigures a model service or selects a fallback route.
+
+The second command serves the already-built page read-only on 127.0.0.1. It has no inference/mutation routes, directory listing or public binding. Ctrl-C stops it. File opening also works without a server.
+
 ### 1. Capture (explicit network action)
 
 Read [city terms](https://www.stadt-zuerich.ch/de/service/rechtliche-hinweise.html). Downloads are for personal use; further reuse/publication requires rights review. Only German content is legally binding. Never commit captured HTML/text or distribute this viewer publicly without permission.
