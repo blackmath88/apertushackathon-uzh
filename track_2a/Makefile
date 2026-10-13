@@ -1,4 +1,4 @@
-.PHONY: audit run test reproduce docker-build evaluate mvp-setup hf-launch-dry hf-launch hf-collect hf-spend s1-setup s1-fetch s1-validate s1-manifest s1-check s1-smoke s1-smoke-live
+.PHONY: audit run test reproduce docker-build evaluate mvp-setup hf-launch-dry hf-launch hf-collect hf-spend s1-setup s1-fetch s1-validate s1-manifest s1-check s1-smoke s1-smoke-live b4-oracle b4-alignment b4-check
 SHELL := /bin/bash
 
 VENV ?= .venv
@@ -117,3 +117,17 @@ s1-smoke:
 # Exactly one real request to LLM_BASE_URL using LLM_NAME / LLM_API_KEY from the environment.
 s1-smoke-live:
 	$(RUN) -m uzh_rsd.cli smoke --confirm-live
+
+# B4 uses the immutable B2/B3 30-ID manifest. OUT must not already exist.
+B4_MANIFEST ?= experiments/b2-projection-evidence/manifest.json
+B4_OUT ?= runs/b4
+
+b4-oracle:
+	$(RUN) -m uzh_rsd.b4 oracle --manifest $(B4_MANIFEST) --out $(B4_OUT)-oracle --split dev
+
+b4-alignment:
+	$(RUN) -m uzh_rsd.b4 alignment --manifest $(B4_MANIFEST) --cache data/upstream/diffalign --out $(B4_OUT)-alignment --split dev
+
+b4-check:
+	$(RUN) -m unittest tests.test_b4 -v
+	@if $(RUN) -m uzh_rsd.b4 oracle --manifest $(B4_MANIFEST) --out $(B4_OUT)-forbidden --split test; then echo "B4 accepted test split"; exit 1; else echo "B4 test split refused (expected)"; fi

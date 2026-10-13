@@ -1,0 +1,277 @@
+{
+  "schema": "uzh-rsd.b4/v1",
+  "experiment": "B",
+  "name": "B4 — Alignment-First SDM",
+  "created_utc": "2026-10-13T17:11:26+00:00",
+  "split": "dev",
+  "method": {
+    "name": "DiffAlign continuous alignment-only baseline",
+    "formula": "per official token: 1 - maximum non-negative cross-lingual subword cosine similarity; subwords averaged to whitespace token",
+    "upstream_repo": "ZurichNLP/document-level-word-alignment",
+    "upstream_commit": "60ad0a32bbceb5570ed8440f6bc7a2f470a04c25",
+    "license": "MIT",
+    "upstream_model": "Qwen/Qwen3-Embedding-4B layer 20",
+    "properties": [
+      "full-document all-to-all correspondence",
+      "continuous scores",
+      "order-reversal tolerant",
+      "unmatched material receives high anomaly score",
+      "no gold prediction features"
+    ]
+  },
+  "sources": {
+    "de": {
+      "path": "track_2a/data/upstream/diffalign/60ad0a32bbceb5570ed8440f6bc7a2f470a04c25/DiffAlign(model=Qwen_Qwen3-Embedding-4B, layer=20_admin_de.jsonl.jsonl",
+      "sha256": "749d556ff7baa240085320bdffdbea04b2596348362a53dc4b82741df454c6c8",
+      "url": "https://raw.githubusercontent.com/ZurichNLP/document-level-word-alignment/60ad0a32bbceb5570ed8440f6bc7a2f470a04c25/swissgov_rsd/data/evaluation/encoder_predictions/dev/DiffAlign%28model%3DQwen_Qwen3-Embedding-4B%2C%20layer%3D20_admin_de.jsonl.jsonl"
+    },
+    "fr": {
+      "path": "track_2a/data/upstream/diffalign/60ad0a32bbceb5570ed8440f6bc7a2f470a04c25/DiffAlign(model=Qwen_Qwen3-Embedding-4B, layer=20_admin_fr.jsonl.jsonl",
+      "sha256": "7e3a39735c956c2ebd178e861873c5e3ffb244cb25ca9b56f8483b619939309e",
+      "url": "https://raw.githubusercontent.com/ZurichNLP/document-level-word-alignment/60ad0a32bbceb5570ed8440f6bc7a2f470a04c25/swissgov_rsd/data/evaluation/encoder_predictions/dev/DiffAlign%28model%3DQwen_Qwen3-Embedding-4B%2C%20layer%3D20_admin_fr.jsonl.jsonl"
+    },
+    "it": {
+      "path": "track_2a/data/upstream/diffalign/60ad0a32bbceb5570ed8440f6bc7a2f470a04c25/DiffAlign(model=Qwen_Qwen3-Embedding-4B, layer=20_admin_it.jsonl.jsonl",
+      "sha256": "c4212b840e018c22eb1f4c45a3ca41fab03b04a7726fab2a4cc015ad19765503",
+      "url": "https://raw.githubusercontent.com/ZurichNLP/document-level-word-alignment/60ad0a32bbceb5570ed8440f6bc7a2f470a04c25/swissgov_rsd/data/evaluation/encoder_predictions/dev/DiffAlign%28model%3DQwen_Qwen3-Embedding-4B%2C%20layer%3D20_admin_it.jsonl.jsonl"
+    }
+  },
+  "frozen_manifest_sha256": "523306bece722e61436b93760d10820fa541eab10c1858215d0c4c6873eca4c5",
+  "coverage": "30/30",
+  "calls": {
+    "apertus": 0,
+    "network_prediction_calls": 0
+  },
+  "metrics": {
+    "per_language": {
+      "de": {
+        "documents": 10,
+        "positions": 4837,
+        "masked_punctuation": 631,
+        "spearman": 0.21786518242973402,
+        "ties": 1065,
+        "average_precision": 0.3276101276188916
+      },
+      "fr": {
+        "documents": 10,
+        "positions": 7522,
+        "masked_punctuation": 1153,
+        "spearman": 0.13534720801831318,
+        "ties": 1764,
+        "average_precision": 0.13991109877639085
+      },
+      "it": {
+        "documents": 10,
+        "positions": 6126,
+        "masked_punctuation": 885,
+        "spearman": 0.20813758382024164,
+        "ties": 1230,
+        "average_precision": 0.2282667168944305
+      }
+    },
+    "macro_spearman": 0.1871166580894296,
+    "macro_undefined_reason": null,
+    "ties": 5971,
+    "average_precision": 0.20388790434684698
+  },
+  "per_document": [
+    {
+      "id": "admin_de_3",
+      "pair": "en-de",
+      "spearman": 0.18904531815824896
+    },
+    {
+      "id": "admin_de_43",
+      "pair": "en-de",
+      "spearman": 0.3262003457266904
+    },
+    {
+      "id": "admin_de_105",
+      "pair": "en-de",
+      "spearman": 0.46830169826170687
+    },
+    {
+      "id": "admin_de_158",
+      "pair": "en-de",
+      "spearman": 0.1540915008975959
+    },
+    {
+      "id": "admin_de_36",
+      "pair": "en-de",
+      "spearman": 0.1205269212155174
+    },
+    {
+      "id": "admin_de_223",
+      "pair": "en-de",
+      "spearman": null
+    },
+    {
+      "id": "admin_de_159",
+      "pair": "en-de",
+      "spearman": 0.20155028526230492
+    },
+    {
+      "id": "admin_de_203",
+      "pair": "en-de",
+      "spearman": 0.2350872137111913
+    },
+    {
+      "id": "admin_de_140",
+      "pair": "en-de",
+      "spearman": 0.08592798903075434
+    },
+    {
+      "id": "admin_de_194",
+      "pair": "en-de",
+      "spearman": 0.21918723871342047
+    },
+    {
+      "id": "admin_fr_156",
+      "pair": "en-fr",
+      "spearman": 0.1556968694275961
+    },
+    {
+      "id": "admin_fr_105",
+      "pair": "en-fr",
+      "spearman": 0.4375328196621334
+    },
+    {
+      "id": "admin_fr_177",
+      "pair": "en-fr",
+      "spearman": null
+    },
+    {
+      "id": "admin_fr_202",
+      "pair": "en-fr",
+      "spearman": 0.6126608827566618
+    },
+    {
+      "id": "admin_fr_113",
+      "pair": "en-fr",
+      "spearman": 0.11893477780472081
+    },
+    {
+      "id": "admin_fr_167",
+      "pair": "en-fr",
+      "spearman": 0.19331668305512845
+    },
+    {
+      "id": "admin_fr_58",
+      "pair": "en-fr",
+      "spearman": 0.04030933837571132
+    },
+    {
+      "id": "admin_fr_104",
+      "pair": "en-fr",
+      "spearman": null
+    },
+    {
+      "id": "admin_fr_131",
+      "pair": "en-fr",
+      "spearman": 0.12039049588723225
+    },
+    {
+      "id": "admin_fr_53",
+      "pair": "en-fr",
+      "spearman": 0.26456623214883235
+    },
+    {
+      "id": "admin_it_92",
+      "pair": "en-it",
+      "spearman": 0.3088974744240638
+    },
+    {
+      "id": "admin_it_65",
+      "pair": "en-it",
+      "spearman": 0.22249926516070798
+    },
+    {
+      "id": "admin_it_133",
+      "pair": "en-it",
+      "spearman": 0.23256359453556188
+    },
+    {
+      "id": "admin_it_37",
+      "pair": "en-it",
+      "spearman": 0.2235050438319166
+    },
+    {
+      "id": "admin_it_217",
+      "pair": "en-it",
+      "spearman": 0.14637100660661864
+    },
+    {
+      "id": "admin_it_167",
+      "pair": "en-it",
+      "spearman": 0.07783733222199872
+    },
+    {
+      "id": "admin_it_90",
+      "pair": "en-it",
+      "spearman": null
+    },
+    {
+      "id": "admin_it_116",
+      "pair": "en-it",
+      "spearman": 0.32639741300653957
+    },
+    {
+      "id": "admin_it_15",
+      "pair": "en-it",
+      "spearman": null
+    },
+    {
+      "id": "admin_it_203",
+      "pair": "en-it",
+      "spearman": 0.1661581258573812
+    }
+  ],
+  "failure_cases": [
+    {
+      "id": "admin_de_223",
+      "pair": "en-de",
+      "spearman": null
+    },
+    {
+      "id": "admin_fr_177",
+      "pair": "en-fr",
+      "spearman": null
+    },
+    {
+      "id": "admin_fr_104",
+      "pair": "en-fr",
+      "spearman": null
+    },
+    {
+      "id": "admin_it_90",
+      "pair": "en-it",
+      "spearman": null
+    },
+    {
+      "id": "admin_it_15",
+      "pair": "en-it",
+      "spearman": null
+    }
+  ],
+  "resources": {
+    "wall_s": 0.162916,
+    "cpu_s": 0.161673,
+    "max_rss_kib": 124424,
+    "local_model_inference": false,
+    "upstream_generation_resources": "not reported in published prediction artifacts"
+  },
+  "limitations": [
+    "Pinned published predictions make local evaluation small and reproducible but do not measure upstream encoder latency.",
+    "Published vectors retain max-alignment confidence but not counterpart indices, so evidence cannot reconstruct individual links.",
+    "All-to-all matching supports reordering but can spuriously match repeated boilerplate and cognates."
+  ],
+  "official_evaluator": {
+    "commit": "1807a42100e742ed03d337c54c4b9ea86995f565",
+    "files": {
+      "scripts/evaluate_predictions_admin.py": "3e8101661621c51938e62d8d064e737e3e7d9bb16088dad754ba289c0aa083fa",
+      "evaluation/utils.py": "8da64aa6ec33f316eec2c65d0cbc3fe36d247c585a033d2ed04a7bebc175df0b",
+      "list_to_drop.txt": "3bd489505875ecc0800685f1b732f84dad7b7c25380f63612cadcfbe2732857a"
+    },
+    "punctuation": "gold label -1 positions masked exactly as official evaluator"
+  }
+}
