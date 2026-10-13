@@ -1,0 +1,16 @@
+{
+  "schema": "uzh-rsd.b7-protocol/v1",
+  "stage": "pre_result_freeze",
+  "split": "dev",
+  "documents": 30,
+  "ctfalign": {"source_commit": "30f4f89cfcbb150cbf0497884e95c5598198a58c", "mode": "argmax", "width": 8, "matrix_source": "B5 officialmap-v2", "ceiling_seconds": 120},
+  "routing": {"policies": ["R1", "R2", "R3"], "seed": "b7-routing-20261013-v1", "match_unit": "unique official source-token coverage per document"},
+  "model": {"name": "Apertus-v1.5-8B-Q8_0", "gguf_sha256": "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d", "llama_cpp_commit": "7ab4ee7", "endpoint": "http://127.0.0.1:11436", "temperature": 0, "seed": 20261013, "attempts": 1, "timeout_seconds": 60},
+  "budgets": {"candidate_calls": 1578, "synthetic_calls": 192, "wall_minutes": 30, "paid_cost": 0},
+  "score_update": {"value": 0.85, "operation": "max(baseline,value)", "fallback": "exact B4"},
+  "minimum_macro_delta": 0.005,
+  "bootstrap": {"unit": "shared English source-family", "iterations": 500, "seed": 20261013},
+  "synthetic_thresholds": {"primary_accuracy": 0.80, "stability_each": 0.85, "counterpart_sensitivity": 0.75, "equivalent_false_positive_rate_max": 0.20, "valid_rate": 0.98},
+  "optional_compact_comparator": "not measured: dependency ceiling",
+  "stop_conditions": ["any protected-test access", "cache hash mismatch", "S2 exceeds engineering ceiling", "runtime remains unavailable after one focused repair and one documented alternative", "Morrow ownership changes", "resource ceiling exceeded"]
+}

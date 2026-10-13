@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uzh-rsd.b7-candidate/v1",
+  "type": "object",
+  "required": ["candidate_id", "document_id", "source_family_id", "language_pair", "source_side", "source_token_ids", "source_evidence_offsets", "target_anchor_token_ids", "target_anchor_offsets", "anchor_method", "anchor_ambiguity", "risk_features", "provenance", "estimated_model_calls", "estimated_score_tokens"],
+  "properties": {
+    "candidate_id": {"type": "string"}, "document_id": {"type": "string"},
+    "source_family_id": {"type": "string"}, "language_pair": {"enum": ["en-de", "en-fr", "en-it"]},
+    "source_side": {"enum": ["a", "b"]}, "source_token_ids": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+    "source_evidence_offsets": {"type": "array"}, "target_anchor_token_ids": {"type": "array"}, "target_anchor_offsets": {"type": "array"},
+    "anchor_method": {"type": "string"}, "anchor_ambiguity": {"enum": ["valid", "ambiguous", "unavailable"]},
+    "risk_features": {"type": "object"}, "provenance": {"type": "array"},
+    "estimated_model_calls": {"type": "integer"}, "estimated_score_tokens": {"type": "integer"}
+  },
+  "additionalProperties": true
+}
