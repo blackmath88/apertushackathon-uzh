@@ -173,7 +173,7 @@ class InputBoundaryTests(FinalTestCase):
                 self.assertEqual(backend.prompts, [])
 
     def test_sentinel_in_clean_run_never_reaches_prompts_outputs_or_metadata(self):
-        # The sentinel exists only in the contract evidence-free side channel: a stray file next to the input.
+        # Gold-like sentinels sit in a stray labels file next to the input; nothing may pick them up.
         self.write("labels.json", json.dumps({d["id"]: [SENTINEL_NUMBER] for d in DOCS}))
         backend = FakeBackend()
         code, _ = self.run_main(backend=backend)

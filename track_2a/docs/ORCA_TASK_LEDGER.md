@@ -51,3 +51,25 @@ Coordinator: Claude Code desktop session (requested Opus 5.5), owner's Mac. **Ro
 Review: **self-review only**; the independent review gate remains open. No paid compute, model inference, organiser contact, merge or visibility change.
 
 Second pass settled: no workers were started, so none remain. The scratch worktree `prep2` and local branch `prep/audit-supplement-20261013` are removed after push; the main checkout is fast-forwarded to the final head. Open owner action: inspect the submission form's Track 2A fields (not inspected, deadline 16 Oct 12:00 CEST).
+
+---
+
+# Third pass — 13 Oct 2026, 15:59 CEST (final-inference path; 90-minute budget)
+
+Coordinator: Claude Code desktop session (requested Opus 5.5), owner's Mac. Base `9b31366` (matched the expected head; no newer work). Isolated worktree `apertushackathon-uzh.worktrees/final`, local branch `prep/final-infer-20261013`, pushed to `feat/b0-b2-mvp`. No other active coordinator; no Apertus Orca workers. Weavr live state still not readable; no governance acceptance claimed.
+
+**Orca route check (concrete limitation, no dispatch):**
+
+- `orca orchestration worker-start` exists, with `--timeout-ms`, worktree placement and `worker-stop` fencing.
+- Local workers are agent terminals running as the same macOS user. `~/.cache/huggingface/token` and `~/.config/gh/hosts.yml` are readable to them, and Orca's orchestration guide documents no credential isolation. They are shared-credential workers and so ineligible under this task.
+- Remote environment `Nebuchdnezzar` (`ws://100.100.19.54:6768`): `orca status` reports "host did not answer" (unverifiable).
+- **No workers were started.** Packets A (implementation) and B (contract/leakage review) were done by the coordinator. Packet B's gap list is folded into the design and the tests (adversarial cases in `tests/test_final_infer.py`).
+
+| ID | Work | Status | Evidence |
+|---|---|---|---|
+| F-A | `src/uzh_rsd/final.py` + `final/contract.template.json` | done | commit `1ab52ce` |
+| F-B | Contract and leakage gap list → adversarial tests (16) | done | template refused; sentinel fields rejected; order, duplicates, failure, overwrite, evaluator and fetch isolation; mutation checks |
+| F-C | Docs: JUDGE_READINESS (final path section), STATUS, checklist, ledger | done | this commit |
+| F-D | Verification (full suite, frozen evidence), PR body | see final handoff | — |
+
+Independent review: **not available.** No enforced, credential-isolated, read-only route exists (local Orca workers share credentials; Nebuchdnezzar unreachable). Self-review only; the gate stays open.
