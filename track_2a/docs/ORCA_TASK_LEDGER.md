@@ -102,3 +102,17 @@ Coordinator: Claude Code desktop session (requested Opus 5.5), applying `orchest
 | E-6 | Plan accuracy (unpinned test files, route discriminator, submission default), `verify_run` and source robustness | done | `7a38bb3`: s1-check 120 OK / 0 skips; Docker e2e 13/13 at `7a38bb3` (prediction sha256 `c9e635cd…`/`e7c109dc…`/`0018c5c8…`, identical to `ef50e10`); frozen diff vs `3966e86` empty |
 
 Review: self-review only, covering code head `7a38bb3` and the docs-only head that adds this line. The independent gate stays open (no eligible read-only, credential-isolated route). PR #12 body is replaced after this commit, with `isDraft` read back. Workers: none started by this pass. Scratch worktree `e2e`, its synthetic `final_runs/e2e-*` output (gitignored) and the local branch are removed after push.
+
+---
+
+# B2 projection evidence — 13 Oct 2026, Nebuchadnezzar
+
+| ID | Owner / route | Base | Status | Evidence / limitations |
+|---|---|---|---|---|
+| B2-PROJ | Orca dispatched Codex worker `task_9a604f2b6c3f`; documented `orca-cli` + orchestration fallback because the named route-orca-work topic was unavailable | `a0d3476` = `origin/feat/b0-b2-mvp` | done | Dedicated branch `blackmath88/b2-projection-evidence`; preselection commit `17a8922`; 30 fixed dev pairs (10 de/fr/it); frozen replay plus one local Q8 B2 call per pair; [experiment report](../experiments/b2-projection-evidence/README.md). P2 infeasible because responses have no offsets. |
+
+Controls: no official test access, HF final job, paid compute, fallback model,
+prompt/parser tuning, retries, fuzzy matching, or invented offsets. The Q8 GGUF
+is not claimed equivalent to the frozen BF16/HF pilot. Morrow stayed live and
+unchanged on 11435; the worker-started 11436 server was stopped after the run.
+Frozen pilot artifacts were hash-checked before and after and remained identical.

@@ -1,0 +1,330 @@
+{
+  "schema": "uzh-rsd.projection-experiment-results/v1",
+  "label": "local-q8-fixed-b2",
+  "raw_sha256": "86f3cdffb99dc6523249298e88faeef0892290d4af99a7591fe574277a681ad0",
+  "manifest_sha256": "f1f7e03d1951fd6a06bbd70537e193e7a4781c5d7985768bd94ea8106572b7de",
+  "P2": {
+    "status": "infeasible",
+    "reason": "B2 response schema contains excerpts but no offsets; offsets will not be manufactured"
+  },
+  "variants": {
+    "P0": {
+      "score": {
+        "per_language": {
+          "de": {
+            "documents": 8,
+            "positions": 2962,
+            "spearman": 0.17477765313344026
+          },
+          "fr": {
+            "documents": 5,
+            "positions": 1867,
+            "spearman": 0.16044056871494333
+          },
+          "it": {
+            "documents": 4,
+            "positions": 1293,
+            "spearman": 0.23263221379237334
+          }
+        },
+        "macro": 0.189283478546919,
+        "macro_undefined_reason": null
+      },
+      "projection": {
+        "items": 73,
+        "projected": 56,
+        "invalid_item": 0,
+        "invalid_severity": 1,
+        "unknown_kind": 2,
+        "spans_exact": 103,
+        "spans_normalised": 0,
+        "spans_not_found": 2,
+        "spans_too_long": 32,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 881,
+        "marked_tokens_b": 883,
+        "documents": 30,
+        "parseable_documents": 17,
+        "matched_excerpts": 103,
+        "unmatched_excerpts": 34,
+        "coverage": 0.5666666666666667
+      }
+    },
+    "P1": {
+      "score": {
+        "per_language": {
+          "de": {
+            "documents": 8,
+            "positions": 2962,
+            "spearman": 0.13537749752302355
+          },
+          "fr": {
+            "documents": 5,
+            "positions": 1867,
+            "spearman": 0.11596750317965558
+          },
+          "it": {
+            "documents": 4,
+            "positions": 1293,
+            "spearman": 0.2890351396971096
+          }
+        },
+        "macro": 0.18012671346659626,
+        "macro_undefined_reason": null
+      },
+      "projection": {
+        "items": 73,
+        "projected": 70,
+        "invalid_item": 0,
+        "invalid_severity": 1,
+        "unknown_kind": 2,
+        "spans_exact": 131,
+        "spans_normalised": 0,
+        "spans_not_found": 6,
+        "spans_too_long": 0,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 1865,
+        "marked_tokens_b": 1613,
+        "documents": 30,
+        "parseable_documents": 17,
+        "matched_excerpts": 131,
+        "unmatched_excerpts": 6,
+        "coverage": 0.5666666666666667
+      }
+    }
+  },
+  "inference": {
+    "calls": 30,
+    "returned": 30,
+    "call_failed": 0,
+    "finish_length": 12,
+    "prompt_tokens": 39210,
+    "completion_tokens": 19995,
+    "latency_total_s": 680.789,
+    "latency_median_s": 24.361,
+    "completion_tokens_per_s": 29.37,
+    "monetary_cost_usd": 0
+  },
+  "recovered_spans": 28,
+  "over_cap_but_still_unmatched": 4,
+  "case_analysis": {
+    "improvement": {
+      "id": "admin_fr_156",
+      "pair": "en-fr",
+      "p0_spearman": -0.22617853252703585,
+      "p1_spearman": 0.24036430711222617,
+      "delta": 0.466542839639262,
+      "decision": {
+        "differences": [
+          {
+            "a": "The Federal Chancellor ' s staff office provides support in organisational and administrative matters , and in preparing Federal Council meetings and the follow - up work to the meetings .",
+            "b": "L’état - major du chancelier de la Confédération apporte son soutien tant pour les questions d’ordre organisationnel ou administratif que pour la préparation et le suivi des séances du Conseil fédéral .",
+            "kind": "CHANGE",
+            "severity": 3
+          },
+          {
+            "a": "The Federal Chancellor ' s staff office supports the Federal Chancellor and the vice chancellors on all organisational and administrative matters .",
+            "b": "L’état - major du chancelier de la Confédération est chargé de soutenir le chancelier de la Confédération et les vice - chanceliers pour toutes les questions d’ordre organisationnel ou administratif .",
+            "kind": "CHANGE",
+            "severity": 3
+          },
+          {
+            "a": "The office is also responsible for the preparation and follow - up to the Federal Council meetings and the Chancellery’s management committee meetings , and acts as a point of contact in matters relating to parliamentary items of business or other major policy issues .",
+            "b": "Il est responsable à ce titre de la préparation et du suivi des séances du Conseil fédéral et de la Direction sur le plan matériel , ainsi que des relations avec le Parlement pour les affaires parlementaires et des autres affaires ayant une grande portée politique .",
+            "kind": "CHANGE",
+            "severity": 4
+          },
+          {
+            "a": "The assistants to the Federal Chancellor and the Vice Chancellors , the chauffer , the usher and the specialist advisers are all part of the Chancellor ' s staff .",
+            "b": "Les assistantes du chancelier de la Confédération et des vice - chanceliers , le chauffeur , l’huissier et les conseillers spécialisés font donc partie de l’état - major du chancelier .",
+            "kind": "CHANGE",
+            "severity": 3
+          }
+        ]
+      },
+      "source_a": "Federal Chancellor ' s staff office The Federal Chancellor ' s staff office provides support in organisational and administrative matters , and in preparing Federal Council meetings and the follow - up work to the meetings . The Federal Chancellor ' s staff office supports the Federal Chancellor and the vice chancellors on all organisational and administrative matters . The office is also responsible for the preparation and follow - up to the Federal Council meetings and the Chancellery’s management",
+      "source_b": "Etat - major du chancelier de la Confédération L’état - major du chancelier de la Confédération apporte son soutien tant pour les questions d’ordre organisationnel ou administratif que pour la préparation et le suivi des séances du Conseil fédéral . L’état - major du chancelier de la Confédération est chargé de soutenir le chancelier de la Confédération et les vice - chanceliers pour toutes les questions d’ordre organisationnel ou administratif . Il est responsable à ce titre de la préparation",
+      "p0_projection": {
+        "parse": "json",
+        "items": 4,
+        "projected": 3,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 6,
+        "spans_normalised": 0,
+        "spans_not_found": 0,
+        "spans_too_long": 2,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 83,
+        "marked_tokens_b": 94
+      },
+      "p1_projection": {
+        "parse": "json",
+        "items": 4,
+        "projected": 4,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 8,
+        "spans_normalised": 0,
+        "spans_not_found": 0,
+        "spans_too_long": 0,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 128,
+        "marked_tokens_b": 141
+      }
+    },
+    "regression": {
+      "id": "admin_fr_105",
+      "pair": "en-fr",
+      "p0_spearman": -0.12611727195811784,
+      "p1_spearman": -0.499409332339578,
+      "delta": -0.3732920603814602,
+      "decision": {
+        "differences": [
+          {
+            "a": "Legislation Administration The Federal Chancellery is responsible for legislation regulating the procedures of the government and the Federal .",
+            "b": "Législation La Chancellerie fédérale est responsable de la législation concernant le fonctionnement du gouvernement et de l’administration , à savoir l’organisation du gouvernement et de l’administration , la procédure de consultation , les publications officielles et , dans une certaine mesure , le droit parlementaire .",
+            "kind": "CHANGE",
+            "severity": 5
+          },
+          {
+            "a": "This includes laws on the consultation procedure , publications , government and administrative organisation and on Parliament .",
+            "b": "à savoir l’organisation du gouvernement et de l’administration , la procédure de consultation , les publications officielles et , dans une certaine mesure , le droit parlementaire .",
+            "kind": "OMISSION",
+            "severity": 4
+          },
+          {
+            "a": "The Federal Chancellery drafts and enforces laws in these areas .",
+            "b": "",
+            "kind": "OMISSION",
+            "severity": 3
+          },
+          {
+            "a": "For full information please select German .",
+            "b": "Links Section du droit Contact spécialisé",
+            "kind": "CHANGE",
+            "severity": 4
+          },
+          {
+            "a": "Links Sektion Recht Specialist staff",
+            "b": "",
+            "kind": "OMISSION",
+            "severity": 2
+          }
+        ]
+      },
+      "source_a": "Legislation Administration The Federal Chancellery is responsible for legislation regulating the procedures of the government and the Federal . This includes laws on the consultation procedure , publications , government and administrative organisation and on Parliament . The Federal Chancellery drafts and enforces laws in these areas . For full information please select German . Links Sektion Recht Specialist staff",
+      "source_b": "Législation La Chancellerie fédérale est responsable de la législation concernant le fonctionnement du gouvernement et de l’administration , à savoir l’organisation du gouvernement et de l’administration , la procédure de consultation , les publications officielles et , dans une certaine mesure , le droit parlementaire . Links Section du droit Contact spécialisé",
+      "p0_projection": {
+        "parse": "json",
+        "items": 5,
+        "projected": 5,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 7,
+        "spans_normalised": 0,
+        "spans_not_found": 0,
+        "spans_too_long": 1,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 60,
+        "marked_tokens_b": 34
+      },
+      "p1_projection": {
+        "parse": "json",
+        "items": 5,
+        "projected": 5,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 8,
+        "spans_normalised": 0,
+        "spans_not_found": 0,
+        "spans_too_long": 0,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 60,
+        "marked_tokens_b": 52
+      }
+    },
+    "unchanged_failure": {
+      "id": "admin_de_105",
+      "pair": "en-de",
+      "p0_spearman": -0.6503304946101328,
+      "p1_spearman": -0.6503304946101328,
+      "delta": 0.0,
+      "decision": {
+        "differences": [
+          {
+            "a": "Legislation Administration The Federal Chancellery is responsible for legislation regulating the procedures of the government and the Federal .",
+            "b": "Gesetzgebung Die Bundeskanzlei ist zuständig für Gesetze , die den Betrieb von Regierung und Verwaltung regeln .",
+            "kind": "CHANGE",
+            "severity": 4
+          },
+          {
+            "a": "This includes laws on the consultation procedure , publications , government and administrative organisation and on Parliament .",
+            "b": "Dazu gehören das Publikationsrecht , das Regierungs - und Verwaltungsorganisationsrecht , das Vernehmlassungsrecht und das Parlamentsrecht .",
+            "kind": "CHANGE",
+            "severity": 4
+          },
+          {
+            "a": "The Federal Chancellery drafts and enforces laws in these areas .",
+            "b": "Die Bundeskanzlei bereitet in diesen Bereichen die Gesetze vor und vollzieht sie .",
+            "kind": "CHANGE",
+            "severity": 4
+          },
+          {
+            "a": "For full information please select German .",
+            "b": "",
+            "kind": "OMISSION",
+            "severity": 2
+          },
+          {
+            "a": "Links Sektion Recht",
+            "b": "Links Sektion Recht",
+            "kind": "SAME",
+            "severity": 1
+          }
+        ]
+      },
+      "source_a": "Legislation Administration The Federal Chancellery is responsible for legislation regulating the procedures of the government and the Federal . This includes laws on the consultation procedure , publications , government and administrative organisation and on Parliament . The Federal Chancellery drafts and enforces laws in these areas . For full information please select German . Links Sektion Recht Specialist staff",
+      "source_b": "Gesetzgebung Die Bundeskanzlei ist zuständig für Gesetze , die den Betrieb von Regierung und Verwaltung regeln . Dazu gehören das Publikationsrecht , das Regierungs - und Verwaltungsorganisationsrecht , das Vernehmlassungsrecht und das Parlamentsrecht . Die Bundeskanzlei bereitet in diesen Bereichen die Gesetze vor und vollzieht sie . Links Sektion Recht",
+      "p0_projection": {
+        "parse": "json",
+        "items": 5,
+        "projected": 5,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 1,
+        "spans_exact": 9,
+        "spans_normalised": 0,
+        "spans_not_found": 0,
+        "spans_too_long": 0,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 58,
+        "marked_tokens_b": 50
+      },
+      "p1_projection": {
+        "parse": "json",
+        "items": 5,
+        "projected": 5,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 1,
+        "spans_exact": 9,
+        "spans_normalised": 0,
+        "spans_not_found": 0,
+        "spans_too_long": 0,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 58,
+        "marked_tokens_b": 50
+      }
+    },
+    "category_notes": {
+      "improvement": null,
+      "regression": null,
+      "unchanged_failure": null
+    }
+  }
+}

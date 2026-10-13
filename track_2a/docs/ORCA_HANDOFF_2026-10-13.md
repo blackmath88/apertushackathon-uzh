@@ -122,3 +122,17 @@ Handoff must include:
 - stopped/settled worker states and next concrete action.
 
 Keep PR draft and unmerged. Report “candidate prepared with blockers” if live judge execution or official contract remains unresolved; never “submission ready” merely because replay passes.
+
+## Addendum — bounded B2 projection-cap experiment (Nebuchadnezzar)
+
+The dedicated `blackmath88/b2-projection-evidence` branch, stacked from
+`origin/feat/b0-b2-mvp` at `a0d3476`, evaluates whether B2's 40-token excerpt cap
+drops usable evidence. The fixed 30-pair dev manifest was committed before
+inference (`17a8922`). P1 (160-token cap, otherwise identical strict projection)
+recovers 14 excerpts and improves macro 0.175044 → 0.192060 on the frozen pilot
+replay, but recovers 28 excerpts and reduces macro 0.189283 → 0.180127 on the
+17/30 parseable local Q8 responses. Therefore the cap does discard exact
+evidence, but removing it does not consistently improve score. See
+`track_2a/experiments/b2-projection-evidence/README.md`; P2 is infeasible because
+the response schema contains no offsets. No test split, HF final job, paid
+compute, prompt tuning, fallback, retry, or manufactured offset was used.

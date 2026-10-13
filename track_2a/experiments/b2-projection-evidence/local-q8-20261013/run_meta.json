@@ -1,0 +1,64 @@
+{
+  "schema": "uzh-rsd.run-meta/v1",
+  "run_id": "local-q8-20261013",
+  "backend": {
+    "backend": "openai-compatible",
+    "endpoint": "http://127.0.0.1:11436/v1",
+    "model": "apertus-v1.5-8b-text-q8_0",
+    "timeout_s": 600.0,
+    "max_attempts": 1
+  },
+  "manifest_sha256": "f1f7e03d1951fd6a06bbd70537e193e7a4781c5d7985768bd94ea8106572b7de",
+  "methods": [
+    "b2"
+  ],
+  "prompt_versions": {
+    "b0": "b0-paper-admin-template@1807a42/token-list-v1",
+    "b2": "b2-spans-v1"
+  },
+  "max_new_tokens": {
+    "b0": 4096,
+    "b2": 1024
+  },
+  "limit": null,
+  "documents": [
+    "admin_de_3",
+    "admin_fr_156",
+    "admin_it_92",
+    "admin_de_43",
+    "admin_fr_105",
+    "admin_it_65",
+    "admin_de_105",
+    "admin_fr_177",
+    "admin_it_133",
+    "admin_de_158",
+    "admin_fr_202",
+    "admin_it_37",
+    "admin_de_36",
+    "admin_fr_113",
+    "admin_it_217",
+    "admin_de_223",
+    "admin_fr_167",
+    "admin_it_167",
+    "admin_de_159",
+    "admin_fr_58",
+    "admin_it_90",
+    "admin_de_203",
+    "admin_fr_104",
+    "admin_it_116",
+    "admin_de_140",
+    "admin_fr_131",
+    "admin_it_15",
+    "admin_de_194",
+    "admin_fr_53",
+    "admin_it_203"
+  ],
+  "started_utc": "2026-10-13T15:58:27+00:00",
+  "status": "finished",
+  "counts": {
+    "attempted": 30,
+    "call_failed": 0,
+    "skipped_deadline": 0
+  },
+  "finished_utc": "2026-10-13T16:09:48+00:00"
+}

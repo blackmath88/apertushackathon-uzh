@@ -12,6 +12,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import statistics
 from collections import defaultdict
 from pathlib import Path
 from typing import Mapping, Sequence
@@ -174,9 +175,27 @@ def analyse(raw_path: Path, manifest_path: Path, out_dir: Path, *, label: str) -
         }),
         "variants": {},
     }
+    generations = [record.get("generation") for record in raw if record.get("generation")]
+    latencies = [generation["latency_s"] for generation in generations if generation.get("latency_s") is not None]
+    completion = [generation["completion_tokens"] for generation in generations if generation.get("completion_tokens") is not None]
+    result["inference"] = {
+        "calls": len(raw),
+        "returned": sum(record.get("status") == "returned" for record in raw),
+        "call_failed": sum(record.get("status") == "call_failed" for record in raw),
+        "finish_length": sum(generation.get("finish_reason") == "length" for generation in generations),
+        "prompt_tokens": sum(generation.get("prompt_tokens") or 0 for generation in generations),
+        "completion_tokens": sum(completion),
+        "latency_total_s": round(sum(latencies), 3),
+        "latency_median_s": round(statistics.median(latencies), 3) if latencies else None,
+        "completion_tokens_per_s": round(sum(completion) / sum(latencies), 3) if latencies and sum(latencies) else None,
+        "monetary_cost_usd": 0,
+    }
     for name in ("P0", "P1"):
         result["variants"][name] = {"score": _score(variants[name], records), "projection": _aggregate(variants[name])}
-    result["recovered_spans"] = result["variants"]["P0"]["projection"]["spans_too_long"] - result["variants"]["P1"]["projection"]["spans_too_long"]
+    p0_projection = result["variants"]["P0"]["projection"]
+    p1_projection = result["variants"]["P1"]["projection"]
+    result["recovered_spans"] = p1_projection["matched_excerpts"] - p0_projection["matched_excerpts"]
+    result["over_cap_but_still_unmatched"] = p1_projection["spans_not_found"] - p0_projection["spans_not_found"]
     cases = []
     for item, gold in records:
         p0, p1 = variants["P0"][item.id], variants["P1"][item.id]
@@ -212,7 +231,10 @@ def render_report(result: Mapping) -> str:
         vals = [s["per_language"].get(lang, {}).get("spearman") for lang in LANGUAGES]
         fmt = lambda x: "undefined" if x is None else f"{x:.6f}"
         lines.append(f"| {name} | {fmt(vals[0])} | {fmt(vals[1])} | {fmt(vals[2])} | {fmt(s['macro'])} | {p['matched_excerpts']} | {p['unmatched_excerpts']} | {p['spans_too_long']} | {p['spans_ambiguous']} | {p['parseable_documents']}/{p['documents']} |")
-    lines += ["", f"Recovered over-cap excerpts under P1: **{result['recovered_spans']}**.", "", "Projection changes do not establish improved semantic reasoning: both variants replay identical model decisions.", "", "## Cases", ""]
+    usage = result["inference"]
+    lines += ["", f"Recovered over-cap excerpts under P1: **{result['recovered_spans']}**; over-cap excerpts still unmatched after validation: **{result['over_cap_but_still_unmatched']}**.", "",
+              f"Inference: {usage['returned']}/{usage['calls']} returned; {usage['finish_length']} hit the completion limit; {usage['prompt_tokens']} prompt and {usage['completion_tokens']} completion tokens; {usage['latency_total_s']} s total, {usage['latency_median_s']} s median, {usage['completion_tokens_per_s']} completion tokens/s; monetary cost $0.", "",
+              "Projection changes do not establish improved semantic reasoning: both variants replay identical model decisions.", "", "## Cases", ""]
     for key in ("improvement", "regression", "unchanged_failure"):
         case = result["case_analysis"][key]
         if case is None:
