@@ -1,0 +1,55 @@
+{
+  "schema": "uzh-rsd.sdm-run/v1",
+  "created_utc": "2026-10-13T16:42:40+00:00",
+  "task_manifest_sha256": "a5a8106c1548654ef05ed20e81808259e34365afe90c7ccbac1d4ca3666f6b79",
+  "policy": {
+    "version": "sdm-policy/v1",
+    "segmentation": "punctuation-units regrouped deterministically to <=8 passages/side",
+    "alignment": "unique shared numeric anchors, otherwise monotone proportional candidates",
+    "max_passages_per_side": 8,
+    "max_tasks_per_document": 12,
+    "max_calls_total": 300,
+    "max_completion_tokens": 96,
+    "timeout_s": 90,
+    "global_wall_s": 2100,
+    "routes": "exact identity and shape-identical numeric changes are structural; remainder model",
+    "projection": "DIFFERENT marks both inherited spans 1.0; other resolved relations 0.0; unresolved tokens use explicit evaluation_default=0.0",
+    "prompt_version": "sdm-classifier/v1",
+    "schema_version": "sdm/v1"
+  },
+  "model": {
+    "name": "apertus-v1.5-8b-text-q8_0",
+    "gguf_sha256": "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d",
+    "llama_cpp_commit": "7ab4ee7",
+    "backend": {
+      "backend": "openai-compatible",
+      "endpoint": "http://127.0.0.1:11436/v1",
+      "model": "apertus-v1.5-8b-text-q8_0",
+      "timeout_s": 90,
+      "max_attempts": 1
+    }
+  },
+  "runtime": {
+    "wall_s": 442.277,
+    "systemic_failure": null,
+    "cost_usd": 0,
+    "device_requested": "SYCL0",
+    "gpu_layers": 99,
+    "ctx": 8192,
+    "parallel": 1,
+    "flash_attention": true
+  },
+  "counts": {
+    "calls": 219,
+    "unresolved": 177,
+    "unknown": 177,
+    "resolved": 53,
+    "relation_EQUIVALENT": 46,
+    "relation_DIFFERENT": 7
+  },
+  "artifacts": {
+    "raw.jsonl": "8021f46b42b73564f1037a3ec64889194d72034ad5dba15ce7745e128ccb38c9",
+    "decisions.jsonl": "7600457107f7b6b24bd037b81378482c70c4147a16266262683ed3fafbe57323",
+    "evidence.jsonl": "7daedae3c6c870fd78ec80cab6ce38a4339fc1ae00ed228448d792074c2f0fbd"
+  }
+}

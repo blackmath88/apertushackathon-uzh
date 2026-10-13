@@ -1,0 +1,51 @@
+{
+  "schema": "uzh-rsd.sdm-local-runtime-provenance/v1",
+  "host": "Nebuchadnezzar",
+  "route": "orca-cli plus supervised orchestration fallback",
+  "endpoint": "http://127.0.0.1:11436/v1",
+  "model": {
+    "path": "/home/achim/.local/share/apertus-local/models/apertus-v1.5-8b-text-q8_0.gguf",
+    "sha256": "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d"
+  },
+  "runtime": {
+    "binary": "/home/achim/Documents/Codex/2026-09-22/s/work/b60-llama-test/llama.cpp/build-sycl/bin/llama-server",
+    "llama_cpp_commit": "7ab4ee7baad2d920464cbacfad4f4b07cf111fd2",
+    "backend": "SYCL",
+    "device": "SYCL0",
+    "arguments": ["--host", "127.0.0.1", "--port", "11436", "--ctx-size", "8192", "--parallel", "1", "--n-gpu-layers", "99", "--device", "SYCL0", "--flash-attn", "on", "--no-ui"],
+    "server_pid": 45895,
+    "run_started_utc": "2026-10-13T16:35:17.723000+00:00",
+    "run_finished_utc": "2026-10-13T16:42:40+00:00"
+  },
+  "commands": {
+    "start": "set -a; source /home/achim/.config/morrow/llama-sycl.env; set +a; exec /home/achim/Documents/Codex/2026-09-22/s/work/b60-llama-test/llama.cpp/build-sycl/bin/llama-server --model /home/achim/.local/share/apertus-local/models/apertus-v1.5-8b-text-q8_0.gguf --host 127.0.0.1 --port 11436 --ctx-size 8192 --parallel 1 --n-gpu-layers 99 --device SYCL0 --flash-attn on --no-ui",
+    "inference": "LLM_NAME=apertus-v1.5-8b-text-q8_0 LLM_BASE_URL=http://127.0.0.1:11436/v1 LLM_API_KEY=local PYTHONPATH=track_2a/src track_2a/.venv/bin/python -m uzh_rsd.sdm.experiment infer --manifest track_2a/experiments/b3-sdm/task-manifest.json --out track_2a/experiments/b3-sdm/local-q8-20261013",
+    "stop": "send SIGINT to exact foreground server session/PID 45895",
+    "replay": "PYTHONPATH=track_2a/src track_2a/.venv/bin/python -m uzh_rsd.sdm.experiment score --manifest track_2a/experiments/b3-sdm/task-manifest.json --run track_2a/experiments/b3-sdm/local-q8-20261013"
+  },
+  "gpu_evidence": {
+    "llama_server_loaded_model": true,
+    "model_reported_format": "gguf",
+    "model_reported_quantization": "Q8_0",
+    "model_reported_parameters": 8054976576,
+    "requested_device": "SYCL0",
+    "requested_gpu_layers": 99,
+    "flash_attention": true
+  },
+  "shutdown_evidence": {
+    "port_11436_listener_after_stop": false,
+    "morrow_port_11435_listener_after_stop": true,
+    "morrow_pid_before_and_after": 1240,
+    "morrow_health_after": true,
+    "morrow_executable_sha256_before_and_after": "d0538ae0a50a97ede6c4fece9054ed8d3b891a82e230a1defe810249ee7b93f1"
+  },
+  "cost_usd": 0,
+  "controls": {
+    "test_split_access": false,
+    "hf_activity": false,
+    "cloud_inference": false,
+    "paid_compute": false,
+    "fallback_or_retry": false,
+    "zurich_network_or_city_data": false
+  }
+}

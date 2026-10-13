@@ -16,7 +16,8 @@ from typing import Mapping, Sequence
 from ..backends import OpenAICompatibleBackend
 from ..data_adapter import LANGUAGES
 from ..evaluation import evaluate_language, macro_average
-from ..runner import manifest_records
+from ..methods import parse_b2
+from ..runner import manifest_records, read_raw
 from .contracts import DifferenceKind, Relation
 from .pipeline import (POLICY, build_tasks, classifier_prompt, project_decisions,
                        structural_response, validate_response)
@@ -198,6 +199,11 @@ def score(task_manifest_path: Path, run_dir: Path) -> dict:
     by_task = {entry["task_id"]: entry for entry in decisions}
     complete_grouped, full_grouped = defaultdict(list), defaultdict(list)
     documents, all_relations = [], Counter()
+    b2_root = task_manifest_path.parent.parent / "b2-projection-evidence"
+    b2_raw = {row["id"]: row for row in read_raw(b2_root / "local-q8-20261013" / "raw.jsonl")
+              if row["method"] == "b2"}
+    b2_groups = {"P0_parseable": defaultdict(list), "P1_parseable": defaultdict(list),
+                 "P0_full": defaultdict(list), "P1_full": defaultdict(list)}
     for item, gold in records:
         tasks = [task_map[tid] for doc in frozen["documents"] if doc["id"] == item.id for tid in doc["task_ids"]]
         responses = []
@@ -214,9 +220,26 @@ def score(task_manifest_path: Path, run_dir: Path) -> dict:
         full_grouped[item.language].append((gold, projection["prediction_a"], projection["prediction_b"]))
         if complete and projection["semantic_complete"]:
             complete_grouped[item.language].append((gold, projection["prediction_a"], projection["prediction_b"]))
+        b2_doc_scores = {}
+        for variant, cap in (("P0", 40), ("P1", 160)):
+            raw = b2_raw[item.id]
+            text = raw.get("generation", {}).get("text") if raw.get("status") == "returned" else None
+            output = parse_b2(item, text, max_excerpt_tokens=cap)
+            if output.diff_a is not None:
+                b2_groups[f"{variant}_parseable"][item.language].append((gold, output.diff_a, output.diff_b))
+            pa = output.diff_a if output.diff_a is not None else [0.0] * len(item.text_a)
+            pb = output.diff_b if output.diff_b is not None else [0.0] * len(item.text_b)
+            b2_groups[f"{variant}_full"][item.language].append((gold, pa, pb))
+            b2_doc_scores[variant] = evaluate_language(item.language, [(gold, pa, pb)]).spearman
+        b3_doc_score = evaluate_language(item.language, [(gold, projection["prediction_a"], projection["prediction_b"])]).spearman
+        positive_gold = any(x > 0 for x in (*gold.labels_a, *gold.labels_b) if x != -1)
+        predicted_difference = any(projection["prediction_a"]) or any(projection["prediction_b"])
         documents.append({"id": item.id, "pair": item.pair, "tasks": len(tasks), "complete_decisions": complete,
                           "semantic_complete": projection["semantic_complete"], "exact_vector_lengths":
                           len(projection["prediction_a"]) == len(item.text_a) and len(projection["prediction_b"]) == len(item.text_b),
+                          "scores": {"b2_p0_full_default": b2_doc_scores["P0"], "b2_p1_full_default": b2_doc_scores["P1"],
+                                     "b3_full_default": b3_doc_score},
+                          "likely_missed_semantic_difference": positive_gold and not predicted_difference,
                           "prediction_a": projection["prediction_a"], "prediction_b": projection["prediction_b"],
                           "gold_a": list(gold.labels_a), "gold_b": list(gold.labels_b)})
     meta = _load(run_dir / "run_meta.json")
@@ -232,13 +255,37 @@ def score(task_manifest_path: Path, run_dir: Path) -> dict:
                    "overflow_documents": frozen["estimate"]["overflow_documents"]},
         "scores": {"complete_decision_only": _language_score(complete_grouped),
                    "full_sample_evaluation_default_zero": _language_score(full_grouped)},
+        "b2_q8_comparison": {
+            "P0_parseable_only": _language_score(b2_groups["P0_parseable"]),
+            "P1_parseable_only": _language_score(b2_groups["P1_parseable"]),
+            "P0_full_sample_evaluation_default_zero": _language_score(b2_groups["P0_full"]),
+            "P1_full_sample_evaluation_default_zero": _language_score(b2_groups["P1_full"]),
+        },
         "usage": {"prompt_tokens": sum(x.get("prompt_tokens") or 0 for x in gens),
                   "completion_tokens": sum(x.get("completion_tokens") or 0 for x in gens),
                   "latency_s": round(sum(x.get("latency_s") or 0 for x in gens), 3),
                   "median_latency_s": statistics.median([x["latency_s"] for x in gens if x.get("latency_s") is not None]) if gens else None,
                   "cost_usd": 0},
         "documents": documents,
+        "likely_missed_semantic_difference_documents": sum(x["likely_missed_semantic_difference"] for x in documents),
         "policy_note": "Zero is an evaluation default for unresolved tokens, never semantic equivalence.",
+    }
+    deltas = [{"id": x["id"], "pair": x["pair"], "b2_p1": x["scores"]["b2_p1_full_default"],
+               "b3": x["scores"]["b3_full_default"],
+               "delta": (x["scores"]["b3_full_default"] - x["scores"]["b2_p1_full_default"])
+               if x["scores"]["b3_full_default"] is not None and x["scores"]["b2_p1_full_default"] is not None else None}
+              for x in documents]
+    comparable = [x for x in deltas if x["delta"] is not None]
+    both_undefined = [x for x in deltas if x["b2_p1"] is None and x["b3"] is None]
+    result["case_analysis"] = {
+        "improvement": max(comparable, key=lambda x: x["delta"]) if comparable else None,
+        "regression": min(comparable, key=lambda x: x["delta"]) if comparable else None,
+        "unchanged_failure": both_undefined[0] if both_undefined else None,
+        "attribution": {
+            "improvement": "partial projection effect under the zero evaluation default; document decisions are incomplete",
+            "regression": "alignment/classification on split URL tokens created false DIFFERENT spans; decisions are incomplete",
+            "unchanged_failure": "constant/default vector and unresolved decisions; no complete semantic comparison",
+        },
     }
     (run_dir / "results.json").write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
     result["artifact_sha256"] = {name: hashlib.sha256((run_dir / name).read_bytes()).hexdigest()

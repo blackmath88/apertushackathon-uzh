@@ -38,3 +38,11 @@ PYTHONPATH=track_2a/src python3 -m uzh_rsd.sdm.experiment score \
 
 Only the development split is in scope. No official test data, HF job, cloud
 endpoint, paid compute, or Zürich network/city data is used.
+
+## Outcome
+
+The run completed in 442.277 s with 219 calls and zero transport failures, but
+only 42 model responses passed the frozen strict contract. No document had
+complete semantic-decision coverage; B3 IT was constant/undefined under the
+full-sample zero evaluation default. Verdict: **NOT SUPPORTED**. See the
+[run report](local-q8-20261013/report.md) for comparison tables and cases.
