@@ -1,0 +1,81 @@
+{
+  "schema": "uzh-rsd.b5/v1",
+  "experiment": "B",
+  "stage": "pre_download_input_audit_and_parameter_freeze",
+  "recorded_utc": "2026-10-13T19:10:00Z",
+  "split": "dev",
+  "input_availability": {
+    "published_b4_scores": {
+      "available": true,
+      "kind": "one rounded scalar anomaly score per official token",
+      "not_embeddings": true
+    },
+    "exact_token_embeddings": {"available": false},
+    "subword_to_official_token_maps": {"available": false},
+    "similarity_matrices": {"available": false},
+    "counterpart_indices": {"available": false},
+    "upstream_statement": "Pinned upstream README states that embeddings and similarity matrices are not included and must be regenerated.",
+    "local_cache_search": "No Qwen3-Embedding-4B or embedding cache found under /home/achim/.cache/huggingface/hub before download."
+  },
+  "regeneration_route": {
+    "code_repo": "ZurichNLP/document-level-word-alignment",
+    "code_commit": "60ad0a32bbceb5570ed8440f6bc7a2f470a04c25",
+    "code_license": "MIT",
+    "model": "Qwen/Qwen3-Embedding-4B",
+    "model_revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+    "model_license": "Apache-2.0",
+    "model_api_total_bytes": 8059521975,
+    "model_weight_bytes": 8043592088,
+    "source": "https://huggingface.co/api/models/Qwen/Qwen3-Embedding-4B?blobs=true",
+    "environment": "task-scoped .venv-b5; PyTorch XPU wheel plus upstream-pinned transformers 5.2.0/tokenizers 0.22.2",
+    "route": "download the immutable model revision once; encode the frozen 30 dev pairs at layer 20 on xpu; persist official-token maps, fp16 embeddings and fp32 cosine matrices; run every matcher on those identical matrices",
+    "upstream_reproduction_gap": "The upstream published predictions name the model and layer but do not record the model repository revision used. Agreement of regenerated M0 with published rounded B4 scores is therefore an empirical comparability check, not assumed identity."
+  },
+  "resource_check_before_download": {
+    "filesystem_available": "354 GiB",
+    "ram_total": "31 GiB",
+    "ram_available": "20 GiB",
+    "cpu": "AMD Ryzen 7 3700X, 8 cores/16 threads",
+    "accelerator": "Intel Arc Pro B60 (Battlemage G21), /dev/dri/renderD128 available",
+    "estimated_task_disk": "model 7.51 GiB; XPU Python environment <= 8 GiB; embeddings/similarities/evidence <= 1 GiB; total ceiling 17 GiB",
+    "paid_or_cloud_compute": false,
+    "wall_time_ceiling_minutes": 120,
+    "phases": "dependency install <=25 min; model download <=35 min; 30-document encoding <=45 min; matching/evaluation <=15 min",
+    "stop_conditions": [
+      "XPU unavailable after one supported-wheel installation attempt",
+      "model does not fit local accelerator/RAM",
+      "encoding cannot finish inside the wall-time ceiling",
+      "regenerated M0 lacks complete finite 30/30 official-token coverage"
+    ]
+  },
+  "frozen_methods": {
+    "common": {
+      "cosine": "L2-normalized layer-20 subword hidden states; negative similarities clamped to zero",
+      "official_token_projection": "arithmetic mean of each official token's subword anomaly scores",
+      "order": "exact frozen official-token order",
+      "null_score": 1.0
+    },
+    "M0": "independent maximum cosine; anomaly=1-max(cosine)",
+    "M1": "reciprocal nearest neighbor; real top-1 margin=max1-max2; confidence=max1*(0.75+0.25*mutual)*(0.75+0.25*margin), anomaly=1-confidence",
+    "M2": "one-to-one maximum-weight Hungarian assignment with a private NULL for each subword; NULL threshold 0.35; real anomaly=1-assigned cosine, NULL anomaly=1",
+    "M3": "single best Smith-Waterman local sequence alignment with affine gaps; match score=cosine-0.35, gap-open=-0.20, gap-extend=-0.05; aligned anomaly=1-cosine, unaligned=NULL anomaly=1"
+  },
+  "predeclared_gate": {
+    "useful_absolute_delta": 0.005,
+    "must_beat_unmodified_b4_macro": 0.1871166580894296,
+    "must_beat_selected_a_deterministic_baseline_macro": 0.20927113161193936,
+    "coverage": "30/30 documents, every official token finite; no coverage reduction",
+    "selection": "highest full-sample macro among M1-M3 only if it clears both baselines by at least +0.005; no parameter tuning"
+  },
+  "safety": {
+    "official_test_split": "forbidden",
+    "apertus_calls": 0,
+    "cloud_or_paid_compute": false,
+    "repair_budget": "one primary implementation and at most one focused repair"
+  },
+  "known_protocol_deviation": {
+    "event": "A broad GitHub tree metadata query inadvertently printed official-test path names while auditing upstream availability.",
+    "scope": "path names and blob sizes only; no test file content was opened or downloaded and no test record/ID was enumerated",
+    "response": "stopped all test-path queries; B implementation accepts dev only; disclose in final evidence rather than claiming perfect compliance"
+  }
+}
