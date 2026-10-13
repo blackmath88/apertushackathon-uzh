@@ -47,7 +47,7 @@ Replay is **not** claimed to satisfy the judge requirement. The Q&A answer means
 | 2. Input (`--input`, JSONL) | Each record has exactly `id`, `language`, `text_a`, `text_b`. Any other field (e.g. `labels_a`, `gold`) is rejected by name; its value is never echoed or forwarded. The ID set must equal the contract's, languages must match, there are no duplicates or empty texts, and documents are processed in **contract order** (no reordering, no dropping, no reuse of dev exclusions). | 2 invalid_input |
 | 3. Inference | Frozen B2: `render_b2`, `parse_b2`, `projection.py`, 40-token excerpt cap, `max_new_tokens` 1024. One attempt per call, `--timeout-s` (default 300), no retries. `raw.jsonl` holds one record per call. | — |
 | 4. Validation and output | Every document needs a parsed B2 output whose vectors match the token counts and are finite in [0, 1]. A B2 output with no located spans is a valid all-zero vector (pilot behaviour). Call failures, unparseable responses or invalid vectors keep `final_meta.json` at `status: incomplete`, write `diagnostics.json`, and produce **no** prediction files. | 4 incomplete |
-| 5. Complete | `predictions/predictions_{de,fr,it}.jsonl` in contract order (provisional schema `uzh-rsd.final-predictions/provisional-v1`: `{id, text_a, text_b, labels_a, labels_b}`). Then `final_meta.json` is set to `complete`. | 0 |
+| 5. Complete | `predictions/predictions_{de,fr,it}.jsonl` in contract order (provisional schema `uzh-rsd.final-predictions/provisional-v1`: `{id, text_a, text_b, labels_a, labels_b}`). Files are staged in `predictions.partial/` and renamed when all are written; then `final_meta.json` is atomically replaced with `complete`. That metadata file is the single commit point: trust its status, not the presence of files. | 0 |
 
 **Recorded in `final_meta.json`:**
 
@@ -62,22 +62,22 @@ Replay is **not** claimed to satisfy the judge requirement. The Q&A answer means
 
 It never imports the scorer and never calls the official evaluator loaders or the dataset fetch/load functions. The tests patch those functions to fail and check `sys.modules`.
 
-**Tested synthetically** (`tests/test_final_infer.py`, 16 tests, fake backend plus a 127.0.0.1 mock endpoint):
+**Tested synthetically** (`tests/test_final_infer.py`, 17 tests, fake backend plus a 127.0.0.1 mock endpoint):
 
 - the template contract is refused;
 - unresolved decisions, missing evidence, an unsupported layout or duplicate order entries block before input is read;
 - missing `LLM_*` blocks;
 - existing or protected output directories are refused;
-- sentinel gold fields are rejected without leaking;
+- input records carrying gold-like fields (sentinel values) are rejected by field name without echoing values, and the dataset loaders are patched to fail if called;
 - duplicate, missing, unexpected, language-mismatched and empty inputs are rejected;
 - order is preserved;
-- a failed call, an unparseable response or an interrupt leaves the run incomplete with no predictions;
+- a failed call, an unparseable response or an interrupt (including one while prediction files are being written) leaves the run incomplete with no `predictions/` directory;
 - malformed vectors are rejected;
 - the CLI works end to end against the mock endpoint, and the API key appears in no artefact;
 - dev commands still refuse `--split test` before I/O;
 - the path is not wired into the dev CLI or Make.
 
-Mutation checks (each safeguard disabled in turn) made the suite fail every time.
+Mutation check: seven safeguards were disabled one at a time (extra-field rejection, contract status, overwrite refusal, incomplete-on-problems, contract order, duplicate rejection, endpoint check), and the suite failed each time. The protected-directory, evidence, layout, empty-text, language and vector-range checks have direct tests but were not mutation-checked.
 
 **Not verified**
 
@@ -86,7 +86,7 @@ Mutation checks (each safeguard disabled in turn) made the suite fail every time
 
 **Unresolved, deliberately left open**
 
-- **Official input.** The HF/GitHub test files bundle labels with text. Producing the gold-blind `--input` needs a separate gold-stripping step; that step is **not built**. Doing it means opening the test file, which needs owner approval. Then strip to the four fields only, with the labels never written to the input or any run directory.
+- **Official input.** The dev files bundle labels with text, so the test files probably do too; they were not inspected. Producing the gold-blind `--input` needs a separate gold-stripping step; that step is **not built**. Doing it means opening the test file, which needs owner approval. Then strip to the four fields only, with the labels never written to the input or any run directory.
 - **Order and exclusions.** What "full-set order" means, and whether the 34 `list_to_drop.txt` IDs are predicted, must be written into the contract from the organisers' answer. The code does not guess them.
 - **Format.** The exporter is provisional until N-RULES-4 is answered. A different layout means adding it explicitly; the contract only selects among implemented layouts.
 

@@ -177,7 +177,10 @@ def _now() -> str:
 
 
 def _write_meta(out_dir: Path, meta: Mapping) -> None:
-    (out_dir / "final_meta.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    """Atomic replace: ``final_meta.json`` is the run's single commit point."""
+    staging = out_dir / "final_meta.json.partial"
+    staging.write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    os.replace(staging, out_dir / "final_meta.json")
 
 
 def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence[InferenceInput], input_bytes: bytes,
@@ -237,7 +240,10 @@ def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence
         _write_meta(out_dir, meta)  # still "incomplete": no prediction files are written
         return {"status": "incomplete", "out_dir": str(out_dir), "problems": problems[:20], "counts": counts}, EXIT_INCOMPLETE
 
-    target = out_dir / "predictions"
+    # Written to a staging directory and renamed only after every file is written;
+    # the atomic metadata write right after it is the commit point. Readers must
+    # trust ``final_meta.json`` status, never the mere presence of files.
+    target = out_dir / "predictions.partial"
     target.mkdir()
     files = {}
     for language in LANGUAGES:
@@ -248,6 +254,7 @@ def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence
             path = target / f"predictions_{language}.jsonl"
             path.write_text("".join(line + "\n" for line in lines), encoding="utf-8")
             files[path.name] = {"records": len(lines), "sha256": _sha256(path.read_bytes())}
+    target.rename(out_dir / "predictions")
     meta.update(status="complete", prediction_files=files)
     _write_meta(out_dir, meta)
     return {"status": "complete", "out_dir": str(out_dir), "prediction_files": files, "counts": counts}, EXIT_OK

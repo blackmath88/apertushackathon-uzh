@@ -172,8 +172,9 @@ class InputBoundaryTests(FinalTestCase):
                 self.assertEqual(code, final.EXIT_INVALID)
                 self.assertEqual(backend.prompts, [])
 
-    def test_sentinel_in_clean_run_never_reaches_prompts_outputs_or_metadata(self):
-        # Gold-like sentinels sit in a stray labels file next to the input; nothing may pick them up.
+    def test_smoke_clean_run_artifacts_contain_no_sentinel(self):
+        # Smoke check only: the gold-blindness guarantees are the field-rejection tests and the
+        # patched load_split/fetch_split above. A stray labels file next to the input must stay unused.
         self.write("labels.json", json.dumps({d["id"]: [SENTINEL_NUMBER] for d in DOCS}))
         backend = FakeBackend()
         code, _ = self.run_main(backend=backend)
@@ -233,6 +234,17 @@ class ExecutionTests(FinalTestCase):
                 return super().generate(prompt, max_new_tokens)
         with self.assertRaises(KeyboardInterrupt):
             self.run_main(backend=Crash())
+        self.assertEqual(json.loads((self.out / "final_meta.json").read_text())["status"], "incomplete")
+        self.assertFalse((self.out / "predictions").exists())
+
+    def test_interruption_while_writing_predictions_leaves_no_predictions_dir(self):
+        real_sha = final._sha256
+        def crash_while_writing_predictions(data):
+            if (self.out / "predictions.partial").exists():
+                raise KeyboardInterrupt
+            return real_sha(data)
+        with mock.patch.object(final, "_sha256", crash_while_writing_predictions), self.assertRaises(KeyboardInterrupt):
+            self.run_main(backend=FakeBackend())
         self.assertEqual(json.loads((self.out / "final_meta.json").read_text())["status"], "incomplete")
         self.assertFalse((self.out / "predictions").exists())
 
