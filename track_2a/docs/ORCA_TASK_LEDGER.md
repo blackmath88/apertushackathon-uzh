@@ -32,3 +32,20 @@ Trusted base: `9874189` (fetched from origin; local checkout fast-forwarded from
 ## Next action
 
 Owner decisions are listed in the [review](review/REVIEW_2026-10-13.md) and the PR body. To get an independent review, run a qualified read-only reviewer pinned to the pushed head commit.
+
+---
+
+# Second pass — 13 Oct 2026, 14:38 CEST (owner away; 120-minute budget)
+
+Coordinator: Claude Code desktop session (requested Opus 5.5), owner's Mac. **Route: coordinator only, no workers.** The first pass's shared-credential subagent setup was not repeated, and no route with verified credential isolation and enforced timeout was set up. Base `6b2816e` (matched the expected checkpoint). Isolated worktree `apertushackathon-uzh.worktrees/prep2`, pushed to `feat/b0-b2-mvp`. No other active coordinator (desktop sessions idle, no other worktrees, no Apertus Orca workers). Weavr live state: still no read route; no governance acceptance is claimed.
+
+| ID | Work | Status | Evidence |
+|---|---|---|---|
+| S2-1 | Audit supplement command (`cli audit`, `make audit`) + tests | done | `src/uzh_rsd/audit.py`, `tests/test_audit.py` (4 tests), output [`diagnostics/20261012T062327Z-ff965461/`](../diagnostics/20261012T062327Z-ff965461/audit_supplement.md) generated at `43eb63c`; cross-checks `parse_b2` counters; run directory hashed unchanged |
+| S2-2 | Submission story corrections (parseable vs valid, near-equality, shared EN source, B2 units, replay network, endpoint wording) | done | `1e5afec`: README, STATUS, checklist, report, JUDGE_READINESS |
+| S2-3 | Bounded source research (about 10 min) | done | Notion track and submission pages plus the UZH Q&A doc are readable. **Judges score on the test split (N-RULES-1, new blocker)**; a CSCS API with a 60 s gateway timeout exists. Submission form fields were not inspected (no form interaction); FAQ did not render. |
+| S2-4 | Publication inventory + recommended path | done | [PUBLICATION_REVIEW.md](PUBLICATION_REVIEW.md); logs contain no dataset or model text; the Docker image carries `raw.jsonl` and predictions |
+| S2-5 | Next-experiment protocol (not run) | done | [NEXT_EXPERIMENT_PROTOCOL.md](NEXT_EXPERIMENT_PROTOCOL.md) |
+| S2-6 | Verification, PR body, push | see the review commit row in the [review](review/REVIEW_2026-10-13.md) second-pass section | — |
+
+Review: **self-review only**; the independent review gate remains open. No paid compute, model inference, organiser contact, merge or visibility change.

@@ -35,7 +35,7 @@ Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 
 ## Not yet done
 
-- **Larger dev slice.** Only the nine-document pilot is measured. A larger, predeclared dev slice is needed before any claim about which method correlates better.
+- **Larger dev slice.** Only the nine-document pilot is measured. A larger, predeclared dev slice is needed before any claim about which method correlates better. Protocol drafted (not run): [NEXT_EXPERIMENT_PROTOCOL.md](NEXT_EXPERIMENT_PROTOCOL.md).
 - **Judge endpoint.** No Apertus endpoint for `make run` is confirmed (N-JUDGE-1).
 - **Live Docker run.** `make run` has not run against a real Apertus endpoint: no endpoint for judges is confirmed (N-JUDGE-1), which does not mean none exists. The UZH Q&A mentions a CSCS inference API with a 60 s gateway timeout. Docker `make reproduce` was verified from a clean clone on 12 Oct and again at `662e14d` on 13 Oct.
 - **Test-split predictions (N-RULES-1, new 13 Oct).** The UZH Q&A says judges score on the test split and teams run their system on it at the end. This repo has no final-evaluation path and no test predictions. Adding them needs an owner decision and new compute; see [JUDGE_READINESS.md](JUDGE_READINESS.md).

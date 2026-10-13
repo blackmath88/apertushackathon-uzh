@@ -63,6 +63,11 @@ class TrackingItems:
 @unittest.skipUnless(FETCHED, "run `make s1-fetch` first (dev data, evaluator and prompts)")
 class PipelineTests(unittest.TestCase):
     def setUp(self):
+        # The official evaluator draws one unseeded bootstrap resample from numpy's
+        # global RNG; on this tiny synthetic run it is occasionally constant and the
+        # cross-check records an error. Seed it so the test is deterministic.
+        import numpy
+        numpy.random.seed(0)
         self.tmp = Path(tempfile.mkdtemp())
         self.manifest = load_manifest(MANIFEST)
         self.records = manifest_records(self.manifest)

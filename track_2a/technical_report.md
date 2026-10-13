@@ -170,7 +170,7 @@ This supports continuing with B2 on a larger, predeclared dev slice. It does not
 
 ## 8. Next steps
 
-- Expand to a larger, predeclared dev slice. Keep tuning and validation documents disjoint (upstream `dev/train` / `dev/val`).
+- Expand to a larger, predeclared dev slice: drafted in [NEXT_EXPERIMENT_PROTOCOL.md](docs/NEXT_EXPERIMENT_PROTOCOL.md) (24 English sources, grouped bootstrap, frozen settings; not run, needs compute approval). Keep tuning and validation documents disjoint (upstream `dev/train` / `dev/val`).
 - Run B2 at a few severity scales and alignment variants (B2a binary localisation).
 - 70B comparison.
 - A small "Lost in Switzerland" viewer built from measured outputs.
