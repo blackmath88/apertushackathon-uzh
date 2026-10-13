@@ -1,0 +1,59 @@
+{
+  "upstream_commit": "1807a42100e742ed03d337c54c4b9ea86995f565",
+  "predictions_py_sha256": "40a914ce039804fa8858600e992844489aea5292841ccb6666ef183c30c32fbc",
+  "synthetic_setup": "6 full docs/lang; test = full positions 1,3,4 (same relative order); admin_*_3 on drop list and in test; predictions equal to gold (punctuation -1 -> 0), so a correctly aligned evaluation gives Spearman 1.0",
+  "results": {
+    "test_only_in_test_order": {
+      "exit": 0,
+      "spearman": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "error": ""
+    },
+    "test_only_sorted_by_id_desc": {
+      "exit": 1,
+      "spearman": null,
+      "error": "TypeError: can only concatenate list (not \"tuple\") to list"
+    },
+    "full_set_in_full_order": {
+      "exit": 0,
+      "spearman": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "error": ""
+    },
+    "full_set_reversed": {
+      "exit": 1,
+      "spearman": null,
+      "error": "TypeError: can only concatenate list (not \"tuple\") to list"
+    },
+    "test_only_ids_rewritten": {
+      "exit": 0,
+      "spearman": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "error": ""
+    },
+    "count_neither_test_nor_full": {
+      "exit": 1,
+      "spearman": null,
+      "error": "AssertionError"
+    },
+    "llm_path_full_set_with_dropped_id": {
+      "exit": 1,
+      "spearman": null,
+      "error": "TypeError: can only concatenate list (not \"tuple\") to list"
+    },
+    "llm_path_test_only_with_dropped_id": {
+      "exit": 1,
+      "spearman": null,
+      "error": "AssertionError"
+    }
+  }
+}

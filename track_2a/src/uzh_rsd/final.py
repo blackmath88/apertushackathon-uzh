@@ -48,6 +48,9 @@ from .runner import MAX_NEW_TOKENS, read_raw, run_inference
 from .tokens import tokenize
 
 CONTRACT_SCHEMA = "uzh-rsd.final-contract/v1"
+# "confirmed": decisions confirmed by the organisers. "owner_approved_provisional": the owner
+# approved running with the stated decisions and their basis; NOT organiser-confirmed.
+ACCEPTED_STATUSES = frozenset({"confirmed", "owner_approved_provisional"})
 META_SCHEMA = "uzh-rsd.final-run-meta/v1"
 PREDICTION_SCHEMA = "uzh-rsd.final-predictions/provisional-v1"
 INPUT_FIELDS = frozenset({"id", "language", "text_a", "text_b"})
@@ -78,11 +81,20 @@ def load_contract(path: Path) -> dict:
     contract = json.loads(Path(path).read_text(encoding="utf-8"))
     if contract.get("schema") != CONTRACT_SCHEMA:
         raise FinalBlocked(f"contract schema must be {CONTRACT_SCHEMA!r}")
-    if contract.get("status") != "confirmed":
-        raise FinalBlocked(f"contract status is {contract.get('status')!r}; a final run needs an organiser-confirmed contract")
+    status = contract.get("status")
+    if status not in ACCEPTED_STATUSES:
+        raise FinalBlocked(f"contract status is {status!r}; a final run needs status 'confirmed' (organiser-confirmed) "
+                           f"or 'owner_approved_provisional' (owner-approved, not organiser-confirmed)")
     evidence = contract.get("evidence")
     if not isinstance(evidence, str) or not evidence.strip():
-        raise FinalBlocked("contract has no evidence reference for the organiser decisions")
+        raise FinalBlocked("contract has no evidence reference for its decisions")
+    if status == "owner_approved_provisional":
+        approval = contract.get("owner_approval") or {}
+        basis = contract.get("decision_basis") or {}
+        if not all(isinstance(approval.get(key), str) and approval[key].strip() for key in ("approved_by", "approved_utc", "scope")):
+            raise FinalBlocked("owner_approved_provisional needs owner_approval {approved_by, approved_utc, scope}")
+        if not all(isinstance(basis.get(key), str) and basis[key].strip() for key in DECISIONS):
+            raise FinalBlocked(f"owner_approved_provisional needs decision_basis for {list(DECISIONS)}")
     decisions = contract.get("decisions") or {}
     open_items = [key for key in DECISIONS if not isinstance(decisions.get(key), str) or decisions[key] in ("", "unresolved")]
     if open_items:
@@ -189,7 +201,7 @@ def _write_meta(out_dir: Path, meta: Mapping) -> None:
 
 
 def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence[InferenceInput], input_bytes: bytes,
-              out_dir: Path, *, run_id: str, invocation: str, model: Mapping) -> tuple[dict, int]:
+              out_dir: Path, *, run_id: str, invocation: str, model: Mapping, after_call=None, extra_meta: Mapping | None = None) -> tuple[dict, int]:
     out_dir.mkdir(parents=True, exist_ok=False)
     meta = {
         "schema": META_SCHEMA,
@@ -204,16 +216,19 @@ def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence
         "backend": backend.describe(),
         "source": _source_commit(),
         "invocation": invocation,
-        "contract": {"sha256": _sha256(contract_bytes), "evidence": contract["evidence"], "decisions": contract["decisions"]},
+        "contract": {"sha256": _sha256(contract_bytes), "status": contract["status"], "evidence": contract["evidence"],
+                     "decisions": contract["decisions"], "decision_basis": contract.get("decision_basis"),
+                     "owner_approval": contract.get("owner_approval")},
         "input": {"sha256": _sha256(input_bytes), "documents": len(items),
                   "per_language": dict(Counter(item.language for item in items)),
                   "order": [item.id for item in items]},
         "output_schema": PREDICTION_SCHEMA,
         "started_utc": _now(),
+        **dict(extra_meta or {}),
     }
     _write_meta(out_dir, meta)
     try:
-        return _execute(backend, items, out_dir, run_id, meta)
+        return _execute(backend, items, out_dir, run_id, meta, after_call)
     except BaseException as error:
         # Any exception or interrupt before the final metadata commit leaves the run
         # incomplete. Evidence already on disk (raw.jsonl, diagnostics, even a renamed
@@ -228,8 +243,8 @@ def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence
         raise
 
 
-def _execute(backend, items: Sequence[InferenceInput], out_dir: Path, run_id: str, meta: dict) -> tuple[dict, int]:
-    counts = run_inference(backend, items, ("b2",), out_dir / "raw.jsonl", run_id=run_id)
+def _execute(backend, items: Sequence[InferenceInput], out_dir: Path, run_id: str, meta: dict, after_call=None) -> tuple[dict, int]:
+    counts = run_inference(backend, items, ("b2",), out_dir / "raw.jsonl", run_id=run_id, after_call=after_call)
     raw = {record["id"]: record for record in read_raw(out_dir / "raw.jsonl")}
     documents, predictions, problems = [], {}, []
     for item in items:
@@ -332,7 +347,7 @@ def verify_run(out_dir: Path) -> tuple[bool, list[str]]:
 # --- entry point -----------------------------------------------------------------
 
 
-def main(argv: list[str] | None = None, *, backend_factory=None) -> int:
+def main(argv: list[str] | None = None, *, backend_factory=None, after_call=None, extra_meta: Mapping | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m uzh_rsd.final", description="Final B2 inference on an explicit, gold-blind input (no scoring).")
     parser.add_argument("--verify", type=Path, default=None, metavar="RUN_DIR",
                         help="only check an existing run: accepted iff final_meta.json is complete and the files match it")
@@ -382,13 +397,19 @@ def main(argv: list[str] | None = None, *, backend_factory=None) -> int:
     else:
         from .backends import OpenAICompatibleBackend
         backend = OpenAICompatibleBackend(os.environ["LLM_BASE_URL"], os.environ["LLM_NAME"], os.environ["LLM_API_KEY"], timeout_s=args.timeout_s)
-    model = {"name": os.environ.get("LLM_NAME") or backend.describe().get("model"),
-             "declared_revision": args.model_revision,
-             "note": "A model name does not pin weights; the provider-side revision is unknown unless the provider states it."}
+    described = backend.describe()
+    if described.get("backend") == "transformers" and described.get("revision"):
+        model = {"name": described.get("model"), "revision": described["revision"],
+                 "note": "Weights loaded locally from the Hugging Face Hub at this exact revision."}
+    else:
+        model = {"name": os.environ.get("LLM_NAME") or described.get("model"),
+                 "declared_revision": args.model_revision,
+                 "note": "A model name does not pin weights; the provider-side revision is unknown unless the provider states it."}
     run_id = out_dir.name
     invocation = "python -m uzh_rsd.final " + " ".join(argv if argv is not None else sys.argv[1:])
     try:
-        result, code = run_final(backend, contract, contract_bytes, items, input_bytes, out_dir, run_id=run_id, invocation=invocation, model=model)
+        result, code = run_final(backend, contract, contract_bytes, items, input_bytes, out_dir, run_id=run_id, invocation=invocation,
+                                 model=model, after_call=after_call, extra_meta=extra_meta)
     except KeyboardInterrupt:
         return emit({"status": "interrupted", "out_dir": str(out_dir), "note": "final_meta.json marked incomplete"}, EXIT_INTERRUPTED)
     return emit(result, code)

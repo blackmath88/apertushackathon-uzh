@@ -48,23 +48,27 @@ class Uploader:
 
             self.api = HfApi()
 
-    def push(self, path: Path) -> None:
+    def push(self, path: Path, relative: str | None = None) -> None:
         if self.api is None:
             return
+        name = relative or path.name
         try:
-            self.api.upload_file(path_or_fileobj=str(path), path_in_repo=f"{self.prefix}/{path.name}", repo_id=self.repo,
-                                 repo_type="dataset", commit_message=f"{self.prefix}: {path.name}")
+            self.api.upload_file(path_or_fileobj=str(path), path_in_repo=f"{self.prefix}/{name}", repo_id=self.repo,
+                                 repo_type="dataset", commit_message=f"{self.prefix}: {name}")
         except Exception as error:  # keep running; the log bundle is the fallback
             self.failures += 1
             print(f"upload failed ({type(error).__name__}); continuing", flush=True)
 
 
-def print_bundle(run_dir: Path) -> None:
+def print_bundle(run_dir: Path, flatten_subdirs: bool = False) -> None:
+    """Fallback copy in the (account-private) job log. ``flatten_subdirs`` stores
+    ``sub/name`` as ``sub__name`` so the flat-only log decoder accepts it."""
     buffer = io.BytesIO()
     with tarfile.open(fileobj=buffer, mode="w:gz") as tar:
-        for path in sorted(run_dir.iterdir()):
+        paths = sorted(run_dir.rglob("*")) if flatten_subdirs else sorted(run_dir.iterdir())
+        for path in paths:
             if path.is_file():
-                tar.add(path, arcname=path.name)
+                tar.add(path, arcname="__".join(path.relative_to(run_dir).parts))
     encoded = base64.b64encode(buffer.getvalue()).decode()
     print(BUNDLE_BEGIN, flush=True)
     for start in range(0, len(encoded), 100):
@@ -72,13 +76,66 @@ def print_bundle(run_dir: Path) -> None:
     print(BUNDLE_END, flush=True)
 
 
-def main(argv: list[str] | None = None) -> int:
+def final_main(args, started: float, backend_factory=None) -> int:
+    """Final B2 inference in the job: no manifest, no dev fetch, no prompts fetch, no scoring.
+
+    Delegates to ``uzh_rsd.final`` (contract gate, gold-blind input, frozen B2,
+    completion metadata) with the pinned TransformersBackend. Uploads ``raw.jsonl``
+    after every call and every run file at the end to ``runs/<run_id>/final/``.
+    """
+    from . import final
+
+    run_dir = args.out / args.run_id
+    out_dir = run_dir / "final"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    uploader = Uploader(args.output_repo, args.run_id)
+
+    def factory(timeout_s):
+        if backend_factory is not None:
+            return backend_factory(timeout_s)
+        from .backends import TransformersBackend
+        return TransformersBackend(args.model, args.revision, device=args.device)
+
+    def after_call(record: dict) -> None:
+        generation = record.get("generation") or {}
+        # ids, status and counts only: never prompt or response text in the log line
+        print(f"[{time.monotonic() - started:7.1f}s] {record['method']} {record['id']} {record['status']} "
+              f"tokens={generation.get('completion_tokens')} finish={generation.get('finish_reason')} "
+              f"latency={generation.get('latency_s')}", flush=True)
+        uploader.push(out_dir / "raw.jsonl", "final/raw.jsonl")
+
+    extra = {"job": {"job_id": os.environ.get("JOB_ID"), "accelerator": os.environ.get("ACCELERATOR"),
+                     "bundle_sha256": os.environ.get("UZH_RSD_BUNDLE_SHA256"), "source_commit": os.environ.get("UZH_RSD_SOURCE_COMMIT"),
+                     "python": sys.version.split()[0]}}
+    if os.environ.get("UZH_RSD_SOURCE_COMMIT"):
+        os.environ.setdefault("UZH_SOURCE_COMMIT", os.environ["UZH_RSD_SOURCE_COMMIT"].removesuffix("-dirty"))
+        os.environ.setdefault("UZH_SOURCE_DIRTY", "true" if os.environ["UZH_RSD_SOURCE_COMMIT"].endswith("-dirty") else "false")
+    code = 1
+    try:
+        code = final.main(["--contract", str(args.final_contract), "--input", str(args.final_input), "--out", str(out_dir)],
+                          backend_factory=factory, after_call=after_call, extra_meta=extra)
+    except BaseException:  # noqa: BLE001 - report, then still upload whatever exists
+        traceback.print_exc()
+    finally:
+        if out_dir.exists():
+            for path in sorted(out_dir.rglob("*")):
+                if path.is_file():
+                    uploader.push(path, "final/" + "/".join(path.relative_to(out_dir).parts))
+            print_bundle(out_dir, flatten_subdirs=True)
+    print(json.dumps({"run_id": args.run_id, "final_exit": code, "elapsed_s": round(time.monotonic() - started, 1),
+                      "upload_failures": uploader.failures}), flush=True)
+    return code
+
+
+def main(argv: list[str] | None = None, *, backend_factory=None) -> int:
     started = time.monotonic()
     parser = argparse.ArgumentParser(description="B0/B2 Apertus run inside an HF GPU job")
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--model", required=True)
     parser.add_argument("--revision", required=True)
-    parser.add_argument("--manifest", type=Path, required=True)
+    parser.add_argument("--manifest", type=Path, default=None, help="pilot mode: dev manifest")
+    parser.add_argument("--final-contract", type=Path, default=None, help="final mode: contract JSON (with --final-input)")
+    parser.add_argument("--final-input", type=Path, default=None, help="final mode: gold-blind input JSONL")
     parser.add_argument("--out", type=Path, default=Path("/tmp/uzh-rsd-runs"))
     parser.add_argument("--output-repo", default=None, help="private HF dataset repo for durable results")
     parser.add_argument("--methods", default="b0,b2")
@@ -86,6 +143,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--deadline-min", type=float, default=35.0, help="start no new call after this many minutes")
     parser.add_argument("--device", default="cuda", help="cpu only for local pipeline checks with a tiny model")
     args = parser.parse_args(argv)
+
+    if args.final_contract or args.final_input:
+        if not (args.final_contract and args.final_input) or args.manifest:
+            parser.error("final mode needs --final-contract and --final-input, and no --manifest")
+        return final_main(args, started, backend_factory)
+    if args.manifest is None:
+        parser.error("pilot mode needs --manifest")
 
     run_dir = args.out / args.run_id
     run_dir.mkdir(parents=True, exist_ok=True)

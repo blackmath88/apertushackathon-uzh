@@ -64,14 +64,16 @@ def _now() -> str:
     return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
 
 
-def build_bundle() -> bytes:
-    """Deterministic tar.gz of the package and the manifest (no data, no gold)."""
+def build_bundle(extra: dict[str, bytes] | None = None) -> bytes:
+    """Deterministic tar.gz of the package and the manifest (no data, no gold).
+
+    ``extra`` maps bundle paths to bytes (final mode: the contract and the gold-blind input)."""
     buffer = io.BytesIO()
     with tarfile.open(fileobj=buffer, mode="w:gz", format=tarfile.PAX_FORMAT) as tar:
         files = sorted((TRACK_ROOT / "src" / "uzh_rsd").glob("*.py")) + [MANIFEST]
-        for path in files:
-            info = tarfile.TarInfo(str(path.relative_to(TRACK_ROOT)))
-            data = path.read_bytes()
+        entries = [(str(path.relative_to(TRACK_ROOT)), path.read_bytes()) for path in files] + sorted((extra or {}).items())
+        for name, data in entries:
+            info = tarfile.TarInfo(name)
             info.size, info.mtime, info.mode = len(data), 0, 0o644
             tar.addfile(info, io.BytesIO(data))
     return buffer.getvalue()
@@ -187,6 +189,158 @@ def launch(args) -> int:
     return 0
 
 
+STARTING_ALLOWANCE_MIN = 2  # billed Starting time before the timeout clock; largest observed pre-start 101 s
+FINAL_BUNDLE_CONTRACT = "final/contract.json"
+FINAL_BUNDLE_INPUT = "final/input.jsonl"
+
+
+def final_job_ceiling(timeout_min: int, per_min: float) -> float:
+    """Conservative billed bound: Starting allowance plus the full timeout."""
+    return round((timeout_min + STARTING_ALLOWANCE_MIN) * per_min, 4)
+
+
+def final_preflight(args, api=None) -> tuple[int, dict]:
+    """Every gate before a final launch; spends nothing. Prints no input text."""
+    from . import final
+
+    contract = final.load_contract(args.contract)               # gate: confirmed / owner_approved_provisional
+    items = final.load_final_input(args.input, contract)        # gate: gold-blind fields, ids and order
+    report = {"documents": len(items), "per_language": {}, "contract_status": contract["status"],
+              "contract_sha256": hashlib.sha256(Path(args.contract).read_bytes()).hexdigest(),
+              "input_sha256": hashlib.sha256(Path(args.input).read_bytes()).hexdigest(),
+              "model": MODEL_ID, "revision": MODEL_REVISION, "flavor": FLAVOR, "timeout_min": args.timeout_min,
+              "source_commit": _git_commit()}
+    for item in items:
+        report["per_language"][item.language] = report["per_language"].get(item.language, 0) + 1
+    if api is None:
+        return 0, report
+    report["account"] = api.whoami()["name"]
+    per_min, source = _price_per_min(api)
+    report.update(usd_per_min=per_min, price_source=source, job_ceiling_usd=final_job_ceiling(args.timeout_min, per_min))
+    entries = read_ledger()
+    report["committed_usd"] = max(committed_usd(entries), args.prior_committed_floor_usd)
+    active = [job for job in api.list_jobs() if job.status.stage not in {"COMPLETED", "ERROR", "CANCELED", "DELETED"}]
+    report["active_jobs"] = [job.id for job in active]
+    problems = []
+    if report["source_commit"] is None or report["source_commit"].endswith("-dirty"):
+        problems.append("source tree is dirty or not a git checkout")
+    if report["job_ceiling_usd"] > args.max_job_usd + 1e-9:
+        problems.append(f"job ceiling ${report['job_ceiling_usd']} exceeds approved ${args.max_job_usd}")
+    if report["committed_usd"] + report["job_ceiling_usd"] > args.budget_usd + 1e-9:
+        problems.append(f"cumulative ${report['committed_usd']} + ${report['job_ceiling_usd']} exceeds cap ${args.budget_usd}")
+    if active:
+        problems.append(f"active jobs on the account: {report['active_jobs']}")
+    report["problems"] = problems
+    return (0 if not problems else 4), report
+
+
+def launch_final(args) -> int:
+    from huggingface_hub import HfApi, get_token
+
+    token = get_token()
+    if not token:
+        print("No saved Hugging Face token; run `hf auth login` first.", file=sys.stderr)
+        return 3
+    api = HfApi()
+    code, report = final_preflight(args, api)
+    print(json.dumps(report, indent=2))
+    if code != 0:
+        print("REFUSED: preflight failed.", file=sys.stderr)
+        return code
+    repo = args.output_repo or f"{report['account']}/{DEFAULT_REPO_NAME}"
+    bundle = build_bundle({FINAL_BUNDLE_CONTRACT: Path(args.contract).read_bytes(), FINAL_BUNDLE_INPUT: Path(args.input).read_bytes()})
+    digest = hashlib.sha256(bundle).hexdigest()
+    run_id = "final-" + dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ") + f"-{digest[:8]}"
+    record = {"kind": "final_b2", "run_id": run_id, "repo": repo, "bundle_sha256": digest, "image": IMAGE, "flavor": FLAVOR,
+              "timeout_min": args.timeout_min, "model": MODEL_ID, "revision": MODEL_REVISION, **{k: report[k] for k in (
+                  "documents", "per_language", "contract_status", "contract_sha256", "input_sha256", "source_commit",
+                  "usd_per_min", "price_source", "committed_usd")}, "max_usd": report["job_ceiling_usd"],
+              "max_job_usd_approved": args.max_job_usd, "budget_usd": args.budget_usd}
+    run_dir = RUNS_DIR / run_id
+    if not args.confirm_spend:
+        run_dir.mkdir(parents=True, exist_ok=False)
+        (run_dir / "launch.json").write_text(json.dumps({**record, "launched": False}, indent=2) + "\n")
+        print("Preflight passed. Not launched: pass --confirm-spend to start exactly one GPU job.")
+        return 0
+    api.create_repo(repo, repo_type="dataset", private=True, exist_ok=True)
+    if not api.repo_info(repo, repo_type="dataset").private:
+        print(f"REFUSED: {repo} exists and is not private.", file=sys.stderr)
+        return 5
+    bundle_path = f"runs/{run_id}/input/bundle.tar.gz"
+    api.upload_file(path_or_fileobj=bundle, path_in_repo=bundle_path, repo_id=repo, repo_type="dataset", commit_message=f"{run_id}: input bundle")
+    job_args = ["--run-id", run_id, "--model", MODEL_ID, "--revision", MODEL_REVISION, "--final-contract", FINAL_BUNDLE_CONTRACT,
+                "--final-input", FINAL_BUNDLE_INPUT, "--output-repo", repo]
+    env = {"UZH_RSD_REPO": repo, "UZH_RSD_BUNDLE_PATH": bundle_path, "UZH_RSD_BUNDLE_SHA256": digest,
+           "UZH_RSD_SOURCE_COMMIT": report["source_commit"], "PYTHONUNBUFFERED": "1"}
+    run_dir.mkdir(parents=True, exist_ok=False)
+    job = api.run_job(image=IMAGE, command=["python3", "-c", BOOT, *job_args], env=env, secrets={"HF_TOKEN": token},
+                      flavor=FLAVOR, timeout=f"{args.timeout_min}m", attempts=1, name=f"uzh-final-{digest[:8]}")
+    record.update(launched=True, job_id=job.id, job_url=job.url, launched_utc=_now(), job_args=job_args)
+    (run_dir / "launch.json").write_text(json.dumps(record, indent=2) + "\n")
+    _append_ledger({"kind": "final_b2", "run_id": run_id, "job_id": job.id, "flavor": FLAVOR, "usd_per_min": report["usd_per_min"],
+                    "max_usd": report["job_ceiling_usd"], "launched_utc": record["launched_utc"], "actual_usd": None,
+                    "basis": f"ceiling = (timeout {args.timeout_min} + starting allowance {STARTING_ALLOWANCE_MIN}) min x price"})
+    print(f"launched job {job.id}: {job.url}\nnext: python -m uzh_rsd.hf_launch collect-final --run-id {run_id} --wait")
+    return 0
+
+
+def collect_final(args) -> int:
+    """Wait for terminal state, download runs/<id>/final/** (else the log bundle), update the ledger, verify."""
+    from huggingface_hub import HfApi, snapshot_download
+    from . import final
+
+    run_dir = RUNS_DIR / args.run_id
+    record = json.loads((run_dir / "launch.json").read_text())
+    api = HfApi()
+    job_id = record["job_id"]
+    terminal = {"COMPLETED", "ERROR", "CANCELED", "DELETED"}
+    info = api.inspect_job(job_id=job_id)
+    while args.wait and info.status.stage not in terminal:
+        print(f"job {job_id}: {info.status.stage}; waiting…", flush=True)
+        time.sleep(60)
+        info = api.inspect_job(job_id=job_id)
+    print(f"job {job_id}: {info.status.stage} {info.status.message or ''}".strip())
+    out_dir = run_dir / "final"
+    source = "none"
+    try:
+        local = snapshot_download(record["repo"], repo_type="dataset", allow_patterns=[f"runs/{args.run_id}/final/**"])
+        remote = Path(local, "runs", args.run_id, "final")
+        for path in remote.rglob("*"):
+            if path.is_file():
+                target = out_dir / path.relative_to(remote)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(path.read_bytes())
+        source = "private dataset repo" if (out_dir / "final_meta.json").exists() else source
+    except Exception as error:
+        print(f"repo download failed ({type(error).__name__}); trying the job log", file=sys.stderr)
+    if source == "none" and info.status.stage in terminal:
+        lines = [str(line).rstrip("\n") for line in api.fetch_job_logs(job_id=job_id)]
+        flat = run_dir / "log_bundle"
+        flat.mkdir(exist_ok=True)
+        if _decode_log_bundle(lines, flat):
+            for path in flat.iterdir():
+                target = out_dir.joinpath(*path.name.split("__"))
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(path.read_bytes())
+            source = "job log bundle"
+    running = info.durations.running_secs if getattr(info, "durations", None) else None
+    if running is None and getattr(info, "started_at", None) and getattr(info, "finished_at", None):
+        running = (info.finished_at - info.started_at).total_seconds()
+    entries = read_ledger()
+    for entry in entries:
+        if entry["job_id"] == job_id:
+            entry["stage"] = info.status.stage
+            if running is not None and info.status.stage in terminal:
+                entry["running_secs"] = running
+                entry["actual_usd"] = round((running / 60 + STARTING_ALLOWANCE_MIN) * entry["usd_per_min"], 4)
+                entry["actual_basis"] = "running time + starting allowance (upper bound, not an invoice)"
+    _rewrite_ledger(entries)
+    accepted, reasons = final.verify_run(out_dir) if out_dir.exists() else (False, ["no final output collected"])
+    print(json.dumps({"stage": info.status.stage, "source": source, "accepted": accepted, "reasons": reasons,
+                      "ledger_committed_usd": committed_usd(entries)}, indent=2))
+    return 0 if accepted else 1
+
+
 def _decode_log_bundle(lines: list[str], run_dir: Path) -> bool:
     try:
         start, end = lines.index(BUNDLE_BEGIN), lines.index(BUNDLE_END)
@@ -272,9 +426,22 @@ def main(argv: list[str] | None = None) -> int:
     p_collect.add_argument("--run-id", required=True)
     p_collect.add_argument("--wait", action="store_true")
     p_collect.add_argument("--from-log", action="store_true")
+    p_final = sub.add_parser("final", help="final B2 inference: preflight, then exactly one job with --confirm-spend")
+    p_final.add_argument("--contract", type=Path, required=True)
+    p_final.add_argument("--input", type=Path, required=True)
+    p_final.add_argument("--timeout-min", type=int, required=True)
+    p_final.add_argument("--max-job-usd", type=float, required=True, help="approved ceiling for this job")
+    p_final.add_argument("--budget-usd", type=float, required=True, help="approved cumulative project cap")
+    p_final.add_argument("--prior-committed-floor-usd", type=float, default=0.0,
+                         help="conservative floor for prior spend if the ledger understates it")
+    p_final.add_argument("--confirm-spend", action="store_true")
+    p_final.add_argument("--output-repo", default=None)
+    p_cfinal = sub.add_parser("collect-final")
+    p_cfinal.add_argument("--run-id", required=True)
+    p_cfinal.add_argument("--wait", action="store_true")
     sub.add_parser("spend")
     args = parser.parse_args(argv)
-    return {"launch": launch, "collect": collect, "spend": spend}[args.command](args)
+    return {"launch": launch, "collect": collect, "spend": spend, "final": launch_final, "collect-final": collect_final}[args.command](args)
 
 
 if __name__ == "__main__":

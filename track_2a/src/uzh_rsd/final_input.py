@@ -40,7 +40,10 @@ from .tokens import tokenize
 PROVENANCE_SCHEMA = "uzh-rsd.final-input-provenance/v1"
 CONVERTER_VERSION = "final-input-v1"
 TEXT_FIELDS = ("id", "text_a", "text_b")
-IGNORED_FIELDS = frozenset({"labels_a", "labels_b", "text_a_untokenized", "text_b_untokenized", "page_en", "page_other", "subset"})
+# HF dev rows carry the untokenized fields; the GitHub gold_labels files carry annotator_tag and
+# chunk_id (field names checked on the pinned dev gold file). Values of all of these are never read.
+IGNORED_FIELDS = frozenset({"labels_a", "labels_b", "text_a_untokenized", "text_b_untokenized", "page_en", "page_other", "subset",
+                            "annotator_tag", "chunk_id"})
 KNOWN_FIELDS = frozenset(TEXT_FIELDS) | IGNORED_FIELDS
 
 
