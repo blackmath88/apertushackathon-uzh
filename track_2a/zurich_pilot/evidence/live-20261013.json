@@ -1,0 +1,74 @@
+{
+  "schema": "lost-in-switzerland/live-acceptance/v1",
+  "base_commit": "e023bff764d3c9626d5f2e30a4317a5ddbe7ae77",
+  "live_capture_date": "2026-10-13",
+  "initial_discovery": {
+    "page_budget": 15,
+    "captured": 11,
+    "redirect_failures": 4,
+    "reciprocal_pairs": 0
+  },
+  "followup_english_directory": {
+    "page_budget": 1,
+    "captured": 1
+  },
+  "service_capture": {
+    "page_budget": 4,
+    "captured": 4
+  },
+  "extraction": "offline regeneration to lis-main-blocks-v2; original retrieval timestamps preserved",
+  "pairs": [
+    {
+      "pair_id": "b92f9ab58e105bb485b5d8851925e137905124cc7f842d20c7e2c65a97c5d684",
+      "revision": "173e504c594e5c383b54cfaeb9ae53d84d18d7457bcf345bd1b56de1d327c96b",
+      "de": {
+        "url": "https://www.stadt-zuerich.ch/de/lebenslagen/neu-in-zuerich/zuzug-ausland/welcome-desk.html",
+        "capture_id": "05881e51cffbd35c27c87b2252c30fb0cfce9e005bcfb7349ef8303b1cfece44",
+        "retrieved_at_utc": "2026-10-13T19:53:16.516205+00:00",
+        "html_sha256": "9f339a8a99471cc483fa793637067214cd053db592f03bb659576f79d2b1e48f",
+        "text_sha256": "eaf598c87c29ba78f82dbb2fc639d19ff14e094690aaf32533391d836e15cdea",
+        "record_digest": "158448dbac5691846662ecba043733a8072ff40a032ec302a7483a17dd7d04fa"
+      },
+      "en": {
+        "url": "https://www.stadt-zuerich.ch/de/lebenslagen/neu-in-zuerich/other-languages/en/welcome-desk.html",
+        "capture_id": "e787f534f096a41c913cb56a972d3424dca9ee616569548873757c049d164658",
+        "retrieved_at_utc": "2026-10-13T19:53:06.003599+00:00",
+        "html_sha256": "9702e8ebfb68e86fc76babb62176a0f64e8ba91f5f6896eccd4f845bf15a0a1f",
+        "text_sha256": "50f13fd426ea84e204f762213b7939944f187b616030b0f99ce2c439dca427cc",
+        "record_digest": "3890777b209b65d059d5fc19289c4e1ed45a3f1a07ff2257607495965c601972"
+      },
+      "pairing": "reviewed_relationship",
+      "reviewer_type": "assistant",
+      "semantic_review": "not_performed"
+    },
+    {
+      "pair_id": "b8abcf3914779db438a2ce31a4b680565f180da34d475082bcea04370f4c0b43",
+      "revision": "ef8aa510365e4e51a834aa6c538265b41c365d5e6d50e196e646a4df4199bd73",
+      "de": {
+        "url": "https://www.stadt-zuerich.ch/de/lebenslagen/neu-in-zuerich/zuzug-ausland/deutsch-lernen.html",
+        "capture_id": "ac230858586b9d39ccf77c40692e8f953ca67295c0d79e6c6875758735affdf7",
+        "retrieved_at_utc": "2026-10-13T19:53:10.447548+00:00",
+        "html_sha256": "7efee7afab26aa7aee9ce47010caed4c7a5568df241e0da92065789fe46f9e27",
+        "text_sha256": "57c76f25b552ac46bc06432c22e04e8f3c356b4f9e6591573607609b66d21385",
+        "record_digest": "814618527faf87fe7ecf40901c9df90b347a779a26e53d92c1e51c3e9616af26"
+      },
+      "en": {
+        "url": "https://www.stadt-zuerich.ch/de/lebenslagen/neu-in-zuerich/other-languages/en/deutsch-lernen.html",
+        "capture_id": "ef21ea5e47391781b25ab7e29b017c642ffbdcf0720aa2ed1b46c121affa2a14",
+        "retrieved_at_utc": "2026-10-13T19:52:58.881101+00:00",
+        "html_sha256": "94ffb27959b5da9f0f79dfe0d96b00845becbb338a6504442834fa9bb3a5dcbd",
+        "text_sha256": "b2e1ceba869d555c3919a918c94ae51f78bae1cc8ae18cf8005037ca014ab19f",
+        "record_digest": "572153130e3c1771d7bce10326a0faf058b09e2d1f28e419c6563660b038b801"
+      },
+      "pairing": "reviewed_relationship",
+      "reviewer_type": "assistant",
+      "semantic_review": "not_performed"
+    }
+  ],
+  "terms_url": "https://www.stadt-zuerich.ch/de/service/rechtliche-hinweise.html",
+  "publication": "source_text_withheld",
+  "model_calls": 0,
+  "analysis_status": "not_run",
+  "apertus_route": "not_available_in_cloud_session",
+  "watch": "not_implemented"
+}
