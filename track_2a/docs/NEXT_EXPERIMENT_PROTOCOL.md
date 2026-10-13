@@ -8,6 +8,8 @@ Status: **draft protocol, 13 Oct 2026.** Nothing here has been launched. Running
 - **H2 (robustness).** B2 yields a parseable output for more documents than B0.
 - **H3 (cost).** B2 uses fewer completion tokens and less generation time per document than B0.
 
+Known bias of the primary view: zero-filling unparseable documents can favour B0 through a between-document offset. In the pilot, B0's paper-protocol 0.268 came from that offset (review finding A4). So H1 is interpreted together with the matched view, the documents both methods parsed. If the two views disagree in sign, report "no demonstrated difference" and show both.
+
 Decision rule for H1: claim "B2 better" only if the 95 % cluster-bootstrap interval of (B2 − B0) excludes 0. Otherwise report "no demonstrated difference". H2 and H3 are descriptive, with exact counts.
 
 ## Selection (dev only, independent of scores and labels)
@@ -60,6 +62,6 @@ Basis: pilot per-call latency on 1× L40S. B0: median 86 s, cap-hit calls about 
 ## Requirements before launch
 
 1. Owner approval: N, the new spend ceiling and the job timeout.
-2. Route: HF Jobs batch, as in the pilot, on the owner's machine with `hf auth login`. A live endpoint would also work; but if it is the CSCS API, its 60 s gateway timeout would cut off B0 on longer documents, which would invalidate the B0 arm. Do not use it for B0 without a longer timeout.
+2. Route: HF Jobs batch, as in the pilot, on the owner's machine with `hf auth login`. A live endpoint would also work. But if it is the CSCS API, its 60 s gateway timeout could cut off longer B0 generations: they took 86–131 s on the L40S, untested on CSCS. Any timeout would compromise the B0 arm, so check latency first or use a route with a longer timeout.
 3. Commit the manifest and this protocol (with any edits) **before** the job starts. Any later change is a deviation, recorded with a reason.
 4. No test-split access. A final test run for the submission is a different decision (N-RULES-1).

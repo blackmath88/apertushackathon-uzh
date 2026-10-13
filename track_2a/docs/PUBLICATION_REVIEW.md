@@ -35,7 +35,7 @@ First pass on 13 Oct 2026 by the Packet B subagent; second pass the same day by 
 2. Meanwhile prepare, without committing to it yet:
    - a `LICENSE` (Apache-2.0) for our code;
    - a `NOTICE` / README section stating that the dataset labels are CC BY 4.0 (ZurichNLP), source texts are © Swiss federal authorities, upstream prompts and evaluator are ZurichNLP material without a stated licence, and none of these is relicensed.
-3. If UZH agrees, or does not object before the deadline, make the repository public as the terms require.
+3. If UZH agrees, make the repository public as the terms require. If UZH has not answered by the deadline, publishing with the notice or without the text-bearing files is **your judgement call**; this review does not treat silence as permission.
 
 Why this path: the hackathon requires open source and model predictions, and predictions in the official format inherently contain the dataset text. The dataset, source texts included, is already publicly distributed on Hugging Face (card: cc-by-4.0, with the text terms still to be reconciled). The open risk is the upstream prompt text (no licence), and the provider can resolve that in one answer.
 

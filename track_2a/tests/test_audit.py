@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from uzh_rsd.audit import _b2_items, tree_hashes, write_audit
+from uzh_rsd.audit import TRACK_ROOT, _b2_items, code_revision, tree_hashes, write_audit
 from uzh_rsd.data_adapter import LANGUAGES, InferenceInput, local_path
 from uzh_rsd.evaluation import DEFAULT_OFFICIAL_DIR, OFFICIAL_FILES
 from uzh_rsd.methods import B2_MAX_EXCERPT_TOKENS, parse_b2
@@ -45,6 +45,19 @@ class ItemAccountingTests(unittest.TestCase):
         self.assertEqual(items[0]["sides"][0]["excerpt_tokens"], 2)
 
 
+class CodeRevisionTests(unittest.TestCase):
+    def test_untracked_source_file_marks_src_dirty(self):
+        if code_revision()["commit"] is None:  # not a git checkout: nothing to detect, but no false "clean"
+            self.assertIsNone(code_revision()["src_dirty"])
+            return
+        probe = TRACK_ROOT / "src" / "uzh_rsd" / "_dirty_probe_test.py"
+        probe.write_text("# temporary\n")
+        try:
+            self.assertTrue(code_revision()["src_dirty"])
+        finally:
+            probe.unlink()
+
+
 @unittest.skipUnless(FETCHED, "run `make s1-fetch` first (dev data and evaluator)")
 class PilotAuditTests(unittest.TestCase):
     def test_pilot_audit_matches_committed_coverage_and_leaves_run_unchanged(self):
@@ -62,6 +75,11 @@ class PilotAuditTests(unittest.TestCase):
         self.assertEqual(b2["excerpts_total"], 2 * b2["items_total"])
         b0 = audit["summary"]["b0"]
         self.assertEqual((b0["parseable"], b0["strictly_valid"], b0["fallback_tokens"], b0["tokens_in_parseable_documents"]), (3, 0, 46, 541))
+
+    def test_manifest_digest_matches_committed_results(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            audit = write_audit(PILOT, Path(tmp) / "diag", load_manifest(MANIFEST), "test")
+        self.assertEqual(audit["inputs"]["manifest_sha256"], json.loads((PILOT / "results.json").read_text())["manifest_sha256"])
 
     def test_output_inside_run_directory_is_refused(self):
         with tempfile.TemporaryDirectory() as tmp:

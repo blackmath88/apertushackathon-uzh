@@ -44,10 +44,13 @@ def tree_hashes(directory: Path) -> dict[str, str]:
             for path in sorted(directory.rglob("*")) if path.is_file()}
 
 
-def code_revision(start: Path) -> dict:
+TRACK_ROOT = Path(__file__).resolve().parents[2]
+
+
+def code_revision(track_root: Path = TRACK_ROOT) -> dict:
     def git(*args):
         try:
-            return subprocess.run(["git", *args], cwd=start, capture_output=True, text=True, check=True).stdout.strip()
+            return subprocess.run(["git", "-C", str(track_root), *args], capture_output=True, text=True, check=True).stdout.strip()
         except (OSError, subprocess.CalledProcessError):
             return None
     status = git("status", "--porcelain", "--", "src")
@@ -179,11 +182,11 @@ def audit_run(run_dir: Path, manifest: Mapping, data_dir: Path = DEFAULT_DATA_DI
         "run_id": run_dir.name,
         "inputs": {
             "raw_jsonl_sha256": before["raw.jsonl"],
-            "manifest_sha256": _sha256(json.dumps(manifest, sort_keys=True)),
+            "manifest_sha256": manifest.get("manifest_sha256"),  # same digest as results.json / `manifest --check`
             "run_directory_files_sha256": before,
             "run_directory_unchanged": True,
         },
-        "code": code_revision(Path(__file__).parent),
+        "code": code_revision(),
         "summary": summary,
         "b0_documents": b0_docs,
         "b2_documents": b2_docs,
