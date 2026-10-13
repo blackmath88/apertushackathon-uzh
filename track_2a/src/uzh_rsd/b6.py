@@ -235,11 +235,27 @@ def _positions(groups: Sequence[Mapping]) -> dict[str, set[int]]:
     return result
 
 
-def _under_ranked(labels: Sequence[float], predictions: Sequence[float]) -> set[int]:
-    eligible = [i for i, label in enumerate(labels) if label != -1]
-    gold, pred = [labels[i] for i in eligible], [predictions[i] for i in eligible]
-    gold_ranks, pred_ranks = _average_ranks(gold), _average_ranks(pred)
-    return {index for index, gr, pr, label in zip(eligible, gold_ranks, pred_ranks, gold) if label > 0 and gr > pr}
+def _pooled_under_ranked(records: Sequence, baseline: Mapping[str, Mapping]) -> dict[tuple[str, str], set[int]]:
+    """Official-style pooled language midranks, mapped back to document sides."""
+    pooled: dict[str, list[tuple[str, str, int, float, float]]] = defaultdict(list)
+    for item, gold in records:
+        for side, labels, predictions in (
+            ("a", gold.labels_a, baseline[item.id]["prediction_a"]),
+            ("b", gold.labels_b, baseline[item.id]["prediction_b"]),
+        ):
+            if side == "b" and all(label == -1 for label in labels):
+                continue
+            for index, (label, prediction) in enumerate(zip(labels, predictions)):
+                if label != -1:
+                    pooled[item.language].append((item.id, side, index, float(label), float(prediction)))
+    result: dict[tuple[str, str], set[int]] = defaultdict(set)
+    for rows in pooled.values():
+        gold_ranks = _average_ranks([row[3] for row in rows])
+        prediction_ranks = _average_ranks([row[4] for row in rows])
+        for row, gold_rank, prediction_rank in zip(rows, gold_ranks, prediction_ranks):
+            if row[3] > 0 and gold_rank > prediction_rank:
+                result[(row[0], row[1])].add(row[2])
+    return result
 
 
 def score(selector_path: Path, expected_sha256: str, baseline_path: Path, frozen_manifest_path: Path,
@@ -257,6 +273,7 @@ def score(selector_path: Path, expected_sha256: str, baseline_path: Path, frozen
     _manifest, records = load_frozen_records(frozen_manifest_path, split=split)
     baseline_rows = _read_jsonl(baseline_path)
     baseline = {row["id"]: row for row in baseline_rows}
+    pooled_under_ranked = _pooled_under_ranked(records, baseline)
     record_by_id = {item.id: item for item, _gold in records}
     offset_rows = []
     for row in selector["selections"]:
@@ -287,7 +304,7 @@ def score(selector_path: Path, expected_sha256: str, baseline_path: Path, frozen
             selected_sets[item.id] = pos
             pa, pb = list(baseline[item.id]["prediction_a"]), list(baseline[item.id]["prediction_b"])
             for side, labels, values in (("a", gold.labels_a, pa), ("b", gold.labels_b, pb)):
-                under = _under_ranked(labels, values)
+                under = pooled_under_ranked[(item.id, side)]
                 selected = {i for i in pos.get(side, set()) if labels[i] != -1}
                 positive = {i for i, value in enumerate(labels) if value > 0}
                 totals.update(selected=len(selected), positive=len(positive), selected_positive=len(selected & positive),

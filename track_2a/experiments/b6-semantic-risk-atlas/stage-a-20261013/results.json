@@ -1,0 +1,575 @@
+{
+  "schema": "uzh-rsd.b6/v1",
+  "split": "dev",
+  "coverage": "30/30",
+  "selector_sha256": "089848b977d324c04b67aa5bb77abdfac8ebafcaa80d178d92dbf5066d2ae228",
+  "baseline": {
+    "per_language": {
+      "de": {
+        "documents": 10,
+        "positions": 4837,
+        "masked_punctuation": 631,
+        "spearman": 0.21786518242973402,
+        "ties": 1065,
+        "average_precision": 0.3276101276188916
+      },
+      "fr": {
+        "documents": 10,
+        "positions": 7522,
+        "masked_punctuation": 1153,
+        "spearman": 0.13534720801831318,
+        "ties": 1764,
+        "average_precision": 0.13991109877639085
+      },
+      "it": {
+        "documents": 10,
+        "positions": 6126,
+        "masked_punctuation": 885,
+        "spearman": 0.20813758382024164,
+        "ties": 1230,
+        "average_precision": 0.2282667168944305
+      }
+    },
+    "macro_spearman": 0.1871166580894296,
+    "macro_undefined_reason": null,
+    "ties": 5971,
+    "average_precision": 0.20388790434684698
+  },
+  "methods": [
+    {
+      "strategy": "A0_b5",
+      "selection": {
+        "selected": 641,
+        "positive": 1187,
+        "selected_positive": 189,
+        "under_ranked": 1029,
+        "selected_under_ranked": 134,
+        "eligible": 18485,
+        "token_coverage": 0.03467676494454963,
+        "gold_positive_recall": 0.15922493681550126,
+        "under_ranked_positive_recall": 0.13022351797862003,
+        "gold_positive_enrichment": 4.591689480553105
+      },
+      "per_language_selection": {
+        "de": {
+          "selected": 215,
+          "positive": 185,
+          "selected_positive": 73,
+          "under_ranked": 146,
+          "selected_under_ranked": 50,
+          "eligible": 4837,
+          "token_coverage": 0.04444903866032665,
+          "gold_positive_recall": 0.3945945945945946,
+          "under_ranked_positive_recall": 0.3424657534246575,
+          "gold_positive_enrichment": 8.877460716530484
+        },
+        "fr": {
+          "selected": 212,
+          "positive": 447,
+          "selected_positive": 53,
+          "under_ranked": 401,
+          "selected_under_ranked": 39,
+          "eligible": 7522,
+          "token_coverage": 0.028183993618718425,
+          "gold_positive_recall": 0.1185682326621924,
+          "under_ranked_positive_recall": 0.09725685785536159,
+          "gold_positive_enrichment": 4.206935123042506
+        },
+        "it": {
+          "selected": 214,
+          "positive": 555,
+          "selected_positive": 63,
+          "under_ranked": 482,
+          "selected_under_ranked": 45,
+          "eligible": 6126,
+          "token_coverage": 0.03493307215148547,
+          "gold_positive_recall": 0.11351351351351352,
+          "under_ranked_positive_recall": 0.09336099585062241,
+          "gold_positive_enrichment": 3.249456933569083
+        }
+      },
+      "oracle_reachable_metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.22528707929020445,
+            "ties": 1233,
+            "average_precision": 0.48148306510067224
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.16038412731146456,
+            "ties": 1912,
+            "average_precision": 0.26514520985960577
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.24214218823414912,
+            "ties": 1399,
+            "average_precision": 0.34460054458080347
+          }
+        },
+        "macro_spearman": 0.20927113161193936,
+        "macro_undefined_reason": null,
+        "ties": 6359,
+        "average_precision": 0.33421874732961415
+      },
+      "oracle_delta": 0.022154473522509766,
+      "source_family_clustered_uncertainty": {
+        "unit": "shared English document index across languages",
+        "clusters": 27,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "seed": 20261013,
+        "macro_ci95": [
+          0.1620633084546402,
+          0.268241321864758
+        ],
+        "delta_ci95": [
+          0.008375008234157547,
+          0.036505386763444975
+        ]
+      }
+    },
+    {
+      "strategy": "A1_risk",
+      "selection": {
+        "selected": 572,
+        "positive": 1187,
+        "selected_positive": 34,
+        "under_ranked": 1029,
+        "selected_under_ranked": 33,
+        "eligible": 18485,
+        "token_coverage": 0.030944008655666756,
+        "gold_positive_recall": 0.02864363942712721,
+        "under_ranked_positive_recall": 0.03206997084548105,
+        "gold_positive_enrichment": 0.9256602706476338
+      },
+      "per_language_selection": {
+        "de": {
+          "selected": 211,
+          "positive": 185,
+          "selected_positive": 12,
+          "under_ranked": 146,
+          "selected_under_ranked": 12,
+          "eligible": 4837,
+          "token_coverage": 0.04362207980152987,
+          "gold_positive_recall": 0.06486486486486487,
+          "under_ranked_positive_recall": 0.0821917808219178,
+          "gold_positive_enrichment": 1.486973229153324
+        },
+        "fr": {
+          "selected": 186,
+          "positive": 447,
+          "selected_positive": 14,
+          "under_ranked": 401,
+          "selected_under_ranked": 13,
+          "eligible": 7522,
+          "token_coverage": 0.02472746609944164,
+          "gold_positive_recall": 0.03131991051454139,
+          "under_ranked_positive_recall": 0.032418952618453865,
+          "gold_positive_enrichment": 1.2666041230665608
+        },
+        "it": {
+          "selected": 175,
+          "positive": 555,
+          "selected_positive": 8,
+          "under_ranked": 482,
+          "selected_under_ranked": 8,
+          "eligible": 6126,
+          "token_coverage": 0.028566764609859616,
+          "gold_positive_recall": 0.014414414414414415,
+          "under_ranked_positive_recall": 0.016597510373443983,
+          "gold_positive_enrichment": 0.5045868725868726
+        }
+      },
+      "oracle_reachable_metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.23209564863555623,
+            "ties": 1192,
+            "average_precision": 0.40951770060306786
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.15445381728902965,
+            "ties": 1870,
+            "average_precision": 0.18905445710340335
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.22023620417491632,
+            "ties": 1343,
+            "average_precision": 0.2511000045973465
+          }
+        },
+        "macro_spearman": 0.2022618900331674,
+        "macro_undefined_reason": null,
+        "ties": 6246,
+        "average_precision": 0.24834041457437386
+      },
+      "oracle_delta": 0.015145231943737819,
+      "source_family_clustered_uncertainty": {
+        "unit": "shared English document index across languages",
+        "clusters": 27,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "seed": 20261013,
+        "macro_ci95": [
+          0.15760227848324776,
+          0.25678010942915586
+        ],
+        "delta_ci95": [
+          0.0053007754350239186,
+          0.02922276851985667
+        ]
+      }
+    },
+    {
+      "strategy": "A2_family",
+      "selection": {
+        "selected": 572,
+        "positive": 1187,
+        "selected_positive": 34,
+        "under_ranked": 1029,
+        "selected_under_ranked": 33,
+        "eligible": 18485,
+        "token_coverage": 0.030944008655666756,
+        "gold_positive_recall": 0.02864363942712721,
+        "under_ranked_positive_recall": 0.03206997084548105,
+        "gold_positive_enrichment": 0.9256602706476338
+      },
+      "per_language_selection": {
+        "de": {
+          "selected": 211,
+          "positive": 185,
+          "selected_positive": 12,
+          "under_ranked": 146,
+          "selected_under_ranked": 12,
+          "eligible": 4837,
+          "token_coverage": 0.04362207980152987,
+          "gold_positive_recall": 0.06486486486486487,
+          "under_ranked_positive_recall": 0.0821917808219178,
+          "gold_positive_enrichment": 1.486973229153324
+        },
+        "fr": {
+          "selected": 186,
+          "positive": 447,
+          "selected_positive": 14,
+          "under_ranked": 401,
+          "selected_under_ranked": 13,
+          "eligible": 7522,
+          "token_coverage": 0.02472746609944164,
+          "gold_positive_recall": 0.03131991051454139,
+          "under_ranked_positive_recall": 0.032418952618453865,
+          "gold_positive_enrichment": 1.2666041230665608
+        },
+        "it": {
+          "selected": 175,
+          "positive": 555,
+          "selected_positive": 8,
+          "under_ranked": 482,
+          "selected_under_ranked": 8,
+          "eligible": 6126,
+          "token_coverage": 0.028566764609859616,
+          "gold_positive_recall": 0.014414414414414415,
+          "under_ranked_positive_recall": 0.016597510373443983,
+          "gold_positive_enrichment": 0.5045868725868726
+        }
+      },
+      "oracle_reachable_metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.23209564863555623,
+            "ties": 1192,
+            "average_precision": 0.40951770060306786
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.15445381728902965,
+            "ties": 1870,
+            "average_precision": 0.18905445710340335
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.22023620417491632,
+            "ties": 1343,
+            "average_precision": 0.2511000045973465
+          }
+        },
+        "macro_spearman": 0.2022618900331674,
+        "macro_undefined_reason": null,
+        "ties": 6246,
+        "average_precision": 0.24834041457437386
+      },
+      "oracle_delta": 0.015145231943737819,
+      "source_family_clustered_uncertainty": {
+        "unit": "shared English document index across languages",
+        "clusters": 27,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "seed": 20261013,
+        "macro_ci95": [
+          0.15760227848324776,
+          0.25678010942915586
+        ],
+        "delta_ci95": [
+          0.0053007754350239186,
+          0.02922276851985667
+        ]
+      }
+    },
+    {
+      "strategy": "uniform_random",
+      "selection": {
+        "selected": 646,
+        "positive": 1187,
+        "selected_positive": 57,
+        "under_ranked": 1029,
+        "selected_under_ranked": 47,
+        "eligible": 18485,
+        "token_coverage": 0.03494725453070057,
+        "gold_positive_recall": 0.04802021903959562,
+        "under_ranked_positive_recall": 0.0456754130223518,
+        "gold_positive_enrichment": 1.3740770107537539
+      },
+      "per_language_selection": {
+        "de": {
+          "selected": 216,
+          "positive": 185,
+          "selected_positive": 9,
+          "under_ranked": 146,
+          "selected_under_ranked": 6,
+          "eligible": 4837,
+          "token_coverage": 0.044655778375025844,
+          "gold_positive_recall": 0.04864864864864865,
+          "under_ranked_positive_recall": 0.0410958904109589,
+          "gold_positive_enrichment": 1.0894144144144144
+        },
+        "fr": {
+          "selected": 210,
+          "positive": 447,
+          "selected_positive": 22,
+          "under_ranked": 401,
+          "selected_under_ranked": 19,
+          "eligible": 7522,
+          "token_coverage": 0.027918106886466364,
+          "gold_positive_recall": 0.049217002237136466,
+          "under_ranked_positive_recall": 0.04738154613466334,
+          "gold_positive_enrichment": 1.7629061467987641
+        },
+        "it": {
+          "selected": 220,
+          "positive": 555,
+          "selected_positive": 26,
+          "under_ranked": 482,
+          "selected_under_ranked": 22,
+          "eligible": 6126,
+          "token_coverage": 0.03591250408096637,
+          "gold_positive_recall": 0.04684684684684685,
+          "under_ranked_positive_recall": 0.04564315352697095,
+          "gold_positive_enrichment": 1.3044717444717444
+        }
+      },
+      "oracle_reachable_metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.2250258775432346,
+            "ties": 1188,
+            "average_precision": 0.3588408922924025
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.1538625154606654,
+            "ties": 1872,
+            "average_precision": 0.17225170419948904
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.23440443452503248,
+            "ties": 1380,
+            "average_precision": 0.2822659317185994
+          }
+        },
+        "macro_spearman": 0.20443094250964414,
+        "macro_undefined_reason": null,
+        "ties": 6262,
+        "average_precision": 0.2480815142200941
+      },
+      "oracle_delta": 0.017314284420214543,
+      "source_family_clustered_uncertainty": {
+        "unit": "shared English document index across languages",
+        "clusters": 27,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "seed": 20261013,
+        "macro_ci95": [
+          0.15720384302285556,
+          0.2580524192230581
+        ],
+        "delta_ci95": [
+          0.011178024786793098,
+          0.0274156783246853
+        ]
+      }
+    },
+    {
+      "strategy": "cue_first",
+      "selection": {
+        "selected": 725,
+        "positive": 1187,
+        "selected_positive": 79,
+        "under_ranked": 1029,
+        "selected_under_ranked": 72,
+        "eligible": 18485,
+        "token_coverage": 0.039220989991885315,
+        "gold_positive_recall": 0.06655433866891322,
+        "under_ranked_positive_recall": 0.06997084548104957,
+        "gold_positive_enrichment": 1.6969061383377393
+      },
+      "per_language_selection": {
+        "de": {
+          "selected": 235,
+          "positive": 185,
+          "selected_positive": 22,
+          "under_ranked": 146,
+          "selected_under_ranked": 21,
+          "eligible": 4837,
+          "token_coverage": 0.04858383295431052,
+          "gold_positive_recall": 0.11891891891891893,
+          "under_ranked_positive_recall": 0.14383561643835616,
+          "gold_positive_enrichment": 2.447705577918344
+        },
+        "fr": {
+          "selected": 247,
+          "positive": 447,
+          "selected_positive": 30,
+          "under_ranked": 401,
+          "selected_under_ranked": 28,
+          "eligible": 7522,
+          "token_coverage": 0.03283701143312949,
+          "gold_positive_recall": 0.06711409395973154,
+          "under_ranked_positive_recall": 0.06982543640897755,
+          "gold_positive_enrichment": 2.04385512050648
+        },
+        "it": {
+          "selected": 243,
+          "positive": 555,
+          "selected_positive": 27,
+          "under_ranked": 482,
+          "selected_under_ranked": 23,
+          "eligible": 6126,
+          "token_coverage": 0.039666993143976495,
+          "gold_positive_recall": 0.04864864864864865,
+          "under_ranked_positive_recall": 0.04771784232365145,
+          "gold_positive_enrichment": 1.2264264264264264
+        }
+      },
+      "oracle_reachable_metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.22931526725894763,
+            "ties": 1201,
+            "average_precision": 0.39840959254439656
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.16458146499557014,
+            "ties": 1899,
+            "average_precision": 0.22083165495486395
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.23255916807266497,
+            "ties": 1394,
+            "average_precision": 0.2841048725661452
+          }
+        },
+        "macro_spearman": 0.20881863344239426,
+        "macro_undefined_reason": null,
+        "ties": 6290,
+        "average_precision": 0.2732067346287209
+      },
+      "oracle_delta": 0.02170197535296467,
+      "source_family_clustered_uncertainty": {
+        "unit": "shared English document index across languages",
+        "clusters": 27,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "seed": 20261013,
+        "macro_ci95": [
+          0.16061391880226217,
+          0.26742393803508246
+        ],
+        "delta_ci95": [
+          0.010773853269630377,
+          0.034764017320794934
+        ]
+      }
+    }
+  ],
+  "complementarity_with_b5": {
+    "a1_extra_selected_under_ranked": -101,
+    "a2_extra_selected_under_ranked": -101
+  },
+  "gate_a": {
+    "primary": "A2_family",
+    "thresholds": {
+      "under_ranked_recall_margin": 0.02,
+      "oracle_delta_margin": 0.005,
+      "minimum_enrichment": 1.25,
+      "languages_beating_a0_under_ranked_recall": 2
+    },
+    "checks": {
+      "under_ranked_recall_over_a0": false,
+      "under_ranked_recall_over_random": false,
+      "oracle_delta_over_a0": false,
+      "oracle_delta_over_random": false,
+      "enrichment": false,
+      "per_language": false
+    },
+    "passes": false,
+    "failure_verdict": "NOT SUPPORTED"
+  },
+  "official_offset_contract": "verified official str.split tokens and exact source [start,end) character offsets for every selected region",
+  "pairing": {
+    "verified_four_language_families": 0,
+    "failure": "no complete DE/FR/IT sibling family in the frozen 30 documents"
+  },
+  "failures": [],
+  "apertus_calls": 0
+}
