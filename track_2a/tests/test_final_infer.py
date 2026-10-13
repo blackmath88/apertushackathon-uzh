@@ -294,6 +294,10 @@ class ExecutionTests(FinalTestCase):
         self.assertFalse(accepted)
         self.assertTrue(any("sha256" in reason for reason in reasons))
         self.assertTrue(any("order" in reason for reason in reasons))
+        path.write_text("{not json\n")
+        accepted, reasons = final.verify_run(self.out)
+        self.assertFalse(accepted)
+        self.assertTrue(any("malformed" in reason for reason in reasons))
 
     def test_malformed_prediction_vectors_are_rejected(self):
         item = final.load_final_input(self.input_path, contract())[0]

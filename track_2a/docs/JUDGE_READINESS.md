@@ -79,7 +79,7 @@ Still open (do not assume): the meaning of "full-set order", the 34 dropped IDs,
 |---|---|
 | Frozen system | Branch head at approval time (record the SHA). B2 `b2-spans-v1`, `parse_b2`, `project_differences`, 40-token cap, `max_new_tokens` 1024, greedy, one attempt per call. No B0 on test unless the organisers ask. |
 | Model | `swiss-ai/Apertus-v1.5-8B`. Revision `a411d83` (as the pilot) on the HF route; on an endpoint route the revision is whatever the provider serves, recorded as *declared*. |
-| Data preparation | Owner-approved: download the pinned test files for de/fr/it from `ZurichNLP/SwissGov-RSD` (outside the dev code paths, which still refuse `test`), then `python -m uzh_rsd.final_input --source de=… --source fr=… --source it=… --out prep/`. Nothing is scored; labels are not read. |
+| Data preparation | **Test files are not pinned and have not been located or inspected.** The repo pins only the dev files of `ZurichNLP/SwissGov-RSD@f16aa05` (`data/{de,fr,it}/dev_*.jsonl`); its adapter records no test file at that revision. The UZH page says both the HF and GitHub repos contain the test set, but the path, revision and hashes are unknown. Step: the owner approves, then locates and downloads the test files manually (outside the dev code, which still refuses `test`) and runs `python -m uzh_rsd.final_input --source de=… --source fr=… --source it=… --out prep/`. The converter records each source sha256. It assumes dev-row field names and the `admin_{lang}_` ID prefix; if test rows differ it fails closed and needs a small, reviewed adjustment. Nothing is scored; labels are not read. |
 | Contract | Copy `prep/contract.draft.json`; set `order`, `decisions` and `evidence` from the organiser reply; `status: confirmed`. |
 
 **Route A: OpenAI-compatible Apertus endpoint.** Supported now, no code change. Command: `make run MODE=final FINAL_CONTRACT=… FINAL_INPUT=prep/final_input.jsonl FINAL_OUT_DIR=final_runs FINAL_RUN_ID=test-<date> FINAL_ARGS="--timeout-s 55 --model-revision <stated>"` with `LLM_*` set.
@@ -98,7 +98,12 @@ Still open (do not assume): the meaning of "full-set order", the 34 dropped IDs,
   3. Reuse the existing spend ledger, `attempts=1` and job timeout.
 - Estimated size: about 60–100 lines plus synthetic tests. The prepared test texts would go to the private HF dataset repo used for pilot bundles.
 
-**Expected artefacts:** `OUT/RUN_ID/{final_meta.json, raw.jsonl, diagnostics.json, predictions/predictions_{de,fr,it}.jsonl}`, plus `prep/final_input.provenance.json` and the confirmed contract. Commit them under a new directory, never under `results/<pilot>`.
+**Route choice.** The deciding question is whether the team has a **working, credentialed Apertus v1.5 endpoint**. None is known: the checklist records Swisscom auth failing and HF/Featherless returning 1010, and CSCS access is unconfirmed.
+
+- **If yes:** Route A. No new code; accept the 60 s gateway risk.
+- **If not (recommended default):** Route B. It is the only route that has actually run Apertus here (the pilot), on the same hardware with revision `a411d83`, and its ceiling is enforceable. First implement and review the adapter (about one session).
+
+**Expected artefacts:** `OUT/RUN_ID/{final_meta.json, raw.jsonl, diagnostics.json, predictions/predictions_{de,fr,it}.jsonl}`, plus `prep/final_input.provenance.json` and the confirmed contract. `track_2a/final_runs/` is gitignored (scratch and synthetic runs). The real run's accepted artefacts would be committed to a new tracked directory, proposed `track_2a/final/<run id>/`: never under `results/` or `diagnostics/`, and only after `--verify` accepts.
 
 **Cost (Route B; assumptions):**
 
@@ -110,9 +115,10 @@ Still open (do not assume): the meaning of "full-set order", the 34 dropped IDs,
 
 **Decisions before launch:**
 
+0. **What plain `make run` should do at submission.** Judges run `make run` without `MODE`, which today is the dev pilot, so it cannot regenerate test predictions. The Q&A asks for results reproducible "as if you wouldn't submit the predictions". **Recommendation:** after the real run, commit the confirmed contract, the prepared input and the verified outputs under `track_2a/final/<run id>/`, then make the submission default `make run` the final mode reading those committed files, keeping `MODE=pilot` as an option. Not implemented; it needs the real files first.
 1. Organiser answers for order, dropped IDs and layout (the message is drafted).
 2. Approve opening the test files and running the converter.
-3. Choose the route: A, with a named endpoint and credentials, or B, which first needs the adapter implemented and reviewed.
+3. Choose the route: A only if a working, credentialed Apertus endpoint exists; otherwise B (recommended), which first needs the adapter implemented and reviewed.
 4. Approve spend: the Route B ceiling above, or Route A provider terms.
 
 ## DRAFT — NOT SENT: one consolidated message to the UZH challenge provider / organisers

@@ -169,12 +169,12 @@ def _source_commit() -> dict:
         except (OSError, subprocess.CalledProcessError):
             return None
     commit = git("rev-parse", "HEAD")
-    if commit is None and os.environ.get("UZH_SOURCE_COMMIT"):
+    if commit is None and os.environ.get("UZH_SOURCE_COMMIT", "").strip():
         # Docker image without git: the host passes its checkout's commit; recorded as declared.
         dirty = {"true": True, "false": False}.get(os.environ.get("UZH_SOURCE_DIRTY", ""))
         return {"commit": os.environ["UZH_SOURCE_COMMIT"], "src_dirty": dirty, "source": "declared by host via UZH_SOURCE_COMMIT"}
     status = git("status", "--porcelain", "--", "src")
-    return {"commit": commit, "src_dirty": None if status is None else bool(status), "source": "git"}
+    return {"commit": commit, "src_dirty": None if status is None else bool(status), "source": "git" if commit else "unavailable"}
 
 
 def _now() -> str:
@@ -313,7 +313,11 @@ def verify_run(out_dir: Path) -> tuple[bool, list[str]]:
             continue
         if _sha256(path.read_bytes()) != info.get("sha256"):
             reasons.append(f"{name}: sha256 differs from metadata")
-        ids = [json.loads(line)["id"] for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        try:
+            ids = [json.loads(line)["id"] for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        except (ValueError, KeyError, TypeError):
+            reasons.append(f"{name}: malformed prediction record")
+            continue
         if len(ids) != info.get("records"):
             reasons.append(f"{name}: {len(ids)} records, metadata says {info.get('records')}")
         expected = [identifier for identifier in order if identifier in set(ids)]
