@@ -75,3 +75,28 @@ Coordinator: Claude Code desktop session (requested Opus 5.5), owner's Mac. Base
 Independent review: **not available.** No enforced, credential-isolated, read-only route exists (local Orca workers share credentials; Nebuchdnezzar unreachable). Self-review only; the gate stays open.
 
 Third pass settled: this session started no Orca or other workers. The retained or unverifiable entries in `orca orchestration worker-list` belong to other workspaces (soul.me, buildradar, weavr) and were not touched. The scratch worktree `final` and local branch `prep/final-infer-20261013` are removed after push.
+
+---
+
+# Fourth pass — 13 Oct 2026, 16:28 CEST (final workflow end to end; 60-minute budget)
+
+Coordinator: Claude Code desktop session (requested Opus 5.5), applying `orchestrate-work` plus the enclosed `route-orca-work` 1.0.0 (read this session, not installed; the Weavr #113 assignment in the same attachment was **not** executed). Base `3966e86` (matched). Isolated worktree `apertushackathon-uzh.worktrees/e2e`, branch `prep/final-e2e-20261013`, pushed to `feat/b0-b2-mvp`. No other coordinator; no Apertus Orca workers. Weavr live state not readable; no governance acceptance claimed.
+
+**Route selection (route-orca-work order):**
+
+| Candidate | Observation | Decision |
+|---|---|---|
+| Local / Morrow on Nebu | `orca status --environment Nebuchdnezzar`: host did not answer (one bounded re-probe; unchanged since 16:00) | unavailable |
+| Mistral | No managed OpenCode account and no configured Mistral harness (`orca account list`); no spend authority | not configured |
+| Orca Claude/Codex workers | `worker-start` supports `--timeout-ms` and `worker-stop` fencing. Workers run as the same macOS user, with `~/.cache/huggingface/token` and `~/.config/gh/hosts.yml` readable (unrelated publishing and control-plane credentials). Orca's guide documents no credential boundary. The isolation option, `vm recipe`, needs an `orca.yaml` `environmentRecipes` setup the repo lacks; creating one would be building sandbox infrastructure. | ineligible |
+| Result | **No Orca delegation occurred.** All packets were executed directly by the coordinator. No ordinary subagents were used or relabelled. | — |
+
+| ID | Work | Status | Evidence |
+|---|---|---|---|
+| E-1 | Converter `uzh_rsd.final_input` + 10 tests | done | `0ea3ab9` |
+| E-2 | Interruption: exceptions and KeyboardInterrupt → incomplete (exit 4 / 130); `--verify`; exact post-rename window tested | done | `0ea3ab9` |
+| E-3 | Docker `make run MODE=final` + Make guards + e2e script | done | `ef50e10`; e2e 13/13 at `ef50e10` |
+| E-4 | Real-run plan (routes A and B, cost, ceiling, decisions); docs corrections | done | JUDGE_READINESS "Real-run plan"; this commit |
+| E-5 | Verification | done | s1-check 120 OK / 0 skips; `git diff 3966e86 -- results/ diagnostics/` empty; Docker `make reproduce` exit 0 (identical metrics); pilot `make run` BLOCKED exit 3 |
+
+Review: self-review only; the independent gate stays open (no eligible read-only, credential-isolated route). Workers: none started by this pass. Scratch worktree `e2e`, its synthetic `final_runs/e2e-*` output (gitignored) and the local branch are removed after push.

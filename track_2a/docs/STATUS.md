@@ -31,7 +31,7 @@ Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 - **Backends.** OpenAI-compatible endpoint (judge path, tested against mock HTTP); transformers (HF batch GPU, now measured on L40S).
 - **HF Jobs launcher.** Private dataset repo `metamax88/uzh-rsd-runs` for bundle and results; privacy was verified, and an anonymous request gets HTTP 401. Results upload after every call, with a log-bundle fallback. A spend ledger enforces a hard ceiling, and `attempts=1`.
 - **Docker.** `make run` builds and runs the image. Without `LLM_*` it stops with BLOCKED (exit 3). `make reproduce` re-scores committed raw responses with no model inference. It still needs network access for the base image and the pinned dev data/evaluator files.
-- **Checks.** On the Mac with Python 3.13, `make s1-check` gives 106 tests and zero skips (83 before the 13 Oct audit-supplement and final-inference tests). The manifest reproduces and the test split is refused.
+- **Checks.** On the Mac with Python 3.13, `make s1-check` gives 120 tests and zero skips (83 before the 13 Oct audit-supplement and final-path tests). The manifest reproduces and the test split is refused.
 
 ## Not yet done
 
@@ -39,7 +39,7 @@ Scope: [one UZH MVP](MVP_PLAN.md), B0 versus B2 on identical dev documents.
 - **Judge endpoint.** No Apertus endpoint for `make run` is confirmed (N-JUDGE-1).
 - **Live Docker run.** `make run` has not run against a real Apertus endpoint: no endpoint for judges is confirmed (N-JUDGE-1), which does not mean none exists. The UZH Q&A mentions a CSCS inference API with a 60 s gateway timeout. Docker `make reproduce` was verified from a clean clone on 12 Oct and again at `662e14d` on 13 Oct.
 - **Test-split predictions (N-RULES-1, new 13 Oct).** The UZH Q&A says judges score on the test split and teams run their system on it at the end. This repo has no final-evaluation path and no test predictions. Adding them needs an owner decision and new compute; see [JUDGE_READINESS.md](JUDGE_READINESS.md).
-  - **Final-inference path implemented (13 Oct, third pass), synthetic tests only.** `python -m uzh_rsd.final` is gold-blind, contract-gated (the committed template is refused), keeps contract order and never zero-fills or overwrites. It has never run on real test data or a real endpoint, and the gold-stripping input step is not built. See [JUDGE_READINESS.md](JUDGE_READINESS.md#final-inference-path-implemented-13-oct-synthetic-tests-only).
+  - **Final workflow (13 Oct, fourth pass), synthetically verified end to end.** Official-shaped input → `python -m uzh_rsd.final_input` → root `make run MODE=final` (Docker) → endpoint → `python -m uzh_rsd.final --verify`. Tested with synthetic rows and a mock endpoint (13/13 Docker end-to-end checks). Never run with real Apertus or real test data. Route B (HF Jobs) needs a small adapter. See the [real-run plan](JUDGE_READINESS.md#real-run-plan-one-run-not-executed-needs-the-approvals-at-the-end).
 
 ## Compute (all Hack Apertus HF Jobs on account `metamax88`)
 

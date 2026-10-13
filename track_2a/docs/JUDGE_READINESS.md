@@ -35,75 +35,85 @@ Second pass on 13 October 2026, by the coordinator, after the first pass by the 
 
 Replay is **not** claimed to satisfy the judge requirement. The Q&A answer means judges expect a reproducible system plus test predictions, and `make run` currently runs the dev manifest only.
 
-## Final inference path (implemented 13 Oct, synthetic tests only)
+## Final inference path (implemented 13 Oct, synthetically tested; not run with real Apertus or real test data)
 
-`python -m uzh_rsd.final` (source: `src/uzh_rsd/final.py`) is the separate operation that will produce final B2 predictions **once a real run is approved**. It is not part of `cli.py`, `make run`, `make reproduce` or any Make target. The development split guard is unchanged.
+**Correction (13 Oct, fourth pass).** The third pass said an interrupt leaves "no `predictions/` directory". That holds only for an interrupt *before* the staged directory is renamed. Between the rename and the metadata commit, `predictions/` can exist while `final_meta.json` says `incomplete`. **`final_meta.json` is the only completion authority**; use `--verify` to check a run. Nothing is promised for SIGKILL or power loss beyond what is already on disk.
 
-**What it does**
+### Workflow
 
-| Step | Behaviour | Exit |
+| Stage | Command | What it guarantees (tested) |
 |---|---|---|
-| 1. Configuration (before reading input or building a backend) | Needs `--contract`, a confirmed contract: schema `uzh-rsd.final-contract/v1`, `status: confirmed`, a non-empty `evidence` reference, and decisions `full_set_order` / `dropped_ids` / `output_layout` none of which is `unresolved`. Only the `per_language_jsonl` layout is implemented, and `order` must be unique `{id, language}` entries. Also needs `LLM_*` and an `--out` directory that does not exist and is not inside `results/`, `diagnostics/`, `manifests/` or `data/`. | 3 BLOCKED |
-| 2. Input (`--input`, JSONL) | Each record has exactly `id`, `language`, `text_a`, `text_b`. Any other field (e.g. `labels_a`, `gold`) is rejected by name; its value is never echoed or forwarded. The ID set must equal the contract's, languages must match, there are no duplicates or empty texts, and documents are processed in **contract order** (no reordering, no dropping, no reuse of dev exclusions). | 2 invalid_input |
-| 3. Inference | Frozen B2: `render_b2`, `parse_b2`, `projection.py`, 40-token excerpt cap, `max_new_tokens` 1024. One attempt per call, `--timeout-s` (default 300), no retries. `raw.jsonl` holds one record per call. | — |
-| 4. Validation and output | Every document needs a parsed B2 output whose vectors match the token counts and are finite in [0, 1]. A B2 output with no located spans is a valid all-zero vector (pilot behaviour). Call failures, unparseable responses or invalid vectors keep `final_meta.json` at `status: incomplete`, write `diagnostics.json`, and produce **no** prediction files. | 4 incomplete |
-| 5. Complete | `predictions/predictions_{de,fr,it}.jsonl` in contract order (provisional schema `uzh-rsd.final-predictions/provisional-v1`: `{id, text_a, text_b, labels_a, labels_b}`). Files are staged in `predictions.partial/` and renamed when all are written; then `final_meta.json` is atomically replaced with `complete`. That metadata file is the single commit point: trust its status, not the presence of files. | 0 |
+| 1. Prepare input | `python -m uzh_rsd.final_input --source de=… --source fr=… --source it=… --out PREP` | Reads official-shaped JSONL (dev-row field names), one file per language, and writes `final_input.jsonl` with `id`, `language` and the **tokenized** `text_a`/`text_b` copied verbatim, so vectors align with official tokens (checked against label lengths). Labels and untokenized fields are recognised and never read. Unknown fields, malformed records, duplicates and id/language mismatches are rejected with file:line and field names only. No dev exclusions; no download. Also writes `final_input.provenance.json` (source sha256, counts, **mechanical** source order) and `contract.draft.json` (status `unresolved`; refused by stage 2). |
+| 2. Confirm contract | edit a copy of `PREP/contract.draft.json` | `order`, `decisions` and `evidence` come from the organiser answer. Mechanical source order is **not** the organisers' "full-set order" until they say so. |
+| 3. Final inference | `make run MODE=final FINAL_CONTRACT=… FINAL_INPUT=PREP/final_input.jsonl FINAL_OUT_DIR=… FINAL_RUN_ID=…` (root) | Checks the four variables, that the files exist and that the run dir is new, **before** building. Mounts contract and input read-only and writes the host directory as the host uid. Passes the host commit and src-dirty flag. Inside: `python -m uzh_rsd.final`, BLOCKED (exit 3) unless the contract is confirmed and `LLM_*` are set. Frozen B2, one attempt per call, `--timeout-s` via `FINAL_ARGS`. `MODE=pilot` (default) is unchanged; an unknown `MODE` is refused; there is no fallback. |
+| 4. Accept | `PYTHONPATH=src python -m uzh_rsd.final --verify OUT/RUN_ID` | Accepted only if `final_meta.json` is `complete`, no staging dir remains, and the prediction files match the recorded names, sha256, record counts and contract order. |
 
-**Recorded in `final_meta.json`:**
+**Failure behaviour (tested):**
 
-- source commit and src-dirty flag;
-- strategy identity (prompt version, parser, projection, cap, decoding);
-- backend description (endpoint, timeout, `max_attempts: 1`; the key is never recorded);
-- model name plus `--model-revision` recorded as *declared, not verified*, with a note that a name does not pin weights;
-- contract sha256, evidence and decisions;
-- input sha256 and per-language counts;
-- output schema;
-- start and finish times.
+- A failed call or unparseable response: exit 4, meta `incomplete`, `diagnostics.json` kept, no prediction files.
+- An ordinary exception: exit 4, meta `incomplete` with `interrupted.type`.
+- KeyboardInterrupt: exit 130, meta `incomplete`.
+- In every case `raw.jsonl` and any staged or renamed prediction files are kept for diagnosis.
+- Existing run directories are never overwritten or resumed.
 
-It never imports the scorer and never calls the official evaluator loaders or the dataset fetch/load functions. The tests patch those functions to fail and check `sys.modules`.
+A valid all-zero B2 vector (the model returned no located spans) is kept as pilot behaviour; a failed request is never turned into zeros.
 
-**Tested synthetically** (`tests/test_final_infer.py`, 17 tests, fake backend plus a 127.0.0.1 mock endpoint):
+### Synthetic verification (13 Oct)
 
-- the template contract is refused;
-- unresolved decisions, missing evidence, an unsupported layout or duplicate order entries block before input is read;
-- missing `LLM_*` blocks;
-- existing or protected output directories are refused;
-- input records carrying gold-like fields (sentinel values) are rejected by field name without echoing values, and the dataset loaders are patched to fail if called;
-- duplicate, missing, unexpected, language-mismatched and empty inputs are rejected;
-- order is preserved;
-- a failed call, an unparseable response or an interrupt (including one while prediction files are being written) leaves the run incomplete with no `predictions/` directory;
-- malformed vectors are rejected;
-- the CLI works end to end against the mock endpoint, and the API key appears in no artefact;
-- dev commands still refuse `--split test` before I/O;
-- the path is not wired into the dev CLI or Make.
+- **Unit tests:** `tests/test_final_input.py` (10) and `tests/test_final_infer.py` (21), in `make s1-check`.
+  - Converter: sentinel annotation and untokenized values never reach prepared input, prompts, raw records, metadata or predictions.
+  - Interruption: the exact post-rename window is tested and rejected by `--verify`; tampered files are detected.
+  - Make: `MODE=final` blocks before build without configuration; `MODE=pilot` stays the default.
+- **Docker end-to-end:** `PYTHONPATH=src .venv/bin/python tests/e2e_final_docker.py` (needs Docker; outside unittest discovery). It runs official-shaped synthetic rows → converter → root `make run MODE=final` (Docker) → a mock endpoint on the host loopback via `host.docker.internal` → `--verify`.
+  - All 13 checks passed at `ef50e10`: unresolved draft BLOCKED inside Docker with no request sent; exit 0; same run ID refused; accepted by verify; host commit with `src_dirty: false`; input and contract sha256; order; vector lengths; one request per document; no sentinel or key in any artefact; host-owned outputs.
 
-Mutation check: seven safeguards were disabled one at a time (extra-field rejection, contract status, overwrite refusal, incomplete-on-problems, contract order, duplicate rejection, endpoint check), and the suite failed each time. The protected-directory, evidence, layout, empty-text, language and vector-range checks have direct tests but were not mutation-checked.
+**Not verified:** any real Apertus endpoint (timeouts, rate limits, response format), any real test data, the official file layout.
 
-**Not verified**
+### Real-run plan (one run; NOT executed, needs the approvals at the end)
 
-- Never run against a real Apertus endpoint. Behaviour under a real server's timeouts (e.g. CSCS's 60 s gateway), rate limits or response format is unknown.
-- Never run on real test data.
+Organiser position (Q&A, recorded above): judges score on test; development stays on dev; teams run the final system on test at the end and include predictions plus reproducible code; the baseline is the one closest to the submitted system (B0, the paper prompt). **Permission to run final inference is answered.**
 
-**Unresolved, deliberately left open**
+Still open (do not assume): the meaning of "full-set order", the 34 dropped IDs, the output layout (N-RULES-4), and whether judges host an endpoint (N-JUDGE-1).
 
-- **Official input.** The dev files bundle labels with text, so the test files probably do too; they were not inspected. Producing the gold-blind `--input` needs a separate gold-stripping step; that step is **not built**. Doing it means opening the test file, which needs owner approval. Then strip to the four fields only, with the labels never written to the input or any run directory.
-- **Order and exclusions.** What "full-set order" means, and whether the 34 `list_to_drop.txt` IDs are predicted, must be written into the contract from the organisers' answer. The code does not guess them.
-- **Format.** The exporter is provisional until N-RULES-4 is answered. A different layout means adding it explicitly; the contract only selects among implemented layouts.
+| Item | Plan |
+|---|---|
+| Frozen system | Branch head at approval time (record the SHA). B2 `b2-spans-v1`, `parse_b2`, `project_differences`, 40-token cap, `max_new_tokens` 1024, greedy, one attempt per call. No B0 on test unless the organisers ask. |
+| Model | `swiss-ai/Apertus-v1.5-8B`. Revision `a411d83` (as the pilot) on the HF route; on an endpoint route the revision is whatever the provider serves, recorded as *declared*. |
+| Data preparation | Owner-approved: download the pinned test files for de/fr/it from `ZurichNLP/SwissGov-RSD` (outside the dev code paths, which still refuse `test`), then `python -m uzh_rsd.final_input --source de=… --source fr=… --source it=… --out prep/`. Nothing is scored; labels are not read. |
+| Contract | Copy `prep/contract.draft.json`; set `order`, `decisions` and `evidence` from the organiser reply; `status: confirmed`. |
 
-**After approval (commands)**
+**Route A: OpenAI-compatible Apertus endpoint.** Supported now, no code change. Command: `make run MODE=final FINAL_CONTRACT=… FINAL_INPUT=prep/final_input.jsonl FINAL_OUT_DIR=final_runs FINAL_RUN_ID=test-<date> FINAL_ARGS="--timeout-s 55 --model-revision <stated>"` with `LLM_*` set.
 
-1. Fill a copy of `final/contract.template.json` from the organiser answer: `order`, `decisions`, `evidence` and `status: confirmed`.
-2. Build `final_input.jsonl` (gold-stripped; separate approval).
-3. Run:
+- Candidates are the CSCS API, if the team has access, or a paid hosted endpoint.
+- **Risk:** the CSCS 60 s gateway. B2 took ≤ 26 s per call on the L40S pilot, but test documents are not length-filtered and serving speed on CSCS is unknown.
+- A timed-out call leaves the run incomplete; there is no silent zero.
+- Weights are not pinned by name.
 
-```bash
-cd track_2a
-LLM_NAME=… LLM_BASE_URL=… LLM_API_KEY=… PYTHONPATH=src python -m uzh_rsd.final \
-  --contract final_contract.json --input final_input.jsonl --out final_runs/<run id> \
-  --timeout-s 300 --model-revision <provider-stated revision, if any>
-```
+**Route B: HF Jobs batch, L40S, pinned revision.** **Not runnable yet.**
 
-Exit 0 means `complete`, and only then are prediction files present. This does **not** close N-RULES-1 or N-JUDGE-1: no real test run or endpoint run has happened.
+- `hf_job.py` is bound to the dev manifest (`fetch_split(dev)`, `manifest_records`) and cannot run `uzh_rsd.final`.
+- **Smallest adapter:**
+  1. `hf_job.py --final-contract C --final-input I`: call `final.main([...], backend_factory=lambda t: TransformersBackend(model, revision))` instead of the manifest path, and upload `OUT/RUN_ID` with the existing `Uploader`.
+  2. `hf_launch.py`: put the contract and input files in the private bundle.
+  3. Reuse the existing spend ledger, `attempts=1` and job timeout.
+- Estimated size: about 60–100 lines plus synthetic tests. The prepared test texts would go to the private HF dataset repo used for pilot bundles.
+
+**Expected artefacts:** `OUT/RUN_ID/{final_meta.json, raw.jsonl, diagnostics.json, predictions/predictions_{de,fr,it}.jsonl}`, plus `prep/final_input.provenance.json` and the confirmed contract. Commit them under a new directory, never under `results/<pilot>`.
+
+**Cost (Route B; assumptions):**
+
+- Assumes 56 test documents per language (224 − 168 dev; **unverified**), so 168 B2 calls.
+- Pilot B2 speed: median 15 s, max 26 s per call; long test documents assumed ≤ 35 s (`max_new_tokens` 1024).
+- Expected ≈ 168 × 16 s + 5 min load ≈ 50 min, about $1.50 at $0.03/min `l40sx1`.
+- Upper bound ≈ 168 × 35 s + 5 min ≈ 103 min. **Proposed enforceable ceiling: job timeout 110 min = $3.30**, plus raising the ledger cap from $3.00 to $4.50 total ($0.75 already committed).
+- Route A cost depends on the provider; CSCS terms are not known here.
+
+**Decisions before launch:**
+
+1. Organiser answers for order, dropped IDs and layout (the message is drafted).
+2. Approve opening the test files and running the converter.
+3. Choose the route: A, with a named endpoint and credentials, or B, which first needs the adapter implemented and reviewed.
+4. Approve spend: the Route B ceiling above, or Route A provider terms.
 
 ## DRAFT — NOT SENT: one consolidated message to the UZH challenge provider / organisers
 
