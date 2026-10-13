@@ -70,6 +70,8 @@ Coordinator: Claude Code desktop session (requested Opus 5.5), owner's Mac. Base
 | F-A | `src/uzh_rsd/final.py` + `final/contract.template.json` | done | commit `1ab52ce` |
 | F-B | Contract and leakage gap list → adversarial tests (16) | done | template refused; sentinel fields rejected; order, duplicates, failure, overwrite, evaluator and fetch isolation; mutation checks |
 | F-C | Docs: JUDGE_READINESS (final path section), STATUS, checklist, ledger | done | this commit |
-| F-D | Verification (full suite, frozen evidence), PR body | see final handoff | — |
+| F-D | Verification (full suite, frozen evidence), PR body | done | Code and test head `4fd2ece`: s1-check 106 OK / 0 skips; `git diff 9b31366 -- results/ diagnostics/` empty; pilot venv re-score byte-identical; run/reproduce sources (`cli.py`, `runner.py`, `methods.py`, `scoring.py`, `prompts.py`, Dockerfile, Makefiles) unchanged since `9b31366`, so Docker not re-run. PR #12 body replaced after this ledger commit; `isDraft` read back true. Self-review covers the pushed head that adds this row. |
 
 Independent review: **not available.** No enforced, credential-isolated, read-only route exists (local Orca workers share credentials; Nebuchdnezzar unreachable). Self-review only; the gate stays open.
+
+Third pass settled: this session started no Orca or other workers. The retained or unverifiable entries in `orca orchestration worker-list` belong to other workspaces (soul.me, buildradar, weavr) and were not touched. The scratch worktree `final` and local branch `prep/final-infer-20261013` are removed after push.
