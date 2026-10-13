@@ -1,0 +1,2391 @@
+{
+  "schema": "uzh-rsd.b5-alignment/v1",
+  "experiment": "B",
+  "split": "dev",
+  "coverage": "30/30",
+  "inputs": {
+    "cache_provenance": {
+      "path": "experiments/b5-competitive-semantic-alignment/b-embedding-provenance.json",
+      "sha256": "51ae4b7e27961fd9f172f9ee7fcaab91e6bc93ad1c9f24f4ee400d9af79da457"
+    },
+    "same_regenerated_similarity_matrices": true
+  },
+  "methods": [
+    {
+      "method": "M0",
+      "coverage": "30/30",
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.22065853397555718,
+            "ties": 827,
+            "average_precision": 0.3342810144622421
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.13509833980172808,
+            "ties": 1196,
+            "average_precision": 0.14012905091135747
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.20914404894414967,
+            "ties": 875,
+            "average_precision": 0.23015150314104035
+          }
+        },
+        "macro_spearman": 0.18830030757381166,
+        "macro_undefined_reason": null,
+        "ties": 2907,
+        "average_precision": 0.2055764060676144
+      },
+      "runtime_s": 0.30347293999875546,
+      "null_subwords": 0,
+      "duplicate_target_reuse_subwords": 2821,
+      "gold_positive_detection_at_0.5": 0.008424599831508003,
+      "diagnostics": [
+        {
+          "id": "admin_de_3",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 44,
+          "numeric_a": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 7,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 8,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_43",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 25,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_105",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 17,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_158",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 41,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 2,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_36",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 42,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 7,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_223",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 42,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_159",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 67,
+          "numeric_a": {
+            "numeric_tokens": 14,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 14,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_203",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 82,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_140",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 87,
+          "numeric_a": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 2,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 2,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_194",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 157,
+          "numeric_a": {
+            "numeric_tokens": 10,
+            "exact_numeric_counterpart": 10,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 8,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_156",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 42,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_105",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 27,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_177",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 27,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_202",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 63,
+          "numeric_a": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 42,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 43,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_113",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 129,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_167",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 132,
+          "numeric_a": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 10,
+            "different_or_nonnumeric_counterpart": 6,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 13,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_58",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 100,
+          "numeric_a": {
+            "numeric_tokens": 8,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 6,
+            "exact_numeric_counterpart": 5,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_104",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 295,
+          "numeric_a": {
+            "numeric_tokens": 48,
+            "exact_numeric_counterpart": 39,
+            "different_or_nonnumeric_counterpart": 9,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 59,
+            "exact_numeric_counterpart": 39,
+            "different_or_nonnumeric_counterpart": 20,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_131",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 306,
+          "numeric_a": {
+            "numeric_tokens": 41,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 27,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 50,
+            "exact_numeric_counterpart": 18,
+            "different_or_nonnumeric_counterpart": 32,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_53",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 76,
+          "numeric_a": {
+            "numeric_tokens": 15,
+            "exact_numeric_counterpart": 15,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_92",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 48,
+          "numeric_a": {
+            "numeric_tokens": 2,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 1,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_65",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 41,
+          "numeric_a": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_133",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 74,
+          "numeric_a": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_37",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 42,
+          "numeric_a": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_217",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 105,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_167",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 138,
+          "numeric_a": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 11,
+            "different_or_nonnumeric_counterpart": 5,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 13,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_90",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 63,
+          "numeric_a": {
+            "numeric_tokens": 12,
+            "exact_numeric_counterpart": 10,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 12,
+            "exact_numeric_counterpart": 11,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_116",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 212,
+          "numeric_a": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 36,
+            "different_or_nonnumeric_counterpart": 9,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 44,
+            "exact_numeric_counterpart": 36,
+            "different_or_nonnumeric_counterpart": 8,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_15",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 175,
+          "numeric_a": {
+            "numeric_tokens": 10,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_203",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 122,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        }
+      ]
+    },
+    {
+      "method": "M1",
+      "coverage": "30/30",
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.20385353017880464,
+            "ties": 0,
+            "average_precision": 0.31812665972796916
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.14605765858779676,
+            "ties": 0,
+            "average_precision": 0.1379748311406182
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.20496588396140325,
+            "ties": 0,
+            "average_precision": 0.22125848505360377
+          }
+        },
+        "macro_spearman": 0.18495902424266822,
+        "macro_undefined_reason": null,
+        "ties": 0,
+        "average_precision": 0.19726881571734237
+      },
+      "runtime_s": 0.3500167340007465,
+      "null_subwords": 0,
+      "duplicate_target_reuse_subwords": 2821,
+      "gold_positive_detection_at_0.5": 0.7177759056444819,
+      "diagnostics": [
+        {
+          "id": "admin_de_3",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 44,
+          "numeric_a": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 7,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 8,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_43",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 25,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_105",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 17,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_158",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 41,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 2,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_36",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 42,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 7,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_223",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 42,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_159",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 67,
+          "numeric_a": {
+            "numeric_tokens": 14,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 14,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_203",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 82,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_140",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 87,
+          "numeric_a": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 2,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 2,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_194",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 157,
+          "numeric_a": {
+            "numeric_tokens": 10,
+            "exact_numeric_counterpart": 10,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 8,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_156",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 42,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_105",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 27,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_177",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 27,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_202",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 63,
+          "numeric_a": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 42,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 43,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_113",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 129,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_167",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 132,
+          "numeric_a": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 10,
+            "different_or_nonnumeric_counterpart": 6,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 13,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_58",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 100,
+          "numeric_a": {
+            "numeric_tokens": 8,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 6,
+            "exact_numeric_counterpart": 5,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_104",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 295,
+          "numeric_a": {
+            "numeric_tokens": 48,
+            "exact_numeric_counterpart": 39,
+            "different_or_nonnumeric_counterpart": 9,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 59,
+            "exact_numeric_counterpart": 39,
+            "different_or_nonnumeric_counterpart": 20,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_131",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 306,
+          "numeric_a": {
+            "numeric_tokens": 41,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 27,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 50,
+            "exact_numeric_counterpart": 18,
+            "different_or_nonnumeric_counterpart": 32,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_53",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 76,
+          "numeric_a": {
+            "numeric_tokens": 15,
+            "exact_numeric_counterpart": 15,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_92",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 48,
+          "numeric_a": {
+            "numeric_tokens": 2,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 1,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_65",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 41,
+          "numeric_a": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_133",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 74,
+          "numeric_a": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_37",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 42,
+          "numeric_a": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_217",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 105,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_167",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 138,
+          "numeric_a": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 11,
+            "different_or_nonnumeric_counterpart": 5,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 13,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_90",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 63,
+          "numeric_a": {
+            "numeric_tokens": 12,
+            "exact_numeric_counterpart": 10,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 12,
+            "exact_numeric_counterpart": 11,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_116",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 212,
+          "numeric_a": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 36,
+            "different_or_nonnumeric_counterpart": 9,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 44,
+            "exact_numeric_counterpart": 36,
+            "different_or_nonnumeric_counterpart": 8,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_15",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 175,
+          "numeric_a": {
+            "numeric_tokens": 10,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_203",
+          "null_subwords_a": 0,
+          "null_subwords_b": 0,
+          "duplicate_target_reuse_subwords": 122,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        }
+      ]
+    },
+    {
+      "method": "M2",
+      "coverage": "30/30",
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.1976231771741429,
+            "ties": 1840,
+            "average_precision": 0.11129354814500006
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.1467132746252507,
+            "ties": 3587,
+            "average_precision": 0.10492341695841609
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.19380025050155836,
+            "ties": 2668,
+            "average_precision": 0.15317858035101106
+          }
+        },
+        "macro_spearman": 0.179378900766984,
+        "macro_undefined_reason": null,
+        "ties": 8102,
+        "average_precision": 0.12232992150075953
+      },
+      "runtime_s": 4.4745843399996375,
+      "null_subwords": 10758,
+      "duplicate_target_reuse_subwords": 0,
+      "gold_positive_detection_at_0.5": 0.6705981465880371,
+      "diagnostics": [
+        {
+          "id": "admin_de_3",
+          "null_subwords_a": 37,
+          "null_subwords_b": 138,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 7,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 7,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_43",
+          "null_subwords_a": 29,
+          "null_subwords_b": 92,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_105",
+          "null_subwords_a": 15,
+          "null_subwords_b": 42,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_158",
+          "null_subwords_a": 32,
+          "null_subwords_b": 74,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 2,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_36",
+          "null_subwords_a": 20,
+          "null_subwords_b": 130,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 7,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_223",
+          "null_subwords_a": 32,
+          "null_subwords_b": 162,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_159",
+          "null_subwords_a": 49,
+          "null_subwords_b": 212,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 14,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 14,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_203",
+          "null_subwords_a": 63,
+          "null_subwords_b": 443,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 2
+          }
+        },
+        {
+          "id": "admin_de_140",
+          "null_subwords_a": 72,
+          "null_subwords_b": 377,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 2,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 2,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_194",
+          "null_subwords_a": 112,
+          "null_subwords_b": 550,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 10,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 5
+          }
+        },
+        {
+          "id": "admin_fr_156",
+          "null_subwords_a": 43,
+          "null_subwords_b": 126,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_105",
+          "null_subwords_a": 26,
+          "null_subwords_b": 35,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_177",
+          "null_subwords_a": 25,
+          "null_subwords_b": 107,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_202",
+          "null_subwords_a": 27,
+          "null_subwords_b": 67,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 43,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 43,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_113",
+          "null_subwords_a": 121,
+          "null_subwords_b": 385,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_167",
+          "null_subwords_a": 96,
+          "null_subwords_b": 340,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 12,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 1
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 12,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 1
+          }
+        },
+        {
+          "id": "admin_fr_58",
+          "null_subwords_a": 76,
+          "null_subwords_b": 214,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 8,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 6,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_104",
+          "null_subwords_a": 168,
+          "null_subwords_b": 934,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 48,
+            "exact_numeric_counterpart": 40,
+            "different_or_nonnumeric_counterpart": 8,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 59,
+            "exact_numeric_counterpart": 44,
+            "different_or_nonnumeric_counterpart": 9,
+            "null_counterpart": 6
+          }
+        },
+        {
+          "id": "admin_fr_131",
+          "null_subwords_a": 184,
+          "null_subwords_b": 864,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 41,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 27,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 50,
+            "exact_numeric_counterpart": 17,
+            "different_or_nonnumeric_counterpart": 31,
+            "null_counterpart": 2
+          }
+        },
+        {
+          "id": "admin_fr_53",
+          "null_subwords_a": 40,
+          "null_subwords_b": 423,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 15,
+            "exact_numeric_counterpart": 15,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 15,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 2
+          }
+        },
+        {
+          "id": "admin_it_92",
+          "null_subwords_a": 37,
+          "null_subwords_b": 116,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 2,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 1,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_65",
+          "null_subwords_a": 33,
+          "null_subwords_b": 200,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_133",
+          "null_subwords_a": 80,
+          "null_subwords_b": 229,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_37",
+          "null_subwords_a": 46,
+          "null_subwords_b": 109,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 1
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_217",
+          "null_subwords_a": 86,
+          "null_subwords_b": 369,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_167",
+          "null_subwords_a": 98,
+          "null_subwords_b": 355,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 12,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 1
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 12,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 1
+          }
+        },
+        {
+          "id": "admin_it_90",
+          "null_subwords_a": 43,
+          "null_subwords_b": 230,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 12,
+            "exact_numeric_counterpart": 10,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 12,
+            "exact_numeric_counterpart": 10,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_116",
+          "null_subwords_a": 191,
+          "null_subwords_b": 502,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 34,
+            "different_or_nonnumeric_counterpart": 10,
+            "null_counterpart": 1
+          },
+          "numeric_b": {
+            "numeric_tokens": 44,
+            "exact_numeric_counterpart": 35,
+            "different_or_nonnumeric_counterpart": 9,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_15",
+          "null_subwords_a": 172,
+          "null_subwords_b": 370,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 10,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_203",
+          "null_subwords_a": 100,
+          "null_subwords_b": 410,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        }
+      ]
+    },
+    {
+      "method": "M3",
+      "coverage": "30/30",
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.21003361698667644,
+            "ties": 1517,
+            "average_precision": 0.16381354647830826
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.14561797760109282,
+            "ties": 3081,
+            "average_precision": 0.10567182132608056
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.17710421620759062,
+            "ties": 1998,
+            "average_precision": 0.13919147360428596
+          }
+        },
+        "macro_spearman": 0.17758527026511994,
+        "macro_undefined_reason": null,
+        "ties": 6603,
+        "average_precision": 0.12204149648022847
+      },
+      "runtime_s": 33.4256635290003,
+      "null_subwords": 6960,
+      "duplicate_target_reuse_subwords": 0,
+      "gold_positive_detection_at_0.5": 0.514743049705139,
+      "diagnostics": [
+        {
+          "id": "admin_de_3",
+          "null_subwords_a": 4,
+          "null_subwords_b": 105,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 8,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 8,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_43",
+          "null_subwords_a": 1,
+          "null_subwords_b": 64,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_105",
+          "null_subwords_a": 2,
+          "null_subwords_b": 29,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_158",
+          "null_subwords_a": 10,
+          "null_subwords_b": 52,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_36",
+          "null_subwords_a": 2,
+          "null_subwords_b": 112,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 7,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 7,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_223",
+          "null_subwords_a": 0,
+          "null_subwords_b": 130,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_159",
+          "null_subwords_a": 1,
+          "null_subwords_b": 164,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 14,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 14,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_203",
+          "null_subwords_a": 3,
+          "null_subwords_b": 383,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 2
+          }
+        },
+        {
+          "id": "admin_de_140",
+          "null_subwords_a": 6,
+          "null_subwords_b": 311,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 1,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 5,
+            "exact_numeric_counterpart": 1,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_de_194",
+          "null_subwords_a": 7,
+          "null_subwords_b": 445,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 10,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 9,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 7
+          }
+        },
+        {
+          "id": "admin_fr_156",
+          "null_subwords_a": 0,
+          "null_subwords_b": 83,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_105",
+          "null_subwords_a": 1,
+          "null_subwords_b": 10,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_177",
+          "null_subwords_a": 4,
+          "null_subwords_b": 86,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 6,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_202",
+          "null_subwords_a": 2,
+          "null_subwords_b": 42,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 43,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 43,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_113",
+          "null_subwords_a": 19,
+          "null_subwords_b": 283,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 7,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_167",
+          "null_subwords_a": 15,
+          "null_subwords_b": 259,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 12,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 12,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_58",
+          "null_subwords_a": 14,
+          "null_subwords_b": 152,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 8,
+            "exact_numeric_counterpart": 5,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 6,
+            "exact_numeric_counterpart": 5,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_fr_104",
+          "null_subwords_a": 16,
+          "null_subwords_b": 782,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 48,
+            "exact_numeric_counterpart": 41,
+            "different_or_nonnumeric_counterpart": 7,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 59,
+            "exact_numeric_counterpart": 41,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 17
+          }
+        },
+        {
+          "id": "admin_fr_131",
+          "null_subwords_a": 36,
+          "null_subwords_b": 716,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 41,
+            "exact_numeric_counterpart": 17,
+            "different_or_nonnumeric_counterpart": 23,
+            "null_counterpart": 1
+          },
+          "numeric_b": {
+            "numeric_tokens": 50,
+            "exact_numeric_counterpart": 18,
+            "different_or_nonnumeric_counterpart": 24,
+            "null_counterpart": 8
+          }
+        },
+        {
+          "id": "admin_fr_53",
+          "null_subwords_a": 1,
+          "null_subwords_b": 384,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 15,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 14,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 5
+          }
+        },
+        {
+          "id": "admin_it_92",
+          "null_subwords_a": 2,
+          "null_subwords_b": 81,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 2,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 1,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_65",
+          "null_subwords_a": 1,
+          "null_subwords_b": 168,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 19,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 1
+          }
+        },
+        {
+          "id": "admin_it_133",
+          "null_subwords_a": 5,
+          "null_subwords_b": 154,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 15,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 15,
+            "different_or_nonnumeric_counterpart": 2,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_37",
+          "null_subwords_a": 0,
+          "null_subwords_b": 63,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 17,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 1,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 16,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_217",
+          "null_subwords_a": 9,
+          "null_subwords_b": 292,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 0,
+            "exact_numeric_counterpart": 0,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_167",
+          "null_subwords_a": 7,
+          "null_subwords_b": 264,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 12,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 16,
+            "exact_numeric_counterpart": 12,
+            "different_or_nonnumeric_counterpart": 4,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_90",
+          "null_subwords_a": 7,
+          "null_subwords_b": 194,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 12,
+            "exact_numeric_counterpart": 12,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 12,
+            "exact_numeric_counterpart": 12,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        },
+        {
+          "id": "admin_it_116",
+          "null_subwords_a": 40,
+          "null_subwords_b": 351,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 45,
+            "exact_numeric_counterpart": 32,
+            "different_or_nonnumeric_counterpart": 11,
+            "null_counterpart": 2
+          },
+          "numeric_b": {
+            "numeric_tokens": 44,
+            "exact_numeric_counterpart": 32,
+            "different_or_nonnumeric_counterpart": 11,
+            "null_counterpart": 1
+          }
+        },
+        {
+          "id": "admin_it_15",
+          "null_subwords_a": 35,
+          "null_subwords_b": 233,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 10,
+            "exact_numeric_counterpart": 4,
+            "different_or_nonnumeric_counterpart": 6,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 9,
+            "exact_numeric_counterpart": 4,
+            "different_or_nonnumeric_counterpart": 3,
+            "null_counterpart": 2
+          }
+        },
+        {
+          "id": "admin_it_203",
+          "null_subwords_a": 4,
+          "null_subwords_b": 314,
+          "duplicate_target_reuse_subwords": 0,
+          "numeric_a": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          },
+          "numeric_b": {
+            "numeric_tokens": 3,
+            "exact_numeric_counterpart": 3,
+            "different_or_nonnumeric_counterpart": 0,
+            "null_counterpart": 0
+          }
+        }
+      ]
+    }
+  ],
+  "m0_published_b4_agreement": {
+    "maximum_absolute_difference": 0.13009108505249023,
+    "mean_absolute_difference": 0.0015272662982186943,
+    "within_published_5_decimal_rounding": false
+  },
+  "resources": {
+    "matcher_wall_s": 38.55373754299944,
+    "max_rss_kib": 367600
+  },
+  "gate_b": {
+    "useful_delta": 0.005,
+    "best_method": "M1",
+    "best_macro": 0.18495902424266822,
+    "delta_over_unmodified_b4": -0.0021576338467613754,
+    "delta_over_selected_a_baseline": -0.02431210736927114,
+    "uncertainty_vs_unmodified_b4": {
+      "unit": "shared English document index",
+      "clusters": 27,
+      "seed": 20261013,
+      "iterations_requested": 500,
+      "iterations_valid": 500,
+      "macro_ci95": [
+        0.14051326782434337,
+        0.23366124717255032
+      ],
+      "delta_ci95": [
+        -0.01897617158181466,
+        0.014523080727528604
+      ]
+    },
+    "uncertainty_vs_selected_a": {
+      "unit": "shared English document index",
+      "clusters": 27,
+      "seed": 20261013,
+      "iterations_requested": 500,
+      "iterations_valid": 500,
+      "macro_ci95": [
+        0.14051326782434337,
+        0.23366124717255032
+      ],
+      "delta_ci95": [
+        -0.05197229087020821,
+        0.0009840261384031596
+      ]
+    },
+    "passes": false
+  },
+  "scientific_comparability": "direct to published B4 only if M0 agrees within its five-decimal publication rounding; M0-M3 always share this regenerated cache"
+}

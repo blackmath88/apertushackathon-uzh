@@ -1,0 +1,13 @@
+934e10af86b3bd219be18e37cedf91934c5ea2003efc3c19e15f75d953fdfdf6  ./README.md
+379ec0e71212b0b2d84af7bae9c4b383c1c60f308e90ca83c89330b5bd21bf29  ./a-oracle-20261013/checksums.json
+db0e02e63e9e1362d1015428f090aadcb2f67b8e13830c6f6598e21752e3f39d  ./a-oracle-20261013/interventions.jsonl
+6b3273bdb9955727f73cde7656386d80e42ea0aa9033548faf1d502ad97549c1  ./a-oracle-20261013/results.json
+020f914e66fc9c3d35b10c290c3b794adb9b2f5ad400ff5e7320df271f424587  ./b-alignment-20261013/alignments-and-predictions.jsonl
+010cc3c84af694fb3509c8bf6f9346365474fb7aa2922a6b0c833237013cb1b4  ./b-alignment-20261013/checksums.json
+5587582234a4a45ddc760658eb76e5f7cb66e1ce94e4905f0a84071b677c3fdb  ./b-alignment-20261013/results.json
+51ae4b7e27961fd9f172f9ee7fcaab91e6bc93ad1c9f24f4ee400d9af79da457  ./b-embedding-provenance.json
+17ea87fdd3d1f79eacbfc07121f5a369d5e44ac93f99b770c3c5ccb30ceb709c  ./b-input-audit-and-config.json
+d61045c7ff91803dbb184f4eac6bee25fd6ca40f0cf6c034c458b7eb305fca31  ./report.md
+34ddc0b2d67745b5ded771ba0b172ec159b92c87e25904d21047a47b305e9f9e  ./resource-evidence.json
+34c485e68cc5584b91e1597440952f496e6f206eca2ff8a492140932e86cdd39  ./selector-manifest.json
+6435dd1baf8c00a38a0c6a2f4f8dd2443e19de4baee51a935c89bfbe49e6911c  ../b4-alignment-first-sdm/source-checksums.sha256

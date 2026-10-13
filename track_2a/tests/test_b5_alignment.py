@@ -3,7 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from uzh_rsd.b5_alignment import match_m0, match_m1, match_m2, match_m3, score_b
+from uzh_rsd.b5_alignment import (match_m0, match_m1, match_m2, match_m3,
+                                  official_word_ids, score_b)
 from uzh_rsd.splits import SplitNotAllowedError
 
 
@@ -40,6 +41,11 @@ class MatcherTests(unittest.TestCase):
 
 
 class SafetyTests(unittest.TestCase):
+    def test_model_offsets_map_to_exact_whitespace_positions(self):
+        tokens = ["alpha", ".", "2025"]
+        self.assertEqual(official_word_ids(tokens, [(0, 0), (0, 5), (5, 6), (6, 7), (8, 12)]),
+                         [-1, 0, -1, 1, 2])
+
     def test_score_refuses_test_before_io(self):
         with tempfile.TemporaryDirectory() as directory:
             missing = Path(directory) / "missing"

@@ -64,6 +64,27 @@ def _gold_free_documents(evidence_path: Path) -> list[dict]:
     return [{"id": record_id, "tokens_a": sides["a"], "tokens_b": sides["b"]} for record_id, sides in sorted(documents.items())]
 
 
+def official_word_ids(tokens: Sequence[str], offsets: Sequence[Sequence[int]]) -> list[int]:
+    """Map model offsets onto the exact whitespace tokens joined for encoding."""
+    spans = []
+    cursor = 0
+    for token in tokens:
+        spans.append((cursor, cursor + len(token)))
+        cursor += len(token) + 1
+    result = []
+    for raw_start, raw_end in offsets:
+        start, end = int(raw_start), int(raw_end)
+        if end <= start:
+            result.append(-1)
+            continue
+        overlaps = [max(0, min(end, token_end) - max(start, token_start)) for token_start, token_end in spans]
+        best = max(overlaps, default=0)
+        result.append(overlaps.index(best) if best > 0 else -1)
+    if set(value for value in result if value >= 0) != set(range(len(tokens))):
+        raise ValueError("tokenizer offsets do not cover every official whitespace token")
+    return result
+
+
 def encode_b(evidence_path: Path, model_dir: Path, cache_dir: Path, provenance_path: Path,
              *, split: str = "dev") -> dict:
     """Encode gold-free B4 tokens once on XPU and persist matrices outside VCS."""
@@ -91,13 +112,13 @@ def encode_b(evidence_path: Path, model_dir: Path, cache_dir: Path, provenance_p
             for side in ("a", "b"):
                 text = " ".join(document[f"tokens_{side}"])
                 inputs = tokenizer(text, return_tensors="pt", truncation=False, return_offsets_mapping=True)
-                word_ids = inputs.word_ids(0)
                 offsets = inputs.pop("offset_mapping")
+                word_ids = official_word_ids(document[f"tokens_{side}"], offsets[0].tolist())
                 device_inputs = {key: value.to("xpu") for key, value in inputs.items()}
                 output = model(**device_inputs, output_hidden_states=True)
                 embedding = output.hidden_states[MODEL_LAYER][0].float()
                 embedding = torch.nn.functional.normalize(embedding, p=2, dim=1)
-                encoded_sides.append((embedding, np.asarray([-1 if value is None else value for value in word_ids], dtype=np.int32),
+                encoded_sides.append((embedding, np.asarray(word_ids, dtype=np.int32),
                                       offsets[0].numpy().astype(np.int32)))
             similarity = torch.clamp(encoded_sides[0][0] @ encoded_sides[1][0].T, min=0, max=1).cpu().numpy().astype(np.float32)
             target = cache_dir / f"{document['id']}.npz"
