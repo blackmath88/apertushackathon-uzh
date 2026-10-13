@@ -1,4 +1,4 @@
-.PHONY: audit run test reproduce docker-build evaluate mvp-setup hf-launch-dry hf-launch hf-collect hf-spend s1-setup s1-fetch s1-validate s1-manifest s1-check s1-smoke s1-smoke-live
+.PHONY: audit run test reproduce docker-build evaluate mvp-setup hf-launch-dry hf-launch hf-collect hf-spend s1-setup s1-fetch s1-validate s1-manifest s1-check s1-smoke s1-smoke-live federal-pilot-demo federal-pilot-live federal-pilot-viewer
 SHELL := /bin/bash
 
 VENV ?= .venv
@@ -84,6 +84,15 @@ hf-spend:
 
 test:
 	$(RUN) -m unittest discover -s tests -v
+
+federal-pilot-demo:
+	$(RUN) -m uzh_rsd.live_government_pilot demo --fixtures tests/fixtures/live_government_pilot --policy live_government_pilot/v1/policy/bfe-policy-review-20261013.json --out live_government_pilot/v1/demo
+
+federal-pilot-live:
+	$(RUN) -m uzh_rsd.live_government_pilot live --confirm-live --policy live_government_pilot/v1/policy/bfe-policy-review-20261013.json --out runs/live-government-pilot.json
+
+federal-pilot-viewer:
+	$(PYTHON) -m http.server 8765 --directory live_government_pilot/v1/demo
 
 # Ignored virtualenv with the evaluator-parity dependencies.
 s1-setup:

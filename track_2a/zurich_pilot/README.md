@@ -1,5 +1,9 @@
 # Stadt Zürich — Lost in Switzerland field pilot
 
+> The profile-based federal-first implementation now lives in
+> [`../live_government_pilot/`](../live_government_pilot/README.md). This page
+> remains the compatibility guide for the original Zürich API.
+
 This directory documents the municipal multilingual-content pilot. The scientific UZH submission stays in the existing B0/B2 pipeline; this experiment has **no SwissGov-RSD gold labels**.
 
 ## Implemented (first slice)

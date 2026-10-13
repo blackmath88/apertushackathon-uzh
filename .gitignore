@@ -8,3 +8,6 @@ track_2a/runs/*
 track_2a/data/*
 !track_2a/data/.gitkeep
 track_2a/final_runs/
+track_2a/live_government_pilot/**/raw/
+track_2a/live_government_pilot/**/captures/
+track_2a/live_government_pilot/**/third_party/

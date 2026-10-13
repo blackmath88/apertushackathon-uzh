@@ -1,0 +1,28 @@
+{
+  "schema": "live_government_pilot/policy-review/v1",
+  "profile": "bfe-federal",
+  "retrieval_utc": "2026-10-13T19:54:42Z",
+  "request_count": 2,
+  "content_page_request_count": 0,
+  "sources": [
+    {
+      "url": "https://www.bfe.admin.ch/robots.txt",
+      "retrieved_utc": "2026-10-13T19:54:40Z",
+      "http_status": 200,
+      "sha256_body": "9b8ada28ab94e051e4870b7240ff2f3e9a6fa011e696ba0a2df62d60401fa01f",
+      "summary": "The wildcard user-agent group has an empty Disallow value and advertises a BFE sitemap. This does not grant content-reuse rights."
+    },
+    {
+      "url": "https://www.admin.ch/de/rechtliches",
+      "retrieved_utc": "2026-10-13T19:54:42Z",
+      "http_status": 200,
+      "sha256_body": "0a27e15ef3cec2be9197dd28803ba9b7de97e3e51cfea97266df87f7e16c9891",
+      "summary": "The applicable federal legal notice reserves content rights and says prior written permission is required to reproduce site elements. Downloading or copying transfers no rights."
+    }
+  ],
+  "content_collection_permitted": false,
+  "decision": "Live BFE content collection and reproduction stopped: prior written permission for reproduction is not documented. Only robots and the applicable official legal notice were requested; neither content seed was fetched.",
+  "raw_policy_responses": "local-only and not committed",
+  "review_status": "POLICY_BLOCKED",
+  "reviewer_contacted": false
+}
