@@ -4,7 +4,7 @@ from pathlib import Path
 
 import numpy as np
 
-from uzh_rsd.b7 import ctf_restrict, structural_scores, token_offsets
+from uzh_rsd.b7 import _apply, ctf_restrict, structural_scores, token_offsets
 from uzh_rsd.splits import assert_development_split
 
 
@@ -43,6 +43,29 @@ class B7Tests(unittest.TestCase):
         random.Random(20261013).shuffle(a); random.Random(20261013).shuffle(b)
         self.assertEqual(a, b)
         self.assertNotEqual(a, values)
+
+    def test_projection_preserves_baseline_outside_footprint(self):
+        baseline = {"doc": {"prediction_a": [0.1, 0.2, 0.3], "prediction_b": [0.4]}}
+        manifest = {"candidates": [{"candidate_id": "c", "document_id": "doc", "source_side": "a", "source_token_ids": [1]}],
+                    "routes": [{"document_id": "doc", "policies": {"R1": ["c"]}}]}
+        result = _apply(baseline, manifest, {"c": "incorrect"}, "R1")
+        self.assertEqual(result["doc"]["prediction_a"], [0.1, 0.85, 0.3])
+        self.assertEqual(result["doc"]["prediction_b"], [0.4])
+        self.assertEqual(baseline["doc"]["prediction_a"], [0.1, 0.2, 0.3])
+
+    def test_unresolved_invalid_or_missing_decision_falls_back_exactly(self):
+        baseline = {"doc": {"prediction_a": [0.11, 0.22], "prediction_b": [0.33]}}
+        manifest = {"candidates": [{"candidate_id": "c", "document_id": "doc", "source_side": "a", "source_token_ids": [0, 1]}],
+                    "routes": [{"document_id": "doc", "policies": {"R1": ["c"]}}]}
+        for decision in ("unresolved", None):
+            self.assertEqual(_apply(baseline, manifest, {"c": decision}, "R1"), baseline)
+
+    def test_projection_keeps_required_token_coverage(self):
+        baseline = {"doc": {"prediction_a": [0.1, 0.2], "prediction_b": [0.3, 0.4, 0.5]}}
+        manifest = {"candidates": [{"candidate_id": "c", "document_id": "doc", "source_side": "b", "source_token_ids": [2]}],
+                    "routes": [{"document_id": "doc", "policies": {"R1": ["c"]}}]}
+        result = _apply(baseline, manifest, {"c": "missing"}, "R1")
+        self.assertEqual((len(result["doc"]["prediction_a"]), len(result["doc"]["prediction_b"])), (2, 3))
 
 
 if __name__ == "__main__":

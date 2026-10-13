@@ -1,0 +1,1119 @@
+{
+  "schema": "uzh-rsd.b7/v1",
+  "stage": "gold_aware_evaluation",
+  "arms": {
+    "E0": {
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.21786518242973402,
+            "ties": 1065,
+            "average_precision": 0.3276101276188916
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.13534720801831318,
+            "ties": 1764,
+            "average_precision": 0.13991109877639085
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.20813758382024164,
+            "ties": 1230,
+            "average_precision": 0.2282667168944305
+          }
+        },
+        "macro_spearman": 0.1871166580894296,
+        "macro_undefined_reason": null,
+        "ties": {},
+        "average_precision": 0.20388790434684698
+      },
+      "bootstrap_vs_comparator": null,
+      "comparator": "E0",
+      "leave_one_family_out": null,
+      "complete_finite_coverage": true
+    },
+    "E1": {
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.22065853397555718,
+            "ties": 827,
+            "average_precision": 0.3342810144622421
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.13509833980172808,
+            "ties": 1196,
+            "average_precision": 0.14012905091135747
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.20914404894414967,
+            "ties": 875,
+            "average_precision": 0.23015150314104035
+          }
+        },
+        "macro_spearman": 0.18830030757381166,
+        "macro_undefined_reason": null,
+        "ties": {},
+        "average_precision": 0.2055764060676144
+      },
+      "bootstrap_vs_comparator": {
+        "unit": "shared English document index",
+        "clusters": 27,
+        "seed": 20261013,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "macro_ci95": [
+          0.1425358107253967,
+          0.23664143437667562
+        ],
+        "delta_ci95": [
+          0.00012654184596974405,
+          0.002299790949563092
+        ]
+      },
+      "comparator": "E0",
+      "leave_one_family_out": {
+        "full_delta": 0.001183649484382071,
+        "families": 27,
+        "top_absolute_influence": [
+          {
+            "family": "140",
+            "delta_without": 0.0007652392238317318,
+            "influence": 0.00041841026055033925
+          },
+          {
+            "family": "194",
+            "delta_without": 0.000874661847415803,
+            "influence": 0.0003089876369662681
+          },
+          {
+            "family": "203",
+            "delta_without": 0.001421835001074595,
+            "influence": -0.00023818551669252397
+          },
+          {
+            "family": "43",
+            "delta_without": 0.001382535687448616,
+            "influence": -0.00019888620306654503
+          },
+          {
+            "family": "58",
+            "delta_without": 0.0013325325032781665,
+            "influence": -0.00014888301889609545
+          },
+          {
+            "family": "159",
+            "delta_without": 0.001329921309510207,
+            "influence": -0.00014627182512813586
+          },
+          {
+            "family": "167",
+            "delta_without": 0.0010902823152575403,
+            "influence": 9.33671691245308e-05
+          },
+          {
+            "family": "36",
+            "delta_without": 0.001239986064770604,
+            "influence": -5.633658038853295e-05
+          },
+          {
+            "family": "223",
+            "delta_without": 0.001236481154695629,
+            "influence": -5.2831670313557844e-05
+          },
+          {
+            "family": "53",
+            "delta_without": 0.0011382071710802633,
+            "influence": 4.544231330180781e-05
+          }
+        ],
+        "range_without": [
+          0.0007652392238317318,
+          0.001421835001074595
+        ]
+      },
+      "complete_finite_coverage": true
+    },
+    "E2": {
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.23970963561619946,
+            "ties": 888,
+            "average_precision": 0.4916536922521032
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.16836447014118322,
+            "ties": 1383,
+            "average_precision": 0.16245597088293376
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.23819226828853665,
+            "ties": 919,
+            "average_precision": 0.2980168075145252
+          }
+        },
+        "macro_spearman": 0.2154221246819731,
+        "macro_undefined_reason": null,
+        "ties": {},
+        "average_precision": 0.23716674686344616
+      },
+      "bootstrap_vs_comparator": {
+        "unit": "shared English document index",
+        "clusters": 27,
+        "seed": 20261013,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "macro_ci95": [
+          0.15865057613150124,
+          0.2743755621175201
+        ],
+        "delta_ci95": [
+          0.008328998894108527,
+          0.04636610209420979
+        ]
+      },
+      "comparator": "E1",
+      "leave_one_family_out": {
+        "full_delta": 0.027121817108161445,
+        "families": 27,
+        "top_absolute_influence": [
+          {
+            "family": "53",
+            "delta_without": 0.020569445660422375,
+            "influence": 0.006552371447739069
+          },
+          {
+            "family": "131",
+            "delta_without": 0.03157824941567677,
+            "influence": -0.004456432307515329
+          },
+          {
+            "family": "116",
+            "delta_without": 0.02298032772877895,
+            "influence": 0.004141489379382496
+          },
+          {
+            "family": "167",
+            "delta_without": 0.023664954580725428,
+            "influence": 0.0034568625274360165
+          },
+          {
+            "family": "194",
+            "delta_without": 0.023987105522124602,
+            "influence": 0.0031347115860368424
+          },
+          {
+            "family": "104",
+            "delta_without": 0.030181449950487355,
+            "influence": -0.00305963284232591
+          },
+          {
+            "family": "43",
+            "delta_without": 0.029277853165909584,
+            "influence": -0.0021560360577481397
+          },
+          {
+            "family": "202",
+            "delta_without": 0.029035042238644032,
+            "influence": -0.0019132251304825876
+          },
+          {
+            "family": "203",
+            "delta_without": 0.02537532899894926,
+            "influence": 0.0017464881092121853
+          },
+          {
+            "family": "133",
+            "delta_without": 0.028813659832290478,
+            "influence": -0.0016918427241290335
+          }
+        ],
+        "range_without": [
+          0.020569445660422375,
+          0.03157824941567677
+        ]
+      },
+      "complete_finite_coverage": true
+    },
+    "E3": {
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.23097051147461195,
+            "ties": 1070,
+            "average_precision": 0.27727083073039854
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.12972959778654825,
+            "ties": 1811,
+            "average_precision": 0.11108870482417557
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.21003461965848305,
+            "ties": 1266,
+            "average_precision": 0.19547478529052661
+          }
+        },
+        "macro_spearman": 0.19024490963988108,
+        "macro_undefined_reason": null,
+        "ties": {},
+        "average_precision": 0.1628196987087648
+      },
+      "bootstrap_vs_comparator": {
+        "unit": "shared English document index",
+        "clusters": 27,
+        "seed": 20261013,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "macro_ci95": [
+          0.14804169241423953,
+          0.23582126157873942
+        ],
+        "delta_ci95": [
+          -0.004810096983371542,
+          0.013950374421617142
+        ]
+      },
+      "comparator": "E0",
+      "leave_one_family_out": {
+        "full_delta": 0.0031282515504514885,
+        "families": 27,
+        "top_absolute_influence": [
+          {
+            "family": "140",
+            "delta_without": -0.0018169390630492221,
+            "influence": 0.004945190613500711
+          },
+          {
+            "family": "194",
+            "delta_without": 0.0043779122157934225,
+            "influence": -0.001249660665341934
+          },
+          {
+            "family": "43",
+            "delta_without": 0.0042774074462809675,
+            "influence": -0.001149155895829479
+          },
+          {
+            "family": "133",
+            "delta_without": 0.004126932304851255,
+            "influence": -0.0009986807543997667
+          },
+          {
+            "family": "203",
+            "delta_without": 0.003968980469993139,
+            "influence": -0.0008407289195416501
+          },
+          {
+            "family": "167",
+            "delta_without": 0.002305865861348455,
+            "influence": 0.0008223856891030334
+          },
+          {
+            "family": "159",
+            "delta_without": 0.003927736045495733,
+            "influence": -0.0007994844950442448
+          },
+          {
+            "family": "104",
+            "delta_without": 0.0023339907707131957,
+            "influence": 0.0007942607797382928
+          },
+          {
+            "family": "116",
+            "delta_without": 0.002423374911230264,
+            "influence": 0.0007048766392212247
+          },
+          {
+            "family": "53",
+            "delta_without": 0.0025663044639649135,
+            "influence": 0.000561947086486575
+          }
+        ],
+        "range_without": [
+          -0.0018169390630492221,
+          0.0043779122157934225
+        ]
+      },
+      "complete_finite_coverage": true
+    },
+    "E6_non_apertus": {
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.21786518242973402,
+            "ties": 1065,
+            "average_precision": 0.3276101276188916
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.13534720801831318,
+            "ties": 1764,
+            "average_precision": 0.13991109877639085
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.20813758382024164,
+            "ties": 1230,
+            "average_precision": 0.2282667168944305
+          }
+        },
+        "macro_spearman": 0.1871166580894296,
+        "macro_undefined_reason": null,
+        "ties": {},
+        "average_precision": 0.20388790434684698
+      },
+      "bootstrap_vs_comparator": null,
+      "comparator": "E0",
+      "leave_one_family_out": null,
+      "complete_finite_coverage": true
+    },
+    "E5": {
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.2252738185157732,
+            "ties": 1171,
+            "average_precision": 0.231412386998192
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.14194095598729448,
+            "ties": 1857,
+            "average_precision": 0.1383185722959878
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.21317881659842275,
+            "ties": 1321,
+            "average_precision": 0.20898243345186493
+          }
+        },
+        "macro_spearman": 0.19346453036716346,
+        "macro_undefined_reason": null,
+        "ties": {},
+        "average_precision": 0.18116632499166904
+      },
+      "bootstrap_vs_comparator": {
+        "unit": "shared English document index",
+        "clusters": 27,
+        "seed": 20261013,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "macro_ci95": [
+          0.14557608901253133,
+          0.24259170160996485
+        ],
+        "delta_ci95": [
+          0.0016108574568194534,
+          0.010167423891608563
+        ]
+      },
+      "comparator": "E0",
+      "leave_one_family_out": {
+        "full_delta": 0.006347872277733868,
+        "families": 27,
+        "top_absolute_influence": [
+          {
+            "family": "43",
+            "delta_without": 0.004449342163523079,
+            "influence": 0.001898530114210789
+          },
+          {
+            "family": "133",
+            "delta_without": 0.005434063182524901,
+            "influence": 0.0009138090952089672
+          },
+          {
+            "family": "36",
+            "delta_without": 0.006996382312700833,
+            "influence": -0.0006485100349669648
+          },
+          {
+            "family": "167",
+            "delta_without": 0.005766440569086262,
+            "influence": 0.0005814317086476062
+          },
+          {
+            "family": "116",
+            "delta_without": 0.006852844233001809,
+            "influence": -0.000504971955267941
+          },
+          {
+            "family": "58",
+            "delta_without": 0.0068378170444782505,
+            "influence": -0.0004899447667443824
+          },
+          {
+            "family": "53",
+            "delta_without": 0.006798304998186483,
+            "influence": -0.00045043272045261484
+          },
+          {
+            "family": "140",
+            "delta_without": 0.0067891549007838,
+            "influence": -0.00044128262304993227
+          },
+          {
+            "family": "65",
+            "delta_without": 0.006739319359490126,
+            "influence": -0.00039144708175625764
+          },
+          {
+            "family": "203",
+            "delta_without": 0.0059916457727275385,
+            "influence": 0.0003562265050063296
+          }
+        ],
+        "range_without": [
+          0.004449342163523079,
+          0.006996382312700833
+        ]
+      },
+      "complete_finite_coverage": true
+    },
+    "E6": {
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.24294159336617194,
+            "ties": 1179,
+            "average_precision": 0.33695560664259266
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.1437395889261097,
+            "ties": 1865,
+            "average_precision": 0.1466562006024691
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.2128468793749395,
+            "ties": 1311,
+            "average_precision": 0.20508903287342725
+          }
+        },
+        "macro_spearman": 0.19984268722240706,
+        "macro_undefined_reason": null,
+        "ties": {},
+        "average_precision": 0.19937665641843977
+      },
+      "bootstrap_vs_comparator": {
+        "unit": "shared English document index",
+        "clusters": 27,
+        "seed": 20261013,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "macro_ci95": [
+          0.15317327895464333,
+          0.249653993493882
+        ],
+        "delta_ci95": [
+          0.00444077596977017,
+          0.019973960138765463
+        ]
+      },
+      "comparator": "E0",
+      "leave_one_family_out": {
+        "full_delta": 0.012726029132977462,
+        "families": 27,
+        "top_absolute_influence": [
+          {
+            "family": "194",
+            "delta_without": 0.010388350963872528,
+            "influence": 0.002337678169104934
+          },
+          {
+            "family": "43",
+            "delta_without": 0.010612182219596034,
+            "influence": 0.0021138469133814286
+          },
+          {
+            "family": "159",
+            "delta_without": 0.01399993798946661,
+            "influence": -0.0012739088564891476
+          },
+          {
+            "family": "37",
+            "delta_without": 0.011597563991004728,
+            "influence": 0.0011284651419727343
+          },
+          {
+            "family": "36",
+            "delta_without": 0.013739931539441197,
+            "influence": -0.0010139024064637348
+          },
+          {
+            "family": "133",
+            "delta_without": 0.013394725217958037,
+            "influence": -0.0006686960849805745
+          },
+          {
+            "family": "90",
+            "delta_without": 0.013200248690359156,
+            "influence": -0.0004742195573816943
+          },
+          {
+            "family": "223",
+            "delta_without": 0.013191378828146416,
+            "influence": -0.00046534969516895397
+          },
+          {
+            "family": "53",
+            "delta_without": 0.013169078050939365,
+            "influence": -0.0004430489179619024
+          },
+          {
+            "family": "3",
+            "delta_without": 0.01312680818623621,
+            "influence": -0.0004007790532587485
+          }
+        ],
+        "range_without": [
+          0.010388350963872528,
+          0.01399993798946661
+        ]
+      },
+      "complete_finite_coverage": true
+    },
+    "E7_random": {
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.21195867510467495,
+            "ties": 1135,
+            "average_precision": 0.16116130381922641
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.13789458897600118,
+            "ties": 1832,
+            "average_precision": 0.12073114106855623
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.20085804341638466,
+            "ties": 1307,
+            "average_precision": 0.1767173099132763
+          }
+        },
+        "macro_spearman": 0.18357043583235358,
+        "macro_undefined_reason": null,
+        "ties": {},
+        "average_precision": 0.14893007252413148
+      },
+      "bootstrap_vs_comparator": {
+        "unit": "shared English document index",
+        "clusters": 27,
+        "seed": 20261013,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "macro_ci95": [
+          0.13669265549384121,
+          0.23231435605311201
+        ],
+        "delta_ci95": [
+          -0.007528364696809892,
+          -0.0008259519396091219
+        ]
+      },
+      "comparator": "E0",
+      "leave_one_family_out": {
+        "full_delta": -0.003546222257076015,
+        "families": 27,
+        "top_absolute_influence": [
+          {
+            "family": "131",
+            "delta_without": -0.004387867632871606,
+            "influence": 0.0008416453757955911
+          },
+          {
+            "family": "92",
+            "delta_without": -0.0029246060012284303,
+            "influence": -0.0006216162558475846
+          },
+          {
+            "family": "58",
+            "delta_without": -0.0029366128507246625,
+            "influence": -0.0006096094063513524
+          },
+          {
+            "family": "43",
+            "delta_without": -0.003971359299815569,
+            "influence": 0.000425137042739554
+          },
+          {
+            "family": "133",
+            "delta_without": -0.0031555012496834456,
+            "influence": -0.0003907210073925693
+          },
+          {
+            "family": "65",
+            "delta_without": -0.00392497715149287,
+            "influence": 0.00037875489441685506
+          },
+          {
+            "family": "194",
+            "delta_without": -0.00391636982994234,
+            "influence": 0.00037014757286632505
+          },
+          {
+            "family": "167",
+            "delta_without": -0.0031967400797789647,
+            "influence": -0.0003494821772970502
+          },
+          {
+            "family": "15",
+            "delta_without": -0.0038721412917249454,
+            "influence": 0.00032591903464893046
+          },
+          {
+            "family": "90",
+            "delta_without": -0.0038401786808029137,
+            "influence": 0.0002939564237268988
+          }
+        ],
+        "range_without": [
+          -0.004387867632871606,
+          -0.0029246060012284303
+        ]
+      },
+      "complete_finite_coverage": true
+    },
+    "E7_routed": {
+      "metrics": {
+        "per_language": {
+          "de": {
+            "documents": 10,
+            "positions": 4837,
+            "masked_punctuation": 631,
+            "spearman": 0.22286713194002514,
+            "ties": 1129,
+            "average_precision": 0.2168415421235728
+          },
+          "fr": {
+            "documents": 10,
+            "positions": 7522,
+            "masked_punctuation": 1153,
+            "spearman": 0.13468684480003362,
+            "ties": 1818,
+            "average_precision": 0.11740441374221743
+          },
+          "it": {
+            "documents": 10,
+            "positions": 6126,
+            "masked_punctuation": 885,
+            "spearman": 0.21309698312430106,
+            "ties": 1301,
+            "average_precision": 0.1918121867804579
+          }
+        },
+        "macro_spearman": 0.19021698662145328,
+        "macro_undefined_reason": null,
+        "ties": {},
+        "average_precision": 0.16241817553810312
+      },
+      "bootstrap_vs_comparator": {
+        "unit": "shared English document index",
+        "clusters": 27,
+        "seed": 20261013,
+        "iterations_requested": 500,
+        "iterations_valid": 500,
+        "macro_ci95": [
+          0.14651011504302572,
+          0.23510135436278368
+        ],
+        "delta_ci95": [
+          -0.003631862540338593,
+          0.009414092525251525
+        ]
+      },
+      "comparator": "E0",
+      "leave_one_family_out": {
+        "full_delta": 0.0031003285320236884,
+        "families": 27,
+        "top_absolute_influence": [
+          {
+            "family": "167",
+            "delta_without": 0.001119968081677719,
+            "influence": 0.0019803604503459693
+          },
+          {
+            "family": "194",
+            "delta_without": 0.0017904482119910914,
+            "influence": 0.001309880320032597
+          },
+          {
+            "family": "53",
+            "delta_without": 0.0019489315620181413,
+            "influence": 0.001151396970005547
+          },
+          {
+            "family": "140",
+            "delta_without": 0.0020972719196108436,
+            "influence": 0.0010030566124128448
+          },
+          {
+            "family": "133",
+            "delta_without": 0.004061982757360388,
+            "influence": -0.0009616542253367
+          },
+          {
+            "family": "203",
+            "delta_without": 0.0038927612697653158,
+            "influence": -0.0007924327377416274
+          },
+          {
+            "family": "105",
+            "delta_without": 0.003829601936528898,
+            "influence": -0.0007292734045052096
+          },
+          {
+            "family": "92",
+            "delta_without": 0.003540399865752164,
+            "influence": -0.0004400713337284756
+          },
+          {
+            "family": "104",
+            "delta_without": 0.002730507262896531,
+            "influence": 0.0003698212691271574
+          },
+          {
+            "family": "159",
+            "delta_without": 0.003424531026482408,
+            "influence": -0.0003242024944587196
+          }
+        ],
+        "range_without": [
+          0.001119968081677719,
+          0.004061982757360388
+        ]
+      },
+      "complete_finite_coverage": true
+    }
+  },
+  "synthetic": {
+    "calls": 192,
+    "primary_accuracy": 0.7916666666666666,
+    "valid_rate": 1.0,
+    "equivalent_false_positive_rate": 0.0,
+    "stability": {
+      "passage_reversed": 0.9583333333333334,
+      "labels_permuted": 0.5416666666666666,
+      "both_reversed": 0.875
+    },
+    "counterpart_sensitivity": 0.875,
+    "contrastive_accuracy": 0.4791666666666667,
+    "per_language_primary_accuracy": {
+      "en-de": 0.625,
+      "en-fr": 0.875,
+      "en-it": 0.875
+    },
+    "thresholds": {
+      "primary_accuracy": false,
+      "valid_rate": true,
+      "equivalent_false_positive_rate": true,
+      "counterpart_sensitivity": true,
+      "stability_each": false
+    },
+    "gate_passes": false
+  },
+  "decisive_apertus_comparisons": {
+    "actual_vs_shuffled": {
+      "unit": "shared English document index",
+      "clusters": 27,
+      "seed": 20261013,
+      "iterations_requested": 500,
+      "iterations_valid": 500,
+      "macro_ci95": [
+        0.15317327895464333,
+        0.249653993493882
+      ],
+      "delta_ci95": [
+        6.571859702987646e-05,
+        0.01280112931691382
+      ]
+    },
+    "actual_vs_identical_non_apertus": {
+      "unit": "shared English document index",
+      "clusters": 27,
+      "seed": 20261013,
+      "iterations_requested": 500,
+      "iterations_valid": 500,
+      "macro_ci95": [
+        0.15317327895464333,
+        0.249653993493882
+      ],
+      "delta_ci95": [
+        0.00444077596977017,
+        0.019973960138765463
+      ]
+    }
+  },
+  "routing_quality": {
+    "R1": {
+      "overall": {
+        "all": 18485,
+        "selected": 641,
+        "positives": 1187,
+        "selected_positive": 189,
+        "missed_positive": 1177,
+        "selected_missed_positive": 182,
+        "selected_negative": 452,
+        "unique_token_coverage": 0.03467676494454963,
+        "total_positive_recall": 0.15922493681550126,
+        "b4_missed_positive_recall": 0.1546304163126593,
+        "selected_negative_burden": 0.7051482059282371
+      },
+      "per_language": {
+        "de": {
+          "all": 4837,
+          "selected": 215,
+          "positives": 185,
+          "selected_positive": 73,
+          "missed_positive": 182,
+          "selected_missed_positive": 70,
+          "selected_negative": 142,
+          "unique_token_coverage": 0.04444903866032665,
+          "total_positive_recall": 0.3945945945945946,
+          "b4_missed_positive_recall": 0.38461538461538464,
+          "selected_negative_burden": 0.6604651162790698
+        },
+        "fr": {
+          "all": 7522,
+          "selected": 212,
+          "positives": 447,
+          "selected_positive": 53,
+          "missed_positive": 446,
+          "selected_missed_positive": 52,
+          "selected_negative": 159,
+          "unique_token_coverage": 0.028183993618718425,
+          "total_positive_recall": 0.1185682326621924,
+          "b4_missed_positive_recall": 0.11659192825112108,
+          "selected_negative_burden": 0.75
+        },
+        "it": {
+          "all": 6126,
+          "selected": 214,
+          "positives": 555,
+          "selected_positive": 63,
+          "missed_positive": 549,
+          "selected_missed_positive": 60,
+          "selected_negative": 151,
+          "unique_token_coverage": 0.03493307215148547,
+          "total_positive_recall": 0.11351351351351352,
+          "b4_missed_positive_recall": 0.1092896174863388,
+          "selected_negative_burden": 0.705607476635514
+        }
+      }
+    },
+    "R2": {
+      "overall": {
+        "all": 18485,
+        "selected": 643,
+        "positives": 1187,
+        "selected_positive": 60,
+        "missed_positive": 1177,
+        "selected_missed_positive": 60,
+        "selected_negative": 583,
+        "unique_token_coverage": 0.034784960779010006,
+        "total_positive_recall": 0.05054759898904802,
+        "b4_missed_positive_recall": 0.05097706032285471,
+        "selected_negative_burden": 0.9066874027993779
+      },
+      "per_language": {
+        "de": {
+          "all": 4837,
+          "selected": 214,
+          "positives": 185,
+          "selected_positive": 15,
+          "missed_positive": 182,
+          "selected_missed_positive": 15,
+          "selected_negative": 199,
+          "unique_token_coverage": 0.04424229894562746,
+          "total_positive_recall": 0.08108108108108109,
+          "b4_missed_positive_recall": 0.08241758241758242,
+          "selected_negative_burden": 0.9299065420560748
+        },
+        "fr": {
+          "all": 7522,
+          "selected": 210,
+          "positives": 447,
+          "selected_positive": 26,
+          "missed_positive": 446,
+          "selected_missed_positive": 26,
+          "selected_negative": 184,
+          "unique_token_coverage": 0.027918106886466364,
+          "total_positive_recall": 0.058165548098434,
+          "b4_missed_positive_recall": 0.05829596412556054,
+          "selected_negative_burden": 0.8761904761904762
+        },
+        "it": {
+          "all": 6126,
+          "selected": 219,
+          "positives": 555,
+          "selected_positive": 19,
+          "missed_positive": 549,
+          "selected_missed_positive": 19,
+          "selected_negative": 200,
+          "unique_token_coverage": 0.03574926542605289,
+          "total_positive_recall": 0.03423423423423423,
+          "b4_missed_positive_recall": 0.03460837887067395,
+          "selected_negative_burden": 0.91324200913242
+        }
+      }
+    },
+    "R3": {
+      "overall": {
+        "all": 18485,
+        "selected": 734,
+        "positives": 1187,
+        "selected_positive": 75,
+        "missed_positive": 1177,
+        "selected_missed_positive": 75,
+        "selected_negative": 659,
+        "unique_token_coverage": 0.039707871246956995,
+        "total_positive_recall": 0.06318449873631002,
+        "b4_missed_positive_recall": 0.0637213254035684,
+        "selected_negative_burden": 0.8978201634877384
+      },
+      "per_language": {
+        "de": {
+          "all": 4837,
+          "selected": 242,
+          "positives": 185,
+          "selected_positive": 34,
+          "missed_positive": 182,
+          "selected_missed_positive": 34,
+          "selected_negative": 208,
+          "unique_token_coverage": 0.05003101095720488,
+          "total_positive_recall": 0.1837837837837838,
+          "b4_missed_positive_recall": 0.18681318681318682,
+          "selected_negative_burden": 0.859504132231405
+        },
+        "fr": {
+          "all": 7522,
+          "selected": 244,
+          "positives": 447,
+          "selected_positive": 14,
+          "missed_positive": 446,
+          "selected_missed_positive": 14,
+          "selected_negative": 230,
+          "unique_token_coverage": 0.0324381813347514,
+          "total_positive_recall": 0.03131991051454139,
+          "b4_missed_positive_recall": 0.03139013452914798,
+          "selected_negative_burden": 0.9426229508196722
+        },
+        "it": {
+          "all": 6126,
+          "selected": 248,
+          "positives": 555,
+          "selected_positive": 27,
+          "missed_positive": 549,
+          "selected_missed_positive": 27,
+          "selected_negative": 221,
+          "unique_token_coverage": 0.04048318641854391,
+          "total_positive_recall": 0.04864864864864865,
+          "b4_missed_positive_recall": 0.04918032786885246,
+          "selected_negative_burden": 0.8911290322580645
+        }
+      }
+    }
+  },
+  "missing_arms": {
+    "E4": "not measured: optional compact comparator was inapplicable within the dependency ceiling"
+  },
+  "resource_cost": {
+    "benchmark": {
+      "calls": 1578,
+      "valid": 1578,
+      "invalid": 0,
+      "errors": 0,
+      "prompt_tokens": 116663,
+      "completion_tokens": 3156,
+      "latency_total_s": 443.25970532695646,
+      "latency_median_s": 0.2746822979988792,
+      "monetary_cost": 0
+    },
+    "synthetic": {
+      "calls": 192,
+      "valid": 192,
+      "invalid": 0,
+      "errors": 0,
+      "prompt_tokens": 15817,
+      "completion_tokens": 384,
+      "latency_total_s": 53.89033378398017,
+      "latency_median_s": 0.2820306419980625,
+      "monetary_cost": 0
+    }
+  },
+  "model_calls": {
+    "benchmark": 1578,
+    "synthetic": 192,
+    "total": 1770
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "uzh-rsd.b7-audit-review/v1",
+  "reviewer": "local blinded passage review; audit-key not consulted during judgments",
+  "official_labels_overwritten": false,
+  "items": [
+    {"audit_id":"audit-01","semantic_difference":"unresolved","correspondence":"invalid","context_dependency":"high","localization_difficulty":"high","minimal_original_source_evidence":"A hyphen and apostrophe alone carry no reviewable proposition.","practical_materiality":"unresolved"},
+    {"audit_id":"audit-02","semantic_difference":"unresolved","correspondence":"invalid","context_dependency":"high","localization_difficulty":"high","minimal_original_source_evidence":"The negator has no anchored counterpart passage.","practical_materiality":"unresolved"},
+    {"audit_id":"audit-03","semantic_difference":"unresolved","correspondence":"invalid","context_dependency":"high","localization_difficulty":"high","minimal_original_source_evidence":"A determiner without a counterpart is insufficient.","practical_materiality":"unresolved"},
+    {"audit_id":"audit-04","semantic_difference":"unresolved","correspondence":"invalid","context_dependency":"high","localization_difficulty":"high","minimal_original_source_evidence":"Punctuation without a counterpart is not semantic evidence.","practical_materiality":"immaterial"},
+    {"audit_id":"audit-05","semantic_difference":"unsupported","correspondence":"valid","context_dependency":"medium","localization_difficulty":"medium","minimal_original_source_evidence":"English 'not' corresponds directly to French 'pas'.","practical_materiality":"immaterial"},
+    {"audit_id":"audit-06","semantic_difference":"unresolved","correspondence":"invalid","context_dependency":"high","localization_difficulty":"high","minimal_original_source_evidence":"The isolated word 'data' is not aligned to the shown Italian passage.","practical_materiality":"unresolved"},
+    {"audit_id":"audit-07","semantic_difference":"unresolved","correspondence":"invalid","context_dependency":"high","localization_difficulty":"high","minimal_original_source_evidence":"The French adverb and English terminology fragment are not a usable correspondence.","practical_materiality":"unresolved"},
+    {"audit_id":"audit-08","semantic_difference":"unresolved","correspondence":"invalid","context_dependency":"high","localization_difficulty":"high","minimal_original_source_evidence":"'Market' and the biographical fragment do not establish correspondence.","practical_materiality":"unresolved"},
+    {"audit_id":"audit-09","semantic_difference":"unresolved","correspondence":"invalid","context_dependency":"high","localization_difficulty":"high","minimal_original_source_evidence":"The Italian token and English sentence fragment are insufficiently localized.","practical_materiality":"unresolved"},
+    {"audit_id":"audit-10","semantic_difference":"unresolved","correspondence":"invalid","context_dependency":"high","localization_difficulty":"high","minimal_original_source_evidence":"The Italian role token is unrelated to the displayed English fragment.","practical_materiality":"unresolved"},
+    {"audit_id":"audit-11","semantic_difference":"unsupported","correspondence":"valid","context_dependency":"medium","localization_difficulty":"medium","minimal_original_source_evidence":"German 'einbezogen' is compatible with English 'engaged' in context.","practical_materiality":"immaterial"},
+    {"audit_id":"audit-12","semantic_difference":"unsupported","correspondence":"valid","context_dependency":"low","localization_difficulty":"low","minimal_original_source_evidence":"The proper name is identical.","practical_materiality":"immaterial"},
+    {"audit_id":"audit-13","semantic_difference":"unsupported","correspondence":"valid","context_dependency":"low","localization_difficulty":"low","minimal_original_source_evidence":"English 'with' corresponds to German 'mit'.","practical_materiality":"immaterial"},
+    {"audit_id":"audit-14","semantic_difference":"unsupported","correspondence":"valid","context_dependency":"low","localization_difficulty":"low","minimal_original_source_evidence":"The numeric token is identical.","practical_materiality":"immaterial"},
+    {"audit_id":"audit-15","semantic_difference":"unsupported","correspondence":"valid","context_dependency":"low","localization_difficulty":"low","minimal_original_source_evidence":"German 'und' corresponds to English 'and'.","practical_materiality":"immaterial"}
+  ]
+}

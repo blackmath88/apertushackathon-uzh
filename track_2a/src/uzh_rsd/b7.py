@@ -313,16 +313,63 @@ def _apply(baseline: Mapping[str,Mapping], manifest: Mapping, decisions: Mapping
     return result
 
 
+def _route_quality(records, manifest: Mapping, baseline: Mapping, policy: str) -> dict:
+    candidates={c["candidate_id"]:c for c in manifest["candidates"]}
+    selected=defaultdict(lambda:defaultdict(set))
+    for route in manifest["routes"]:
+        for cid in route["policies"][policy]:
+            c=candidates[cid]; selected[c["document_id"]][c["source_side"]].update(c["source_token_ids"])
+    totals=Counter(); per_language=defaultdict(Counter)
+    for item,gold in records:
+        for side,labels in (("a",gold.labels_a),("b",gold.labels_b)):
+            for index,label in enumerate(labels):
+                if label == -1: continue
+                chosen=index in selected[item.id][side]; positive=label>0
+                missed=positive and baseline[item.id][f"prediction_{side}"][index] < .5
+                totals.update(all=1, selected=int(chosen), positives=int(positive), selected_positive=int(chosen and positive),
+                              missed_positive=int(missed), selected_missed_positive=int(chosen and missed), selected_negative=int(chosen and not positive))
+                per_language[item.language].update(all=1,selected=int(chosen),positives=int(positive),selected_positive=int(chosen and positive),
+                                                   missed_positive=int(missed),selected_missed_positive=int(chosen and missed),selected_negative=int(chosen and not positive))
+    def finish(c):
+        return {**c,"unique_token_coverage":c["selected"]/c["all"],"total_positive_recall":c["selected_positive"]/c["positives"],
+                "b4_missed_positive_recall":c["selected_missed_positive"]/c["missed_positive"],"selected_negative_burden":c["selected_negative"]/c["selected"]}
+    return {"overall":finish(totals),"per_language":{k:finish(v) for k,v in sorted(per_language.items())}}
+
+
+def _leave_one_family(records, reference, method) -> dict:
+    families=sorted({item.id.rsplit("_",1)[1] for item,_ in records}); full=[]
+    def macro(rows,pred):
+        grouped=defaultdict(list)
+        for item,gold in rows: grouped[item.language].append((gold,pred[item.id]["prediction_a"],pred[item.id]["prediction_b"]))
+        return _metrics(grouped)["macro_spearman"]
+    delta=macro(records,method)-macro(records,reference)
+    for family in families:
+        subset=[row for row in records if row[0].id.rsplit("_",1)[1]!=family]
+        d=macro(subset,method)-macro(subset,reference)
+        full.append({"family":family,"delta_without":d,"influence":delta-d})
+    full.sort(key=lambda x:abs(x["influence"]),reverse=True)
+    return {"full_delta":delta,"families":len(families),"top_absolute_influence":full[:10],"range_without":[min(x["delta_without"] for x in full),max(x["delta_without"] for x in full)]}
+
+
+def _usage(rows):
+    latencies=[r["latency_s"] for r in rows]
+    return {"calls":len(rows),"valid":sum(r["valid"] for r in rows),"invalid":sum(not r["valid"] for r in rows),
+            "errors":sum(r["error"] is not None for r in rows),"prompt_tokens":sum(r.get("response",{}).get("usage",{}).get("prompt_tokens",0) for r in rows),
+            "completion_tokens":sum(r.get("response",{}).get("usage",{}).get("completion_tokens",0) for r in rows),
+            "latency_total_s":sum(latencies),"latency_median_s":statistics.median(latencies),"monetary_cost":0}
+
+
 def evaluate(manifest_path: Path, baseline_path: Path, s1_path: Path, s2_path: Path, evidence_path: Path,
              synthetic_path: Path, frozen_data_path: Path, out_path: Path, *, split="dev") -> dict:
     assert_development_split(split)
     if out_path.exists(): raise FileExistsError(out_path)
     manifest=json.loads(manifest_path.read_text(encoding="utf-8")); baseline={r["id"]:r for r in _jsonl(baseline_path)}
     s1={r["id"]:r for r in _jsonl(s1_path) if r["method"]=="M0"}; s2={r["id"]:r for r in _jsonl(s2_path)}
-    decisions={r["candidate_id"]:r.get("label") for r in _jsonl(evidence_path)}
+    evidence_rows=_jsonl(evidence_path); synthetic_rows=_jsonl(synthetic_path)
+    decisions={r["candidate_id"]:r.get("label") for r in evidence_rows}
     candidates={c["candidate_id"]:c for c in manifest["candidates"]}
     deterministic={cid:("incorrect" if (c["risk_features"].get("risk_tags") and c["risk_features"].get("anchor_lexical_mismatch")) else "equivalent") for cid,c in candidates.items()}
-    arms={"E0":baseline,"E1":s1,"E2":s2,"E3":_apply(baseline,manifest,deterministic,"R3"),
+    arms={"E0":baseline,"E1":s1,"E2":s2,"E3":_apply(baseline,manifest,deterministic,"R3"),"E6_non_apertus":baseline,
           "E5":_apply(baseline,manifest,decisions,"R1",shuffled=True),"E6":_apply(baseline,manifest,decisions,"R1"),
           "E7_random":_apply(baseline,manifest,decisions,"R2"),"E7_routed":_apply(baseline,manifest,decisions,"R3")}
     _m,records=load_frozen_records(frozen_data_path,split=split); grouped_results={}; gold_lookup={i.id:g for i,g in records}
@@ -330,19 +377,70 @@ def evaluate(manifest_path: Path, baseline_path: Path, s1_path: Path, s2_path: P
         grouped=defaultdict(list)
         for item,gold in records: grouped[item.language].append((gold,pred[item.id]["prediction_a"],pred[item.id]["prediction_b"]))
         metrics=_metrics(grouped); metrics["ties"]={side:sum(len(values)-len(set(values)) for values in ([p[item.id][f"prediction_{side}"] for item,_ in records] if False else [])) for side in ()}
-        grouped_results[name]={"metrics":metrics,"bootstrap_vs_e0":None if name=="E0" else _bootstrap(records,baseline,pred),
+        reference = s1 if name=="E2" else baseline
+        grouped_results[name]={"metrics":metrics,"bootstrap_vs_comparator":None if name in {"E0","E6_non_apertus"} else _bootstrap(records,reference,pred),
+                               "comparator":"E1" if name=="E2" else "E0",
+                               "leave_one_family_out":None if name in {"E0","E6_non_apertus"} else _leave_one_family(records,reference,pred),
                                "complete_finite_coverage":all(len(pred[i.id]["prediction_a"])==len(g.labels_a) and len(pred[i.id]["prediction_b"])==len(g.labels_b) and all(math.isfinite(x) for x in pred[i.id]["prediction_a"]+pred[i.id]["prediction_b"]) for i,g in records)}
-    syn=_jsonl(synthetic_path); direct=[r for r in syn if r["kind"]=="synthetic_direct"]
+    syn=synthetic_rows; direct=[r for r in syn if r["kind"]=="synthetic_direct"]
     primary=[r for r in direct if r["condition"]=="base"]; equivalent_fp=[r for r in primary if r["expected"]=="equivalent" and r["label"]!="equivalent"]
     base_by={r["case_id"]:r for r in primary}
     stability={cond:statistics.fmean([base_by[r["case_id"]]["label"]==r["label"] for r in direct if r["condition"]==cond]) for cond in ("passage_reversed","labels_permuted","both_reversed")}
+    contrastive=[r for r in syn if r["kind"]=="synthetic_contrastive"]
     syn_summary={"calls":len(syn),"primary_accuracy":statistics.fmean([r["label"]==r["expected"] for r in primary]),
                  "valid_rate":statistics.fmean([r["valid"] for r in syn]),"equivalent_false_positive_rate":len(equivalent_fp)/max(1,sum(r["expected"]=="equivalent" for r in primary)),
-                 "stability":stability,"counterpart_sensitivity":statistics.fmean([r["label"]!=base_by[r["case_id"]]["label"] for r in direct if r["condition"]=="unrelated"])}
+                 "stability":stability,"counterpart_sensitivity":statistics.fmean([r["label"]!=base_by[r["case_id"]]["label"] for r in direct if r["condition"]=="unrelated"]),
+                 "contrastive_accuracy":statistics.fmean([r["label"]==r["expected"] for r in contrastive]),
+                 "per_language_primary_accuracy":{language:statistics.fmean([r["label"]==r["expected"] for r in primary if r["language_pair"]==language]) for language in ("en-de","en-fr","en-it")}}
+    thresholds={"primary_accuracy":syn_summary["primary_accuracy"]>=.8,"valid_rate":syn_summary["valid_rate"]>=.98,
+                "equivalent_false_positive_rate":syn_summary["equivalent_false_positive_rate"]<=.2,"counterpart_sensitivity":syn_summary["counterpart_sensitivity"]>=.75,
+                "stability_each":all(x>=.85 for x in stability.values())}
+    syn_summary["thresholds"]=thresholds; syn_summary["gate_passes"]=all(thresholds.values())
     result={"schema":SCHEMA,"stage":"gold_aware_evaluation","arms":grouped_results,"synthetic":syn_summary,
+            "decisive_apertus_comparisons":{"actual_vs_shuffled":_bootstrap(records,arms["E5"],arms["E6"]),
+                                            "actual_vs_identical_non_apertus":_bootstrap(records,arms["E6_non_apertus"],arms["E6"])},
+            "routing_quality":{p:_route_quality(records,manifest,baseline,p) for p in ("R1","R2","R3")},
             "missing_arms":{"E4":"not measured: optional compact comparator was inapplicable within the dependency ceiling"},
+            "resource_cost":{"benchmark":_usage(evidence_rows),"synthetic":_usage(synthetic_rows)},
             "model_calls":{"benchmark":len(decisions),"synthetic":len(syn),"total":len(decisions)+len(syn)}}
     _write_json(out_path,result); return result
+
+
+def make_blind_audit(manifest_path: Path, evidence_path: Path, baseline_path: Path, s2_path: Path,
+                     frozen_data_path: Path, out_dir: Path, *, split="dev") -> dict:
+    """Freeze a method-blind 5/5/5 audit packet after predictions are fixed."""
+    assert_development_split(split)
+    if out_dir.exists(): raise FileExistsError(out_dir)
+    manifest=json.loads(manifest_path.read_text(encoding="utf-8")); candidates={c["candidate_id"]:c for c in manifest["candidates"]}
+    decisions={r["candidate_id"]:r.get("label") for r in _jsonl(evidence_path)}
+    baseline={r["id"]:r for r in _jsonl(baseline_path)}; s2={r["id"]:r for r in _jsonl(s2_path)}
+    _m,records=load_frozen_records(frozen_data_path,split=split); gold={i.id:g for i,g in records}
+    discrepancy=[]
+    for cid,c in candidates.items():
+        labels=getattr(gold[c["document_id"]],f"labels_{c['source_side']}")
+        if decisions.get(cid) in {"commitment","missing","incorrect"} and all(labels[i]<=0 for i in c["source_token_ids"]): discrepancy.append(cid)
+    missed=[]
+    evidence_lookup={(r["id"],r["side"]):r for r in _jsonl(Path("track_2a/experiments/b4-alignment-first-sdm/alignment-20261013/evidence.jsonl"))}
+    for item,g in records:
+        for side,labels in (("a",g.labels_a),("b",g.labels_b)):
+            for i,label in enumerate(labels):
+                if label>0 and baseline[item.id][f"prediction_{side}"][i]<.5 and s2[item.id][f"prediction_{side}"][i]<.5:
+                    row=evidence_lookup[(item.id,side)]; other=evidence_lookup[(item.id,"b" if side=="a" else "a")]
+                    missed.append({"document_id":item.id,"language_pair":f"en-{item.language}","source_side":side,"source_text":row["tokens"][i],"target_text":" ".join(other["tokens"][:8]),"token_id":i})
+    rng=random.Random(20261013); rng.shuffle(discrepancy); rng.shuffle(missed)
+    controls=[cid for cid in candidates if decisions.get(cid)=="equivalent"]; rng.shuffle(controls)
+    blind=[]; key=[]
+    def add(category, payload, metadata):
+        aid=f"audit-{len(blind)+1:02d}"; blind.append({"audit_id":aid,"language_pair":payload["language_pair"],"source_passage":payload["source_text"],
+            "counterpart_passage":payload["target_text"],"review_fields":{"semantic_difference":"supported|unsupported|unresolved","correspondence":"valid|invalid|unresolved",
+            "context_dependency":"low|medium|high","localization_difficulty":"low|medium|high","minimal_original_source_evidence":"text","practical_materiality":"material|immaterial|unresolved"}})
+        key.append({"audit_id":aid,"sample_category":category,**metadata})
+    for cid in discrepancy[:5]: add("model_discrepancy_absent_official_positive",candidates[cid],{"candidate_id":cid})
+    for row in missed[:5]: add("gold_positive_missed_by_all",row,{"document_id":row["document_id"],"side":row["source_side"],"token_id":row["token_id"]})
+    for cid in controls[:5]: add("random_control",candidates[cid],{"candidate_id":cid})
+    out_dir.mkdir(parents=True); _write_json(out_dir/"blind-review.json",{"schema":"uzh-rsd.b7-audit/v1","method_identity_hidden":True,"items":blind})
+    _write_json(out_dir/"audit-key.json",{"schema":"uzh-rsd.b7-audit-key/v1","not_for_blinded_reviewer":True,"items":key})
+    return {"items":len(blind),"categories":dict(Counter(x["sample_category"] for x in key))}
 
 
 def main(argv=None):
@@ -355,12 +453,15 @@ def main(argv=None):
         q=sub.add_parser(command); q.add_argument("--input",type=Path,required=True); q.add_argument("--out",type=Path,required=True); q.add_argument("--base-url",required=True); q.add_argument("--model",required=True)
     e=sub.add_parser("evaluate")
     for name in ("manifest","baseline","s1","s2","evidence","synthetic","frozen-data","out"): e.add_argument("--"+name,type=Path,required=True)
+    a=sub.add_parser("audit")
+    for name in ("manifest","evidence","baseline","s2","frozen-data","out-dir"): a.add_argument("--"+name,type=Path,required=True)
     args=p.parse_args()
     if args.cmd=="freeze": result=freeze_candidates(args.evidence,args.b5_selector,args.cache,args.cache_provenance,args.out)
     elif args.cmd=="structural": result=score_structural(args.cache,args.cache_provenance,args.evidence,args.out)
     elif args.cmd=="run-candidates": result=run_candidates(args.input,args.out,args.base_url,args.model)
     elif args.cmd=="run-synthetic": result=run_synthetic(args.input,args.out,args.base_url,args.model)
-    else: result=evaluate(args.manifest,args.baseline,args.s1,args.s2,args.evidence,args.synthetic,args.frozen_data,args.out)
+    elif args.cmd=="evaluate": result=evaluate(args.manifest,args.baseline,args.s1,args.s2,args.evidence,args.synthetic,args.frozen_data,args.out)
+    else: result=make_blind_audit(args.manifest,args.evidence,args.baseline,args.s2,args.frozen_data,args.out_dir)
     print(json.dumps(result,ensure_ascii=False,indent=2)); return 0
 
 
