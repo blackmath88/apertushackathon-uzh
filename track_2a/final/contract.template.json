@@ -1,0 +1,12 @@
+{
+  "schema": "uzh-rsd.final-contract/v1",
+  "status": "unresolved",
+  "evidence": "",
+  "decisions": {
+    "full_set_order": "unresolved",
+    "dropped_ids": "unresolved",
+    "output_layout": "unresolved"
+  },
+  "order": [],
+  "_comment": "Template. Fill only from an organiser answer (see docs/JUDGE_READINESS.md), record that answer in `evidence`, and set status to confirmed. `order` lists every document to predict as {id, language}, in output order. The final command refuses this file as is."
+}
