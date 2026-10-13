@@ -31,7 +31,7 @@ cd track_2a/experiments/b7-structural-semantic-verification
 sha256sum -c freeze-checksums.sha256
 sha256sum -c checksums.sha256
 cd ../../../
-make -C track_2a s1-check VENV=/home/achim/orca/workspaces/apertushackathon-uzh/b5-competitive-semantic-alignment/track_2a/.venv-b5
+make -C track_2a s1-check VENV=.venv
 ```
 
 The two local inference commands are intentionally not part of ordinary replay.
@@ -45,4 +45,3 @@ PYTHONPATH=track_2a/src "$B7_PY" -m uzh_rsd.b7 run-candidates --input track_2a/e
 
 Gold-aware `evaluate` and `audit` invocations are represented exactly by the
 argument declarations in `b7.py`; `REPORT.md` records the resulting hashes.
-
