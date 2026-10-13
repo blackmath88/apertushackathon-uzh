@@ -1,0 +1,69 @@
+{
+  "schema": "uzh-rsd.b6.provenance/v1",
+  "retrieved_date": "2026-10-13",
+  "policy": "References only. No source terminology, annotations, or false-friend lists were bulk-downloaded, extracted, or redistributed.",
+  "sources": [
+    {
+      "id": "termdat-reference-only",
+      "name": "TERMDAT, Swiss Federal Administration terminology database",
+      "url": "https://www.termdat.bk.admin.ch/entry/133603",
+      "publisher": "Swiss Federal Chancellery",
+      "version_revision": "live entry 133603; entry reports modification 2024-07-16",
+      "licence_reuse": "No explicit database-wide reuse licence was located on the cited entry/help pages; rights treated as unclear.",
+      "use": "Conceptual reference only; no entries copied into the atlas.",
+      "limitations": "Live records change; individual fields cite heterogeneous underlying sources. Not a benchmark label source."
+    },
+    {
+      "id": "fch-legal-style",
+      "name": "Federal Chancellery English and Legal Style Guides",
+      "url": "https://www.bk.admin.ch/en/style-guides-for-english-language-translators",
+      "publisher": "Swiss Federal Chancellery / FDFA",
+      "version_revision": "landing page lists Style Guide 2024-11-07 and Legal Style Guide 2025-09-10",
+      "licence_reuse": "No explicit reuse licence identified on landing page; referenced, not copied.",
+      "use": "Supports attention to legal modality, terminology, citations, cross-references, and translation pitfalls.",
+      "limitations": "English-target guidance is not a multilingual equivalence dictionary."
+    },
+    {
+      "id": "fch-languages",
+      "name": "Federal Chancellery: Languages",
+      "url": "https://www.bk.admin.ch/en/languages",
+      "publisher": "Swiss Federal Chancellery",
+      "version_revision": "live page retrieved 2026-10-13",
+      "licence_reuse": "Reference only; no page content redistributed.",
+      "use": "Supports the legal relevance of concordance among German, French, and Italian versions.",
+      "limitations": "Policy overview, not an annotated corpus."
+    },
+    {
+      "id": "mqm-core",
+      "name": "MQM 2.0 error typology",
+      "url": "https://www.themqm.org/mqm-pillars/typology/",
+      "publisher": "MQM Council",
+      "version_revision": "MQM 2.0; official Full spreadsheet dated 2024-03-27 with publisher checksum df5aa31a52fbda8e3f3178313ffa229db916d22d52048eed1013b9336aa8f8ad",
+      "licence_reuse": "CC BY 4.0 per https://www.themqm.org/about-us/license-and-copyright/",
+      "use": "Category inspiration: Accuracy/Omission/Mistranslation/False friend and Terminology.",
+      "limitations": "Taxonomy does not supply language-specific lexical detectors or B6 weights. Official spreadsheet not downloaded."
+    },
+    {
+      "id": "google-wmt-mqm",
+      "name": "Google/WMT MQM human evaluation annotations",
+      "url": "https://github.com/google/wmt-mqm-human-evaluation",
+      "publisher": "Google Research / WMT",
+      "version_revision": "main commit 29acd6999aaea3586378c9dcb58d8cc4820cede3 retrieved 2026-10-13",
+      "licence_reuse": "Apache-2.0 repository licence",
+      "use": "Methodological reference showing contextual human error-span annotation; no rows used as labels or patterns.",
+      "limitations": "Different domains/language coverage and annotation objectives; must not be treated as SwissGov benchmark gold."
+    },
+    {
+      "id": "false-friends-mit",
+      "name": "False Friends Are Not Foes research resource",
+      "url": "https://github.com/jkallini/false-friends",
+      "publisher": "Kallini et al.",
+      "version_revision": "main commit 06f85f2a39ad416a95b8e66e7e6f7f78663d43a1 retrieved 2026-10-13",
+      "licence_reuse": "MIT",
+      "use": "Properly licensed multilingual false-friend/overlap resource used only to motivate form-similarity risk.",
+      "limitations": "The released study covers EN-DE among B6 languages but not the full EN-DE-FR-IT legal setting; no data copied."
+    }
+  ],
+  "downloaded_artifacts": [],
+  "checksum_note": "No external source artifact was downloaded into the B6 package; repository commit IDs and the publisher-supplied MQM checksum are recorded above."
+}

@@ -1,0 +1,141 @@
+{
+  "schema": "uzh-rsd.semantic-risk-atlas/v1",
+  "version": "1.0.0",
+  "frozen_date": "2026-10-13",
+  "authorship": "All patterns below were independently authored for B6; no terminology entries or corpus examples were copied.",
+  "reuse_rights": "CC0-1.0 for the independently authored patterns and metadata; cited sources retain their own rights.",
+  "entries": [
+    {
+      "id": "modality-obligation",
+      "category": "modality",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["must", "shall", "required", "muss", "müssen", "ist", "doit", "doivent", "tenu", "deve", "devono"], "structural": "conditional_pair"},
+      "risk_mechanism": "Obligation can be weakened, strengthened, or confused with description.",
+      "contextual_requirements": "Compare the governing verb, subject, and exception; present tense may itself impose an obligation in legislative French.",
+      "provenance": ["fch-legal-style", "mqm-core"],
+      "limitations": "Lexical presence is only a routing cue; it is not an equivalence judgment.",
+      "reuse_rights": "independently authored CC0-1.0"
+    },
+    {
+      "id": "modality-permission",
+      "category": "modality",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["may", "entitled", "kann", "darf", "peut", "autorisée", "può", "facoltà"], "structural": "conditional_pair"},
+      "risk_mechanism": "Permission or discretion may be rendered as duty or mere possibility.",
+      "contextual_requirements": "Inspect legal actor, scope, and whether the construction is permissive or epistemic.",
+      "provenance": ["fch-legal-style", "mqm-core"],
+      "limitations": "Polysemous auxiliaries require sentence context.",
+      "reuse_rights": "independently authored CC0-1.0"
+    },
+    {
+      "id": "negation-core",
+      "category": "negation",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["no", "not", "never", "without", "kein", "nicht", "nie", "ohne", "ne", "pas", "aucun", "sans", "non", "nessun", "senza"], "structural": "conditional_pair"},
+      "risk_mechanism": "Dropped, inserted, or scope-shifted negation reverses propositional content.",
+      "contextual_requirements": "Check discontinuous French negation and the full syntactic scope.",
+      "provenance": ["mqm-core", "google-wmt-mqm"],
+      "limitations": "Negative-looking morphology and idioms can be non-compositional.",
+      "reuse_rights": "independently authored CC0-1.0"
+    },
+    {
+      "id": "conditions-if-unless",
+      "category": "conditions",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["if", "unless", "provided", "where", "wenn", "falls", "sofern", "soweit", "si", "lorsque", "pourvu", "qualora", "purché", "se"], "structural": "conditional_pair"},
+      "risk_mechanism": "Condition, exception, or trigger can disappear or attach to the wrong rule.",
+      "contextual_requirements": "Resolve clause boundary and distinguish temporal from conditional readings.",
+      "provenance": ["fch-legal-style", "mqm-core"],
+      "limitations": "Several anchors are highly polysemous.",
+      "reuse_rights": "independently authored CC0-1.0"
+    },
+    {
+      "id": "deadlines-duration",
+      "category": "deadlines",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["deadline", "within", "before", "after", "days", "frist", "innert", "vor", "nach", "tage", "délai", "dans", "avant", "après", "jours", "termine", "entro", "prima", "dopo", "giorni"], "structural": "conditional_pair"},
+      "risk_mechanism": "A changed anchor, unit, inclusivity rule, or duration changes legal timeliness.",
+      "contextual_requirements": "Read the number, unit, start event, and inclusive/exclusive wording together.",
+      "provenance": ["fch-legal-style", "mqm-core"],
+      "limitations": "This cue does not calculate calendars or jurisdictional deadline rules.",
+      "reuse_rights": "independently authored CC0-1.0"
+    },
+    {
+      "id": "quantities-numeric",
+      "category": "quantities",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["percent", "maximum", "minimum", "höchstens", "mindestens", "prozent", "maximum", "minimum", "pour", "cent", "massimo", "minimo", "percento"], "structural": "numeric"},
+      "risk_mechanism": "Digits, units, bounds, ranges, or decimal conventions can change factual or legal effect.",
+      "contextual_requirements": "Compare sign, value, unit, range operator, and locale-specific separators.",
+      "provenance": ["mqm-core", "google-wmt-mqm"],
+      "limitations": "Every digit is routed, so dates and identifiers may be false positives.",
+      "reuse_rights": "independently authored CC0-1.0"
+    },
+    {
+      "id": "scope-quantifiers",
+      "category": "scope",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["all", "any", "only", "each", "including", "alle", "nur", "jeder", "einschliesslich", "tout", "seul", "chaque", "notamment", "tutti", "solo", "ogni", "compreso"], "structural": "scope_punctuation"},
+      "risk_mechanism": "Quantifier or list scope can expand or narrow the affected class.",
+      "contextual_requirements": "Inspect coordination, list boundaries, and the noun phrase governed.",
+      "provenance": ["fch-legal-style", "mqm-core"],
+      "limitations": "Punctuation cues are deliberately broad.",
+      "reuse_rights": "independently authored CC0-1.0"
+    },
+    {
+      "id": "scope-exceptions",
+      "category": "scope",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["except", "excluding", "subject", "ausser", "vorbehaltlich", "jedoch", "sauf", "excepté", "réserve", "eccetto", "salvo", "tuttavia"], "structural": "conditional_pair"},
+      "risk_mechanism": "An exception or reservation can be omitted or applied to the wrong proposition.",
+      "contextual_requirements": "Locate the governed provision and any cross-reference.",
+      "provenance": ["fch-legal-style", "mqm-core"],
+      "limitations": "Cross-document references are outside this lexical router.",
+      "reuse_rights": "independently authored CC0-1.0"
+    },
+    {
+      "id": "omission-connectives",
+      "category": "omissions",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["and", "or", "however", "therefore", "und", "oder", "jedoch", "deshalb", "et", "ou", "cependant", "donc", "e", "o", "tuttavia", "pertanto"], "structural": "conditional_pair"},
+      "risk_mechanism": "A short connective may be omitted yet alter alternatives, conjunction, contrast, or consequence.",
+      "contextual_requirements": "Compare coordinated constituents and discourse relation, not isolated words.",
+      "provenance": ["mqm-core", "google-wmt-mqm"],
+      "limitations": "High-frequency words intentionally trade precision for recall.",
+      "reuse_rights": "independently authored CC0-1.0"
+    },
+    {
+      "id": "legal-authority",
+      "category": "legal_terminology",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["federal", "council", "authority", "confederation", "bundesrat", "behörde", "eidgenossenschaft", "conseil", "fédéral", "autorité", "confédération", "consiglio", "federale", "autorità", "confederazione"]},
+      "risk_mechanism": "Near-synonymous institutional terms can name a different competent body.",
+      "contextual_requirements": "Confirm the official institutional identity in current authoritative terminology.",
+      "provenance": ["termdat-reference-only", "fch-languages"],
+      "limitations": "Not a copied termbase; the short list is independently authored and incomplete.",
+      "reuse_rights": "independently authored CC0-1.0; TERMDAT rights not asserted"
+    },
+    {
+      "id": "legal-remedies",
+      "category": "legal_terminology",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["appeal", "decision", "application", "beschwerde", "entscheid", "gesuch", "recours", "décision", "demande", "ricorso", "decisione", "domanda"]},
+      "risk_mechanism": "A procedural remedy, decision, or application term may be mapped to a different legal act.",
+      "contextual_requirements": "Use domain, authority, and procedural stage; consult authoritative terminology manually.",
+      "provenance": ["termdat-reference-only", "mqm-core"],
+      "limitations": "Deliberately small and not suitable as a legal dictionary.",
+      "reuse_rights": "independently authored CC0-1.0; TERMDAT rights not asserted"
+    },
+    {
+      "id": "false-friend-form",
+      "category": "legal_terminology",
+      "languages": ["en", "de", "fr", "it"],
+      "pattern": {"tokens": ["actual", "eventual", "eventuell", "aktuell", "actuel", "éventuel", "attuale", "eventuale"]},
+      "risk_mechanism": "Similar orthography can conceal different meanings or modality.",
+      "contextual_requirements": "Require contextual semantic comparison; never flag similarity alone as an error.",
+      "provenance": ["false-friends-mit", "mqm-core"],
+      "limitations": "Patterns are independent examples, not extracted from the cited resource; senses vary by context.",
+      "reuse_rights": "independently authored CC0-1.0; cited resource MIT"
+    }
+  ]
+}
