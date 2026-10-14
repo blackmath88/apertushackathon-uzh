@@ -8,4 +8,4 @@ requires-python = ">=3.11"
 package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
-uzh_rsd = ["federal_desk.html"]
+uzh_rsd = ["federal_desk.html", "campaign_center.html"]

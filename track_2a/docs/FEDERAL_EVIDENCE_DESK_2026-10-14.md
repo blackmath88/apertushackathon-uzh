@@ -121,3 +121,7 @@ PYTHONPATH=src python -m uzh_rsd.federal_desk review \
 ```
 
 The renderer's HTML is explicitly included in setuptools package data. This is still a capture-backed review application, not an automated live crawler or a browser inference service. The demo makes no claims about actual federal discrepancies.
+
+## Campaign workspace
+
+The new [campaign control center](CAMPAIGN_CONTROL_CENTER.md) provides the browser entry point for multi-pair work: create/open campaign → import captures → explicit local comparison → evidence review → campaign report. Run `python -m uzh_rsd.campaign_center --data runs/campaign-center` with `PYTHONPATH=src`. Inference is disabled by default.
