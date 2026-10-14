@@ -1,0 +1,47 @@
+{
+  "schema": "uzh-rsd.b8-schedule-summary/v1",
+  "stage": "dry_run_no_model_calls",
+  "calls": 504,
+  "estimated_prompt_tokens": 67135,
+  "projected_wall_seconds": 2016,
+  "ceilings": {
+    "total_calls": 600,
+    "prompt_tokens": 120000,
+    "wall_seconds": 2700,
+    "downloads": 0,
+    "unapproved_spend": 0
+  },
+  "by_arm": {
+    "control": 288,
+    "matched_direct": 144,
+    "teacher_discovery": 36,
+    "transfer": 36
+  },
+  "by_model_role": {
+    "student": 252,
+    "teacher": 252
+  },
+  "by_representation": {
+    "R0": 45,
+    "R1": 189,
+    "R2": 225,
+    "R3": 45
+  },
+  "optimization_families": [
+    "opt-modality",
+    "opt-negation",
+    "opt-quantity"
+  ],
+  "evaluation_families": [
+    "eval-condition",
+    "eval-deadline",
+    "eval-exception",
+    "eval-faithful",
+    "eval-omission",
+    "eval-scope"
+  ],
+  "schedule_sha256": "e936729c4873ddb6c3bfaf928c6b6eb86c2ae8817f762de0f104af71f8694709",
+  "first_call_id": "6c0235978e82318c5ab43c35",
+  "last_call_id": "f4b910ef00bc8e24883714ef",
+  "model_calls_performed": 0
+}
