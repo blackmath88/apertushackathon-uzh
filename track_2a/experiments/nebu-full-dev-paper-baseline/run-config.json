@@ -1,0 +1,19 @@
+{
+  "schema": "uzh-rsd.full-dev-b0-config/v1",
+  "run_id": "nebu-full-dev-b0-q8-20261014-v1",
+  "split": "dev",
+  "method": "b0-paper-admin-template@1807a42/token-list-v1",
+  "endpoint": "http://127.0.0.1:11436",
+  "endpoint_model_alias": "Apertus-v1.5-8B-Q8_0",
+  "model_sha256": "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d",
+  "llama_cpp_commit": "7ab4ee7baad2d920464cbacfad4f4b07cf111fd2",
+  "server_binary_sha256": "d0538ae0a50a97ede6c4fece9054ed8d3b891a82e230a1defe810249ee7b93f1",
+  "chat_template": {"source": "GGUF tokenizer.chat_template", "bytes": 16614, "sha256": "d23af2850029e9df88bb017e06e0c14a0462604588f1dbe4f519cdfac3e260e0", "messages": "one user message; no system message; no override"},
+  "runtime": {"host": "127.0.0.1", "port": 11436, "context_tokens": 8192, "parallel": 1, "gpu_layers": 99, "device": "SYCL0", "flash_attention": true},
+  "decoding": {"temperature": 0.0, "max_tokens": 4096, "attempts": 1},
+  "ceilings": {"request_timeout_seconds": 600, "total_wall_seconds": 115200, "requests": 489, "concurrency": 1, "prompt_tokens_per_request": 4096, "prompt_tokens_total": 2002944, "completion_tokens_per_request": 4096, "completion_tokens_total": 2002944, "combined_tokens_total": 4005888},
+  "resume": "never-started only; a durable intent is never automatically resent",
+  "context_overflow": "record failure before request; never truncate",
+  "private_artifacts": "track_2a/data/private/nebu-full-dev-b0-v1; ignored; never publish or commit",
+  "real_model_calls_authorized_by_this_freeze": false
+}
