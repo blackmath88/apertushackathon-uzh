@@ -1,5 +1,7 @@
 # Federal discovery → campaigns → findings → better searches
 
+> **Current delivery order (14 October):** see [DISCOVERY_BUILD_PLAN.md](DISCOVERY_BUILD_PLAN.md) and [LOCAL_CODEX_DISCOVERY_HANDOFF.md](LOCAL_CODEX_DISCOVERY_HANDOFF.md). Implement [#34](https://github.com/blackmath88/apertushackathon-uzh/issues/34) → [#35](https://github.com/blackmath88/apertushackathon-uzh/issues/35) → [#36](https://github.com/blackmath88/apertushackathon-uzh/issues/36). [#37](https://github.com/blackmath88/apertushackathon-uzh/issues/37) and [#38](https://github.com/blackmath88/apertushackathon-uzh/issues/38) are separate follow-ups. This refines the broad D1–D6 sequence below; dependency reuse still requires exact-code/licence verification.
+
 Decision record and implementation handoff · 14 October 2026
 
 ## Product direction
