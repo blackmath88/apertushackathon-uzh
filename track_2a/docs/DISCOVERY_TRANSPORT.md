@@ -31,3 +31,6 @@ Per side: requested/final URL, redirects, status, kept headers, retrieved time, 
 Campaign: `Store.capture` / `Store.preparation` and POST `/capture`, GET `/preparation`; without an injected transport capture is recorded as `live_capture_not_authorised`.
 
 Not done: browser UI controls for capture/preparation (API only); no live capture; no desktop/mobile browser run.
+
+### #36 UI (Scope tab → Capture preparation)
+Per saved family: pairing/uncertainty, status (`not_captured`/`blocked`/`captured`…), blockers, per-side extraction completeness, omission-confirmation block, distinct *Live original (may differ)* links vs *Captured evidence* hash+time. The capture form (reviewer, rationale, rights basis, languages, certification) appears only when the server has a fixture/authorised transport; otherwise "Capture unavailable". Status is server-derived, so it survives reload. Browser check: `python3 tests/campaign_capture_fixture_server.py 8767 &` then `node tests/campaign_capture_browser.cjs http://127.0.0.1:8767 OUT` (desktop + mobile, page errors, overflow). **Not executed in this environment: Playwright is not installed**; the script and UI were only syntax-checked, and the served API flow was smoke-tested with curl.

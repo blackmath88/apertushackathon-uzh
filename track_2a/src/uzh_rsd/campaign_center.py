@@ -352,7 +352,7 @@ def handler(store, token):
                     return self.send(html,kind='text/html')
                 if path == '/api/campaigns':
                     return self.send({'campaigns':store.list(),'catalogue':inventory.inventory(),
-                                      'inference_enabled':bool(store.inference), 'unsettled':store.guard.exists() or store.batch_guard.exists()})
+                                      'inference_enabled':bool(store.inference),'capture_mode':{'fixture':bool(store.capture_fixture),'transport':store.capture_fetcher is not None}, 'unsettled':store.guard.exists() or store.batch_guard.exists()})
                 match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/snapshots/([a-f0-9]{32})',path)
                 if match: return self.send(store.snapshot(match[1],match[2]))
                 match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/preparation',path)
