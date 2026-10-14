@@ -11,7 +11,7 @@ The benchmark evaluates detector quality. The application owns capture provenanc
 New module: `uzh_rsd.federal_desk`, built on PR21's existing `capture_html` extraction and exact-host federal profile. It does not change the existing crawler, scientific methods or judge entrypoints.
 
 - Import permitted local BFE HTML pairs with explicit provenance and language labels (DE/FR/IT/EN); no implicit crawl.
-- Source reading with bilingual headings, search highlighting and links from candidate excerpts to source context.
+- Finding-led bilingual reading with exact excerpt highlights and expandable full captured context.
 - Separately named experimental detector `federal-exact-excerpts-v1`, one bounded local request, both-direction comparison, exact/ambiguous/missing evidence locations.
 - Loopback endpoint fixed to 127.0.0.1:11436, model-list identity check, redirects and environment proxies disabled. Operator-supplied weight hash/runtime revision are provenance, not weight attestation.
 - Immutable attempt intent, raw response and output bundle. No automatic retry or overwrite. Interrupted attempts leave intent and must be settled before another attempt.
@@ -28,7 +28,7 @@ From `track_2a`, in a fresh output directory:
 PYTHONPATH=src python -m uzh_rsd.federal_desk demo --out runs/federal-desk-demo
 ```
 
-Open `runs/federal-desk-demo/index.html` locally. The DE/FR example and its candidate are project-authored, not government content or actual model output. Read, review and export a draft, then validate it:
+Open `runs/federal-desk-demo/index.html` locally. The DE/FR example and its two candidates are project-authored, not government content or actual model output. Read, review and export a draft, then validate it:
 
 ```sh
 PYTHONPATH=src python -m uzh_rsd.federal_desk review \
@@ -88,9 +88,9 @@ Model invocation is CLI-driven; this release is not a browser-hosted inference s
 
 14 focused unit tests pass: immutable/revision-bound review, tampered evidence, ambiguous and absent-side claims, permission metadata refusal, two-sided language contract, single attempt/checkpoints, no output reuse, truncation, interruption, script payload escaping, endpoint mismatch and transport failure. Generated JavaScript passes `node --check`; demo generation succeeds.
 
-No full repository suite or real-browser interaction test was run in this cloud checkout. No local Apertus or real federal capture was run. Self-review only; independent review remains open. The previously recorded BFE collection block remains unchanged.
+No full repository suite was run in this partial cloud checkout. Desktop (1440px) and mobile (390px) Chromium checks passed; screenshots were inspected. No local Apertus or real federal capture was run. Self-review only; independent review remains open. The previously recorded BFE collection block remains unchanged.
 
-Next acceptance: browser checks at desktop/mobile sizes; actual local model call after baseline settlement; a permitted real federal pair; verify a reviewed export with original source context. Preserve failures and distinguish authored fixtures from live evidence.
+Next acceptance: first-time user walkthrough; actual local model call after baseline settlement; a permitted real federal pair; verify a reviewed export with original source context. Preserve failures and distinguish authored fixtures from live evidence.
 
 ## Next modules, in order
 
@@ -100,3 +100,24 @@ Next acceptance: browser checks at desktop/mobile sizes; actual local model call
 4. Add repeat-capture comparison distinguishing source change, extraction change, method change and lost coverage.
 
 WATCH, authenticated collaboration, public deployment and automatic discrepancy publication are not implemented. A better benchmark model can replace this experimental detector without changing the editorial workflow.
+
+## UX polish — 14 October
+
+Outcome: a guided introduction, selectable findings, side-by-side exact quotations, full-context expansion, plain-language review decisions, completion count, local draft persistence and readable text summary alongside JSON. The authored example includes changed deadlines and omitted advice. A missing-content confirmation stays disabled until the full-source check is acknowledged. Summary exports label unfinished decisions. The backend validation contract remains unchanged.
+
+Scope: renderer/template, authored fixture, package-data declaration, browser acceptance script and this handoff. No model calls, paid services, benchmark modifications, live source capture, merge or deployment. Direct coordinator implementation and self-review; no independent review claimed.
+
+Validation: 14 Python tests, JavaScript syntax check, Chromium desktop/mobile interaction checks, page-error and horizontal-overflow checks, persisted review after reload, omission confirmation gate, summary and JSON downloads. The browser-exported JSON was accepted by the Python review command. Screenshots were visually inspected. Browser tools were installed only in temporary scratch space; no frontend runtime dependencies are added to the application.
+
+Reproduce the browser check with Playwright installed and a compatible Chromium available:
+
+```sh
+node tests/federal_desk_browser.cjs runs/federal-desk-demo/index.html runs/ui-check
+# Optional CHROMIUM_PATH selects an existing browser binary.
+PYTHONPATH=src python -m uzh_rsd.federal_desk review \
+  --bundle runs/federal-desk-demo/bundle.json \
+  --drafts runs/ui-check/review-draft.json \
+  --out runs/ui-review-validated.json
+```
+
+The renderer's HTML is explicitly included in setuptools package data. This is still a capture-backed review application, not an automated live crawler or a browser inference service. The demo makes no claims about actual federal discrepancies.

@@ -202,28 +202,9 @@ def review(bundle, drafts):
 def render(bundle):
     validate(bundle)
     payload = json.dumps(bundle, ensure_ascii=False).replace("<", "\\u003c")
-    return '''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Lost in Switzerland · Federal evidence desk</title><style>
-*{box-sizing:border-box}body{margin:0;background:#f5f1e8;color:#17231f;font:16px system-ui}main{max-width:1250px;margin:auto;padding:32px}h1{font-size:clamp(32px,6vw,68px);letter-spacing:-.04em;margin:12px 0}header{border-bottom:2px solid;padding-bottom:24px}.accent{color:#b73524;font-weight:700}nav{display:flex;gap:16px;padding:20px 0;flex-wrap:wrap}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}article,section.card{background:white;padding:24px;min-width:0;border:1px solid #d3cebf}p{line-height:1.6;overflow-wrap:anywhere}.meta{font-size:13px;color:#59635e}input,textarea,select,button{font:inherit;padding:10px;max-width:100%}textarea{width:100%}button{background:#17231f;color:white;border:0;cursor:pointer}mark{background:#ffe0a1}a{color:inherit}#queue{margin-top:24px}.candidate{border-top:1px solid #ccc;padding:20px 0}.candidate blockquote{margin:12px 0;padding:12px;background:#f5f1e8}label{display:block;margin:10px 0}footer{margin:30px 0}.notice{padding:16px;background:#fff1cc}@media(max-width:700px){main{padding:16px}.grid{grid-template-columns:1fr}}
-</style><main><header><div class="accent">LOST IN SWITZERLAND / FEDERAL EVIDENCE DESK</div><h1>Same information?</h1><p>Compare language versions. Inspect the sources. Record your decision.</p><div id="status" class="notice"></div></header>
-<nav><a href="#sources">1 · Read sources</a><a href="#queue">2 · Review candidates</a><a href="#export">3 · Export review</a></nav>
-<label>Find in source text <input id="search" type="search" placeholder="Search both versions"></label><div id="sources" class="grid"></div>
-<section id="queue" class="card"><h2>Review candidates</h2><p id="empty"></p><div id="items"></div></section>
-<footer id="export"><button id="download">Export review draft</button><p class="meta">Drafts are tied to this exact capture and analysis. Validate the export with the review command. Reviewer identity is self-declared. Monitoring is not implemented.</p><p id="storage" class="meta"></p></footer></main>
-<script type="application/json" id="bundle">''' + payload + '''</script><script>
-const b=JSON.parse(document.querySelector('#bundle').textContent),key='federal-review:'+b.digest;
-let drafts={};try{drafts=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}
-const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n};
-document.querySelector('#status').textContent=(b.fixture?'Authored demonstration — not government content. ':'Private federal capture. ')+ 'Analysis: '+b.analysis.status+'. Confirmed discrepancy claims require human review.';
-function sources(){const root=document.querySelector('#sources');root.replaceChildren();const q=document.querySelector('#search').value.toLocaleLowerCase();for(const side of ['left','right']){const d=b[side],a=el('article');a.append(el('h2',d.locale.toUpperCase()));a.append(el('p','Captured '+d.retrieved_at_utc));const link=el('a',b.fixture?'Fixture source identifier':'Open original source');if(!b.fixture){link.href=d.source_url;link.rel='noopener noreferrer';link.target='_blank'}a.append(link);for(const block of d.blocks){const p=el(block.kind==='heading'?'h3':'p',block.text);p.id=side+'-'+block.id;if(q&&block.text.toLocaleLowerCase().includes(q))p.style.background='#ffe0a1';a.append(p)}root.append(a)}}
-document.querySelector('#search').oninput=sources;sources();
-const cs=b.analysis.candidates;document.querySelector('#empty').textContent=cs.length?'Model suggestions are not verified findings.':b.analysis.status==='complete'?'No candidates returned. This does not establish equivalence.':'Analysis has not produced usable candidates. Sources remain available for reading.';
-function persist(){try{localStorage.setItem(key,JSON.stringify(drafts));document.querySelector('#storage').textContent='Draft saved in this browser.'}catch(e){document.querySelector('#storage').textContent='Browser storage unavailable: export your draft before closing.'}}
-for(const c of cs){const a=el('div');a.className='candidate';a.append(el('h3',c.kind+' · '+c.evidence));for(const s of ['left','right']){a.append(el('blockquote',b[s].locale.toUpperCase()+': '+(c[s]||'[No counterpart claimed]')));for(const loc of c.locations[s]){const block=b[s].blocks.find(x=>x.start<loc.end&&x.end>loc.start);if(block){const link=el('a','Read source context → ');link.href='#'+s+'-'+block.id;a.append(link)}}}
-const d=drafts[c.id]||{candidate_id:c.id,state:'unresolved',reviewer:'',reason:'',full_source_checked:false};drafts[c.id]=d;
-for(const field of ['state','reviewer','reason','full_source_checked']){const label=el('label',field.replaceAll('_',' ')+' ');let input;if(field==='state'){input=el('select');for(const v of ['unresolved','confirmed','rejected']){const o=el('option',v);o.value=v;input.append(o)}input.value=d[field]}else if(field==='reason'){input=el('textarea');input.value=d[field]}else{input=el('input');input.type=field==='full_source_checked'?'checkbox':'text';if(input.type==='checkbox')input.checked=d[field];else input.value=d[field]}input.onchange=()=>{d[field]=input.type==='checkbox'?input.checked:input.value;persist()};label.append(input);a.append(label)}document.querySelector('#items').append(a)}
-document.querySelector('#download').onclick=()=>{const result={bundle_digest:b.digest,reviews:Object.values(drafts)};const url=URL.createObjectURL(new Blob([JSON.stringify(result,null,2)],{type:'application/json'}));const a=el('a');a.href=url;a.download='federal-review-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-</script></html>'''
+    template = Path(__file__).with_name("federal_desk.html").read_text(encoding="utf-8")
+    return template.replace("__BUNDLE_JSON__", payload)
+
 
 
 def demo(out):
@@ -231,9 +212,10 @@ def demo(out):
         "reviewer": "fixture-author", "captured_at_utc": "2026-10-14T12:00:00+00:00",
         "left": {"url": "https://www.bfe.admin.ch/de/fixture", "language": "de"},
         "right": {"url": "https://www.bfe.admin.ch/fr/fixture", "language": "fr"}}
-    b = prepare(b'<main><h1>Demonstration</h1><p>Die Frist betr\xc3\xa4gt 30 Tage.</p></main>',
-                b'<main><h1>D\xc3\xa9monstration</h1><p>Le d\xc3\xa9lai est de 20 jours.</p></main>', metadata, True)
-    entries = [{"left": "30 Tage", "right": "20 jours", "kind": "CHANGE"}]
+    b = prepare('<main><h1>Antragsverfahren · Beispiel</h1><p>Die Frist beträgt 30 Tage.</p><p>Der Antrag kann online eingereicht werden.</p><p>Eine telefonische Beratung ist kostenlos.</p></main>'.encode(),
+                '<main><h1>Procédure de demande · Exemple</h1><p>Le délai est de 20 jours.</p><p>La demande peut être déposée en ligne.</p></main>'.encode(), metadata, True)
+    entries = [{"left": "30 Tage", "right": "20 jours", "kind": "CHANGE"},
+               {"left": "Eine telefonische Beratung ist kostenlos.", "right": "", "kind": "LEFT_ONLY"}]
     b["analysis"] = {"status": "complete", "parsed": entries, "candidates": candidates(b, entries),
                      "model_calls": 0, "method": "authored-fixture-output-not-model"}
     seal(b)
