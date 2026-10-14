@@ -1,3 +1,4 @@
+import hashlib
 import json
 import tempfile
 import unittest
@@ -188,6 +189,21 @@ class B8Tests(unittest.TestCase):
         self.assertEqual(manifest["case_sha256"], manifest["files"]["synthetic-cases.json"])
         self.assertEqual(manifest["family_sha256"], manifest["files"]["families.json"])
         self.assertEqual(manifest["model_calls_before_freeze"], 0)
+
+    def test_all_committed_checksum_manifests_verify(self):
+        manifests = (
+            PACKAGE / "freeze-checksums.sha256",
+            PACKAGE / "checksums.sha256",
+            PACKAGE / "local-only-q8-20261014" / "checksums.sha256",
+        )
+        for manifest in manifests:
+            with self.subTest(manifest=manifest.relative_to(ROOT)):
+                for line in manifest.read_text(encoding="utf-8").splitlines():
+                    expected, relative = line.split(maxsplit=1)
+                    target = manifest.parent / relative
+                    self.assertTrue(target.is_file(), target)
+                    actual = hashlib.sha256(target.read_bytes()).hexdigest()
+                    self.assertEqual(actual, expected, target)
 
 
 if __name__ == "__main__":
