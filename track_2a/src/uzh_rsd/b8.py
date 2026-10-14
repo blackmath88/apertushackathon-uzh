@@ -402,6 +402,66 @@ def validate_schedule(protocol: Mapping, rows: Sequence[Mapping]) -> None:
         raise ValueError("B8 permits exactly one attempt per planned call")
 
 
+def derive_local_only_schedule(protocol: Mapping, rows: Sequence[Mapping]) -> list[dict]:
+    """Derive the authorized no-frontier erratum without changing frozen rows."""
+    validate_schedule(protocol, rows)
+    selected = [
+        dict(row) for row in rows
+        if row.get("model_role") == "student" and (
+            row.get("arm") in {"matched_direct", "control"}
+            or (row.get("arm") == "transfer" and row.get("transfer_contract") == "deterministic_no_teacher")
+        )
+    ]
+    validate_local_only_schedule(protocol, selected)
+    return selected
+
+
+def validate_local_only_schedule(protocol: Mapping, rows: Sequence[Mapping]) -> None:
+    """Fail closed on any local-only schedule that differs from the approved erratum."""
+    if len(rows) != 234 or len({row.get("call_id") for row in rows}) != len(rows):
+        raise ValueError("B8 local-only schedule must contain 234 unique calls")
+    if any(row.get("model_role") != "student" or row.get("split") != "evaluation" for row in rows):
+        raise ValueError("B8 local-only schedule permits evaluation student rows only")
+    counts = Counter(row.get("arm") for row in rows)
+    if counts != {"matched_direct": 72, "control": 144, "transfer": 18}:
+        raise ValueError(f"B8 local-only arm counts changed: {dict(counts)}")
+    if any(row.get("attempt_limit") != 1 for row in rows):
+        raise ValueError("B8 permits exactly one attempt per planned call")
+    if any(row.get("arm") == "transfer" and row.get("transfer_contract") != "deterministic_no_teacher" for row in rows):
+        raise ValueError("teacher-derived transfer is forbidden in local-only execution")
+    if any(row.get("arm") != "transfer" and row.get("transfer_contract") is not None for row in rows):
+        raise ValueError("unexpected transfer contract outside transfer arm")
+    totals = {
+        "total_calls": len(rows),
+        "prompt_tokens": sum(row["estimated_prompt_tokens"] for row in rows),
+        "wall_seconds": sum(row["projected_wall_seconds"] for row in rows),
+    }
+    for key, actual in totals.items():
+        if actual > protocol["ceilings"][key]:
+            raise ValueError(f"local-only schedule exceeds {key}: {actual}")
+
+
+def local_only_schedule_summary(protocol: Mapping, full_rows: Sequence[Mapping], rows: Sequence[Mapping]) -> dict:
+    validate_schedule(protocol, full_rows)
+    validate_local_only_schedule(protocol, rows)
+    return {
+        "schema": "uzh-rsd.b8-local-only-schedule/v1",
+        "stage": "frozen_before_local_inference",
+        "derivation": "student matched_direct + student controls + deterministic_no_teacher transfer",
+        "base_schedule_sha256": canonical_sha256(list(full_rows)),
+        "schedule_sha256": canonical_sha256(list(rows)),
+        "calls": len(rows),
+        "estimated_prompt_tokens": sum(row["estimated_prompt_tokens"] for row in rows),
+        "projected_wall_seconds": sum(row["projected_wall_seconds"] for row in rows),
+        "ceilings": protocol["ceilings"],
+        "by_arm": dict(sorted(Counter(row["arm"] for row in rows).items())),
+        "by_representation": dict(sorted(Counter(row["representation"] for row in rows).items())),
+        "excluded_calls": len(full_rows) - len(rows),
+        "teacher_status": "NOT RUN — AUTHORIZATION/PROVIDER",
+        "model_calls_performed": 0,
+    }
+
+
 def _preflight_authority(protocol: Mapping, rows: Sequence[Mapping], authorization: Mapping,
                          student_identity: Mapping | None, teacher_identity: Mapping | None) -> None:
     if not authorization.get("approved") or not authorization.get("amends_execution_authorized"):
@@ -431,6 +491,36 @@ def run_bounded(protocol: Mapping, rows: Sequence[Mapping], ledger_path: Path,
     """Execute a frozen plan through an injected callable; no provider client exists here."""
     validate_schedule(protocol, rows)
     _preflight_authority(protocol, rows, authorization, student_identity, teacher_identity)
+    return _execute_bounded(protocol, rows, ledger_path, call_fn, clock=clock)
+
+
+def run_bounded_local_only(protocol: Mapping, rows: Sequence[Mapping], ledger_path: Path,
+                           call_fn: Callable[[Mapping], Mapping], *, authorization: Mapping,
+                           student_identity: Mapping | None = None,
+                           clock: Callable[[], float] = time.monotonic) -> dict:
+    """Execute only the coordinator-approved local-only derivative."""
+    validate_local_only_schedule(protocol, rows)
+    if not authorization.get("approved") or not authorization.get("amends_execution_authorized"):
+        raise PermissionError("B8 local-only execution requires an approved amendment")
+    if authorization.get("scope") != "local_only_derived" or not authorization.get("source_message_id"):
+        raise PermissionError("B8 local-only authorization scope/provenance is missing")
+    if authorization.get("protocol_sha256") != canonical_sha256(protocol):
+        raise PermissionError("authorization is not bound to this protocol")
+    if authorization.get("schedule_sha256") != canonical_sha256(list(rows)):
+        raise PermissionError("authorization is not bound to this local-only schedule")
+    if student_identity is None:
+        raise PermissionError("student identity proof is required")
+    for key, expected in REQUIRED_STUDENT.items():
+        if student_identity.get(key) != expected:
+            raise PermissionError(f"student identity mismatch: {key}")
+    if student_identity.get("attested") is not True:
+        raise PermissionError("student identity must come from a local attestation")
+    return _execute_bounded(protocol, rows, ledger_path, call_fn, clock=clock)
+
+
+def _execute_bounded(protocol: Mapping, rows: Sequence[Mapping], ledger_path: Path,
+                     call_fn: Callable[[Mapping], Mapping], *,
+                     clock: Callable[[], float]) -> dict:
     if ledger_path.exists():
         raise FileExistsError(ledger_path)
     ledger_path.parent.mkdir(parents=True, exist_ok=True)
@@ -462,6 +552,8 @@ def run_bounded(protocol: Mapping, rows: Sequence[Mapping], ledger_path: Path,
             except Exception as exc:  # preserve the single failed attempt, then stop
                 response = {}
                 error = f"{type(exc).__name__}: {exc}"
+            if error is None and response.get("error"):
+                error = str(response["error"])
             latency = clock() - call_started
             raw_output = response.get("raw_output", "")
             inverse = {token: relation for relation, token in row["label_map"].items()}
@@ -485,6 +577,9 @@ def run_bounded(protocol: Mapping, rows: Sequence[Mapping], ledger_path: Path,
                 "expected_relation": row["expected_relation"],
                 "raw_output": raw_output,
                 "raw_output_sha256": hashlib.sha256(raw_output.encode("utf-8")).hexdigest(),
+                "backend_response": response.get("backend_response"),
+                "backend_response_sha256": canonical_sha256(response.get("backend_response")),
+                "http_status": response.get("http_status"),
                 "label": label,
                 "valid": label is not None,
                 "usage": response.get("usage", {}),
@@ -497,9 +592,12 @@ def run_bounded(protocol: Mapping, rows: Sequence[Mapping], ledger_path: Path,
             calls, prompt_tokens = projected_calls, projected_tokens
             if error is not None:
                 raise RuntimeError(f"model call failed after ledger capture: {error}")
+    ledger_rows = _jsonl(ledger_path)
     return {
         "calls": calls,
         "estimated_prompt_tokens": prompt_tokens,
+        "reported_prompt_tokens": sum(row.get("usage", {}).get("prompt_tokens", 0) or 0 for row in ledger_rows),
+        "reported_completion_tokens": sum(row.get("usage", {}).get("completion_tokens", 0) or 0 for row in ledger_rows),
         "wall_seconds": clock() - started,
         "ledger_sha256": sha256(ledger_path),
     }
@@ -627,6 +725,10 @@ def main(argv=None) -> int:
     schedule.add_argument("--package", type=Path, required=True)
     schedule.add_argument("--out", type=Path)
     schedule.add_argument("--ledger", type=Path)
+    local_schedule = sub.add_parser("local-schedule")
+    local_schedule.add_argument("--package", type=Path, required=True)
+    local_schedule.add_argument("--out", type=Path, required=True)
+    local_schedule.add_argument("--ledger", type=Path, required=True)
     evaluate = sub.add_parser("evaluate")
     evaluate.add_argument("--package", type=Path, required=True)
     evaluate.add_argument("--ledger", type=Path, required=True)
@@ -644,6 +746,12 @@ def main(argv=None) -> int:
                 _write_jsonl(args.ledger, rows)
             if args.out:
                 _write_json(args.out, result)
+        elif args.command == "local-schedule":
+            full_rows = build_schedule(protocol, cases)
+            rows = derive_local_only_schedule(protocol, full_rows)
+            result = local_only_schedule_summary(protocol, full_rows, rows)
+            _write_jsonl(args.ledger, rows)
+            _write_json(args.out, result)
         else:
             result = evaluate_rows(protocol, _jsonl(args.ledger))
             _write_json(args.out, result)

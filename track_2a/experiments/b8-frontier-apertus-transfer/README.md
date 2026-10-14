@@ -1,6 +1,14 @@
 # B8 frontier-to-Apertus transfer package
 
-Status: **frozen pre-inference design; no model calls performed**.
+Status: **frozen design plus completed local-only execution erratum**.
+
+The original 504-call frontier-to-Apertus design remains frozen and was not
+executed because no teacher provider or immutable revision was authorized. A
+coordinator-approved append-only derivative executed 234 unchanged local
+Apertus rows (matched-direct R0-R3, declared student controls, and the
+deterministic/no-teacher transfer contract). See
+`local-only-q8-20261014/REPORT.md`; the transfer verdict is **INCONCLUSIVE** and
+teacher work is **NOT RUN — AUTHORIZATION/PROVIDER**.
 
 B8 tests whether evidence representation and a fixed decision contract transfer
 from a development-time frontier teacher to local Apertus. It does not claim an

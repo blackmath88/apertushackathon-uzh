@@ -1,0 +1,165 @@
+{
+  "schema": "uzh-rsd.b8-evaluation/v1",
+  "verdict": "INCONCLUSIVE",
+  "claims": {
+    "apertus_transfer": "INCONCLUSIVE",
+    "official_benchmark_gain": "NOT_MEASURED"
+  },
+  "checks": {
+    "complete_primary_arms": false,
+    "transfer_delta_vs_unchanged": null,
+    "transfer_delta_vs_deterministic": null,
+    "label_stability": 0.8888888888888888,
+    "passage_order_stability": 0.7222222222222222,
+    "source_sensitivity": 0.0,
+    "valid_rate": null,
+    "worst_family_delta": null
+  },
+  "family_deltas": {},
+  "metrics": [
+    {
+      "model_role": "student",
+      "arm": "control",
+      "representation": "R1",
+      "condition": "counterpart_shuffled",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.16666666666666666,
+      "valid_rate": 0.4444444444444444,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "control",
+      "representation": "R1",
+      "condition": "labels_permuted",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.6666666666666666,
+      "valid_rate": 1.0,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "control",
+      "representation": "R1",
+      "condition": "passage_reversed",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.6666666666666666,
+      "valid_rate": 0.9444444444444444,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "control",
+      "representation": "R1",
+      "condition": "source_ablated",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.0,
+      "valid_rate": 0.3333333333333333,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "control",
+      "representation": "R2",
+      "condition": "counterpart_shuffled",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.6111111111111112,
+      "valid_rate": 0.8888888888888888,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "control",
+      "representation": "R2",
+      "condition": "labels_permuted",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.8333333333333334,
+      "valid_rate": 1.0,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "control",
+      "representation": "R2",
+      "condition": "passage_reversed",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.5555555555555556,
+      "valid_rate": 1.0,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "control",
+      "representation": "R2",
+      "condition": "source_ablated",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.0,
+      "valid_rate": 0.5,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "matched_direct",
+      "representation": "R0",
+      "condition": "direct",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.3333333333333333,
+      "valid_rate": 0.5,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "matched_direct",
+      "representation": "R1",
+      "condition": "direct",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.6111111111111112,
+      "valid_rate": 0.8333333333333334,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "matched_direct",
+      "representation": "R2",
+      "condition": "direct",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.7222222222222222,
+      "valid_rate": 0.8888888888888888,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "matched_direct",
+      "representation": "R3",
+      "condition": "direct",
+      "transfer_contract": null,
+      "count": 18,
+      "accuracy": 0.6666666666666666,
+      "valid_rate": 0.8333333333333334,
+      "abstention_rate": 0.0
+    },
+    {
+      "model_role": "student",
+      "arm": "transfer",
+      "representation": "R2",
+      "condition": "direct",
+      "transfer_contract": "deterministic_no_teacher",
+      "count": 18,
+      "accuracy": 0.7777777777777778,
+      "valid_rate": 1.0,
+      "abstention_rate": 0.0
+    }
+  ],
+  "ledger_rows": 234
+}

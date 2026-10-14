@@ -1,0 +1,37 @@
+{
+  "schema": "uzh-rsd.b8-local-postflight/v1",
+  "captured_at": "2026-10-14T08:01:38+02:00",
+  "execution": {
+    "calls": 234,
+    "failures": 0,
+    "estimated_prompt_tokens": 31122,
+    "reported_prompt_tokens": 24601,
+    "reported_completion_tokens": 468,
+    "wall_seconds": 75.43712814200012,
+    "ledger_sha256": "ddd47339d4394cd28c0d2799579f5e7d14731f37ad5901e97a0d3b3c0df33c83",
+    "server_log_sha256_before_stop": "3977dacb470e0fc25adc0d0f3ad4285b793659fad3f1ad62bac41b3e257a3abd",
+    "server_log_sha256_final": "e27b8e410c3f9d2f3725c61f53bf90c4a94a2401224687741cc051b422bdfa7c"
+  },
+  "owned_server": {
+    "pid": 37328,
+    "proc_start_ticks": 129984,
+    "identity_rechecked_before_stop": true,
+    "health_after_calls": {"status": "ok"},
+    "stopped_via_owned_exec_session": 25846,
+    "pid_exited": true,
+    "port_11436_after": "closed"
+  },
+  "morrow_after": {
+    "pid": 1240,
+    "proc_start_ticks": 8199,
+    "endpoint": "http://127.0.0.1:11435",
+    "health": {"status": "ok"},
+    "port_listening": true,
+    "audit_bytes": 226985,
+    "audit_mtime_epoch": 1791300964,
+    "audit_sha256": "ccb4f592dff43df8553460262cec2ec14f1e864e2c1a29271ee0ad77f2c43ab2",
+    "unchanged_from_preflight": true,
+    "signalled": false,
+    "mutated": false
+  }
+}

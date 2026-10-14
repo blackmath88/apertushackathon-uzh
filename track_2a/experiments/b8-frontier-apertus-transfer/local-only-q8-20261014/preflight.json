@@ -1,0 +1,27 @@
+{
+  "schema": "uzh-rsd.b8-local-preflight/v1",
+  "captured_at": "2026-10-14T07:58:11+02:00",
+  "freeze_valid": true,
+  "focused_tests": "22 passed",
+  "port_11436_before": "closed",
+  "schedule": {
+    "calls": 234,
+    "estimated_prompt_tokens": 31122,
+    "projected_wall_seconds": 936,
+    "canonical_sha256": "61bea1f9c939a07b114dbfe8fdf11197cc47d62a3be61f1b7725b4e9b44bf45d",
+    "file_sha256": "51f18468766195d04ff7a8c168f8cc2d86eb602b38d026457d2c54d3ce7002ca"
+  },
+  "teacher_status": "NOT RUN — AUTHORIZATION/PROVIDER",
+  "morrow_before": {
+    "pid": 1240,
+    "proc_start_ticks": 8199,
+    "executable": "/home/achim/.local/lib/morrow/llama.cpp/bin/llama-server",
+    "endpoint": "http://127.0.0.1:11435",
+    "health": {"status": "ok"},
+    "cmdline": "/home/achim/.local/lib/morrow/llama.cpp/bin/llama-server --model /home/achim/.local/share/morrow/models/Qwen3-14B-Q4_K_M.gguf --alias qwen3-14b-q4_k_m --host 127.0.0.1 --port 11435 --ctx-size 32768 --parallel 1 --n-gpu-layers 99 --device SYCL0 --flash-attn on --cache-ram 512 --reasoning off --reasoning-budget 0 --no-ui",
+    "audit_path": "/home/achim/.local/state/morrow/audit.jsonl",
+    "audit_bytes": 226985,
+    "audit_mtime_epoch": 1791300964,
+    "audit_sha256": "ccb4f592dff43df8553460262cec2ec14f1e864e2c1a29271ee0ad77f2c43ab2"
+  }
+}

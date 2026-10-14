@@ -9,10 +9,13 @@ from uzh_rsd.b8 import (
     attest_student,
     build_schedule,
     canonical_sha256,
+    derive_local_only_schedule,
     evaluate_rows,
+    local_only_schedule_summary,
     load_package,
     representation,
     run_bounded,
+    run_bounded_local_only,
     schedule_summary,
     validate_package,
     validate_representation,
@@ -73,6 +76,18 @@ class B8Tests(unittest.TestCase):
         direct_prompts = {row["case_id"]: row["prompt"]["user"] for row in rows
                           if row["model_role"] == "student" and row["arm"] == "matched_direct" and row["representation"] == "R1"}
         self.assertTrue(all(row["prompt"]["user"] != direct_prompts[row["case_id"]] for row in shuffled if row["representation"] == "R1"))
+
+    def test_local_only_erratum_is_exact_prompt_preserving_subset(self):
+        full = build_schedule(self.protocol, self.cases)
+        local = derive_local_only_schedule(self.protocol, full)
+        summary = local_only_schedule_summary(self.protocol, full, local)
+        self.assertEqual(summary["calls"], 234)
+        self.assertEqual(summary["by_arm"], {"control": 144, "matched_direct": 72, "transfer": 18})
+        self.assertEqual(summary["teacher_status"], "NOT RUN — AUTHORIZATION/PROVIDER")
+        full_by_id = {row["call_id"]: row for row in full}
+        self.assertTrue(all(row == full_by_id[row["call_id"]] for row in local))
+        self.assertTrue(all(row["model_role"] == "student" for row in local))
+        self.assertFalse(any(row.get("transfer_contract") == "teacher_generic" for row in local))
 
     def test_runner_rejects_authority_and_identity_before_callback(self):
         rows = build_schedule(self.protocol, self.cases)
@@ -146,6 +161,27 @@ class B8Tests(unittest.TestCase):
         result = evaluate_rows(self.protocol, partial)
         self.assertEqual(result["verdict"], "INCONCLUSIVE")
         self.assertEqual(result["claims"]["official_benchmark_gain"], "NOT_MEASURED")
+
+    def test_local_only_runner_requires_scoped_provenance(self):
+        rows = derive_local_only_schedule(self.protocol, build_schedule(self.protocol, self.cases))
+        student = {**REQUIRED_STUDENT, "attested": True}
+        authorization = {
+            "approved": True,
+            "amends_execution_authorized": True,
+            "scope": "local_only_derived",
+            "protocol_sha256": canonical_sha256(self.protocol),
+            "schedule_sha256": canonical_sha256(rows),
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(PermissionError):
+                run_bounded_local_only(self.protocol, rows, Path(tmp) / "ledger.jsonl", lambda row: {},
+                                       authorization=authorization, student_identity=student)
+            authorization["source_message_id"] = "test-amendment"
+            bad_rows = deepcopy(rows)
+            bad_rows[0]["prompt"]["user"] += "changed"
+            with self.assertRaisesRegex(PermissionError, "schedule"):
+                run_bounded_local_only(self.protocol, bad_rows, Path(tmp) / "changed.jsonl", lambda row: {},
+                                       authorization=authorization, student_identity=student)
 
     def test_frozen_manifest_records_case_and_family_hashes(self):
         manifest = json.loads((PACKAGE / "freeze-manifest.json").read_text(encoding="utf-8"))
