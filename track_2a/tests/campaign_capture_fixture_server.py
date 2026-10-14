@@ -12,8 +12,11 @@ fetch = lambda url, _p, **_k: FetchResponse(200, url, {"Content-Type": "text/htm
 root = tempfile.mkdtemp(); store = Store(root, capture_fetcher=fetch); store.capture_fixture = True; store.capture_delay = 0
 c = store.create("Capture fixture", site_ids=["bfe"])
 langs = {"de": [{"url": DE}], "fr": [{"url": FR}], "it": [], "en": []}
-snap = {"id": "a" * 32, "site_id": "bfe", "observed_at": "2026-10-14T00:00:00+00:00", "families": [{"family_id": "fam1", "status": "one_directional",
-        "languages": langs, "edges": [], "language_availability": {k: "observed" if v else "not_observed" for k, v in langs.items()}}]}
+snap = {"id": "a" * 32, "site_id": "bfe", "observed_at": "2026-10-14T00:00:00+00:00",
+        "candidates": [{"url": DE, "state": "fetched"}, {"url": FR, "state": "fetched"}],
+        "families": [{"family_id": "fam1", "status": "one_directional",
+        "languages": langs, "unknown_language": [], "edges": [], "contradictions": [],
+        "language_availability": {k: "observed" if v else "not_observed" for k, v in langs.items()}}]}
 (Path(root) / ("snapshot-" + snap["id"] + ".json")).write_text(json.dumps(snap))
 d = store.read(c["id"]); d["discovery_runs"] = [{"id": "r", "state": "complete", "snapshot_id": snap["id"], "site_id": "bfe", "started_at": "2026-10-14T00:00:00+00:00", "stop_reason": "completed", "summary": {"families": 1, "candidates": 2, "unvisited": 0}, "progress": {}}]; store.write(d)
 store.page_scope(c["id"], [{"snapshot_id": snap["id"], "family_id": "fam1"}])
