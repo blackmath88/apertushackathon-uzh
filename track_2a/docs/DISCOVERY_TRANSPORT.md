@@ -21,3 +21,13 @@ Tests: `PYTHONPATH=src python3 -m unittest tests.test_discovery_transport`.
 Campaign flow (`campaign_center.py`, Scope tab): preview (no network) → explicit start (`confirm: true`) → progress persisted on the run → selectable families → `scope.page_families` saved and reloaded. Only reviewed profiles are eligible (currently `bfe` → `bfe-federal`); with no injected transport, start is recorded as `blocked: live_discovery_not_authorised` (BFE restriction preserved). Interrupted runs are marked on restart, never resumed.
 
 Not done: desktop/mobile browser run (Playwright not installed here; UI script syntax-checked only); no live observation.
+
+## Evidence captures (issue #36)
+
+`captures.py` turns a saved page family plus a reviewer-certified pairing into a federal_desk bundle with an additive, sealed `capture_evidence` block (schema `lost-in-switzerland/capture-evidence/v1`; old bundles/campaigns lack it and stay valid). Requests use only the #34 guarded transport for reviewed profiles; blockers (checked before any request): unsupported site/host, contradictory family, language not exactly one observed URL, uncertified pair, no recorded content-use permission for non-fixture capture.
+
+Per side: requested/final URL, redirects, status, kept headers, retrieved time, raw sha256/content address (bodies stored once under `raw/sha256/..`), a distinct `retrieval_id`, permission provenance. Extraction records revision, config, offset basis and a completeness check (visible content-region words vs extracted words). Unmatched content => `partial` => `omission_confirmation.allowed=false`, and `federal_desk.review` refuses to confirm LEFT_ONLY/RIGHT_ONLY candidates; extraction failure yields no bundle but keeps the evidence. Pairing stays `CANDIDATE` with family uncertainty. Links separate `live_original` (may have changed) from `captured_evidence`.
+
+Campaign: `Store.capture` / `Store.preparation` and POST `/capture`, GET `/preparation`; without an injected transport capture is recorded as `live_capture_not_authorised`.
+
+Not done: browser UI controls for capture/preparation (API only); no live capture; no desktop/mobile browser run.

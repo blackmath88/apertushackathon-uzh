@@ -186,6 +186,9 @@ def review(bundle, drafts):
         seen.add(c["id"])
         if not entry.get("reviewer", "").strip() or not entry.get("reason", "").strip():
             raise ValueError("reviewer and reason required")
+        gate = bundle.get("capture_evidence", {}).get("omission_confirmation")
+        if entry["state"] == "confirmed" and c["absence_needs_full_source_review"] and gate and not gate["allowed"]:
+            raise ValueError("omission confirmation blocked: extraction incomplete (" + ", ".join(gate["blockers"]) + ")")
         if entry["state"] == "confirmed" and (c["evidence"] != "located" or
                 (c["absence_needs_full_source_review"] and entry.get("full_source_checked") is not True)):
             raise ValueError("confirmation requires located evidence and full-source omission review")

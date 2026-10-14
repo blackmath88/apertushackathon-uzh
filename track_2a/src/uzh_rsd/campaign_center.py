@@ -11,7 +11,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
-from . import discovery
+from . import captures, discovery
 from . import federal_desk as desk
 from . import federal_inventory as inventory
 
@@ -21,7 +21,7 @@ def now():
 
 
 class Store:
-    def __init__(self, root, inference=None, discovery_fetcher=None):
+    def __init__(self, root, inference=None, discovery_fetcher=None, capture_fetcher=None):
         self.root = Path(root); self.root.mkdir(parents=True, exist_ok=True)
         self.lease = (self.root / 'owner.lock').open('a')
         try:
@@ -30,7 +30,7 @@ class Store:
             self.lease.close(); raise
         self.lock = threading.RLock(); self.inference = inference
         # No fetcher means no live discovery: reviewed-profile network use needs explicit authorisation.
-        self.discovery_fetcher = discovery_fetcher; self.threads = []
+        self.discovery_fetcher = discovery_fetcher; self.capture_fetcher = capture_fetcher; self.capture_fixture = False; self.capture_delay = 2.0; self.threads = []
         self.guard = self.root / 'unsettled-attempt.json'
         self.batch_guard = self.root / 'active-batch.json'
         # A process restart never silently retries an interrupted model request.
@@ -163,6 +163,49 @@ class Store:
             c['scope']['page_families'] = saved
             self.event(c, 'Page-family scope saved: ' + str(len(saved)) + ' families; no capture started')
             self.write(c); return c
+
+    # --- captures (#36): selected family + certified pairing -> evidence bundle -> existing review flow ---
+    def capture(self, cid, snapshot_id, family_id, pairing):
+        if not isinstance(pairing, dict): raise ValueError('Pairing certification is required')
+        with self.lock:
+            c = self.read(cid)
+            if not any(f['snapshot_id'] == snapshot_id and f['family_id'] == family_id for f in c['scope'].get('page_families', [])):
+                raise ValueError('Page family is not in the saved campaign scope')
+            snap = self.snapshot(cid, snapshot_id)
+            if self.capture_fetcher is None and not self.capture_fixture:
+                result = captures._blocked(['live_capture_not_authorised'], family_id=family_id, snapshot_id=snapshot_id, site_id=snap['site_id'])
+            else:
+                result = captures.capture_family(snap, family_id, pairing, fetcher=self.capture_fetcher, raw_dir=self.root / 'raw',
+                                                 fixture=self.capture_fixture, delay_seconds=self.capture_delay)
+            record = {'id': uuid.uuid4().hex, 'at': now(), 'snapshot_id': snapshot_id, 'family_id': family_id, 'status': result['status'],
+                      'blockers': result['blockers'], 'requests': result['requests'], 'pair_id': None,
+                      'evidence': result.get('evidence'), 'model_calls': 0}
+            if result['status'] == 'captured':
+                b = result['bundle']
+                if any(p['bundle']['digest'] == b['digest'] for p in c['pairs']): raise ValueError('This capture already belongs to the campaign')
+                if len(c['pairs']) >= 20: raise ValueError('Campaign limit: 20 page pairs')
+                pid = uuid.uuid4().hex
+                c['pairs'].append({'id': pid, 'title': 'Captured family ' + family_id, 'bundle': b, 'status': 'ready', 'review': None})
+                record['pair_id'] = pid
+            c.setdefault('captures', []).append(record)
+            self.event(c, 'Capture ' + result['status'] + ': family ' + family_id + '; zero model calls'); self.write(c)
+            return record
+
+    def preparation(self, cid):
+        """Per saved family: state, blockers, completeness and the two kinds of links (live vs captured)."""
+        with self.lock:
+            c = self.read(cid); out = []
+            for f in c['scope'].get('page_families', []):
+                last = next((r for r in reversed(c.get('captures', [])) if r['family_id'] == f['family_id'] and r['snapshot_id'] == f['snapshot_id']), None)
+                ev = (last or {}).get('evidence') or {}
+                out.append({**f, 'capture_status': last['status'] if last else 'not_captured', 'blockers': last['blockers'] if last else [],
+                            'pair_id': last['pair_id'] if last else None,
+                            'omission_confirmation': ev.get('omission_confirmation'),
+                            'live_originals': {k: v['live_original'] for k, v in ev.get('links', {}).items()},
+                            'captured_evidence': {k: {'content_address': v['captured_evidence'], 'retrieved_at_utc': v['retrieved_at_utc']}
+                                                  for k, v in ev.get('links', {}).items()},
+                            'completeness': {k: v.get('completeness') for k, v in ev.get('extraction', {}).items()}})
+            return out
 
     def pair(self, c, pid):
         return next(p for p in c['pairs'] if p['id'] == pid)
@@ -312,6 +355,8 @@ def handler(store, token):
                                       'inference_enabled':bool(store.inference), 'unsettled':store.guard.exists() or store.batch_guard.exists()})
                 match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/snapshots/([a-f0-9]{32})',path)
                 if match: return self.send(store.snapshot(match[1],match[2]))
+                match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/preparation',path)
+                if match: return self.send({'families':store.preparation(match[1])})
                 match=re.fullmatch('/desk/([a-f0-9]{32})/([a-f0-9]{32})',path)
                 if match:
                     with store.lock:
@@ -335,7 +380,7 @@ addEventListener('message',e=>{if(e.origin===location.origin&&e.source===parent&
                 data=json.loads(self.rfile.read(length))
                 if not isinstance(data,dict): raise ValueError('Request must be a JSON object')
                 if self.path=='/api/campaigns': return self.send(store.create(data['name'],data.get('demo') is True,data.get('site_ids')),201)
-                match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/(pairs|run|review|scope|batch|pattern|discovery-preview|discovery-start|page-scope)',self.path)
+                match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/(pairs|run|review|scope|batch|pattern|discovery-preview|discovery-start|page-scope|capture)',self.path)
                 if not match: return self.send({'error':'Not found'},404)
                 cid,action=match.groups()
                 if action=='pairs': result=store.add(cid,data)
@@ -344,6 +389,7 @@ addEventListener('message',e=>{if(e.origin===location.origin&&e.source===parent&
                 elif action=='discovery-preview': result=store.discovery_preview(cid,data['site_id'])
                 elif action=='discovery-start': result=store.discovery_start(cid,data['site_id'],data.get('confirm'))
                 elif action=='page-scope': result=store.page_scope(cid,data['families'])
+                elif action=='capture': result=store.capture(cid,data['snapshot_id'],data['family_id'],data.get('pairing'))
                 elif action=='batch': result=store.batch(cid,data['pairs'])
                 elif action=='pattern': result=store.pattern(cid,data)
                 else: result=store.review(cid,data['pair'],data['draft'])
