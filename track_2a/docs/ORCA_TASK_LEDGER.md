@@ -102,3 +102,23 @@ Coordinator: Claude Code desktop session (requested Opus 5.5), applying `orchest
 | E-6 | Plan accuracy (unpinned test files, route discriminator, submission default), `verify_run` and source robustness | done | `7a38bb3`: s1-check 120 OK / 0 skips; Docker e2e 13/13 at `7a38bb3` (prediction sha256 `c9e635cd…`/`e7c109dc…`/`0018c5c8…`, identical to `ef50e10`); frozen diff vs `3966e86` empty |
 
 Review: self-review only, covering code head `7a38bb3` and the docs-only head that adds this line. The independent gate stays open (no eligible read-only, credential-isolated route). PR #12 body is replaced after this commit, with `isDraft` read back. Workers: none started by this pass. Scratch worktree `e2e`, its synthetic `final_runs/e2e-*` output (gitignored) and the local branch are removed after push.
+
+---
+
+# Discovery delivery — 14 Oct 2026, 21:58 CEST (30-minute ceiling)
+
+Coordinator: Codex desktop session using the installed `route-orca-work` and Orca's version-matched orchestration guide. Exact base `2f1f9c0775273531cb89cde63b2702b6720de85e`; isolated Orca worktree/branch `blackmath88/federal-discovery-34-36-20261014`; draft PR #39 targets `feat/federal-evidence-desk-20261014`. Observatory was absent. `.weavr/staged/intake.json` remained staged-not-applied and no Mission, Need, baseline, deployment or merge state was changed.
+
+| Task | Route / settlement | Commit | Evidence | Remaining gate |
+|---|---|---|---|---|
+| #34 guarded Scout | Orca worker, local Claude subscription; first Codex start failed before task execution with `agent-update-prompt`, was positively released, then retried; settled/reused | `3e3cadf` | request ledger, pacing, pinned addresses, typed purposes, budgets/frontier; focused regression included in 84-pass suite | SQLite ResourceWarnings |
+| #35 selectable inventory | same settled Orca terminal, serialized after #34 | `64e46fc` | fixture sitemap/index/gzip/feed/navigation and four-language family tests; persistent campaign scope | no authorised live observation |
+| #36 capture backend | same terminal, serialized after #35 | `7345835` | content-addressed fixture capture, distinct retrieval provenance, completeness/omission gates | no authorised live capture |
+| #36 UI repair | one focused follow-up on same terminal; settled and released | `3ea4170` | preparation UI + authored browser fixture/script | standalone Playwright script not executed locally |
+| Browser fixture correction | coordinator | `05e3379` | fixed missing discovery fields found by embedded-browser review; desktop/mobile showed no overflow or console error | final capture click re-observation interrupted by Orca browser connection drops |
+
+Route decision: Nebuchdnezzar was unreachable, so its baseline/resource state remained unverifiable and no work was placed there. No local/Mistral account or harness was configured. The worker therefore used the existing local Claude subscription account; effective model was not read back. Product/model API calls and new paid spend were zero. No upstream dependency was adopted, so Protego/Scrapy/Courlan code and licences were not imported.
+
+Verification: 84 focused tests pass under cached Python 3.13. Full discovery found 205 tests: 204 passed, 13 skipped and one environment error because `huggingface_hub` is absent. Node syntax checks passed. Browser evidence is authored-fixture-only; live-observed federal results remain none. Worker review and coordinator review are self-review; no permission-enforced independent read-only route was available.
+
+Next action: run the authored Playwright browser check where Playwright is already installed, resolve SQLite connection warnings, obtain independent review of exact commit `05e3379`, then consider a separately authorised live check only for an eligible reviewed profile. Issues #37 and #38 remain untouched.
