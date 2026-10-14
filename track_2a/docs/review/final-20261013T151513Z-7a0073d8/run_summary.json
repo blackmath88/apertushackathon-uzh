@@ -1,0 +1,29 @@
+{
+  "run_id": "final-20261013T151513Z-7a0073d8",
+  "job_id": "6ace4b04c66288145222d55c",
+  "terminal_stage": "ERROR (exit code 4 = incomplete run, by design)",
+  "private_storage": [
+    "hf dataset metamax88/uzh-rsd-runs runs/final-20261013T151513Z-7a0073d8/ (private)",
+    "owner machine outside version control"
+  ],
+  "raw_jsonl_sha256": "f952c399d402a6a0c3a8ffd1eaa9306420a670fe996a29ab45c7e51b137f6eed",
+  "launch": {
+    "bundle_sha256": "7a0073d8e538d205ca52724ddb0a6a5a62e80a3402888140b36e5f6b6168c579",
+    "timeout_min": 108,
+    "max_usd": 3.3,
+    "committed_usd": 0.75,
+    "usd_per_min": 0.03,
+    "source_commit": "a0d3476d19cb859488789da850d8d5a40afb113c",
+    "model": "swiss-ai/Apertus-v1.5-8B",
+    "revision": "a411d838600baf0e3635a3daf66fb7c55fc97bb6",
+    "documents": 168,
+    "per_language": {
+      "de": 56,
+      "fr": 56,
+      "it": 56
+    },
+    "input_sha256": "7db64ddca34c04f5301b3a3454e16f8d81615b327d448bdf134c82963012b7c8",
+    "contract_sha256": "c37eaaee030018500e2ce5eef7b88db4b445c8ed330df36f1a6e4153ebb415ba"
+  },
+  "not_committed": "raw.jsonl (contains test texts and model outputs) and the prepared input"
+}

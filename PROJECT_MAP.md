@@ -15,7 +15,7 @@ There is not yet one integrated application-and-experiments checkout. These are 
 
 ## What the cleanup preserves
 
-The research integration tree starts from B8 at `4cb217650d3b4b45bc56f6d040851ccd346b19d5`. It adds only 16 existing documentation blobs, unchanged, from #31, #18 and #23, plus this index. Its additional commit parents preserve all three source histories. No source code, model output, frozen manifest or experimental result is edited.
+The research integration tree starts from B8 at `4cb217650d3b4b45bc56f6d040851ccd346b19d5`. It adds only 16 existing documentation blobs, unchanged, from #31, #18 and #23, plus this index. Its additional commit parents preserve all three source histories. No source code, model output, frozen manifest or experimental result is edited. A follow-up reconciles the append-only task ledger with the latest foundation, retaining both additions verbatim, and brings the other foundation documentation/status blobs across unchanged.
 
 App #32 already contains all commits from #13, #20 and #21. Its PR base can move to the foundation without changing its branch. Those three predecessor PRs can close as superseded; their branches stay available.
 
@@ -25,7 +25,7 @@ The running baseline's branch #27 and all original branches remain unchanged. No
 
 ## Integration order and remaining work
 
-1. Resolve the foundation #12's documented submission/reproducibility and review gates before merging to main. Its current head contains one later commit absent from the other stacks. Do not drop it or overwrite its audit history.
+1. Resolve the foundation #12's documented submission/reproducibility and review gates before merging to main. The research integration now also retains the foundation's later audit commit. The app stacks still predate it; preserve it during integration.
 2. Review the federal app and research integration independently against that foundation. The consolidation itself is checked by commit ancestry and blob identity; it is not a fresh execution of all experiments.
 3. When combining app and research code, reconcile their separate edits to `track_2a/Makefile`, then run combined offline gates. Preserve baseline prompts, predictions and frozen experimental evidence.
 4. Keep #22 separate until the federal/Zürich bundle-contract migration is explicitly implemented and tested. Retargeting does not resolve that product/schema difference.
