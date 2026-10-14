@@ -13,3 +13,11 @@
 Limits: fixture-tested only; no live crawl; Protego/Scrapy/Courlan not adopted (stdlib `robotparser` retained); sitemap/feed purposes are transport-capable but Scout does not expand sitemaps.
 
 Tests: `PYTHONPATH=src python3 -m unittest tests.test_discovery_transport`.
+
+## Discovery inventory (issue #35)
+
+`discovery.py` runs robots-declared sitemaps (index, `.xml.gz`, cycle/depth/count/size ceilings, DTD refused), feeds linked from seed pages, and seed-page navigation/hreflang, all through the #34 ledger. Output is a dated snapshot (`snapshot-<id>.json` in the campaign directory) with sources, candidate states (fetched/blocked/failed/excluded/observed_not_fetched), and page families over de/fr/it/en. A family only joins URLs explicitly linked by an observed source; edges keep direction and `declared_by`; statuses: `single_page`, `one_directional`, `reciprocal_declarations`, `contradictory`; `not_observed` is never absence or translation evidence.
+
+Campaign flow (`campaign_center.py`, Scope tab): preview (no network) → explicit start (`confirm: true`) → progress persisted on the run → selectable families → `scope.page_families` saved and reloaded. Only reviewed profiles are eligible (currently `bfe` → `bfe-federal`); with no injected transport, start is recorded as `blocked: live_discovery_not_authorised` (BFE restriction preserved). Interrupted runs are marked on restart, never resumed.
+
+Not done: desktop/mobile browser run (Playwright not installed here; UI script syntax-checked only); no live observation.

@@ -11,6 +11,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
+from . import discovery
 from . import federal_desk as desk
 from . import federal_inventory as inventory
 
@@ -20,7 +21,7 @@ def now():
 
 
 class Store:
-    def __init__(self, root, inference=None):
+    def __init__(self, root, inference=None, discovery_fetcher=None):
         self.root = Path(root); self.root.mkdir(parents=True, exist_ok=True)
         self.lease = (self.root / 'owner.lock').open('a')
         try:
@@ -28,6 +29,8 @@ class Store:
         except OSError:
             self.lease.close(); raise
         self.lock = threading.RLock(); self.inference = inference
+        # No fetcher means no live discovery: reviewed-profile network use needs explicit authorisation.
+        self.discovery_fetcher = discovery_fetcher; self.threads = []
         self.guard = self.root / 'unsettled-attempt.json'
         self.batch_guard = self.root / 'active-batch.json'
         # A process restart never silently retries an interrupted model request.
@@ -40,6 +43,9 @@ class Store:
             for batch in c.get('batches', []):
                 if batch['status'] == 'running':
                     batch['status'] = 'interrupted'; changed = True
+            for run in c.get('discovery_runs', []):
+                if run['state'] == 'running':
+                    run['state'] = 'interrupted'; run['finished_at'] = now(); changed = True
             if changed: self.write(c)
 
     def write(self, c):
@@ -79,8 +85,83 @@ class Store:
         selected = inventory.validate_selection(site_ids)
         with self.lock:
             c = self.read(cid)
+            kept = [f for f in c['scope'].get('page_families', []) if f['site_id'] in selected]
             c['scope'] = {'catalogue_version': inventory.VERSION, 'site_ids': selected}
+            if kept: c['scope']['page_families'] = kept
             self.event(c, 'Campaign scope saved: ' + str(len(selected)) + ' websites; no crawl started')
+            self.write(c); return c
+
+    # --- discovery (#35): preview -> explicit start -> progress -> selectable families -> saved scope ---
+    def _site(self, c, site_id):
+        if site_id not in c['scope']['site_ids']: raise ValueError('Site is not in this campaign scope')
+        return site_id
+
+    def discovery_preview(self, cid, site_id):
+        with self.lock:
+            return discovery.preview(self._site(self.read(cid), site_id))
+
+    def discovery_start(self, cid, site_id, confirm):
+        if confirm is not True: raise ValueError('Discovery starts only after explicit confirmation')
+        with self.lock:
+            c = self.read(cid); self._site(c, site_id)
+            plan = discovery.preview(site_id)
+            run = {'id': uuid.uuid4().hex, 'site_id': site_id, 'started_at': now(), 'progress': {}, 'snapshot_id': None, 'plan': plan}
+            if not plan['eligible']:
+                run.update(state='blocked', reason=plan['reason'], finished_at=now())
+            elif not self.discovery_fetcher:
+                run.update(state='blocked', reason='live_discovery_not_authorised', finished_at=now(),
+                           detail='No authorised transport is connected; BFE content restrictions are preserved. Nothing was requested.')
+            else:
+                run['state'] = 'running'
+            c.setdefault('discovery_runs', []).append(run)
+            self.event(c, 'Discovery ' + run['state'] + ': ' + site_id); self.write(c)
+            if run['state'] == 'running':
+                t = threading.Thread(target=self._discover, args=(cid, run['id'], site_id), daemon=True)
+                self.threads.append(t); t.start()
+            return run
+
+    def _update_run(self, cid, rid, **fields):
+        with self.lock:
+            c = self.read(cid)
+            run = next(r for r in c['discovery_runs'] if r['id'] == rid)
+            run.update(fields); c['updated_at'] = now(); self.write(c)
+
+    def _discover(self, cid, rid, site_id):
+        try:
+            snap = discovery.discover(site_id, fetcher=self.discovery_fetcher, delay_seconds=self.discovery_delay,
+                                      progress=lambda p: self._update_run(cid, rid, progress=p))
+            (self.root / ('snapshot-' + snap['id'] + '.json')).write_text(json.dumps(snap, ensure_ascii=False))
+            self._update_run(cid, rid, state='complete', snapshot_id=snap['id'], finished_at=now(),
+                             stop_reason=snap['stop_reason'], summary={'families': len(snap['families']),
+                             'candidates': len(snap['candidates']), 'unvisited': snap['unvisited_count']})
+        except Exception as exc:
+            self._update_run(cid, rid, state='failed', reason=type(exc).__name__, finished_at=now())
+
+    discovery_delay = 2.0
+
+    def snapshot(self, cid, sid):
+        if not re.fullmatch('[a-f0-9]{32}', sid): raise ValueError('Unknown snapshot')
+        with self.lock:
+            c = self.read(cid)
+            if not any(r.get('snapshot_id') == sid for r in c.get('discovery_runs', [])): raise ValueError('Unknown snapshot')
+            return json.loads((self.root / ('snapshot-' + sid + '.json')).read_text())
+
+    def page_scope(self, cid, selections):
+        if not isinstance(selections, list) or len(selections) > 500: raise ValueError('Select page families as a list')
+        saved = []
+        with self.lock:
+            c = self.read(cid)
+            for item in selections:
+                if not isinstance(item, dict): raise ValueError('Invalid page-family selection')
+                snap = self.snapshot(cid, item.get('snapshot_id', ''))
+                fam = next((f for f in snap['families'] if f['family_id'] == item.get('family_id')), None)
+                if not fam: raise ValueError('Unknown page family')
+                saved.append({'snapshot_id': snap['id'], 'site_id': snap['site_id'], 'family_id': fam['family_id'],
+                              'observed_at': snap['observed_at'], 'status': fam['status'],
+                              'language_availability': fam['language_availability']})
+            if len({(x['snapshot_id'], x['family_id']) for x in saved}) != len(saved): raise ValueError('Duplicate page family')
+            c['scope']['page_families'] = saved
+            self.event(c, 'Page-family scope saved: ' + str(len(saved)) + ' families; no capture started')
             self.write(c); return c
 
     def pair(self, c, pid):
@@ -229,6 +310,8 @@ def handler(store, token):
                 if path == '/api/campaigns':
                     return self.send({'campaigns':store.list(),'catalogue':inventory.inventory(),
                                       'inference_enabled':bool(store.inference), 'unsettled':store.guard.exists() or store.batch_guard.exists()})
+                match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/snapshots/([a-f0-9]{32})',path)
+                if match: return self.send(store.snapshot(match[1],match[2]))
                 match=re.fullmatch('/desk/([a-f0-9]{32})/([a-f0-9]{32})',path)
                 if match:
                     with store.lock:
@@ -252,12 +335,15 @@ addEventListener('message',e=>{if(e.origin===location.origin&&e.source===parent&
                 data=json.loads(self.rfile.read(length))
                 if not isinstance(data,dict): raise ValueError('Request must be a JSON object')
                 if self.path=='/api/campaigns': return self.send(store.create(data['name'],data.get('demo') is True,data.get('site_ids')),201)
-                match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/(pairs|run|review|scope|batch|pattern)',self.path)
+                match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/(pairs|run|review|scope|batch|pattern|discovery-preview|discovery-start|page-scope)',self.path)
                 if not match: return self.send({'error':'Not found'},404)
                 cid,action=match.groups()
                 if action=='pairs': result=store.add(cid,data)
                 elif action=='run': result=store.run(cid,data['pair'])
                 elif action=='scope': result=store.scope(cid,data['site_ids'])
+                elif action=='discovery-preview': result=store.discovery_preview(cid,data['site_id'])
+                elif action=='discovery-start': result=store.discovery_start(cid,data['site_id'],data.get('confirm'))
+                elif action=='page-scope': result=store.page_scope(cid,data['families'])
                 elif action=='batch': result=store.batch(cid,data['pairs'])
                 elif action=='pattern': result=store.pattern(cid,data)
                 else: result=store.review(cid,data['pair'],data['draft'])
