@@ -12,6 +12,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from . import federal_desk as desk
+from . import federal_inventory as inventory
 
 
 def now():
@@ -28,6 +29,7 @@ class Store:
             self.lease.close(); raise
         self.lock = threading.RLock(); self.inference = inference
         self.guard = self.root / 'unsettled-attempt.json'
+        self.batch_guard = self.root / 'active-batch.json'
         # A process restart never silently retries an interrupted model request.
         for path in self.root.glob('campaign-*.json'):
             c = json.loads(path.read_text())
@@ -35,6 +37,9 @@ class Store:
             for p in c['pairs']:
                 if p['status'] == 'running':
                     p['status'] = 'interrupted'; changed = True
+            for batch in c.get('batches', []):
+                if batch['status'] == 'running':
+                    batch['status'] = 'interrupted'; changed = True
             if changed: self.write(c)
 
     def write(self, c):
@@ -53,18 +58,29 @@ class Store:
     def event(self, c, message):
         c['events'].append({'at': now(), 'message': message}); c['updated_at'] = now()
 
-    def create(self, name, demonstration=False):
+    def create(self, name, demonstration=False, site_ids=None):
         if not isinstance(name, str) or not 1 <= len(name.strip()) <= 120: raise ValueError('Enter a campaign name (1–120 characters)')
+        selected = inventory.validate_selection([] if site_ids is None else site_ids)
         with self.lock:
             c = {'schema': 'lost-in-switzerland/campaign/v1', 'id': uuid.uuid4().hex,
-                 'name': name.strip(), 'created_at': now(), 'updated_at': now(), 'pairs': [], 'events': []}
+                 'name': name.strip(), 'created_at': now(), 'updated_at': now(), 'pairs': [], 'events': [],
+                 'scope': {'catalogue_version': inventory.VERSION, 'site_ids': selected}, 'batches': []}
             self.event(c, 'Campaign created')
             if demonstration:
+                c['scope']['site_ids'] = ['bfe']
                 path = self.root / ('fixture-' + c['id']); desk.demo(path)
                 b = json.loads((path / 'bundle.json').read_text())
                 c['pairs'].append({'id': uuid.uuid4().hex, 'title': 'Application guidance · authored DE/FR example',
                     'bundle': b, 'status': 'complete', 'review': None})
                 self.event(c, 'Authored demonstration loaded · zero model calls')
+            self.write(c); return c
+
+    def scope(self, cid, site_ids):
+        selected = inventory.validate_selection(site_ids)
+        with self.lock:
+            c = self.read(cid)
+            c['scope'] = {'catalogue_version': inventory.VERSION, 'site_ids': selected}
+            self.event(c, 'Campaign scope saved: ' + str(len(selected)) + ' websites; no crawl started')
             self.write(c); return c
 
     def pair(self, c, pid):
@@ -92,18 +108,84 @@ class Store:
             p['review'] = result
             self.event(c, 'Review saved: ' + p['title']); self.write(c); return c
 
-    def run(self, cid, pid):
+    def pattern(self, cid, data):
+        """Save a review-backed search hypothesis; never activate or tune a detector."""
+        for key in ('name','query','rationale','author'):
+            if not isinstance(data.get(key),str) or not 1<=len(data[key].strip())<=1000:
+                raise ValueError('Pattern name, query, rationale and author are required (max 1000 characters each)')
+        with self.lock:
+            c=self.read(cid); examples=[]
+            for p in c['pairs']:
+                for r in (p.get('review') or {}).get('reviews',[]):
+                    if r['state'] in {'confirmed','rejected'}:
+                        examples.append({'pair':p['id'],'candidate':r['candidate_id'],
+                                         'bundle_digest':p['bundle']['digest'], 'review':r,
+                                         'reviewed_at':p['review']['reviewed_at'], 'fixture':p['bundle']['fixture']})
+            if not examples: raise ValueError('Save at least one confirmed or rejected review first')
+            proposal={k:data[k].strip() for k in ('name','query','rationale','author')}
+            proposal.update(id=uuid.uuid4().hex,created_at=now(),state='proposed_not_evaluated',
+                            version=1,examples=examples,detector_unchanged=True)
+            c.setdefault('patterns',[]).append(proposal)
+            self.event(c,'Search hypothesis saved, not activated: '+proposal['name']);self.write(c);return c
+
+    def run(self, cid, pid, batch_id=None):
         with self.lock:
             if not self.inference: raise ValueError('Inference disabled. Start the server with the explicit local inference configuration after the baseline has settled.')
+            if self.batch_guard.exists() and (batch_id is None or json.loads(self.batch_guard.read_text())['id'] != batch_id):
+                raise ValueError('A batch owns local inference. Inspect its dated run record before starting another.')
             if self.guard.exists(): raise ValueError('An active or unsettled attempt owns local inference. Inspect its record before any further request.')
             c = self.read(cid); p = self.pair(c, pid)
             if p['status'] != 'ready': raise ValueError('This pair is not eligible for a new attempt')
             run_id = uuid.uuid4().hex
             desk.save(self.guard, {'campaign': cid, 'pair': pid, 'run': run_id, 'started_at': now()})
-            p['status'] = 'running'; p['run_id'] = run_id
+            p['status'] = 'running'; p['run_id'] = run_id; p['started_at'] = now()
             self.event(c, 'Comparison started: ' + p['title']); self.write(c)
-            threading.Thread(target=self.execute, args=(cid,pid,run_id), daemon=True).start()
+            if batch_id is None:
+                threading.Thread(target=self.execute, args=(cid,pid,run_id), daemon=True).start()
             return c
+
+    def batch(self, cid, pair_ids):
+        with self.lock:
+            if not self.inference: raise ValueError('Local inference is disabled')
+            if self.guard.exists() or self.batch_guard.exists(): raise ValueError('Inference already reserved')
+            if not isinstance(pair_ids,list) or not pair_ids or not all(isinstance(i,str) for i in pair_ids) or len(set(pair_ids))!=len(pair_ids):
+                raise ValueError('Select distinct ready page pairs')
+            c=self.read(cid); pairs=[self.pair(c,pid) for pid in pair_ids]
+            if any(p['status']!='ready' for p in pairs): raise ValueError('Every selected pair must be ready')
+            selected=c.get('scope',{}).get('site_ids',[])
+            if any(inventory.site_for_url(p['bundle']['left']['source_url']) not in selected for p in pairs):
+                raise ValueError('Add the source website to campaign scope before running a batch')
+            batch={'id':uuid.uuid4().hex,'started_at':now(),'status':'running','pair_ids':pair_ids,
+                   'capture_digests':{p['id']:p['bundle']['digest'] for p in pairs},
+                   'scope':c['scope'].copy(),'method':desk.METHOD,'runtime':self.inference.copy(),
+                   'completed_pair_ids':[], 'max_model_calls':len(pairs)}
+            desk.save(self.batch_guard, {'id':batch['id'],'campaign':cid})
+            c.setdefault('batches',[]).append(batch)
+            self.event(c,'Batch started: '+str(len(pairs))+' selected page pairs');self.write(c)
+            threading.Thread(target=self.execute_batch,args=(cid,batch['id']),daemon=True).start()
+            return c
+
+    def execute_batch(self,cid,bid):
+        status='complete'
+        try:
+            with self.lock:
+                batch=next(b for b in self.read(cid)['batches'] if b['id']==bid)
+            for pid in batch['pair_ids']:
+                c=self.run(cid,pid,batch_id=bid)
+                self.execute(cid,pid,self.pair(c,pid)['run_id'])
+                with self.lock:
+                    c=self.read(cid); current=next(b for b in c['batches'] if b['id']==bid)
+                    current['completed_pair_ids'].append(pid);self.write(c)
+                    if self.pair(c,pid)['status']!='complete':
+                        status='stopped';break
+        except Exception:
+            status='stopped'
+        finally:
+            with self.lock:
+                c=self.read(cid); current=next(b for b in c['batches'] if b['id']==bid)
+                current['status']=status;current['finished_at']=now()
+                self.event(c,'Batch '+status+'; no automatic retry');self.write(c)
+                if not self.guard.exists(): self.batch_guard.unlink(missing_ok=True)
 
     def execute(self, cid, pid, run_id):
         result = None
@@ -122,6 +204,7 @@ class Store:
                 else:
                     p['status'] = 'unsettled'
             else: p['status'] = 'unsettled'
+            p['finished_at'] = now()
             self.event(c, 'Comparison ' + p['status'] + ': ' + p['title']); self.write(c)
 
 
@@ -144,7 +227,8 @@ def handler(store, token):
                     html=Path(__file__).with_name('campaign_center.html').read_text().replace('__SESSION_TOKEN__',token)
                     return self.send(html,kind='text/html')
                 if path == '/api/campaigns':
-                    return self.send({'campaigns':store.list(),'inference_enabled':bool(store.inference), 'unsettled':store.guard.exists()})
+                    return self.send({'campaigns':store.list(),'catalogue':inventory.inventory(),
+                                      'inference_enabled':bool(store.inference), 'unsettled':store.guard.exists() or store.batch_guard.exists()})
                 match=re.fullmatch('/desk/([a-f0-9]{32})/([a-f0-9]{32})',path)
                 if match:
                     with store.lock:
@@ -152,7 +236,7 @@ def handler(store, token):
                     bridge="""<script>
 try{if(!localStorage.getItem(key)){for(const r of SAVED_REVIEWS)drafts[r.candidate_id]=r;render();updateProgress()}}catch(e){}
 const save=document.createElement('button');save.textContent='Save review to campaign';save.className='primary';document.querySelector('.buttons').prepend(save);
-save.onclick=()=>parent.postMessage({type:'federal-review',campaign:'CID',pair:'PID',draft:{bundle_digest:b.digest,reviews:Object.values(drafts)}},location.origin);
+save.onclick=()=>parent.postMessage({type:'federal-review',campaign:'CID',pair:'PID',draft:{bundle_digest:b.digest,reviews:Object.values(drafts).filter(r=>r.reviewer.trim()||r.reason.trim()||r.state!=='unresolved')}},location.origin);
 addEventListener('message',e=>{if(e.origin===location.origin&&e.source===parent&&e.data.type==='review-result')document.querySelector('#export-status').textContent=e.data.message});
 </script>""".replace('CID',match[1]).replace('PID',match[2]).replace('SAVED_REVIEWS', json.dumps((p.get('review') or {}).get('reviews',[]), ensure_ascii=False).replace('<', '\\u003c'))
                     return self.send(html.replace('</body>',bridge+'</body>'),kind='text/html')
@@ -166,12 +250,16 @@ addEventListener('message',e=>{if(e.origin===location.origin&&e.source===parent&
                 length=int(self.headers.get('Content-Length','0'))
                 if not 0 < length <= 3_000_000: raise ValueError('Request size must be below 3 MB')
                 data=json.loads(self.rfile.read(length))
-                if self.path=='/api/campaigns': return self.send(store.create(data['name'],data.get('demo') is True),201)
-                match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/(pairs|run|review)',self.path)
+                if not isinstance(data,dict): raise ValueError('Request must be a JSON object')
+                if self.path=='/api/campaigns': return self.send(store.create(data['name'],data.get('demo') is True,data.get('site_ids')),201)
+                match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/(pairs|run|review|scope|batch|pattern)',self.path)
                 if not match: return self.send({'error':'Not found'},404)
                 cid,action=match.groups()
                 if action=='pairs': result=store.add(cid,data)
                 elif action=='run': result=store.run(cid,data['pair'])
+                elif action=='scope': result=store.scope(cid,data['site_ids'])
+                elif action=='batch': result=store.batch(cid,data['pairs'])
+                elif action=='pattern': result=store.pattern(cid,data)
                 else: result=store.review(cid,data['pair'],data['draft'])
                 self.send(result)
             except (ValueError,KeyError,TypeError,StopIteration,FileNotFoundError) as exc:
