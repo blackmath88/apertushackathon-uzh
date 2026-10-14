@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/uzh-rsd/b8/R3.schema.json",
+  "title": "B8 R3 independently authored structured commitments",
+  "type": "object",
+  "required": ["schema", "case_id", "representation", "source", "counterpart", "authorship"],
+  "properties": {
+    "schema": {"const": "uzh-rsd.b8-representation/v1"},
+    "case_id": {"type": "string", "minLength": 1},
+    "representation": {"const": "R3"},
+    "source": {"$ref": "#/$defs/commitment"},
+    "counterpart": {"$ref": "#/$defs/commitment"},
+    "authorship": {"const": "independently_authored_pre_inference"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "commitment": {
+      "type": "object",
+      "required": ["actor", "action", "modality", "polarity", "condition", "quantity", "deadline", "exception"],
+      "properties": {
+        "actor": {"type": ["string", "null"]},
+        "action": {"type": ["string", "null"]},
+        "modality": {"type": ["string", "null"]},
+        "polarity": {"type": ["string", "null"]},
+        "condition": {"type": ["string", "null"]},
+        "quantity": {"type": ["string", "null"]},
+        "deadline": {"type": ["string", "null"]},
+        "exception": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  }
+}

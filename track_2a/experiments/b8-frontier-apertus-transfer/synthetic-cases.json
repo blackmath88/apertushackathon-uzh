@@ -1,0 +1,1842 @@
+{
+  "schema": "uzh-rsd.b8-cases/v1",
+  "case_count": 27,
+  "cases": [
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "opt-modality-de",
+      "source_family_id": "opt-modality",
+      "split": "optimization",
+      "language_pair": "en-de",
+      "category": "modality",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Electronic filing",
+        "governing_condition": null,
+        "sentence": "Applicants must submit the report electronically.",
+        "focus": "must"
+      },
+      "counterpart": {
+        "language": "de",
+        "heading": "Elektronische Einreichung",
+        "governing_condition": null,
+        "sentence": "Antragstellende dürfen den Bericht elektronisch einreichen.",
+        "focus": "dürfen"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 11,
+          "end": 15,
+          "unit": "unicode_codepoints",
+          "exact": "must"
+        },
+        "counterpart_focus": {
+          "start": 16,
+          "end": 22,
+          "unit": "unicode_codepoints",
+          "exact": "dürfen"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicants",
+          "action": "submit report electronically",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicants",
+          "action": "submit report electronically",
+          "modality": "may",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "commitment"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "opt-modality-fr",
+      "source_family_id": "opt-modality",
+      "split": "optimization",
+      "language_pair": "en-fr",
+      "category": "modality",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Electronic filing",
+        "governing_condition": null,
+        "sentence": "Applicants must submit the report electronically.",
+        "focus": "must"
+      },
+      "counterpart": {
+        "language": "fr",
+        "heading": "Dépôt électronique",
+        "governing_condition": null,
+        "sentence": "Les demandeurs peuvent déposer le rapport par voie électronique.",
+        "focus": "peuvent"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 11,
+          "end": 15,
+          "unit": "unicode_codepoints",
+          "exact": "must"
+        },
+        "counterpart_focus": {
+          "start": 15,
+          "end": 22,
+          "unit": "unicode_codepoints",
+          "exact": "peuvent"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicants",
+          "action": "submit report electronically",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicants",
+          "action": "submit report electronically",
+          "modality": "may",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "commitment"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "opt-modality-it",
+      "source_family_id": "opt-modality",
+      "split": "optimization",
+      "language_pair": "en-it",
+      "category": "modality",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Electronic filing",
+        "governing_condition": null,
+        "sentence": "Applicants must submit the report electronically.",
+        "focus": "must"
+      },
+      "counterpart": {
+        "language": "it",
+        "heading": "Presentazione elettronica",
+        "governing_condition": null,
+        "sentence": "I richiedenti possono presentare il rapporto elettronicamente.",
+        "focus": "possono"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 11,
+          "end": 15,
+          "unit": "unicode_codepoints",
+          "exact": "must"
+        },
+        "counterpart_focus": {
+          "start": 14,
+          "end": 21,
+          "unit": "unicode_codepoints",
+          "exact": "possono"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicants",
+          "action": "submit report electronically",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicants",
+          "action": "submit report electronically",
+          "modality": "may",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "commitment"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "opt-negation-de",
+      "source_family_id": "opt-negation",
+      "split": "optimization",
+      "language_pair": "en-de",
+      "category": "negation",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Supporting certificate",
+        "governing_condition": null,
+        "sentence": "Applicants are not required to attach a certificate.",
+        "focus": "not required"
+      },
+      "counterpart": {
+        "language": "de",
+        "heading": "Beleg",
+        "governing_condition": null,
+        "sentence": "Antragstellende müssen eine Bescheinigung beilegen.",
+        "focus": "müssen"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 15,
+          "end": 27,
+          "unit": "unicode_codepoints",
+          "exact": "not required"
+        },
+        "counterpart_focus": {
+          "start": 16,
+          "end": 22,
+          "unit": "unicode_codepoints",
+          "exact": "müssen"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicants",
+          "action": "attach certificate",
+          "modality": "required",
+          "polarity": "negative",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicants",
+          "action": "attach certificate",
+          "modality": "required",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "incorrect"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "opt-negation-fr",
+      "source_family_id": "opt-negation",
+      "split": "optimization",
+      "language_pair": "en-fr",
+      "category": "negation",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Supporting certificate",
+        "governing_condition": null,
+        "sentence": "Applicants are not required to attach a certificate.",
+        "focus": "not required"
+      },
+      "counterpart": {
+        "language": "fr",
+        "heading": "Justificatif",
+        "governing_condition": null,
+        "sentence": "Les demandeurs doivent joindre une attestation.",
+        "focus": "doivent"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 15,
+          "end": 27,
+          "unit": "unicode_codepoints",
+          "exact": "not required"
+        },
+        "counterpart_focus": {
+          "start": 15,
+          "end": 22,
+          "unit": "unicode_codepoints",
+          "exact": "doivent"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicants",
+          "action": "attach certificate",
+          "modality": "required",
+          "polarity": "negative",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicants",
+          "action": "attach certificate",
+          "modality": "required",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "incorrect"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "opt-negation-it",
+      "source_family_id": "opt-negation",
+      "split": "optimization",
+      "language_pair": "en-it",
+      "category": "negation",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Supporting certificate",
+        "governing_condition": null,
+        "sentence": "Applicants are not required to attach a certificate.",
+        "focus": "not required"
+      },
+      "counterpart": {
+        "language": "it",
+        "heading": "Certificato",
+        "governing_condition": null,
+        "sentence": "I richiedenti devono allegare un certificato.",
+        "focus": "devono"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 15,
+          "end": 27,
+          "unit": "unicode_codepoints",
+          "exact": "not required"
+        },
+        "counterpart_focus": {
+          "start": 14,
+          "end": 20,
+          "unit": "unicode_codepoints",
+          "exact": "devono"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicants",
+          "action": "attach certificate",
+          "modality": "required",
+          "polarity": "negative",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicants",
+          "action": "attach certificate",
+          "modality": "required",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "incorrect"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "opt-quantity-de",
+      "source_family_id": "opt-quantity",
+      "split": "optimization",
+      "language_pair": "en-de",
+      "category": "quantity",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "References",
+        "governing_condition": null,
+        "sentence": "The application must include at least three references.",
+        "focus": "at least three"
+      },
+      "counterpart": {
+        "language": "de",
+        "heading": "Referenzen",
+        "governing_condition": null,
+        "sentence": "Das Gesuch muss mindestens zwei Referenzen enthalten.",
+        "focus": "mindestens zwei"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 29,
+          "end": 43,
+          "unit": "unicode_codepoints",
+          "exact": "at least three"
+        },
+        "counterpart_focus": {
+          "start": 16,
+          "end": 31,
+          "unit": "unicode_codepoints",
+          "exact": "mindestens zwei"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicant",
+          "action": "include references",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": "at least 3",
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicant",
+          "action": "include references",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": "at least 2",
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "incorrect"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "opt-quantity-fr",
+      "source_family_id": "opt-quantity",
+      "split": "optimization",
+      "language_pair": "en-fr",
+      "category": "quantity",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "References",
+        "governing_condition": null,
+        "sentence": "The application must include at least three references.",
+        "focus": "at least three"
+      },
+      "counterpart": {
+        "language": "fr",
+        "heading": "Références",
+        "governing_condition": null,
+        "sentence": "La demande doit contenir au moins deux références.",
+        "focus": "au moins deux"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 29,
+          "end": 43,
+          "unit": "unicode_codepoints",
+          "exact": "at least three"
+        },
+        "counterpart_focus": {
+          "start": 25,
+          "end": 38,
+          "unit": "unicode_codepoints",
+          "exact": "au moins deux"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicant",
+          "action": "include references",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": "at least 3",
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicant",
+          "action": "include references",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": "at least 2",
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "incorrect"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "opt-quantity-it",
+      "source_family_id": "opt-quantity",
+      "split": "optimization",
+      "language_pair": "en-it",
+      "category": "quantity",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "References",
+        "governing_condition": null,
+        "sentence": "The application must include at least three references.",
+        "focus": "at least three"
+      },
+      "counterpart": {
+        "language": "it",
+        "heading": "Referenze",
+        "governing_condition": null,
+        "sentence": "La domanda deve contenere almeno due referenze.",
+        "focus": "almeno due"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 29,
+          "end": 43,
+          "unit": "unicode_codepoints",
+          "exact": "at least three"
+        },
+        "counterpart_focus": {
+          "start": 26,
+          "end": 36,
+          "unit": "unicode_codepoints",
+          "exact": "almeno due"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicant",
+          "action": "include references",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": "at least 3",
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicant",
+          "action": "include references",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": "at least 2",
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "incorrect"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-deadline-de",
+      "source_family_id": "eval-deadline",
+      "split": "evaluation",
+      "language_pair": "en-de",
+      "category": "deadline",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Submission date",
+        "governing_condition": null,
+        "sentence": "The signed form must arrive no later than 30 June.",
+        "focus": "30 June"
+      },
+      "counterpart": {
+        "language": "de",
+        "heading": "Einreichungsdatum",
+        "governing_condition": null,
+        "sentence": "Das unterschriebene Formular muss bis zum 15. Juni eintreffen.",
+        "focus": "15. Juni"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 42,
+          "end": 49,
+          "unit": "unicode_codepoints",
+          "exact": "30 June"
+        },
+        "counterpart_focus": {
+          "start": 42,
+          "end": 50,
+          "unit": "unicode_codepoints",
+          "exact": "15. Juni"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicant",
+          "action": "deliver signed form",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": "30 June inclusive",
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicant",
+          "action": "deliver signed form",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": "15 June inclusive",
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "incorrect"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-deadline-fr",
+      "source_family_id": "eval-deadline",
+      "split": "evaluation",
+      "language_pair": "en-fr",
+      "category": "deadline",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Submission date",
+        "governing_condition": null,
+        "sentence": "The signed form must arrive no later than 30 June.",
+        "focus": "30 June"
+      },
+      "counterpart": {
+        "language": "fr",
+        "heading": "Date de dépôt",
+        "governing_condition": null,
+        "sentence": "Le formulaire signé doit parvenir au plus tard le 15 juin.",
+        "focus": "15 juin"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 42,
+          "end": 49,
+          "unit": "unicode_codepoints",
+          "exact": "30 June"
+        },
+        "counterpart_focus": {
+          "start": 50,
+          "end": 57,
+          "unit": "unicode_codepoints",
+          "exact": "15 juin"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicant",
+          "action": "deliver signed form",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": "30 June inclusive",
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicant",
+          "action": "deliver signed form",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": "15 June inclusive",
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "incorrect"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-deadline-it",
+      "source_family_id": "eval-deadline",
+      "split": "evaluation",
+      "language_pair": "en-it",
+      "category": "deadline",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Submission date",
+        "governing_condition": null,
+        "sentence": "The signed form must arrive no later than 30 June.",
+        "focus": "30 June"
+      },
+      "counterpart": {
+        "language": "it",
+        "heading": "Data di presentazione",
+        "governing_condition": null,
+        "sentence": "Il modulo firmato deve arrivare entro il 15 giugno.",
+        "focus": "15 giugno"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 42,
+          "end": 49,
+          "unit": "unicode_codepoints",
+          "exact": "30 June"
+        },
+        "counterpart_focus": {
+          "start": 41,
+          "end": 50,
+          "unit": "unicode_codepoints",
+          "exact": "15 giugno"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "applicant",
+          "action": "deliver signed form",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": "30 June inclusive",
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "applicant",
+          "action": "deliver signed form",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": "15 June inclusive",
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "incorrect"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-condition-de",
+      "source_family_id": "eval-condition",
+      "split": "evaluation",
+      "language_pair": "en-de",
+      "category": "condition",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Payment",
+        "governing_condition": "Only after audit approval",
+        "sentence": "If the audit is approved, the grant is paid.",
+        "focus": "If the audit is approved"
+      },
+      "counterpart": {
+        "language": "de",
+        "heading": "Auszahlung",
+        "governing_condition": "Erst nach Genehmigung der Prüfung",
+        "sentence": "Der Beitrag wird nach Genehmigung der Prüfung ausgezahlt.",
+        "focus": "nach Genehmigung der Prüfung"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 0,
+          "end": 24,
+          "unit": "unicode_codepoints",
+          "exact": "If the audit is approved"
+        },
+        "counterpart_focus": {
+          "start": 17,
+          "end": 45,
+          "unit": "unicode_codepoints",
+          "exact": "nach Genehmigung der Prüfung"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "authority",
+          "action": "pay grant",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": "audit approved",
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "authority",
+          "action": "pay grant",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": "audit approved",
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "equivalent"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-condition-fr",
+      "source_family_id": "eval-condition",
+      "split": "evaluation",
+      "language_pair": "en-fr",
+      "category": "condition",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Payment",
+        "governing_condition": "Only after audit approval",
+        "sentence": "If the audit is approved, the grant is paid.",
+        "focus": "If the audit is approved"
+      },
+      "counterpart": {
+        "language": "fr",
+        "heading": "Paiement",
+        "governing_condition": "Uniquement après approbation de l'audit",
+        "sentence": "La subvention est versée après l'approbation de l'audit.",
+        "focus": "après l'approbation de l'audit"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 0,
+          "end": 24,
+          "unit": "unicode_codepoints",
+          "exact": "If the audit is approved"
+        },
+        "counterpart_focus": {
+          "start": 25,
+          "end": 55,
+          "unit": "unicode_codepoints",
+          "exact": "après l'approbation de l'audit"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "authority",
+          "action": "pay grant",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": "audit approved",
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "authority",
+          "action": "pay grant",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": "audit approved",
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "equivalent"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-condition-it",
+      "source_family_id": "eval-condition",
+      "split": "evaluation",
+      "language_pair": "en-it",
+      "category": "condition",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Payment",
+        "governing_condition": "Only after audit approval",
+        "sentence": "If the audit is approved, the grant is paid.",
+        "focus": "If the audit is approved"
+      },
+      "counterpart": {
+        "language": "it",
+        "heading": "Pagamento",
+        "governing_condition": "Solo dopo l'approvazione della verifica",
+        "sentence": "Il contributo viene versato dopo l'approvazione della verifica.",
+        "focus": "dopo l'approvazione della verifica"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 0,
+          "end": 24,
+          "unit": "unicode_codepoints",
+          "exact": "If the audit is approved"
+        },
+        "counterpart_focus": {
+          "start": 28,
+          "end": 62,
+          "unit": "unicode_codepoints",
+          "exact": "dopo l'approvazione della verifica"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "authority",
+          "action": "pay grant",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": "audit approved",
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "authority",
+          "action": "pay grant",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": "audit approved",
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "equivalent"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-exception-de",
+      "source_family_id": "eval-exception",
+      "split": "evaluation",
+      "language_pair": "en-de",
+      "category": "exception",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Traffic restriction",
+        "governing_condition": null,
+        "sentence": "All motor vehicles are prohibited, except emergency vehicles.",
+        "focus": "except emergency vehicles"
+      },
+      "counterpart": {
+        "language": "de",
+        "heading": "Verkehrsbeschränkung",
+        "governing_condition": null,
+        "sentence": "Alle Motorfahrzeuge sind verboten.",
+        "focus": "Alle Motorfahrzeuge"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 35,
+          "end": 60,
+          "unit": "unicode_codepoints",
+          "exact": "except emergency vehicles"
+        },
+        "counterpart_focus": {
+          "start": 0,
+          "end": 19,
+          "unit": "unicode_codepoints",
+          "exact": "Alle Motorfahrzeuge"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "motor vehicles",
+          "action": "enter restricted area",
+          "modality": "prohibited",
+          "polarity": "negative",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": "emergency vehicles"
+        },
+        "counterpart": {
+          "actor": "motor vehicles",
+          "action": "enter restricted area",
+          "modality": "prohibited",
+          "polarity": "negative",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "missing"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-exception-fr",
+      "source_family_id": "eval-exception",
+      "split": "evaluation",
+      "language_pair": "en-fr",
+      "category": "exception",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Traffic restriction",
+        "governing_condition": null,
+        "sentence": "All motor vehicles are prohibited, except emergency vehicles.",
+        "focus": "except emergency vehicles"
+      },
+      "counterpart": {
+        "language": "fr",
+        "heading": "Restriction de circulation",
+        "governing_condition": null,
+        "sentence": "Tous les véhicules motorisés sont interdits.",
+        "focus": "Tous les véhicules motorisés"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 35,
+          "end": 60,
+          "unit": "unicode_codepoints",
+          "exact": "except emergency vehicles"
+        },
+        "counterpart_focus": {
+          "start": 0,
+          "end": 28,
+          "unit": "unicode_codepoints",
+          "exact": "Tous les véhicules motorisés"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "motor vehicles",
+          "action": "enter restricted area",
+          "modality": "prohibited",
+          "polarity": "negative",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": "emergency vehicles"
+        },
+        "counterpart": {
+          "actor": "motor vehicles",
+          "action": "enter restricted area",
+          "modality": "prohibited",
+          "polarity": "negative",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "missing"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-exception-it",
+      "source_family_id": "eval-exception",
+      "split": "evaluation",
+      "language_pair": "en-it",
+      "category": "exception",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Traffic restriction",
+        "governing_condition": null,
+        "sentence": "All motor vehicles are prohibited, except emergency vehicles.",
+        "focus": "except emergency vehicles"
+      },
+      "counterpart": {
+        "language": "it",
+        "heading": "Limitazione del traffico",
+        "governing_condition": null,
+        "sentence": "Tutti i veicoli a motore sono vietati.",
+        "focus": "Tutti i veicoli a motore"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 35,
+          "end": 60,
+          "unit": "unicode_codepoints",
+          "exact": "except emergency vehicles"
+        },
+        "counterpart_focus": {
+          "start": 0,
+          "end": 24,
+          "unit": "unicode_codepoints",
+          "exact": "Tutti i veicoli a motore"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "motor vehicles",
+          "action": "enter restricted area",
+          "modality": "prohibited",
+          "polarity": "negative",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": "emergency vehicles"
+        },
+        "counterpart": {
+          "actor": "motor vehicles",
+          "action": "enter restricted area",
+          "modality": "prohibited",
+          "polarity": "negative",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "missing"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-omission-de",
+      "source_family_id": "eval-omission",
+      "split": "evaluation",
+      "language_pair": "en-de",
+      "category": "omission",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Commissioning",
+        "governing_condition": null,
+        "sentence": "The contractor must install and test the sensor.",
+        "focus": "and test"
+      },
+      "counterpart": {
+        "language": "de",
+        "heading": "Inbetriebnahme",
+        "governing_condition": null,
+        "sentence": "Der Auftragnehmer muss den Sensor installieren.",
+        "focus": "installieren"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 28,
+          "end": 36,
+          "unit": "unicode_codepoints",
+          "exact": "and test"
+        },
+        "counterpart_focus": {
+          "start": 34,
+          "end": 46,
+          "unit": "unicode_codepoints",
+          "exact": "installieren"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "contractor",
+          "action": "install and test sensor",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "contractor",
+          "action": "install sensor",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "missing"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-omission-fr",
+      "source_family_id": "eval-omission",
+      "split": "evaluation",
+      "language_pair": "en-fr",
+      "category": "omission",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Commissioning",
+        "governing_condition": null,
+        "sentence": "The contractor must install and test the sensor.",
+        "focus": "and test"
+      },
+      "counterpart": {
+        "language": "fr",
+        "heading": "Mise en service",
+        "governing_condition": null,
+        "sentence": "Le prestataire doit installer le capteur.",
+        "focus": "installer"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 28,
+          "end": 36,
+          "unit": "unicode_codepoints",
+          "exact": "and test"
+        },
+        "counterpart_focus": {
+          "start": 20,
+          "end": 29,
+          "unit": "unicode_codepoints",
+          "exact": "installer"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "contractor",
+          "action": "install and test sensor",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "contractor",
+          "action": "install sensor",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "missing"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-omission-it",
+      "source_family_id": "eval-omission",
+      "split": "evaluation",
+      "language_pair": "en-it",
+      "category": "omission",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Commissioning",
+        "governing_condition": null,
+        "sentence": "The contractor must install and test the sensor.",
+        "focus": "and test"
+      },
+      "counterpart": {
+        "language": "it",
+        "heading": "Messa in servizio",
+        "governing_condition": null,
+        "sentence": "L'appaltatore deve installare il sensore.",
+        "focus": "installare"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 28,
+          "end": 36,
+          "unit": "unicode_codepoints",
+          "exact": "and test"
+        },
+        "counterpart_focus": {
+          "start": 19,
+          "end": 29,
+          "unit": "unicode_codepoints",
+          "exact": "installare"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "contractor",
+          "action": "install and test sensor",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "contractor",
+          "action": "install sensor",
+          "modality": "must",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "missing"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-faithful-de",
+      "source_family_id": "eval-faithful",
+      "split": "evaluation",
+      "language_pair": "en-de",
+      "category": "faithful_paraphrase",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Notification",
+        "governing_condition": null,
+        "sentence": "The office will notify applicants in writing.",
+        "focus": "notify applicants in writing"
+      },
+      "counterpart": {
+        "language": "de",
+        "heading": "Mitteilung",
+        "governing_condition": null,
+        "sentence": "Die Behörde informiert die Antragstellenden schriftlich.",
+        "focus": "informiert die Antragstellenden schriftlich"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 16,
+          "end": 44,
+          "unit": "unicode_codepoints",
+          "exact": "notify applicants in writing"
+        },
+        "counterpart_focus": {
+          "start": 12,
+          "end": 55,
+          "unit": "unicode_codepoints",
+          "exact": "informiert die Antragstellenden schriftlich"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "office",
+          "action": "notify applicants in writing",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "office",
+          "action": "notify applicants in writing",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "equivalent"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-faithful-fr",
+      "source_family_id": "eval-faithful",
+      "split": "evaluation",
+      "language_pair": "en-fr",
+      "category": "faithful_paraphrase",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Notification",
+        "governing_condition": null,
+        "sentence": "The office will notify applicants in writing.",
+        "focus": "notify applicants in writing"
+      },
+      "counterpart": {
+        "language": "fr",
+        "heading": "Notification",
+        "governing_condition": null,
+        "sentence": "L'office informe les demandeurs par écrit.",
+        "focus": "informe les demandeurs par écrit"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 16,
+          "end": 44,
+          "unit": "unicode_codepoints",
+          "exact": "notify applicants in writing"
+        },
+        "counterpart_focus": {
+          "start": 9,
+          "end": 41,
+          "unit": "unicode_codepoints",
+          "exact": "informe les demandeurs par écrit"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "office",
+          "action": "notify applicants in writing",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "office",
+          "action": "notify applicants in writing",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "equivalent"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-faithful-it",
+      "source_family_id": "eval-faithful",
+      "split": "evaluation",
+      "language_pair": "en-it",
+      "category": "faithful_paraphrase",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Notification",
+        "governing_condition": null,
+        "sentence": "The office will notify applicants in writing.",
+        "focus": "notify applicants in writing"
+      },
+      "counterpart": {
+        "language": "it",
+        "heading": "Notifica",
+        "governing_condition": null,
+        "sentence": "L'ufficio informa i richiedenti per iscritto.",
+        "focus": "informa i richiedenti per iscritto"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 16,
+          "end": 44,
+          "unit": "unicode_codepoints",
+          "exact": "notify applicants in writing"
+        },
+        "counterpart_focus": {
+          "start": 10,
+          "end": 44,
+          "unit": "unicode_codepoints",
+          "exact": "informa i richiedenti per iscritto"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "office",
+          "action": "notify applicants in writing",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "office",
+          "action": "notify applicants in writing",
+          "modality": "will",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "equivalent"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-scope-de",
+      "source_family_id": "eval-scope",
+      "split": "evaluation",
+      "language_pair": "en-de",
+      "category": "scope",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Archive access",
+        "governing_condition": null,
+        "sentence": "Only licensed operators may access the archive.",
+        "focus": "Only licensed operators"
+      },
+      "counterpart": {
+        "language": "de",
+        "heading": "Archivzugang",
+        "governing_condition": null,
+        "sentence": "Der Zugang zum Archiv ist auf lizenzierte Betreiber beschränkt.",
+        "focus": "auf lizenzierte Betreiber beschränkt"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 0,
+          "end": 23,
+          "unit": "unicode_codepoints",
+          "exact": "Only licensed operators"
+        },
+        "counterpart_focus": {
+          "start": 26,
+          "end": 62,
+          "unit": "unicode_codepoints",
+          "exact": "auf lizenzierte Betreiber beschränkt"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "licensed operators",
+          "action": "access archive",
+          "modality": "may",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "licensed operators",
+          "action": "access archive",
+          "modality": "may",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "equivalent"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-scope-fr",
+      "source_family_id": "eval-scope",
+      "split": "evaluation",
+      "language_pair": "en-fr",
+      "category": "scope",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Archive access",
+        "governing_condition": null,
+        "sentence": "Only licensed operators may access the archive.",
+        "focus": "Only licensed operators"
+      },
+      "counterpart": {
+        "language": "fr",
+        "heading": "Accès aux archives",
+        "governing_condition": null,
+        "sentence": "L'accès aux archives est réservé aux opérateurs agréés.",
+        "focus": "réservé aux opérateurs agréés"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 0,
+          "end": 23,
+          "unit": "unicode_codepoints",
+          "exact": "Only licensed operators"
+        },
+        "counterpart_focus": {
+          "start": 25,
+          "end": 54,
+          "unit": "unicode_codepoints",
+          "exact": "réservé aux opérateurs agréés"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "licensed operators",
+          "action": "access archive",
+          "modality": "may",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "licensed operators",
+          "action": "access archive",
+          "modality": "may",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "equivalent"
+    },
+    {
+      "schema": "uzh-rsd.b8-case/v1",
+      "case_id": "eval-scope-it",
+      "source_family_id": "eval-scope",
+      "split": "evaluation",
+      "language_pair": "en-it",
+      "category": "scope",
+      "review_status": "provisionally_reviewed",
+      "provenance": {
+        "origin": "independently_authored_synthetic",
+        "authoring_date": "2026-10-14",
+        "protected_test_data_used": false,
+        "live_or_private_capture_used": false,
+        "rights": "original_synthetic_text_for_experiment"
+      },
+      "source": {
+        "language": "en",
+        "heading": "Archive access",
+        "governing_condition": null,
+        "sentence": "Only licensed operators may access the archive.",
+        "focus": "Only licensed operators"
+      },
+      "counterpart": {
+        "language": "it",
+        "heading": "Accesso all'archivio",
+        "governing_condition": null,
+        "sentence": "L'accesso all'archivio è limitato agli operatori autorizzati.",
+        "focus": "limitato agli operatori autorizzati"
+      },
+      "offsets": {
+        "source_focus": {
+          "start": 0,
+          "end": 23,
+          "unit": "unicode_codepoints",
+          "exact": "Only licensed operators"
+        },
+        "counterpart_focus": {
+          "start": 25,
+          "end": 60,
+          "unit": "unicode_codepoints",
+          "exact": "limitato agli operatori autorizzati"
+        }
+      },
+      "commitments": {
+        "source": {
+          "actor": "licensed operators",
+          "action": "access archive",
+          "modality": "may",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "counterpart": {
+          "actor": "licensed operators",
+          "action": "access archive",
+          "modality": "may",
+          "polarity": "positive",
+          "condition": null,
+          "quantity": null,
+          "deadline": null,
+          "exception": null
+        },
+        "authorship": "independently_authored_pre_inference"
+      },
+      "expected_relation": "equivalent"
+    }
+  ]
+}

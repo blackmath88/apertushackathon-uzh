@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/uzh-rsd/b8/R2.schema.json",
+  "title": "B8 R2 sentence plus governing context",
+  "type": "object",
+  "required": ["schema", "case_id", "representation", "source", "counterpart"],
+  "properties": {
+    "schema": {"const": "uzh-rsd.b8-representation/v1"},
+    "case_id": {"type": "string", "minLength": 1},
+    "representation": {"const": "R2"},
+    "source": {"$ref": "#/$defs/context"},
+    "counterpart": {"$ref": "#/$defs/context"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "context": {
+      "type": "object",
+      "required": ["heading", "governing_condition", "sentence"],
+      "properties": {
+        "heading": {"type": "string", "minLength": 1},
+        "governing_condition": {"type": ["string", "null"]},
+        "sentence": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/uzh-rsd/b8/R1.schema.json",
+  "title": "B8 R1 complete sentence evidence",
+  "type": "object",
+  "required": ["schema", "case_id", "representation", "source_sentence", "counterpart_sentence"],
+  "properties": {
+    "schema": {"const": "uzh-rsd.b8-representation/v1"},
+    "case_id": {"type": "string", "minLength": 1},
+    "representation": {"const": "R1"},
+    "source_sentence": {"type": "string", "minLength": 1},
+    "counterpart_sentence": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}
