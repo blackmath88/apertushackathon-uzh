@@ -1,5 +1,7 @@
 """Offline #36 tests: fixture family -> evidence bundle -> existing analysis/review validation."""
 import json
+import sqlite3
+from datetime import datetime, timezone, timedelta
 import tempfile
 import unittest
 from pathlib import Path
@@ -139,9 +141,40 @@ class CaptureTest(unittest.TestCase):
             res = captures.capture_family(snapshot(), "fam1", PAIRING, fetcher=fetch, raw_dir=d, fixture=False)
         self.assertIn("content_use_not_permitted", res["blockers"]); self.assertEqual(calls, [])
 
+    def test_capture_owns_and_closes_store_on_success_and_failure(self):
+        for pages in (None, {DE: (BODY_DE,)}):
+            store = captures.DiscoveryStore()
+            with patch.object(captures, "DiscoveryStore", return_value=store):
+                run(pages=pages)
+            with self.assertRaises(sqlite3.ProgrammingError):
+                store.db.execute("SELECT 1")
+        store = captures.DiscoveryStore()
+        with patch.object(captures, "DiscoveryStore", return_value=store), patch.object(captures, "_capture", side_effect=KeyboardInterrupt):
+            with self.assertRaises(KeyboardInterrupt):
+                run()
+        with self.assertRaises(sqlite3.ProgrammingError):
+            store.db.execute("SELECT 1")
+
+    def test_fixture_without_injected_fetcher_never_uses_network(self):
+        with tempfile.TemporaryDirectory() as d, patch.object(captures, "GuardedTransport") as transport:
+            res = captures.capture_family(snapshot(), "fam1", PAIRING, raw_dir=d, fixture=True)
+        self.assertEqual(res["blockers"], ["fixture_fetcher_required"])
+        transport.assert_not_called()
+
+    def test_bundle_keeps_individual_retrieval_times_and_final_urls(self):
+        start = datetime(2026, 10, 15, tzinfo=timezone.utc)
+        times = iter([start, start + timedelta(seconds=3)])
+        res = run(pages={DE: (BODY_DE, H + "/de/final"), FR: (BODY_FR,)}, clock=lambda: next(times))
+        b = res["bundle"]
+        self.assertEqual(b["left"]["canonical_url"], H + "/de/final")
+        self.assertEqual(b["left"]["retrieved_at_utc"], start.isoformat())
+        self.assertNotEqual(b["left"]["retrieved_at_utc"], b["right"]["retrieved_at_utc"])
+        desk.validate(b)
+
     def test_fetch_failure_is_recorded_not_bundled(self):
         res = run(pages={DE: (BODY_DE,)})
         self.assertEqual(res["status"], "failed"); self.assertIsNone(res["bundle"])
+        self.assertEqual(len(res["raw_files"]), 1)  # successful side remains inspectable
 
 
 class CampaignCaptureTest(unittest.TestCase):
@@ -166,6 +199,14 @@ class CampaignCaptureTest(unittest.TestCase):
             self.assertTrue(prep["omission_confirmation"]["allowed"])
             pair = s.read(c["id"])["pairs"][0]
             desk.validate(pair["bundle"]); self.assertEqual(pair["status"], "ready")
+            full = s.read(c["id"])
+            full["pairs"] *= 20
+            s.write(full)
+            with patch.object(captures, "capture_family") as capture, self.assertRaisesRegex(ValueError, "Campaign limit"):
+                s.capture(c["id"], snap["id"], "fam1", PAIRING)
+            capture.assert_not_called()
+            full["pairs"] = full["pairs"][:1]
+            s.write(full)
             with self.assertRaises(ValueError):
                 s.capture(c["id"], "b" * 32, "fam1", PAIRING)  # not in saved scope
             s.lease.close()

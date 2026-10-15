@@ -87,9 +87,11 @@ def _local(tag: str) -> str:
 
 def parse_sitemap(body: bytes) -> tuple[str, list[dict[str, object]]]:
     """Return ('index'|'urlset', entries). DOCTYPE/entities are refused (no XML expansion)."""
-    if re.search(rb"<!(?:DOCTYPE|ENTITY)", body[:4096], re.I):
+    if re.search(rb"<!(?:DOCTYPE|ENTITY)", body.replace(b"\x00", b""), re.I):
         raise ValueError("sitemap DTD/entities refused")
     root = ET.fromstring(body)
+    if _local(root.tag) not in {"sitemapindex", "urlset"}:
+        raise ValueError("unsupported sitemap root")
     kind = "index" if _local(root.tag) == "sitemapindex" else "urlset"
     entries = []
     for node in root:
@@ -103,7 +105,7 @@ def parse_sitemap(body: bytes) -> tuple[str, list[dict[str, object]]]:
 
 
 def parse_feed(body: bytes) -> list[str]:
-    if re.search(rb"<!(?:DOCTYPE|ENTITY)", body[:4096], re.I):
+    if re.search(rb"<!(?:DOCTYPE|ENTITY)", body.replace(b"\x00", b""), re.I):
         raise ValueError("feed DTD/entities refused")
     root = ET.fromstring(body)
     urls = []
@@ -124,8 +126,9 @@ def _lang_of(url: str, declared: str | None = None) -> tuple[str, str]:
 
 
 class Collector:
-    def __init__(self, profile) -> None:  # noqa: ANN001
+    def __init__(self, profile, max_candidates=500) -> None:  # noqa: ANN001
         self.profile = profile
+        self.max_candidates = max_candidates
         self.candidates: dict[str, dict[str, object]] = {}
         self.edges: list[dict[str, object]] = []
 
@@ -134,12 +137,18 @@ class Collector:
             clean = gs.fetch_url(url, self.profile, via if via.startswith("https://") else None)
         except ValueError as exc:
             key = url[:300]
+            self.check_capacity(key)
             rec = self.candidates.setdefault(key, {"url": key, "state": "excluded", "reason": str(exc), "sources": []})
             rec["sources"].append({"kind": kind, "via": via})
             return None
+        self.check_capacity(clean)
         rec = self.candidates.setdefault(clean, {"url": clean, "state": state, "reason": reason, "sources": []})
         rec["sources"].append({"kind": kind, "via": via})
         return clean
+
+    def check_capacity(self, key):
+        if key not in self.candidates and len(self.candidates) >= self.max_candidates:
+            raise BudgetExceeded("candidate_budget")
 
     def edge(self, source: str, target: str, language: str, kind: str, declared_by: str) -> None:
         self.edges.append({"from": source, "to": target, "language": language.split("-", 1)[0], "kind": kind,
@@ -220,7 +229,7 @@ def discover(site_id: str, *, fetcher=None, budgets: Budgets = DISCOVERY_BUDGETS
     scope = gs._scope_check(profile)
     transport = (LegacyFetcherTransport(ledger, fetcher, profile, scope, timeout=timeout) if fetcher
                  else GuardedTransport(ledger, scope, timeout=timeout, resolver=resolver))
-    col = Collector(profile)
+    col = Collector(profile, budgets.max_candidates)
     notes: list[dict[str, object]] = []
     stop = "completed"
 
@@ -311,18 +320,19 @@ def discover(site_id: str, *, fetcher=None, budgets: Budgets = DISCOVERY_BUDGETS
             except Exception as exc:
                 col.candidates[seed_url].update(state="failed", reason=type(exc).__name__)
                 continue
-            col.candidates[seed_url].update(state="fetched", reason=None)
+            col.candidates[seed_url].update(state="fetched", reason=None, final_url=resp.url, redirects=list(resp.redirects))
+            document_url = resp.url
             obs = Observer()
             obs.feed(gs.decode_html(resp.body, resp.headers.get("Content-Type", "")))
             for lang, href in obs.alternates:
-                target = col.add(href, "page_hreflang", seed_url)
+                target = col.add(href, "page_hreflang", document_url)
                 if target:
                     col.edge(seed_url, target, lang, "page_hreflang", seed_url)
             for href, lang in obs.nav:
-                target = col.add(href, "navigation", seed_url)
+                target = col.add(href, "navigation", document_url)
                 if target and lang:
                     col.edge(seed_url, target, lang, "navigation_hreflang", seed_url)
-            feeds += [(f, seed_url) for f in obs.feeds]
+            feeds += [(f, document_url) for f in obs.feeds]
         for href, via in feeds:
             try:
                 feed = gs.fetch_url(href, profile, via, allow_assets=True)
@@ -335,6 +345,8 @@ def discover(site_id: str, *, fetcher=None, budgets: Budgets = DISCOVERY_BUDGETS
             step("feeds")
             try:
                 resp = transport.fetch(feed, Purpose.FEED)
+                if resp.status != 200:
+                    raise RuntimeError(f"HTTP {resp.status}")
                 links = parse_feed(_body(resp, RESPONSE_CEILING[Purpose.FEED]))
             except BudgetExceeded:
                 raise

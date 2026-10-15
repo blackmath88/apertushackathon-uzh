@@ -19,8 +19,9 @@ class FakeResponse:
         self._body = body
         self.headers = headers or {}
 
-    def read(self, _limit):
-        return self._body
+    def read(self, limit):
+        body, self._body = self._body[:limit], self._body[limit:]
+        return body
 
 
 class FakeOpener:

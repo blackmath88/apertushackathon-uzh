@@ -64,6 +64,34 @@ def run(fetcher, **kw):
 
 
 class DiscoveryTest(unittest.TestCase):
+    def test_candidate_ceiling_is_enforced_and_incomplete_inventory_is_explicit(self):
+        fetch, calls = site()
+        snap = run(fetch, budgets=Budgets(max_candidates=2))
+        self.assertEqual(len(snap["candidates"]), 2)
+        self.assertEqual(snap["stop_reason"], "candidate_budget")
+        self.assertEqual(snap["unvisited_count"], 2)
+        self.assertNotIn(SEED_DE, calls)
+
+    def test_xml_declarations_are_rejected_beyond_prefix_and_in_utf16(self):
+        doc = '<!DOCTYPE urlset [<!ENTITY x "expanded">]><urlset><url><loc>&x;</loc></url></urlset>'
+        for body in ((" " * 5000 + doc).encode(), doc.encode("utf-16")):
+            for parse in (discovery.parse_sitemap, discovery.parse_feed):
+                with self.subTest(parse=parse.__name__), self.assertRaises(ValueError):
+                    parse(body)
+        with self.assertRaises(ValueError):
+            discovery.parse_sitemap(b"<html/>")
+
+    def test_relative_navigation_uses_final_response_url(self):
+        base, _ = site(robots=b"User-agent: *\nDisallow:\n")
+        def redirected(url, profile, **kwargs):
+            if url == SEED_DE:
+                return FetchResponse(200, H + "/de/section/page", {"Content-Type": "text/html"}, b'<nav><a href="child">Child</a></nav>')
+            return base(url, profile, **kwargs)
+        snap = run(redirected)
+        urls = {c["url"] for c in snap["candidates"]}
+        self.assertIn(H + "/de/section/child", urls)
+        self.assertNotIn(H + "/de/child", urls)
+
     def test_sitemap_index_gzip_feed_navigation_cycle_and_offhost(self):
         fetcher, calls = site()
         snap = run(fetcher)

@@ -6,6 +6,7 @@ import re
 import secrets
 import threading
 import uuid
+from hashlib import sha256
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -172,6 +173,7 @@ class Store:
             if not any(f['snapshot_id'] == snapshot_id and f['family_id'] == family_id for f in c['scope'].get('page_families', [])):
                 raise ValueError('Page family is not in the saved campaign scope')
             snap = self.snapshot(cid, snapshot_id)
+            if len(c['pairs']) >= 20: raise ValueError('Campaign limit: 20 page pairs')
             if self.capture_fetcher is None and not self.capture_fixture:
                 result = captures._blocked(['live_capture_not_authorised'], family_id=family_id, snapshot_id=snapshot_id, site_id=snap['site_id'])
             else:
@@ -183,7 +185,6 @@ class Store:
             if result['status'] == 'captured':
                 b = result['bundle']
                 if any(p['bundle']['digest'] == b['digest'] for p in c['pairs']): raise ValueError('This capture already belongs to the campaign')
-                if len(c['pairs']) >= 20: raise ValueError('Campaign limit: 20 page pairs')
                 pid = uuid.uuid4().hex
                 c['pairs'].append({'id': pid, 'title': 'Captured family ' + family_id, 'bundle': b, 'status': 'ready', 'review': None})
                 record['pair_id'] = pid
@@ -206,6 +207,27 @@ class Store:
                                                   for k, v in ev.get('links', {}).items()},
                             'completeness': {k: v.get('completeness') for k, v in ev.get('extraction', {}).items()}})
             return out
+
+    def evidence(self, cid, pid, side):
+        """Resolve only evidence owned by this pair; never accept a client-supplied path/hash."""
+        if side not in {"left", "right"}:
+            raise ValueError("Unknown evidence side")
+        with self.lock:
+            pair = self.pair(self.read(cid), pid)
+            bundle = desk.validate(pair["bundle"])
+            retrieval = bundle["capture_evidence"]["retrievals"][side]
+            digest = retrieval["sha256_raw"]
+            if not re.fullmatch(r"[a-f0-9]{64}", digest) or digest != bundle[side]["sha256_html"]:
+                raise ValueError("Capture identity mismatch")
+            path = self.root / "raw" / "sha256" / digest[:2] / (digest + ".html")
+            # Refuse tampered store links and unbounded reads as well as changed content.
+            if path.resolve().parent != (self.root / "raw" / "sha256" / digest[:2]).absolute() or path.is_symlink():
+                raise ValueError("Invalid evidence location")
+            with path.open("rb") as source:
+                body = source.read(1_000_001)
+            if len(body) > 1_000_000 or sha256(body).hexdigest() != digest:
+                raise ValueError("Stored evidence integrity mismatch")
+            return body, digest
 
     def pair(self, c, pid):
         return next(p for p in c['pairs'] if p['id'] == pid)
@@ -353,6 +375,20 @@ def handler(store, token):
                 if path == '/api/campaigns':
                     return self.send({'campaigns':store.list(),'catalogue':inventory.inventory(),
                                       'inference_enabled':bool(store.inference),'capture_mode':{'fixture':bool(store.capture_fixture),'transport':store.capture_fetcher is not None}, 'unsettled':store.guard.exists() or store.batch_guard.exists()})
+                match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/pairs/([a-f0-9]{32})/evidence/(left|right)',path)
+                if match:
+                    body, digest = store.evidence(match[1], match[2], match[3])
+                    self.send_response(200)
+                    # Download, never execute captured third-party HTML in the app origin.
+                    self.send_header('Content-Type', 'application/octet-stream')
+                    self.send_header('Content-Disposition', f'attachment; filename="capture-{digest}.html"')
+                    self.send_header('Content-Length', str(len(body)))
+                    self.send_header('Cache-Control', 'no-store')
+                    self.send_header('X-Content-Type-Options', 'nosniff')
+                    self.send_header('Content-Security-Policy', "sandbox; default-src 'none'")
+                    self.send_header('Referrer-Policy', 'no-referrer')
+                    self.end_headers(); self.wfile.write(body)
+                    return
                 match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/snapshots/([a-f0-9]{32})',path)
                 if match: return self.send(store.snapshot(match[1],match[2]))
                 match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/preparation',path)

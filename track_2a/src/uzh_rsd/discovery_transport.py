@@ -104,6 +104,12 @@ class DiscoveryStore:
         self.recovered_attempts = cur.rowcount
         self.db.commit()
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, traceback):
+        self.close()
+
     def close(self) -> None:
         self.db.close()
 
@@ -262,7 +268,11 @@ class PinnedHTTPSConnection(http.client.HTTPSConnection):
                 last = exc
         else:
             raise last or OSError("no usable address")
-        self.sock = self._context.wrap_socket(sock, server_hostname=self.host)
+        try:
+            self.sock = self._context.wrap_socket(sock, server_hostname=self.host)
+        except BaseException:
+            sock.close()
+            raise
 
 
 class PinnedHTTPSHandler(HTTPSHandler):
@@ -287,7 +297,10 @@ def bounded_body(raw: bytes, encoding: str, max_bytes: int) -> bytes:
         data = raw
     elif encoding in {"gzip", "x-gzip", "deflate"}:
         wbits = zlib.MAX_WBITS | 16 if "gzip" in encoding else zlib.MAX_WBITS
-        data = zlib.decompressobj(wbits).decompress(raw, max_bytes + 1)
+        decoder = zlib.decompressobj(wbits)
+        data = decoder.decompress(raw, max_bytes + 1)
+        if len(data) <= max_bytes and (not decoder.eof or decoder.unused_data):
+            raise ValueError("incomplete or trailing compressed response")
     else:
         raise ValueError(f"unsupported content-encoding: {encoding}")
     if len(data) > max_bytes:
@@ -316,17 +329,24 @@ class GuardedTransport:
         for hop in range(MAX_REDIRECTS + 1):
             attempt = self.ledger.reserve(purpose, current, hop)
             response = None
+            received = 0
             try:
                 self.ledger.pace(current)
+                remaining_time = self.ledger.budgets.max_wall_seconds - (self.ledger.clock() - self.ledger.started)
+                if remaining_time <= 0:
+                    raise BudgetExceeded("wall_clock_budget")
                 validate_public_host(current, self.resolver)
+                remaining_time = self.ledger.budgets.max_wall_seconds - (self.ledger.clock() - self.ledger.started)
+                if remaining_time <= 0:
+                    raise BudgetExceeded("wall_clock_budget")
                 request = Request(current, headers={"User-Agent": USER_AGENT, "Accept": ACCEPT[purpose],
                                                     "Accept-Encoding": "gzip, identity"})
                 try:
-                    response = opener.open(request, timeout=self.timeout)
+                    response = opener.open(request, timeout=min(self.timeout, remaining_time))
                 except HTTPError as exc:
                     response = exc
                 status = int(response.status)
-                headers = dict(response.headers.items())
+                headers = {k.title(): v for k, v in response.headers.items()}
                 if status in REDIRECT_STATUSES:
                     location = headers.get("Location")
                     self.ledger.complete(attempt, status=status)
@@ -339,7 +359,29 @@ class GuardedTransport:
                     redirects.append({"from": current, "to": target, "status": status, "validated": True})
                     current = target
                     continue
-                raw = response.read(ceiling + 1)
+                # Never read beyond the aggregate body allowance, even on failures.
+                # At an exact boundary, completeness is unknown: retain accounting but refuse
+                # the response rather than silently accepting a potentially truncated body.
+                remaining_bytes = self.ledger.budgets.max_body_bytes - self.ledger.bytes
+                read_limit = min(ceiling + 1, remaining_bytes)
+                chunks = []
+                while received < read_limit:
+                    if self.ledger.clock() - self.ledger.started >= self.ledger.budgets.max_wall_seconds:
+                        raise BudgetExceeded("wall_clock_budget")
+                    try:
+                        chunk = response.read(min(65536, read_limit - received))
+                    except http.client.IncompleteRead as exc:
+                        received += len(exc.partial)
+                        raise
+                    if not chunk:
+                        break
+                    chunks.append(chunk)
+                    received += len(chunk)
+                raw = b"".join(chunks)
+                if self.ledger.clock() - self.ledger.started >= self.ledger.budgets.max_wall_seconds:
+                    raise BudgetExceeded("wall_clock_budget")
+                if received >= remaining_bytes:
+                    raise BudgetExceeded("byte_budget")
                 if len(raw) > ceiling:
                     raise ValueError("response exceeded byte ceiling")
                 body = bounded_body(raw, headers.get("Content-Encoding", ""), ceiling)
@@ -347,7 +389,7 @@ class GuardedTransport:
                 return FetchResponse(status, current, headers, body, tuple(redirects))
             except BaseException as exc:
                 if self.ledger.store.db.execute("SELECT state FROM attempts WHERE id=?", (attempt,)).fetchone()[0] == "reserved":
-                    self.ledger.complete(attempt, error=type(exc).__name__)
+                    self.ledger.complete(attempt, error=type(exc).__name__, nbytes=received)
                 raise
             finally:
                 if response is not None and hasattr(response, "close"):

@@ -1,12 +1,13 @@
 """Offline #34 tests: guarded transport, ledger/budgets, URL identity, per-host robots, durable frontier."""
 import gzip
 import os
+import sqlite3
 import sys
 import tempfile
 import urllib.request
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
@@ -25,8 +26,9 @@ class Resp:
     def __init__(self, status, body=b"", headers=None):
         self.status, self._body, self.headers, self.closed = status, body, headers or {}, False
 
-    def read(self, _n):
-        return self._body
+    def read(self, n):
+        body, self._body = self._body[:n], self._body[n:]
+        return body
 
     def close(self):
         self.closed = True
@@ -53,6 +55,11 @@ def make(budgets=None, delay=2.0, opener=None):
 
 
 class TransportTest(unittest.TestCase):
+    def make(self, *args, **kwargs):
+        store, ledger, transport = make(*args, **kwargs)
+        self.addCleanup(store.close)
+        return store, ledger, transport
+
     def test_hostile_proxy_environment_is_ignored(self):
         env = {"HTTPS_PROXY": "http://evil:8080", "ALL_PROXY": "http://evil:8080", "https_proxy": "http://evil:8080"}
         with patch.dict(os.environ, env):
@@ -80,6 +87,7 @@ class TransportTest(unittest.TestCase):
 
     def test_private_dns_refused_but_attempt_still_counted(self):
         store = DiscoveryStore()
+        self.addCleanup(store.close)
         ledger = RequestLedger(store, "r", Budgets(), delay_seconds=0)
         private = lambda *a, **k: [(None, None, None, None, ("127.0.0.1", 443))]  # noqa: E731
         transport = GuardedTransport(ledger, gs._scope_check(gs.PROFILES[0]), resolver=private, opener_factory=lambda: Opener())
@@ -91,7 +99,7 @@ class TransportTest(unittest.TestCase):
     def test_every_redirect_hop_consumes_budget_and_is_paced(self):
         opener = Opener(Resp(302, headers={"Location": "/de/b"}), Resp(302, headers={"Location": "/de/c"}),
                         Resp(200, b"<html></html>", {"Content-Type": "text/html"}))
-        store, ledger, transport = make(opener=opener)
+        store, ledger, transport = self.make(opener=opener)
         with patch("uzh_rsd.discovery_transport.time.sleep") as sleep:
             response = transport.fetch(BFE + "/de/a")
         self.assertEqual((ledger.total, ledger.page), (3, 3))
@@ -100,28 +108,29 @@ class TransportTest(unittest.TestCase):
         self.assertEqual(len(response.redirects), 2)
 
     def test_redirect_loop_and_off_host_target_fail_after_counting(self):
-        store, ledger, transport = make(opener=Opener(Resp(302, headers={"Location": "/de/a"})))
+        store, ledger, transport = self.make(opener=Opener(Resp(302, headers={"Location": "/de/a"})))
         with self.assertRaises(RedirectLoop), patch("uzh_rsd.discovery_transport.time.sleep"):
             transport.fetch(BFE + "/de/a")
         self.assertEqual(ledger.total, 1)
-        store, ledger, transport = make(opener=Opener(Resp(302, headers={"Location": "https://evil.test/x"})))
+        store, ledger, transport = self.make(opener=Opener(Resp(302, headers={"Location": "https://evil.test/x"})))
         with self.assertRaises(ValueError):
             transport.fetch(BFE + "/de/a")
         self.assertEqual(ledger.total, 1)
 
     def test_failed_request_is_accounted_and_response_closed(self):
         resp = Resp(200, b"x" * 50)
-        store, ledger, transport = make(opener=Opener(resp))
+        store, ledger, transport = self.make(opener=Opener(resp))
         transport.ledger.budgets  # noqa: B018
         with patch("uzh_rsd.discovery_transport.RESPONSE_CEILING", {p: 10 for p in Purpose}):
             with self.assertRaises(ValueError):
                 transport.fetch(BFE + "/de/a")
         self.assertTrue(resp.closed)
+        self.assertEqual(ledger.bytes, 11)  # overflow sentinel also counts
         self.assertEqual(store.attempts("r")[0]["error"], "ValueError")
 
     def test_typed_purposes_count_against_total_not_page_budget(self):
         opener = Opener(Resp(200, b"<urlset/>"), Resp(200, b"<rss/>"), Resp(200, b"x"))
-        store, ledger, transport = make(Budgets(max_total_attempts=3, max_page_attempts=1), opener=opener)
+        store, ledger, transport = self.make(Budgets(max_total_attempts=3, max_page_attempts=1), opener=opener)
         with patch("uzh_rsd.discovery_transport.time.sleep"):
             transport.fetch(BFE + "/sitemap.xml", Purpose.SITEMAP)  # .xml allowed only for sitemap/feed
             transport.fetch(BFE + "/feed.xml", Purpose.FEED)
@@ -142,11 +151,70 @@ class TransportTest(unittest.TestCase):
             bounded_body(b"x", "br", 100)
 
     def test_byte_budget_stops_before_next_dispatch(self):
-        store, ledger, transport = make(Budgets(max_body_bytes=5), opener=Opener(Resp(200, b"123456789")))
-        transport.fetch(BFE + "/de/a")
+        store, ledger, transport = self.make(Budgets(max_body_bytes=5), opener=Opener(Resp(200, b"123456789")))
+        with self.assertRaises(BudgetExceeded):
+            transport.fetch(BFE + "/de/a")
+        self.assertEqual(ledger.bytes, 5)
+        self.assertEqual(store.attempts("r")[0]["bytes"], 5)
         with self.assertRaises(BudgetExceeded) as cm:
             transport.fetch(BFE + "/de/b")
         self.assertEqual(cm.exception.reason, "byte_budget")
+
+
+    def test_partial_failed_read_keeps_byte_accounting(self):
+        response = Mock(status=200, headers={})
+        response.read.side_effect = [b"abc", TimeoutError("interrupted body")]
+        store, ledger, transport = self.make(opener=Opener(response))
+        with self.assertRaises(TimeoutError):
+            transport.fetch(BFE + "/de/a")
+        self.assertEqual(ledger.bytes, 3)
+        self.assertEqual(store.attempts("r")[0]["bytes"], 3)
+        response.close.assert_called_once()
+
+    def test_truncated_and_concatenated_compression_are_not_valid_captures(self):
+        raw = gzip.compress(b"evidence")
+        for invalid in (raw[:-3], raw + raw):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                bounded_body(invalid, "gzip", 100)
+        store, ledger, transport = self.make(opener=Opener(Resp(200, raw[:-3], {"content-encoding": "gzip"})))
+        with self.assertRaises(ValueError):
+            transport.fetch(BFE + "/de/a")
+        self.assertEqual(ledger.bytes, len(raw) - 3)
+
+    def test_lowercase_headers_work_for_redirect_and_encoding(self):
+        raw = gzip.compress(b"evidence")
+        opener = Opener(Resp(302, headers={"location": "/de/b"}), Resp(200, raw, {"content-encoding": "gzip", "content-type": "text/html"}))
+        _, _, transport = self.make(delay=0, opener=opener)
+        response = transport.fetch(BFE + "/de/a")
+        self.assertEqual(response.body, b"evidence")
+        self.assertEqual(response.headers["Content-Type"], "text/html")
+
+    def test_pacing_cannot_dispatch_after_deadline(self):
+        opener = Opener(Resp(200, b"ok"))
+        store, ledger, transport = self.make(opener=opener)
+        with patch.object(ledger, "pace", side_effect=lambda _: setattr(ledger, "started", ledger.clock() - 601)):
+            with self.assertRaises(BudgetExceeded):
+                transport.fetch(BFE + "/de/a")
+        self.assertEqual(opener.urls, [])
+        self.assertEqual(store.attempts("r")[0]["state"], "failed")
+
+    def test_failed_tls_handshake_closes_socket(self):
+        conn = PinnedHTTPSConnection("www.bfe.admin.ch", resolver=public)
+        conn._context = Mock()
+        conn._context.wrap_socket.side_effect = OSError("handshake failed")
+        sock = Mock()
+        with patch("uzh_rsd.discovery_transport.socket.create_connection", return_value=sock), self.assertRaises(OSError):
+            conn.connect()
+        sock.close.assert_called_once()
+
+    def test_store_context_closes_on_interruption(self):
+        store = DiscoveryStore()
+        self.addCleanup(store.close)
+        with self.assertRaises(KeyboardInterrupt):
+            with store:
+                raise KeyboardInterrupt
+        with self.assertRaises(sqlite3.ProgrammingError):
+            store.db.execute("SELECT 1")
 
 
 class IdentityTest(unittest.TestCase):
@@ -268,6 +336,7 @@ class RestartTest(unittest.TestCase):
 
     def test_state_round_trip(self):
         store = DiscoveryStore()
+        self.addCleanup(store.close)
         store.begin_run("r", "p", {})
         store.enqueue("r", "k", "https://x/", 0, None)
         self.assertFalse(store.enqueue("r", "k", "https://x/", 0, None))

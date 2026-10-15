@@ -1,6 +1,7 @@
 // Usage: python3 tests/campaign_capture_fixture_server.py 8767 & node tests/campaign_capture_browser.cjs http://127.0.0.1:8767 OUT_DIR
 const {chromium}=require('playwright');
 const fs=require('node:fs');
+const {createHash}=require('node:crypto');
 const url=process.argv[2],out=process.argv[3];
 if(!url||!out)throw Error('Usage: node campaign_capture_browser.cjs URL OUTPUT_DIR');
 fs.mkdirSync(out,{recursive:true});
@@ -23,6 +24,20 @@ for(const [name,viewport] of [['desktop',{width:1440,height:1050}],['mobile',{wi
   await p.reload();await p.getByRole('button',{name:'Open campaign →'}).first().click();await p.getByRole('button',{name:'Scope',exact:true}).click();
   await p.locator('#preparation [data-status="captured"]').waitFor();
   await p.getByText(/Live original \(left\)/).waitFor();await p.getByText(/Captured evidence \(left\): sha256:/).waitFor();
+  if(name==='desktop'){
+    const downloading=p.waitForEvent('download');
+    await p.getByRole('link',{name:'Download captured left HTML',exact:true}).click();
+    const download=await downloading,file=`${out}/captured-left.html`;
+    await download.saveAs(file);
+    const digest=createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+    if(download.suggestedFilename()!==`capture-${digest}.html`)throw Error('download hash mismatch');
+    await p.getByRole('button',{name:'Continue to comparisons →',exact:true}).click();
+    if(await p.getByRole('button',{name:'Run comparison',exact:true}).isEnabled())throw Error('inference must remain disabled');
+    await p.getByRole('button',{name:'Report',exact:true}).click();
+    await p.getByRole('button',{name:'Download readable report',exact:true}).waitFor();
+    await p.getByRole('button',{name:'Scope',exact:true}).click();
+    await p.locator('#preparation [data-status="captured"]').waitFor();
+  }
   const overflow=await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
   if(overflow)throw Error(name+': horizontal overflow');
   await p.screenshot({path:`${out}/capture-${name}.png`,fullPage:true});await p.close();

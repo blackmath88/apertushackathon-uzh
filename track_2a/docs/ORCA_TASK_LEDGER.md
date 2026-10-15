@@ -122,3 +122,17 @@ Route decision: Nebuchdnezzar was unreachable, so its baseline/resource state re
 Verification: 84 focused tests pass under cached Python 3.13. Full discovery found 205 tests: 204 passed, 13 skipped and one environment error because `huggingface_hub` is absent. Node syntax checks passed. Browser evidence is authored-fixture-only; live-observed federal results remain none. Worker review and coordinator review are self-review; no permission-enforced independent read-only route was available.
 
 Next action: run the authored Playwright browser check where Playwright is already installed, resolve SQLite connection warnings, obtain independent review of exact commit `05e3379`, then consider a separately authorised live check only for an eligible reviewed profile. Issues #37 and #38 remain untouched.
+
+---
+
+# Federal application acceptance repairs — 15 Oct 2026 (30-minute ceiling)
+
+Coordinator: ChatGPT Codex, direct foreground execution from PR #39 head `d25331ce93d95c7b58836506e21daf7643179e2b`. Orca executable unavailable in this runtime; no worker or subagent dispatch. Canonical Weavr operating contract read; isolated preparation only, no canonical Mission/Need/staged-intake mutation.
+
+Delivered in this commit: context-managed capture/one-shot SQLite stores; stricter body/decompression/deadline accounting; enforced inventory candidate bound and final-URL resolution; per-side capture provenance; retained successful evidence on counterpart failure; hash-verified campaign-owned evidence downloads; capture-to-comparison navigation; scope preservation and report coverage/provenance improvements.
+
+Verification: **92 focused Python tests passed, zero skips**, including a real loopback HTTP discovery→selection→capture→download flow using authored upstream responses. Actual JavaScript report function smoke test passed; application/browser-script syntax checks passed. Python 3.12; explicit closed-connection checks, not a Python 3.13 warning rerun. Partial checkout, not a full repository/benchmark suite.
+
+Browser remains open: Chromium absent; automatic approval review rejected downloading it under the retained no-dependency-download instruction. No alternate installation attempted. Updated browser harness is ready for an environment with an existing approved browser. Prior desktop/mobile observations are not re-labelled as validation of these new changes.
+
+No live federal crawl, model call, protected test access, new application dependency, merge or deployment. Baseline untouched. Self-review only. The live campaign gate stays closed; redirected-target robots enforcement, direct-capture robots checks, eligible policy and broader adapters remain prerequisites. #37/#38 unchanged. See [APP_ACCEPTANCE_2026-10-15.md](APP_ACCEPTANCE_2026-10-15.md) for exact acceptance scope and next commands.

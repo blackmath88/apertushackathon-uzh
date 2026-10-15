@@ -9,6 +9,7 @@ from collections import Counter
 from datetime import datetime, timezone
 from hashlib import sha256
 import re
+from pathlib import Path
 from urllib.parse import urlsplit
 
 from . import discovery, federal_desk as desk
@@ -81,7 +82,14 @@ def capture_family(snapshot, family_id, pairing, *, fetcher=None, raw_dir, fixtu
     base = {"family_id": family_id, "snapshot_id": snapshot["id"], "site_id": snapshot["site_id"]}
     if blockers:
         return _blocked(blockers, **base)
-    store = DiscoveryStore()
+    if fixture and fetcher is None:
+        return _blocked(["fixture_fetcher_required"], **base)
+    with DiscoveryStore() as store:
+        return _capture(profile, fam, left, right, pairing, base, store, fetcher=fetcher, raw_dir=raw_dir,
+                        fixture=fixture, delay_seconds=delay_seconds, resolver=resolver, timeout=timeout, clock=clock)
+
+
+def _capture(profile, fam, left, right, pairing, base, store, *, fetcher, raw_dir, fixture, delay_seconds, resolver, timeout, clock):
     ledger = RequestLedger(store, "capture", discovery.Budgets(max_page_attempts=8, max_total_attempts=8), delay_seconds=delay_seconds)
     scope = gs._scope_check(profile)
     transport = (LegacyFetcherTransport(ledger, fetcher, profile, scope, timeout=timeout) if fetcher
@@ -91,7 +99,7 @@ def capture_family(snapshot, family_id, pairing, *, fetcher=None, raw_dir, fixtu
         at = clock().isoformat()
         try:
             resp = transport.fetch(side["url"], Purpose.HTML)
-            ctype = resp.headers.get("Content-Type", "")
+            ctype = next((v for k, v in resp.headers.items() if k.lower() == "content-type"), "")
             if resp.status != 200 or not ctype.lower().startswith("text/html"):
                 raise RuntimeError(f"HTTP {resp.status} {ctype}")
         except Exception as exc:
@@ -107,6 +115,13 @@ def capture_family(snapshot, family_id, pairing, *, fetcher=None, raw_dir, fixtu
             "state": "retrieved", "language": side["language"],
             "permission": {"fixture": fixture, "content_use_permitted": pairing.get("content_use_permitted") is True,
                            "rights_basis": pairing["rights_basis"], "reviewer": pairing["reviewer"]}}
+        # Preserve a successful side even if its counterpart later fails or decoding fails.
+        path = Path(raw_dir) / "sha256" / raw_hash[:2] / f"{raw_hash}.html"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if path.exists() and path.read_bytes() != resp.body:
+            raise RuntimeError("content-address collision")
+        if not path.exists():
+            path.write_bytes(resp.body)
         bodies[key] = resp.body
     evidence = {"schema": SCHEMA, **base, "retrievals": retrievals, "accounting": ledger.snapshot(),
                 "extraction": {}, "family": {"status": fam["status"], "edges": fam["edges"],
@@ -114,7 +129,7 @@ def capture_family(snapshot, family_id, pairing, *, fetcher=None, raw_dir, fixtu
                 "model_calls": 0}
     if failures:
         return {**base, "schema": SCHEMA, "status": "failed", "blockers": failures, "requests": ledger.total, "bundle": None, "evidence": evidence}
-    extraction_blockers, partial = [], []
+    extraction_blockers, partial, documents = [], [], {}
     for key in ("left", "right"):
         r = retrievals[key]
         info = {"revision": EXTRACTION_REVISION, "config": {"block_tags": sorted(BLOCK_TAGS), "ignored_tags": sorted(IGNORED_TAGS)}}
@@ -122,6 +137,7 @@ def capture_family(snapshot, family_id, pairing, *, fetcher=None, raw_dir, fixtu
             cap = capture_html(html_bytes=bodies[key], source_url=r["requested_url"], canonical_url=r["final_url"],
                                locale=r["language"], profile=profile.id, retrieved_at_utc=r["retrieved_at_utc"],
                                rights_note=pairing["rights_basis"], raw_dir=raw_dir, fixture=fixture)
+            documents[key] = cap
             if not cap["extracted_text"]: raise ValueError("empty extraction")
             info.update(status="ok", offset_basis=cap["offset_basis"], sha256_extract=cap["sha256_extract"],
                         completeness=completeness(bodies[key].decode("utf-8"), cap["extracted_text"], cap["blocks"]))
@@ -145,6 +161,8 @@ def capture_family(snapshot, family_id, pairing, *, fetcher=None, raw_dir, fixtu
                          for k in ("left", "right")}
     evidence["pairing"] = {"status": "CANDIDATE", "certified_by": pairing["reviewer"], "rationale": pairing["pairing_rationale"],
                            "uncertainty": [f"family_status:{fam['status']}", "pairing_is_a_reviewer_assertion_not_verified_equivalence"]}
+    # Keep each retrieval's timestamp and final URL, rather than the pair-level summary.
+    bundle.update(documents)
     bundle["capture_evidence"] = evidence
     desk.seal(bundle); desk.validate(bundle)
     return {**base, "schema": SCHEMA, "status": "captured", "blockers": [], "requests": ledger.total, "bundle": bundle, "evidence": evidence}

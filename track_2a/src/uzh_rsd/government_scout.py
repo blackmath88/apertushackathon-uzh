@@ -247,12 +247,12 @@ def _scope_check(profile: SourceProfile) -> Callable[[str, "str | None", Purpose
 def _network_fetch(url: str, profile: SourceProfile, *, timeout: float, max_bytes: int,
                    resolver: Callable[..., object] = socket.getaddrinfo) -> FetchResponse:
     """One-shot guarded fetch (own ledger, no pacing). Scout itself uses a shared ledger."""
-    store = DiscoveryStore()
-    ledger = RequestLedger(store, "one-shot", Budgets(), delay_seconds=0.0)
-    transport = GuardedTransport(ledger, _scope_check(profile), timeout=timeout, resolver=resolver,
-                                 opener_factory=lambda: build_opener(
-                                     ProxyHandler({}), NoRedirects(), PinnedHTTPSHandler(resolver)))
-    return transport.fetch(url, Purpose.HTML, max_bytes)
+    with DiscoveryStore() as store:
+        ledger = RequestLedger(store, "one-shot", Budgets(), delay_seconds=0.0)
+        transport = GuardedTransport(ledger, _scope_check(profile), timeout=timeout, resolver=resolver,
+                                     opener_factory=lambda: build_opener(
+                                         ProxyHandler({}), NoRedirects(), PinnedHTTPSHandler(resolver)))
+        return transport.fetch(url, Purpose.HTML, max_bytes)
 
 
 def candidate_score(url: str) -> int:

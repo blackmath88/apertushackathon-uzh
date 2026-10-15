@@ -34,3 +34,11 @@ Not done: browser UI controls for capture/preparation (API only); no live captur
 
 ### #36 UI (Scope tab → Capture preparation)
 Per saved family: pairing/uncertainty, status (`not_captured`/`blocked`/`captured`…), blockers, per-side extraction completeness, omission-confirmation block, distinct *Live original (may differ)* links vs *Captured evidence* hash+time. The capture form (reviewer, rationale, rights basis, languages, certification) appears only when the server has a fixture/authorised transport; otherwise "Capture unavailable". Status is server-derived, so it survives reload. Browser check: `python3 tests/campaign_capture_fixture_server.py 8767 &` then `node tests/campaign_capture_browser.cjs http://127.0.0.1:8767 OUT` (desktop + mobile, page errors, overflow). **Not executed in this environment: Playwright is not installed**; the script and UI were only syntax-checked, and the served API flow was smoke-tested with curl.
+
+## Acceptance repair, 15 October 2026
+
+See [APP_ACCEPTANCE_2026-10-15.md](APP_ACCEPTANCE_2026-10-15.md) for current evidence: 92 focused tests plus real loopback HTTP acceptance and a report-export smoke check. Historical browser observations above do not cover this repair; the updated browser script remains unexecuted here.
+
+SQLite capture/one-shot ownership is now explicit. Body reads respect remaining aggregate bytes and count bytes already consumed on failure. Exact aggregate-boundary responses are conservatively refused; gzip truncation/trailing members are refused. Deadline checks include pacing, DNS and body reads, with a bounded socket timeout; this is not hard process-level cancellation. Candidate bounds now apply to inventory records, including exclusions. Raw evidence downloads validate campaign ownership and hashes and force attachment delivery. Live originals and captured evidence remain separate.
+
+Live gating is unchanged. Before connecting a live transport, implement/check robots policy at every redirected content target and in direct capture. Injected legacy fetchers cannot retroactively enforce internally followed redirect requests. The discovery inventory persists snapshots, not a resumable candidate frontier; distinguish it from Scout's persistent frontier. No live readiness claim follows from fixture acceptance.
