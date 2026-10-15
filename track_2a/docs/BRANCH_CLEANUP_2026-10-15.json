@@ -1,0 +1,152 @@
+[
+  {
+    "branch": "origin",
+    "sha": "aa5df36d9c3d62bded37e46947529a778effb255",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "blackmath88/b2-projection-evidence",
+    "sha": "8f4e31dccd27c54ff5dba99088a09bd1557ee7ff",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "blackmath88/b3-sdm-implementation",
+    "sha": "a2433d463d490bc860095908db5bf502883f9e0a",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "blackmath88/b4-alignment-first-sdm",
+    "sha": "25380bf280bf6639c71ebbff0a927ceef6e2fffc",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "blackmath88/b5-competitive-semantic-alignment",
+    "sha": "25a9813507b6d0ab541ed10a7f9fce379c42148a",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "blackmath88/b6-semantic-risk-atlas",
+    "sha": "39f710194f29260a931d1e5fad1890617b7970d2",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "blackmath88/b7-structural-semantic-verification",
+    "sha": "95c625109bcbe0f7f960a6f2aca3fcba96a7509f",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "blackmath88/b8-frontier-apertus-transfer",
+    "sha": "4cb217650d3b4b45bc56f6d040851ccd346b19d5",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "blackmath88/federal-discovery-34-36-20261014",
+    "sha": "fa8b31cfbd3c2ed8275dad9cb9f2b77dc1b93152",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "blackmath88/lost-in-switzerland-federal-pilot",
+    "sha": "fe11baea4d5c30ceb36e6b87e3d249b09321cedd",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "claude/quirky-babbage-wi047n",
+    "sha": "b11d71bbf81c912a11aa237f18e7a4f89ee67949",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "docs/b7-next-day-handoff-20261014",
+    "sha": "2a83afdc3e6238cd6d37da395b80e212a62bbb13",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "docs/federal-first-observatory-plan-20261013",
+    "sha": "01c70b1a765587f70acf19d9e2a2de25e7798410",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "docs/nebu-full-dev-baseline-20261014",
+    "sha": "d6f14191b673925752b97ca06572ee1b626a7848",
+    "contained": true,
+    "retain": true
+  },
+  {
+    "branch": "docs/s1-faictory-delivery-contract",
+    "sha": "3a4fda0ad22ef7c05c6672bc75d1ad90d5bbf2f7",
+    "contained": false,
+    "retain": true
+  },
+  {
+    "branch": "feat/b0-b2-mvp",
+    "sha": "68675a75113111c49864e9eb017d2e5415410682",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "feat/b3-semantic-decision-middleware",
+    "sha": "5892e5060b80623a253ce648d9317ced0567a582",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "feat/federal-evidence-desk-20261014",
+    "sha": "2f1f9c0775273531cb89cde63b2702b6720de85e",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "feat/zurich-evidence-workflow",
+    "sha": "98a4c585fe8a3eea0d67661315e7b0f9a68424a1",
+    "contained": false,
+    "retain": true
+  },
+  {
+    "branch": "feat/zurich-semantic-observatory-pilot",
+    "sha": "e023bff764d3c9626d5f2e30a4317a5ddbe7ae77",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "integration/experiments-research-20261014",
+    "sha": "6fd687a6b60beae8e6dfd6c4f38984c2cad18fa2",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "research/alternative-prompts-20261014",
+    "sha": "24dbac1f4f06ac287052bd350f3797ee418595c6",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "research/apertus-adaptation-20261014",
+    "sha": "72cea19debb4cdb8d0bc96b7bca73bb7b106f622",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "research/denkraum-b5-decision-gates-20261013",
+    "sha": "b6ab132dfe129ae77f1119afc6f297ebce687650",
+    "contained": true,
+    "retain": false
+  },
+  {
+    "branch": "research/semantic-risk-and-multipass-literature-20261013",
+    "sha": "f0d777a3095220f49854bc8d1039872ce7d7baff",
+    "contained": true,
+    "retain": false
+  }
+]

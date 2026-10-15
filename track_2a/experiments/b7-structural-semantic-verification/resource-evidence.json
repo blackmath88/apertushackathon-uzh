@@ -1,0 +1,10 @@
+{
+  "schema": "uzh-rsd.b7-resource/v1",
+  "machine": {"hostname": "nzxt", "cpu_threads": 16, "ram_total_gib": 31, "ram_available_before_gib": 21, "disk_available_before_gib": 341, "gpu": "Intel Arc Pro B60", "vram_counter": "not exposed through readable sysfs/xpu-smi"},
+  "matrix_cache": {"records": 30, "bytes": 37873365, "hashes_matching_provenance": 30, "embedding_calls": 0, "source_worktree_read_only": true},
+  "apertus": {"model": "Apertus-v1.5-8B Q8_0", "gguf_bytes": 8567121856, "gguf_sha256": "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d", "llama_cpp_commit": "7ab4ee7", "endpoint": "127.0.0.1:11436", "startup_seconds_approx": 7.61, "wall_seconds_server_approx": 519.97, "runtime_repairs": 0, "alternatives_used": 0, "stopped_after_capture": true},
+  "morrow": {"pid_before": 1240, "pid_after": 1240, "user": "achim", "endpoint": "127.0.0.1:11435", "model": "Qwen3-14B-Q4_K_M", "healthy_after": true, "touched": false},
+  "calls": {"benchmark": 1578, "synthetic": 192, "total": 1770, "invalid": 0, "errors": 0, "prompt_tokens": 132480, "completion_tokens": 3540, "request_latency_total_seconds": 497.15003911093663},
+  "cost": {"paid_or_cloud": false, "monetary": 0, "downloads": "one small read-only Git clone of official CTFAlign source at commit 30f4f89; no model download"},
+  "dependencies": {"experiment_execution_python": "existing read-only B5 task venv", "experiment_numpy": "2.4.2", "experiment_scipy": "1.17.0", "test_environment": "ignored track_2a/.venv from requirements-s1.lock plus requirements-hf.txt", "system_python_modified": false}
+}

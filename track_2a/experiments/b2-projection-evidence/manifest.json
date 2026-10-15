@@ -1,0 +1,459 @@
+{
+  "schema": "uzh-rsd.projection-experiment-manifest/v1",
+  "created_utc": "2026-10-13T15:56:58+00:00",
+  "split": "dev",
+  "dataset": {
+    "repo": "ZurichNLP/SwissGov-RSD",
+    "revision": "f16aa0536811b8c0cf975fede21eec5996e4b3c1"
+  },
+  "selection": {
+    "method": "within each language: source-length terciles; quotas 4/3/3 short/medium/long; deterministic round-robin over gold-derived burden/type",
+    "seed": "b2-projection-evidence-v1",
+    "sample_per_language": 10,
+    "gold_use": "selection stratum and post-inference scoring only; never prompt input",
+    "excluded_ids_source": "SwissGov-RSD list_to_drop.txt",
+    "excluded_ids_sha256": "3bd489505875ecc0800685f1b732f84dad7b7c25380f63612cadcfbe2732857a"
+  },
+  "projection_variants": {
+    "P0": {
+      "method": "frozen strict exact/normalised excerpt matching",
+      "max_excerpt_tokens": 40
+    },
+    "P1": {
+      "method": "same strict matching; cap-only change predeclared before scoring",
+      "max_excerpt_tokens": 160
+    },
+    "P2": {
+      "status": "infeasible",
+      "reason": "B2 response schema contains excerpts but no offsets; offsets will not be manufactured"
+    }
+  },
+  "counts": {
+    "en-de": 10,
+    "en-fr": 10,
+    "en-it": 10
+  },
+  "entries": [
+    {
+      "id": "admin_de_3",
+      "pair": "en-de",
+      "doc_index": 3,
+      "tokens_a": 171,
+      "tokens_b": 147,
+      "text_a_sha256": "8cc6433982191e496e093c1bc5957db6f7bddbce6e89116484acddd05bc799d9",
+      "text_b_sha256": "fe6e351601e1dd74b11fea0969843d5ab63f00489c2a9c37d638d65699efdb07",
+      "gold_sha256": "a20c68b8ec8fc704db9b49fc0c92709f3e14512d12964dc2e4a04816771c75d8",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "b_only"
+      }
+    },
+    {
+      "id": "admin_de_43",
+      "pair": "en-de",
+      "doc_index": 43,
+      "tokens_a": 88,
+      "tokens_b": 89,
+      "text_a_sha256": "081d372189b11921e48322e8a75a3b7b767ea32a662fa42935d2d995b03ad8b4",
+      "text_b_sha256": "5b95e95642f9089ed21c4b84ba061f1ffc9ea75653a3b9966e4970cd5d370256",
+      "gold_sha256": "113228c6193822b128c892869c499f1335a7f1f258f9c959874ea1367ccbac7c",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_de_105",
+      "pair": "en-de",
+      "doc_index": 105,
+      "tokens_a": 60,
+      "tokens_b": 50,
+      "text_a_sha256": "71c5a8cf80be08556d863f5b3b5c34f695b148911c741681b2660d7fb9f632de",
+      "text_b_sha256": "1ba8dc4fe3ca00f98464d411c80f596006c0bfa996a82dd0756907d1c6851f2e",
+      "gold_sha256": "dc2d9c1be52cddf4a8354f3ebc2f992586feb06a08e7ad70576e8f6d30d2c399",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "a_only"
+      }
+    },
+    {
+      "id": "admin_de_158",
+      "pair": "en-de",
+      "doc_index": 158,
+      "tokens_a": 148,
+      "tokens_b": 121,
+      "text_a_sha256": "656311ec481a8aaf6a9d49a02497a821d5518f7564cc19ec7908b67d7ba9b520",
+      "text_b_sha256": "64046faed8c3d8a5af3cbf1f16cf690fb812bb7a742ce832f2e3f1e0aee727f3",
+      "gold_sha256": "0cf4537705a01720a6b4537477fb50e1e943cd3f15429db0a175bd387675b060",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "b_only"
+      }
+    },
+    {
+      "id": "admin_de_36",
+      "pair": "en-de",
+      "doc_index": 36,
+      "tokens_a": 242,
+      "tokens_b": 220,
+      "text_a_sha256": "d1378c940399781f75c82c0084da29a56e48b3870ada7ef9677867ec855abc6f",
+      "text_b_sha256": "18d780cd0f8624323a7c3f9c640532b211d2e47388d1446f4307264f49edf7c9",
+      "gold_sha256": "117481b114d86082596a064ed6db6d377ea3866e5308a6255e09af5e7c2481a9",
+      "stratum": {
+        "source_length": "medium",
+        "gold_burden_type": "b_only"
+      }
+    },
+    {
+      "id": "admin_de_223",
+      "pair": "en-de",
+      "doc_index": 223,
+      "tokens_a": 231,
+      "tokens_b": 217,
+      "text_a_sha256": "124fc07ac4bd871dadd6d56c5b0383bdd96da28d133a544444a8555530869f86",
+      "text_b_sha256": "49e0161206ed3e2d2283178ccb00ed3b3ab4be906b4061101d8ea78dd0c54b4b",
+      "gold_sha256": "ddcc1db36f1f9d7c0ff36867917a423af1a85f1a878dc726a5ce572e25ed847e",
+      "stratum": {
+        "source_length": "medium",
+        "gold_burden_type": "none"
+      }
+    },
+    {
+      "id": "admin_de_159",
+      "pair": "en-de",
+      "doc_index": 159,
+      "tokens_a": 384,
+      "tokens_b": 337,
+      "text_a_sha256": "cb51e1a859b7709c2b727fb30c27684c53b437a15fe3c7864971be3c04e50647",
+      "text_b_sha256": "d33366eb3e895d99ad86545ad3be546098044c0ef48343b020f884a004afde8e",
+      "gold_sha256": "a59eb42865596591cb5b7b8b12f87ac8802efcb68a025536f2b85a9f7b8a7517",
+      "stratum": {
+        "source_length": "medium",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_de_203",
+      "pair": "en-de",
+      "doc_index": 203,
+      "tokens_a": 488,
+      "tokens_b": 476,
+      "text_a_sha256": "5fefbdacb690ee7ce9232fa6c11c55784ed993f734ef5d763a53a0022c2c3529",
+      "text_b_sha256": "298106063b615ab3691bdd7ef332c8c4ccb9e27e25e6121e25f41d3346b555d8",
+      "gold_sha256": "e1ddf7883f42445131992b37c5de3a7eb0f6dc1b49d38fa45ea3d9ab23862cb5",
+      "stratum": {
+        "source_length": "long",
+        "gold_burden_type": "b_only"
+      }
+    },
+    {
+      "id": "admin_de_140",
+      "pair": "en-de",
+      "doc_index": 140,
+      "tokens_a": 435,
+      "tokens_b": 435,
+      "text_a_sha256": "b03f6b48acca09d43c8668a1715bc6a3e5b3b003b787948233502a8aeac8d88a",
+      "text_b_sha256": "e983d51f3556c5976e3dd81b740378bec826c8f82001669f8f15bfc69c7bd920",
+      "gold_sha256": "5a62134aad1040b5a2869d30c9881c4dbb62664fb168093e3f879ff42cb776b5",
+      "stratum": {
+        "source_length": "long",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_de_194",
+      "pair": "en-de",
+      "doc_index": 194,
+      "tokens_a": 553,
+      "tokens_b": 576,
+      "text_a_sha256": "fae81b5c262651b5bf6b73ff21094fc3d04893f97d25876027abdaabc2b47efc",
+      "text_b_sha256": "124c4cbcfc66457809c853c90c87adb4fe29a22e5ec1e934eefe71e75c08e729",
+      "gold_sha256": "71df3ea7afea99c204d69d55bad01ac42ac88e11e8c8186dc89d92a591f9f5c6",
+      "stratum": {
+        "source_length": "long",
+        "gold_burden_type": "b_only"
+      }
+    },
+    {
+      "id": "admin_fr_156",
+      "pair": "en-fr",
+      "doc_index": 156,
+      "tokens_a": 134,
+      "tokens_b": 149,
+      "text_a_sha256": "dcf27c991e208107a0c251f94d118f60efafbd07a70ee7a93464d781b2b01f78",
+      "text_b_sha256": "456e8f01e0b8eca68802865b3908e043c842cf27cdaf891f73e1249b8a1227ae",
+      "gold_sha256": "49da05f7b2148faac503233acf838990691a68f847465b537400eccf3319a7f6",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_fr_105",
+      "pair": "en-fr",
+      "doc_index": 105,
+      "tokens_a": 60,
+      "tokens_b": 52,
+      "text_a_sha256": "71c5a8cf80be08556d863f5b3b5c34f695b148911c741681b2660d7fb9f632de",
+      "text_b_sha256": "bd2be18e484311aaa2e6f8672826bc5140feb2e8b5ce677e63c62953b09a0adb",
+      "gold_sha256": "9a952df35ea0ac96dd3e6c29ca7e707214d65478c8bf6ac51954d90350993286",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "a_only"
+      }
+    },
+    {
+      "id": "admin_fr_177",
+      "pair": "en-fr",
+      "doc_index": 177,
+      "tokens_a": 159,
+      "tokens_b": 175,
+      "text_a_sha256": "35376cc5756b9d43e20fb3ce35e44cdd5a4a26bcc623e89e68a0f730d00cd99e",
+      "text_b_sha256": "aab45c5c20c6462c07c2526e66371d1a13adc83952abd0f22bfae0660cbded4f",
+      "gold_sha256": "9c58e0d2e4626a9c779382ec5d79778daee5136a1646e27fdb31b8b16011fab3",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "none"
+      }
+    },
+    {
+      "id": "admin_fr_202",
+      "pair": "en-fr",
+      "doc_index": 202,
+      "tokens_a": 213,
+      "tokens_b": 222,
+      "text_a_sha256": "40bea1970bb9a6c640d207f392755e902054689dea7c82bc7cb723b905a03fc4",
+      "text_b_sha256": "acd263860226a11b05296b31770bc7fff2b26967280f23e3093897af1edc9c2b",
+      "gold_sha256": "88321ad3cbdfef4f280c842dd794793623041539c2599abdf68245a20d949584",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_fr_113",
+      "pair": "en-fr",
+      "doc_index": 113,
+      "tokens_a": 447,
+      "tokens_b": 479,
+      "text_a_sha256": "080ca4b3cb9713e078e51bfef8c437c684a8753469839463459a040e945bb524",
+      "text_b_sha256": "40fb0f2da33b34a87942936f350fefc1e55ba3677665d067114e36aa790deaa4",
+      "gold_sha256": "fb8c85682eafe2b1efe8d4e0812166c483e90073040ebb8630349e8645cf1ac8",
+      "stratum": {
+        "source_length": "medium",
+        "gold_burden_type": "b_only"
+      }
+    },
+    {
+      "id": "admin_fr_167",
+      "pair": "en-fr",
+      "doc_index": 167,
+      "tokens_a": 403,
+      "tokens_b": 478,
+      "text_a_sha256": "1507a79379c4c98d3c7b017798aad90ff1d950e806b3a136ab05ae64d439c4e5",
+      "text_b_sha256": "7902d3d33280c7ff3621d333cdd184569bbfcb6edb56efee3f55f6b87c02bef3",
+      "gold_sha256": "6ef23dcb0321ff6d0b922cb41a9d73028064cff94d7397c5fd67a88be37c38b5",
+      "stratum": {
+        "source_length": "medium",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_fr_58",
+      "pair": "en-fr",
+      "doc_index": 58,
+      "tokens_a": 275,
+      "tokens_b": 287,
+      "text_a_sha256": "38c71567d41ba94462494cf907b54f8c8b592c1f98f688fb21862017db60847b",
+      "text_b_sha256": "39103c96caab2f55be8518dbef4f0771a6966156cc437465012af821d1db6607",
+      "gold_sha256": "bb07ad6592a12bebc5385289591e67464fd6f0e02adac2d4fb7fb2a9f77613da",
+      "stratum": {
+        "source_length": "medium",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_fr_104",
+      "pair": "en-fr",
+      "doc_index": 104,
+      "tokens_a": 956,
+      "tokens_b": 1163,
+      "text_a_sha256": "9553a6bd77e79c67fcb10ad0fc3bf2026a1ac37d1c2dc39fe9230f66784e1f8e",
+      "text_b_sha256": "8997c951fa060570db7d1d98c035779f89e7ec0f98eb3fae0f7d083a4163e24e",
+      "gold_sha256": "b37b6efa44b27628fadc1392519ab7fa335cd572189189e2ff06c5e06b811623",
+      "stratum": {
+        "source_length": "long",
+        "gold_burden_type": "none"
+      }
+    },
+    {
+      "id": "admin_fr_131",
+      "pair": "en-fr",
+      "doc_index": 131,
+      "tokens_a": 921,
+      "tokens_b": 1128,
+      "text_a_sha256": "88a049c6e0547fac178a50142364f45ef73ca74e737781b3f41f2b025a9c2b3e",
+      "text_b_sha256": "e4aefdf6f78528102e3139e2cb44ecf1eaed846a26b2b78db3bf0e04f513e444",
+      "gold_sha256": "190c1b7fcb745e71356b451960572c3134011df15ed9d6e0babf766bb4a88ab8",
+      "stratum": {
+        "source_length": "long",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_fr_53",
+      "pair": "en-fr",
+      "doc_index": 53,
+      "tokens_a": 402,
+      "tokens_b": 572,
+      "text_a_sha256": "3f5fc2707ec4af4f368bca697fae45e64aa4c0eb2e924948856354a28957f7cc",
+      "text_b_sha256": "aba7319a2ebca108fb66b15c08c0c740d566122f288e4bb089b11bce4c53b8d5",
+      "gold_sha256": "4b26eb87bc43381107fe76532f7f0f2cc9cfb085de2171f3d4b9bfd63dcbf583",
+      "stratum": {
+        "source_length": "long",
+        "gold_burden_type": "b_only"
+      }
+    },
+    {
+      "id": "admin_it_92",
+      "pair": "en-it",
+      "doc_index": 92,
+      "tokens_a": 150,
+      "tokens_b": 134,
+      "text_a_sha256": "c6565c6370ad2e6e7d6a8fbe08a969ca704dc6c96b5d8480cc2b6d1475007d0f",
+      "text_b_sha256": "6f93fdc46bc8e3a2ab6385b40f0da300058f58b9cec8dda67cf6951b12cd19a4",
+      "gold_sha256": "da81494e054b7369426e754d432d23b016e1ef42a87c93b5f82363d849c6317a",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_it_65",
+      "pair": "en-it",
+      "doc_index": 65,
+      "tokens_a": 184,
+      "tokens_b": 217,
+      "text_a_sha256": "651a9327b6b6f4aa70218d44f19f35d2ed0f1ae482df3946b5217968d6f5f399",
+      "text_b_sha256": "1ce7e1eff0de600ea8b8eb4225bc12cb01cc5499076d21b8ec2ee073e4d496ef",
+      "gold_sha256": "f3c5d428d20f18d19644eccbd7a863b877818d80feaee874f01a9b2f33b03a97",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_it_133",
+      "pair": "en-it",
+      "doc_index": 133,
+      "tokens_a": 247,
+      "tokens_b": 230,
+      "text_a_sha256": "e7d80b541019ba002477256e35f884fc6e96d77c3f1e96db431e4d43b7f60430",
+      "text_b_sha256": "a16567c6006a2f1780b0beb95bf2a6b33c6d65a4de9ffe258bb8ff6a3519af7f",
+      "gold_sha256": "2a845faf918740ec6d538cce53bba36968a599271b5ec6d5f3357d6dd75fd6ea",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_it_37",
+      "pair": "en-it",
+      "doc_index": 37,
+      "tokens_a": 173,
+      "tokens_b": 155,
+      "text_a_sha256": "2347ca008803100843ba1f76f9a62d3d6e3c4640fb4f46e86b047047947010c6",
+      "text_b_sha256": "0c48355e09d504a8bafc975af6d8ed8453961ea889b380fc7714a86c619100ac",
+      "gold_sha256": "c94d2d357f15a9caa4d28d2d87d517ebefb92a0d36e0f2e1c9c1b40561cb0c24",
+      "stratum": {
+        "source_length": "short",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_it_217",
+      "pair": "en-it",
+      "doc_index": 217,
+      "tokens_a": 340,
+      "tokens_b": 358,
+      "text_a_sha256": "7c9fee230116badb9095f1da062efd8d2e07121233df6d1646d98f3290a9694d",
+      "text_b_sha256": "d175e343d66b08c5e4cc8a6ee259c047658fa08e70d1efe5eb723b07e56959e6",
+      "gold_sha256": "0dd3764094ae17c46dcfaf8ca9e4e9870bcc2f9c7069ebd43c362110bdb37200",
+      "stratum": {
+        "source_length": "medium",
+        "gold_burden_type": "a_only"
+      }
+    },
+    {
+      "id": "admin_it_167",
+      "pair": "en-it",
+      "doc_index": 167,
+      "tokens_a": 403,
+      "tokens_b": 442,
+      "text_a_sha256": "1507a79379c4c98d3c7b017798aad90ff1d950e806b3a136ab05ae64d439c4e5",
+      "text_b_sha256": "6e77abf107534e7d1c0ff76afeeb340d504b92747565afabc5bb4138878a7925",
+      "gold_sha256": "e0af2e67cd7a44684d09acd42e3d18c0e416540cfd2208fd2cb413363c07b476",
+      "stratum": {
+        "source_length": "medium",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_it_90",
+      "pair": "en-it",
+      "doc_index": 90,
+      "tokens_a": 360,
+      "tokens_b": 429,
+      "text_a_sha256": "73fc6038830f4309227ec0194e9b82b2f5daa389c7a9f80b915405579be29ef5",
+      "text_b_sha256": "5540b8c6c584035c6a5b2bc250e004ffb1d6600a77be535bd13c3456c620352f",
+      "gold_sha256": "e204e2bb8e131d554ad187c9f98df3fe221ee3c7447cfda9baabad1180b60df4",
+      "stratum": {
+        "source_length": "medium",
+        "gold_burden_type": "none"
+      }
+    },
+    {
+      "id": "admin_it_116",
+      "pair": "en-it",
+      "doc_index": 116,
+      "tokens_a": 616,
+      "tokens_b": 585,
+      "text_a_sha256": "2c2b0efade2e4c2ddbefbdb27e0905e56d1cf2f00d06a9da1c0ac316cc49cd9b",
+      "text_b_sha256": "2c3fd2234e45ed82e0e66b6e207a037d3ce210ac7bd4dee4b600650cf0ba1c46",
+      "gold_sha256": "86452c8c606b51dfa49c56c284f015e861595e67ecc3455dd64939658db5bea1",
+      "stratum": {
+        "source_length": "long",
+        "gold_burden_type": "both"
+      }
+    },
+    {
+      "id": "admin_it_15",
+      "pair": "en-it",
+      "doc_index": 15,
+      "tokens_a": 528,
+      "tokens_b": 509,
+      "text_a_sha256": "942c75866f5b5d2ef2516995733de77fb5b85dda4db84cb6ecc97c6015ac46c8",
+      "text_b_sha256": "9a51d319fb5d7de77fe1e5e8f4afe86af341fa64c4dfe72f774e174e45f8741c",
+      "gold_sha256": "44685120950ae87fb5c151349259ebd43795e1139ccfb560e3a4cf3b37aa4c21",
+      "stratum": {
+        "source_length": "long",
+        "gold_burden_type": "none"
+      }
+    },
+    {
+      "id": "admin_it_203",
+      "pair": "en-it",
+      "doc_index": 203,
+      "tokens_a": 488,
+      "tokens_b": 463,
+      "text_a_sha256": "5fefbdacb690ee7ce9232fa6c11c55784ed993f734ef5d763a53a0022c2c3529",
+      "text_b_sha256": "622b9f376e85225a5d6ae5d3f3227e38f383fa223973a5261b34725e07946679",
+      "gold_sha256": "3c50e6e2698930a64c08d36c4edce07bc204727e2ea13481ef18173462837f92",
+      "stratum": {
+        "source_length": "long",
+        "gold_burden_type": "both"
+      }
+    }
+  ],
+  "manifest_sha256": "f1f7e03d1951fd6a06bbd70537e193e7a4781c5d7985768bd94ea8106572b7de"
+}

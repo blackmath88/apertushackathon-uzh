@@ -1,44 +1,48 @@
+> **Development entry point: `main`.** Federal campaign app, discovery, Pages demo and research are consolidated here. Start with [PROJECT_MAP.md](PROJECT_MAP.md) and the [GitHub Pages guide](track_2a/docs/GITHUB_PAGES.md). Historical feature branches are no longer app entry points. Live operations and scientific acceptance retain their documented gates.
+
 # Lost in Switzerland — UZH SwissGov-RSD
 
 Hack Apertus 2026 · Track 2A · one submission, one measured B0/B2 comparison.
 
-**Question:** does asking Apertus for meaning-changing spans, then projecting them onto tokens, work better than asking it to score tokens directly?
+**Question:** does asking Apertus for meaning-changing spans, then projecting them onto tokens (B2), work better than asking it to score every token directly (B0, the paper baseline)?
 
 ## Current state
 
-The dev-only adapter, token bookkeeping, fixed nine-pair manifest, evaluator and opt-in Apertus smoke check are implemented. **There are no real model predictions or benchmark results yet.** The owner is arranging Apertus access.
+B0, B2, scoring, Docker `make run` and the HF GPU runner are implemented and tested. **First measured pilot committed** (12 Oct 2026, run `20261012T062327Z-ff965461`, nine dev documents). B2 output was parseable for 9 of 9 documents and B0 for 3 of 9; none of the three B0 documents is strictly valid (46 of 541 tokens fell back to "no difference"). On the matched set, three language pairs that share one English source, macro Spearman is 0.136 for B0 and 0.138 for B2: nearly equal, with no demonstrated accuracy advantage either way. B2 used about 20 % of B0's tokens. This is indicative, not a benchmark. **Status: candidate prepared with blockers.** `make run` has never run against a real Apertus endpoint. The UZH Q&A says judges score on the **test split**, while this repo is dev-only by design (see N-RULES-1); see [judge readiness](track_2a/docs/JUDGE_READINESS.md) and the [13 Oct review](track_2a/docs/review/REVIEW_2026-10-13.md). See [results](track_2a/results/20261012T062327Z-ff965461/results.md) and [STATUS](track_2a/docs/STATUS.md).
 
-`make run` still runs a synthetic scaffold example. It is not the final Docker judge entrypoint.
+## Commands
+
+| Goal | Command | Needs |
+|---|---|---|
+| Judge run | `LLM_NAME=… LLM_BASE_URL=… LLM_API_KEY=… make run` | Docker, OpenAI-compatible Apertus endpoint |
+| Re-score committed run, no model inference | `make reproduce` | Docker; network for the base image and the pinned dev data/evaluator |
+| Accounting supplement for the committed run | `make -C track_2a audit` | Python venv after `s1-setup s1-fetch` |
+| Tests (no skips allowed) | `make -C track_2a s1-setup s1-fetch s1-check` | Python ≥ 3.11 |
+
+Without the `LLM_*` variables, `make run` stops with a clear BLOCKED message (exit 3). It never substitutes results.
+
+## Measured GPU run (owner machine)
+
+This uses the token saved by `hf auth login`. The token is passed to the job only as the `HF_TOKEN` secret; it is never printed or written. One job, `l40sx1`, timeout 45 min, so the ceiling is **$1.35**. The spend ledger refuses launches beyond $3.00 in total, and there are no automatic retries.
+
+```bash
+cd track_2a
+make mvp-setup s1-fetch          # venv: evaluator deps + huggingface_hub
+make hf-launch-dry               # bundle → private dataset <you>/uzh-rsd-runs; no GPU, $0
+make hf-launch                   # starts ONE GPU job; prints run id and job URL
+make hf-collect RUN_ID=<run id>  # waits, downloads raw results (repo, else job log), records actual cost
+make evaluate  RUN_ID=<run id>   # scores, writes runs/<run id>/results.md + predictions
+make hf-spend                    # ledger
+```
+
+To commit a run: `cp -r runs/<run id> results/` (drop nothing: raw.jsonl, run_meta.json, results.*, predictions/).
 
 ## Start here
 
-- [Current MVP plan](track_2a/docs/MVP_PLAN.md)
-- [Status and verification](track_2a/docs/STATUS.md)
-- [Submission checklist](track_2a/docs/SUBMISSION_CHECKLIST.md)
-- [Challenge brief](docs/challenge-source/CHALLENGE.md)
-- [Source provenance](docs/challenge-source/source.json)
+- [Orca handoff — submission preparation, 13 October](track_2a/docs/ORCA_HANDOFF_2026-10-13.md): work packets, review gates and owner decisions; no new compute authorized.
 
-## Verify the foundation
+- [MVP plan](track_2a/docs/MVP_PLAN.md) · [Status](track_2a/docs/STATUS.md) · [Submission checklist](track_2a/docs/SUBMISSION_CHECKLIST.md)
+- [Technical report draft](track_2a/technical_report.md)
+- [Challenge brief](docs/challenge-source/CHALLENGE.md) · [Sources](track_2a/docs/SOURCES.md)
 
-```bash
-make -C track_2a s1-setup
-make -C track_2a s1-fetch s1-validate s1-check
-```
-
-The recorded lock was originally checked on Python 3.13. The review also checked the suite using Python 3.12 and the runtime's installed scientific libraries; see the review record for the environment limitation.
-
-Only pinned dev files are downloaded. Never fetch all splits or use test data during development.
-
-Once an approved Apertus endpoint is configured locally with `LLM_NAME`, `LLM_BASE_URL` and `LLM_API_KEY`:
-
-```bash
-make -C track_2a s1-smoke-live
-```
-
-This sends exactly one request. Keep credentials out of commits and shared logs. A successful smoke check establishes endpoint readiness, not benchmark performance.
-
-## Submission focus
-
-Build B0, B2, comparable predictions and measurements, Docker execution and the technical report. A small viewer from real results is optional. Canton collection, B2a/B3, additional tracks and the Weavr/Faictory trial are deferred from this submission path.
-
-Repository integration does not accept a Weavr Mission or waive a Need. Staged governance material remains historical preparation, with no new dispatch authorized. Publication and final portal submission remain separate owner decisions.
+Only pinned dev files are downloaded. The test split is never fetched, prompted or evaluated, and the code refuses it before any I/O. Publication and portal submission are owner decisions.

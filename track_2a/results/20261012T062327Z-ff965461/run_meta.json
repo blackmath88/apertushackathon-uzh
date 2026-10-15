@@ -1,0 +1,63 @@
+{
+  "schema": "uzh-rsd.run-meta/v1",
+  "run_id": "20261012T062327Z-ff965461",
+  "job_id": "6acc7ce1095c578089328f6d",
+  "accelerator": "gpu",
+  "source_commit": "19b61835dee344b34272a0f622d88d342dbace42",
+  "bundle_sha256": "ff9654617c18246e9cf72a94f72caaf103c212bb232dd59b9255f2012de093e7",
+  "started_utc": "2026-10-12T07:16:56+00:00",
+  "methods": [
+    "b0",
+    "b2"
+  ],
+  "prompt_versions": {
+    "b0": "b0-paper-admin-template@1807a42/token-list-v1",
+    "b2": "b2-spans-v1"
+  },
+  "max_new_tokens": {
+    "b0": 4096,
+    "b2": 1024
+  },
+  "limit": null,
+  "deadline_min": 33.0,
+  "python": "3.12.3",
+  "status": "finished",
+  "manifest_sha256": "61e0e98b7a9347716f4a71bc002364a600993c7346d6046e4f8d65899059a835",
+  "documents": [
+    "admin_de_43",
+    "admin_fr_43",
+    "admin_it_43",
+    "admin_de_136",
+    "admin_fr_136",
+    "admin_it_136",
+    "admin_de_197",
+    "admin_fr_197",
+    "admin_it_197"
+  ],
+  "backend": {
+    "backend": "transformers",
+    "model": "swiss-ai/Apertus-v1.5-8B",
+    "revision": "a411d838600baf0e3635a3daf66fb7c55fc97bb6",
+    "dtype": "torch.bfloat16",
+    "device": "NVIDIA L40S",
+    "torch": "2.11.0+cu130",
+    "transformers": "5.14.0.dev0",
+    "cuda": "13.0",
+    "model_load_s": 91.2,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "message_content_format": "blocks",
+    "decoding": {
+      "do_sample": false
+    }
+  },
+  "counts": {
+    "attempted": 18,
+    "call_failed": 0,
+    "skipped_deadline": 0
+  },
+  "finished_utc": "2026-10-12T07:33:27+00:00",
+  "elapsed_s": 991.6,
+  "upload_failures": 0
+}

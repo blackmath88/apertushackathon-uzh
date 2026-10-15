@@ -1,0 +1,225 @@
+{
+  "schema": "live_government_pilot/v1",
+  "artifact_kind": "demonstration_manifest",
+  "profile": "bfe-federal",
+  "fixture": true,
+  "policy": {
+    "schema": "live_government_pilot/policy-review/v1",
+    "profile": "bfe-federal",
+    "retrieval_utc": "2026-10-13T19:54:42Z",
+    "request_count": 2,
+    "content_page_request_count": 0,
+    "sources": [
+      {
+        "url": "https://www.bfe.admin.ch/robots.txt",
+        "retrieved_utc": "2026-10-13T19:54:40Z",
+        "http_status": 200,
+        "sha256_body": "9b8ada28ab94e051e4870b7240ff2f3e9a6fa011e696ba0a2df62d60401fa01f",
+        "summary": "The wildcard user-agent group has an empty Disallow value and advertises a BFE sitemap. This does not grant content-reuse rights."
+      },
+      {
+        "url": "https://www.admin.ch/de/rechtliches",
+        "retrieved_utc": "2026-10-13T19:54:42Z",
+        "http_status": 200,
+        "sha256_body": "0a27e15ef3cec2be9197dd28803ba9b7de97e3e51cfea97266df87f7e16c9891",
+        "summary": "The applicable federal legal notice reserves content rights and says prior written permission is required to reproduce site elements. Downloading or copying transfers no rights."
+      }
+    ],
+    "content_collection_permitted": false,
+    "decision": "Live BFE content collection and reproduction stopped: prior written permission for reproduction is not documented. Only robots and the applicable official legal notice were requested; neither content seed was fetched.",
+    "raw_policy_responses": "local-only and not committed",
+    "review_status": "POLICY_BLOCKED",
+    "reviewer_contacted": false
+  },
+  "pair": {
+    "left": {
+      "schema": "live_government_pilot/v1",
+      "artifact_kind": "fixture_capture",
+      "profile": "bfe-federal",
+      "source_url": "https://www.bfe.admin.ch/de/fixture-dunstabzugshauben",
+      "canonical_url": "https://www.bfe.admin.ch/de/fixture-dunstabzugshauben",
+      "locale": "de-CH",
+      "retrieved_at_utc": "2026-10-13T20:00:00Z",
+      "sha256_html": "beb47d41897370406160339b65366c38563840ba2dda75275da18b0fd992ce6c",
+      "sha256_extract": "4f9171352b24cae4174921d5909ce1d31fd4e8f085a116291657f6988302e93f",
+      "extraction_revision": "lis-main-content-v1",
+      "offset_basis": "Unicode code-point offsets into extracted_text after whitespace normalization",
+      "rights_note": "Synthetic project-authored fixture; not government source content.",
+      "fixture": true,
+      "content_address": "sha256:beb47d41897370406160339b65366c38563840ba2dda75275da18b0fd992ce6c",
+      "blocks": [
+        {
+          "id": "block-001",
+          "order": 0,
+          "section_order": 1,
+          "kind": "heading",
+          "start": 0,
+          "end": 23,
+          "minimal_excerpt": "Effiziente Küchengeräte",
+          "excerpt_truncated": false
+        },
+        {
+          "id": "block-002",
+          "order": 1,
+          "section_order": 1,
+          "kind": "paragraph",
+          "start": 24,
+          "end": 109,
+          "minimal_excerpt": "Diese synthetische Demonstration erklärt eine einfache Beratung in deutscher Sprache.",
+          "excerpt_truncated": false
+        },
+        {
+          "id": "block-003",
+          "order": 2,
+          "section_order": 2,
+          "kind": "heading",
+          "start": 110,
+          "end": 122,
+          "minimal_excerpt": "Vor dem Kauf",
+          "excerpt_truncated": false
+        },
+        {
+          "id": "block-004",
+          "order": 3,
+          "section_order": 2,
+          "kind": "list_item",
+          "start": 123,
+          "end": 160,
+          "minimal_excerpt": "Vergleichen Sie den Energieverbrauch.",
+          "excerpt_truncated": false
+        }
+      ]
+    },
+    "right": {
+      "schema": "live_government_pilot/v1",
+      "artifact_kind": "fixture_capture",
+      "profile": "bfe-federal",
+      "source_url": "https://www.bfe.admin.ch/fr/fixture-hottes-domestiques",
+      "canonical_url": "https://www.bfe.admin.ch/fr/fixture-hottes-domestiques",
+      "locale": "fr-CH",
+      "retrieved_at_utc": "2026-10-13T20:00:00Z",
+      "sha256_html": "71a65c19c654bcee5811bbb82996a21a2e2aba6fc42876255b7962a1c2dfaec7",
+      "sha256_extract": "fcd7682ea7fc814debc223ad5cfc6d50a84270dbc0a360c0cf0e673a4631b8e8",
+      "extraction_revision": "lis-main-content-v1",
+      "offset_basis": "Unicode code-point offsets into extracted_text after whitespace normalization",
+      "rights_note": "Synthetic project-authored fixture; not government source content.",
+      "fixture": true,
+      "content_address": "sha256:71a65c19c654bcee5811bbb82996a21a2e2aba6fc42876255b7962a1c2dfaec7",
+      "blocks": [
+        {
+          "id": "block-001",
+          "order": 0,
+          "section_order": 1,
+          "kind": "heading",
+          "start": 0,
+          "end": 30,
+          "minimal_excerpt": "Appareils de cuisine efficaces",
+          "excerpt_truncated": false
+        },
+        {
+          "id": "block-002",
+          "order": 1,
+          "section_order": 1,
+          "kind": "paragraph",
+          "start": 31,
+          "end": 102,
+          "minimal_excerpt": "Cette démonstration synthétique explique un conseil simple en français.",
+          "excerpt_truncated": false
+        },
+        {
+          "id": "block-003",
+          "order": 2,
+          "section_order": 2,
+          "kind": "heading",
+          "start": 103,
+          "end": 116,
+          "minimal_excerpt": "Avant l'achat",
+          "excerpt_truncated": false
+        },
+        {
+          "id": "block-004",
+          "order": 3,
+          "section_order": 2,
+          "kind": "list_item",
+          "start": 117,
+          "end": 152,
+          "minimal_excerpt": "Comparez la consommation d'énergie.",
+          "excerpt_truncated": false
+        }
+      ]
+    }
+  },
+  "analysis": {
+    "schema": "live_government_pilot/v1",
+    "artifact_kind": "pair_analysis",
+    "method": "deterministic-lexical-structural-v1",
+    "method_class": "deterministic explicitly non-Apertus lexical/structural baseline",
+    "apertus_calls": 0,
+    "gold_labels": false,
+    "spearman_claim": false,
+    "pair_status": "HUMAN_VERIFIED",
+    "pairing_evidence": [
+      {
+        "type": "explicit_fixture_review",
+        "provenance": "tests/fixtures/live_government_pilot/PAIRING.md"
+      }
+    ],
+    "reviewer": "fixture-author (synthetic equivalence only)",
+    "left": {
+      "source_url": "https://www.bfe.admin.ch/de/fixture-dunstabzugshauben",
+      "canonical_url": "https://www.bfe.admin.ch/de/fixture-dunstabzugshauben",
+      "locale": "de-CH",
+      "retrieved_at_utc": "2026-10-13T20:00:00Z",
+      "sha256_html": "beb47d41897370406160339b65366c38563840ba2dda75275da18b0fd992ce6c",
+      "sha256_extract": "4f9171352b24cae4174921d5909ce1d31fd4e8f085a116291657f6988302e93f",
+      "fixture": true
+    },
+    "right": {
+      "source_url": "https://www.bfe.admin.ch/fr/fixture-hottes-domestiques",
+      "canonical_url": "https://www.bfe.admin.ch/fr/fixture-hottes-domestiques",
+      "locale": "fr-CH",
+      "retrieved_at_utc": "2026-10-13T20:00:00Z",
+      "sha256_html": "71a65c19c654bcee5811bbb82996a21a2e2aba6fc42876255b7962a1c2dfaec7",
+      "sha256_extract": "fcd7682ea7fc814debc223ad5cfc6d50a84270dbc0a360c0cf0e673a4631b8e8",
+      "fixture": true
+    },
+    "observations": [
+      {
+        "kind": "OBSERVED_SOURCE_FACT",
+        "field": "left_block_count",
+        "value": 9
+      },
+      {
+        "kind": "OBSERVED_SOURCE_FACT",
+        "field": "right_block_count",
+        "value": 9
+      },
+      {
+        "kind": "OBSERVED_SOURCE_FACT",
+        "field": "structural_count_delta",
+        "value": {
+          "heading": 0,
+          "list_item": 0,
+          "paragraph": 0,
+          "table_cell": 0
+        }
+      }
+    ],
+    "candidates": [
+      {
+        "kind": "INFERRED_CANDIDATE",
+        "status": "UNRESOLVED",
+        "signal": "cross_language_lexical_overlap",
+        "value": 0.0,
+        "interpretation": "Diagnostic only: lexical overlap across languages does not establish equivalence or discrepancy.",
+        "review_decision": null
+      }
+    ],
+    "caveat": "No live gold labels; no correctness, legal conclusion, discrepancy or Spearman claim."
+  },
+  "generated_at_utc": "2026-10-13T20:00:00Z",
+  "limitations": [
+    "No BFE content page was fetched because applicable terms require prior written permission for reproduction.",
+    "Synthetic fixture equivalence is a pipeline demonstration, not a real government-page conclusion."
+  ]
+}

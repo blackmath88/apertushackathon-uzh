@@ -1,0 +1,17 @@
+{
+  "schema": "live_government_pilot/v1",
+  "artifact_kind": "live_run_manifest",
+  "profile": "bfe-federal",
+  "status": "POLICY_BLOCKED",
+  "request_count": 2,
+  "policy_request_count": 2,
+  "content_page_request_count": 0,
+  "captured_pages": [],
+  "verified_live_pairs": [],
+  "candidate_live_pairs": [],
+  "rejected_live_pairs": [],
+  "unresolved_live_pairs": [],
+  "apertus_calls": 0,
+  "limitation": "The official federal legal notice requires prior written permission to reproduce site elements; no such permission is documented, so the two BFE seeds were not requested and no live content was captured.",
+  "policy_review": "policy/bfe-policy-review-20261013.json"
+}

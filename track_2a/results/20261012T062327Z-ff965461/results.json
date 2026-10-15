@@ -1,0 +1,378 @@
+{
+  "schema": "uzh-rsd.results/v1",
+  "run_dir": "20261012T062327Z-ff965461",
+  "manifest_sha256": "61e0e98b7a9347716f4a71bc002364a600993c7346d6046e4f8d65899059a835",
+  "documents": 9,
+  "matched_documents": 3,
+  "official_cross_check": true,
+  "views": {
+    "matched": {
+      "b0": {
+        "per_language": {
+          "de": {
+            "documents": 1,
+            "positions": 160,
+            "spearman": 0.14281277597523034,
+            "official_spearman": 0.14281277597523034
+          },
+          "fr": {
+            "documents": 1,
+            "positions": 166,
+            "spearman": 0.13268580146119535,
+            "official_spearman": 0.13268580146119532
+          },
+          "it": {
+            "documents": 1,
+            "positions": 168,
+            "spearman": 0.1324704301905303,
+            "official_spearman": 0.1324704301905303
+          }
+        },
+        "macro": 0.13598966920898534,
+        "macro_undefined_reason": null
+      },
+      "b2": {
+        "per_language": {
+          "de": {
+            "documents": 1,
+            "positions": 160,
+            "spearman": 0.3243283178977753,
+            "official_spearman": 0.32432831789777533
+          },
+          "fr": {
+            "documents": 1,
+            "positions": 166,
+            "spearman": -0.09260029490963885,
+            "official_spearman": -0.09260029490963886
+          },
+          "it": {
+            "documents": 1,
+            "positions": 168,
+            "spearman": 0.18250921830894012,
+            "official_spearman": 0.18250921830894012
+          }
+        },
+        "macro": 0.13807908043235886,
+        "macro_undefined_reason": null
+      }
+    },
+    "available": {
+      "b0": {
+        "per_language": {
+          "de": {
+            "documents": 1,
+            "positions": 160,
+            "spearman": 0.14281277597523034,
+            "official_spearman": 0.14281277597523034
+          },
+          "fr": {
+            "documents": 1,
+            "positions": 166,
+            "spearman": 0.13268580146119535,
+            "official_spearman": 0.13268580146119532
+          },
+          "it": {
+            "documents": 1,
+            "positions": 168,
+            "spearman": 0.1324704301905303,
+            "official_spearman": 0.1324704301905303
+          }
+        },
+        "macro": 0.13598966920898534,
+        "macro_undefined_reason": null
+      },
+      "b2": {
+        "per_language": {
+          "de": {
+            "documents": 3,
+            "positions": 840,
+            "spearman": 0.3549846894841353,
+            "official_spearman": 0.3549846894841353
+          },
+          "fr": {
+            "documents": 3,
+            "positions": 930,
+            "spearman": 0.07494120823880826,
+            "official_spearman": 0.07494120823880825
+          },
+          "it": {
+            "documents": 3,
+            "positions": 892,
+            "spearman": 0.09520636208505937,
+            "official_spearman": 0.09520636208505937
+          }
+        },
+        "macro": 0.17504408660266765,
+        "macro_undefined_reason": null
+      }
+    },
+    "paper_protocol": {
+      "b0": {
+        "per_language": {
+          "de": {
+            "documents": 3,
+            "positions": 840,
+            "spearman": 0.31778989091779847,
+            "official_spearman": 0.31778989091779847
+          },
+          "fr": {
+            "documents": 3,
+            "positions": 930,
+            "spearman": 0.1766078782133445,
+            "official_spearman": 0.1766078782133445
+          },
+          "it": {
+            "documents": 3,
+            "positions": 892,
+            "spearman": 0.3098814177782303,
+            "official_spearman": 0.30988141777823036
+          }
+        },
+        "macro": 0.2680930623031244,
+        "macro_undefined_reason": null,
+        "documents_scored_as_zero": 6
+      },
+      "b2": {
+        "per_language": {
+          "de": {
+            "documents": 3,
+            "positions": 840,
+            "spearman": 0.3549846894841353,
+            "official_spearman": 0.3549846894841353
+          },
+          "fr": {
+            "documents": 3,
+            "positions": 930,
+            "spearman": 0.07494120823880826,
+            "official_spearman": 0.07494120823880825
+          },
+          "it": {
+            "documents": 3,
+            "positions": 892,
+            "spearman": 0.09520636208505937,
+            "official_spearman": 0.09520636208505937
+          }
+        },
+        "macro": 0.17504408660266765,
+        "macro_undefined_reason": null,
+        "documents_scored_as_zero": 0
+      }
+    }
+  },
+  "coverage": {
+    "b0": {
+      "documents": 9,
+      "status": {
+        "ok": 3,
+        "unparseable": 6
+      },
+      "usage": {
+        "calls": 9,
+        "latency_s_total": 732.8,
+        "latency_s_median": 86.3,
+        "prompt_tokens_total": 20057,
+        "completion_tokens_total": 22945,
+        "token_count_source": [
+          "model tokenizer"
+        ],
+        "finish_length": 3
+      },
+      "strict_valid_documents": 0,
+      "tokens_in_parsed_documents": 541,
+      "tokens_fallback_to_no_difference": 46,
+      "model_punctuation_labels": 9
+    },
+    "b2": {
+      "documents": 9,
+      "status": {
+        "ok": 9
+      },
+      "usage": {
+        "calls": 9,
+        "latency_s_total": 149.8,
+        "latency_s_median": 15.4,
+        "prompt_tokens_total": 8667,
+        "completion_tokens_total": 4682,
+        "token_count_source": [
+          "model tokenizer"
+        ],
+        "finish_length": 0
+      },
+      "spans": {
+        "items": 41,
+        "projected": 34,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 62,
+        "spans_normalised": 0,
+        "spans_not_found": 4,
+        "spans_too_long": 14,
+        "spans_ambiguous": 1,
+        "marked_tokens_a": 691,
+        "marked_tokens_b": 513
+      }
+    }
+  },
+  "per_document": [
+    {
+      "id": "admin_de_43",
+      "pair": "en-de",
+      "b0": {
+        "status": "ok",
+        "parse": "json",
+        "strict_valid": false,
+        "finish_reason": "stop",
+        "fallback_tokens": 16
+      },
+      "b2": {
+        "status": "ok",
+        "parse": "json",
+        "items": 4,
+        "projected": 4,
+        "spans_not_found": 0,
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "id": "admin_de_136",
+      "pair": "en-de",
+      "b0": {
+        "status": "unparseable",
+        "parse": "unparseable",
+        "finish_reason": "stop"
+      },
+      "b2": {
+        "status": "ok",
+        "parse": "json",
+        "items": 7,
+        "projected": 6,
+        "spans_not_found": 0,
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "id": "admin_de_197",
+      "pair": "en-de",
+      "b0": {
+        "status": "unparseable",
+        "parse": "unparseable",
+        "finish_reason": "length"
+      },
+      "b2": {
+        "status": "ok",
+        "parse": "json",
+        "items": 4,
+        "projected": 3,
+        "spans_not_found": 0,
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "id": "admin_fr_43",
+      "pair": "en-fr",
+      "b0": {
+        "status": "ok",
+        "parse": "json",
+        "strict_valid": false,
+        "finish_reason": "stop",
+        "fallback_tokens": 15
+      },
+      "b2": {
+        "status": "ok",
+        "parse": "json",
+        "items": 4,
+        "projected": 3,
+        "spans_not_found": 4,
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "id": "admin_fr_136",
+      "pair": "en-fr",
+      "b0": {
+        "status": "unparseable",
+        "parse": "unparseable",
+        "finish_reason": "stop"
+      },
+      "b2": {
+        "status": "ok",
+        "parse": "json",
+        "items": 8,
+        "projected": 7,
+        "spans_not_found": 0,
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "id": "admin_fr_197",
+      "pair": "en-fr",
+      "b0": {
+        "status": "unparseable",
+        "parse": "unparseable",
+        "finish_reason": "length"
+      },
+      "b2": {
+        "status": "ok",
+        "parse": "json",
+        "items": 2,
+        "projected": 1,
+        "spans_not_found": 0,
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "id": "admin_it_43",
+      "pair": "en-it",
+      "b0": {
+        "status": "ok",
+        "parse": "json",
+        "strict_valid": false,
+        "finish_reason": "stop",
+        "fallback_tokens": 15
+      },
+      "b2": {
+        "status": "ok",
+        "parse": "json",
+        "items": 3,
+        "projected": 3,
+        "spans_not_found": 0,
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "id": "admin_it_136",
+      "pair": "en-it",
+      "b0": {
+        "status": "unparseable",
+        "parse": "unparseable",
+        "finish_reason": "stop"
+      },
+      "b2": {
+        "status": "ok",
+        "parse": "json",
+        "items": 7,
+        "projected": 6,
+        "spans_not_found": 0,
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "id": "admin_it_197",
+      "pair": "en-it",
+      "b0": {
+        "status": "unparseable",
+        "parse": "unparseable",
+        "finish_reason": "length"
+      },
+      "b2": {
+        "status": "ok",
+        "parse": "json",
+        "items": 2,
+        "projected": 1,
+        "spans_not_found": 0,
+        "finish_reason": "stop"
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/uzh-rsd/b8/R0.schema.json",
+  "title": "B8 R0 token-centered evidence",
+  "type": "object",
+  "required": ["schema", "case_id", "representation", "source", "counterpart"],
+  "properties": {
+    "schema": {"const": "uzh-rsd.b8-representation/v1"},
+    "case_id": {"type": "string", "minLength": 1},
+    "representation": {"const": "R0"},
+    "source": {"$ref": "#/$defs/span"},
+    "counterpart": {"$ref": "#/$defs/span"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "span": {
+      "type": "object",
+      "required": ["text", "start", "end", "unit"],
+      "properties": {
+        "text": {"type": "string"},
+        "start": {"type": "integer", "minimum": 0},
+        "end": {"type": "integer", "minimum": 1},
+        "unit": {"const": "unicode_codepoints"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

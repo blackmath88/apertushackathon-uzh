@@ -1,0 +1,330 @@
+{
+  "schema": "uzh-rsd.projection-experiment-results/v1",
+  "label": "frozen-pilot-replay",
+  "raw_sha256": "d0e49eac0a9f917d47ca700a41a69fe4c16a73000326185aeae8a40aa0b68f8c",
+  "manifest_sha256": "61e0e98b7a9347716f4a71bc002364a600993c7346d6046e4f8d65899059a835",
+  "P2": {
+    "status": "infeasible",
+    "reason": "B2 response schema contains excerpts but no offsets; offsets will not be manufactured"
+  },
+  "variants": {
+    "P0": {
+      "score": {
+        "per_language": {
+          "de": {
+            "documents": 3,
+            "positions": 840,
+            "spearman": 0.3549846894841353
+          },
+          "fr": {
+            "documents": 3,
+            "positions": 930,
+            "spearman": 0.07494120823880826
+          },
+          "it": {
+            "documents": 3,
+            "positions": 892,
+            "spearman": 0.09520636208505937
+          }
+        },
+        "macro": 0.17504408660266765,
+        "macro_undefined_reason": null
+      },
+      "projection": {
+        "items": 41,
+        "projected": 34,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 62,
+        "spans_normalised": 0,
+        "spans_not_found": 4,
+        "spans_too_long": 14,
+        "spans_ambiguous": 1,
+        "marked_tokens_a": 691,
+        "marked_tokens_b": 513,
+        "documents": 9,
+        "parseable_documents": 9,
+        "matched_excerpts": 62,
+        "unmatched_excerpts": 18,
+        "coverage": 1.0
+      }
+    },
+    "P1": {
+      "score": {
+        "per_language": {
+          "de": {
+            "documents": 3,
+            "positions": 840,
+            "spearman": 0.33298988566711857
+          },
+          "fr": {
+            "documents": 3,
+            "positions": 930,
+            "spearman": 0.13048907083189124
+          },
+          "it": {
+            "documents": 3,
+            "positions": 892,
+            "spearman": 0.11270209287387699
+          }
+        },
+        "macro": 0.1920603497909623,
+        "macro_undefined_reason": null
+      },
+      "projection": {
+        "items": 41,
+        "projected": 40,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 76,
+        "spans_normalised": 0,
+        "spans_not_found": 4,
+        "spans_too_long": 0,
+        "spans_ambiguous": 1,
+        "marked_tokens_a": 1132,
+        "marked_tokens_b": 1092,
+        "documents": 9,
+        "parseable_documents": 9,
+        "matched_excerpts": 76,
+        "unmatched_excerpts": 4,
+        "coverage": 1.0
+      }
+    }
+  },
+  "inference": {
+    "calls": 9,
+    "returned": 9,
+    "call_failed": 0,
+    "finish_length": 0,
+    "prompt_tokens": 8667,
+    "completion_tokens": 4682,
+    "latency_total_s": 149.812,
+    "latency_median_s": 15.446,
+    "completion_tokens_per_s": 31.253,
+    "monetary_cost_usd": 0
+  },
+  "recovered_spans": 14,
+  "over_cap_but_still_unmatched": 0,
+  "case_analysis": {
+    "improvement": {
+      "id": "admin_fr_136",
+      "pair": "en-fr",
+      "p0_spearman": 0.011162752103378531,
+      "p1_spearman": 0.43674299137760975,
+      "delta": 0.4255802392742312,
+      "decision": {
+        "differences": [
+          {
+            "a": "Tyres account for around 20 percent of a vehicle ' s fuel consumption .",
+            "b": "Les pneus comptent pour près de 20 % de la consommation de carburant d ' un véhicule et ce , principalement en raison de la résistance au roulement .",
+            "kind": "CHANGE",
+            "severity": 3
+          },
+          {
+            "a": "The main factor here is rolling resistance . Lower rolling resistance reduces fuel consumption as well as CO2 emissions .",
+            "b": "Améliorer la résistance au roulement réduit la consommation de carburant et les émissions de CO2 .",
+            "kind": "CHANGE",
+            "severity": 3
+          },
+          {
+            "a": "The energy label is intended to help people choose the best tyres , i . e . those that save energy and are also safe and quiet .",
+            "b": "Le problème pour les automobilistes est de savoir comment se procurer des pneus sûrs , silencieux et efficaces énergétiquement . L ' étiquette pour les pneus , obligatoire en Suisse depuis le 1er août 2014 , leur offre la solution .",
+            "kind": "OMISSION",
+            "severity": 4
+          },
+          {
+            "a": "It indicates the energy efficiency ( rolling resistance ) and classifies the degree of grip on wet roads as well as the noise level .",
+            "b": "L ' étiquette pour les pneus prend en compte trois paramètres : l ' efficacité énergétique ( résistance au roulement ) , l ' adhérence sur sol mouillé et le bruit de roulement .",
+            "kind": "CHANGE",
+            "severity": 3
+          },
+          {
+            "a": "In addition , the label contains information on the snow and ice grip of the corresponding tyre .",
+            "b": "Le label renseigne également sur l’adhérence du pneu en question sur la neige et le verglas .",
+            "kind": "CHANGE",
+            "severity": 3
+          },
+          {
+            "a": "The design of the label is regulated in Appendix 4 . 2 of the Federal Energy Efficiency Ordinance , which is harmonised with Regulation ( EC ) 2020 / 740 .",
+            "b": "Elle est décrite à l ' annexe 4 . 2 de l ' ordonnance sur les exigences relatives à l ' efficacité énergétique qui s ' appuie sur le règlement ( CE ) n° 2020 / 740 de l ' UE .",
+            "kind": "CHANGE",
+            "severity": 3
+          },
+          {
+            "a": "Documents Links TCS - Reifentests Further information on purchase and use : EnergieSchweiz ( SwissEnergy ) Law Swiss Federal Energy Efficiency Ordinance , Appendix 4 . 2 ( in German ) Regulation ( EC ) No . 1222 / 2009 of 25 November 2009 on the labelling of tyres with respect to fuel efficiency and other essential parameters",
+            "b": "Documents Liens TCS - Tests de pneus Pour acheter un appareil adapté à ses besoins et l’utiliser de façon optimale , consulter le site de SuisseEnergie Droit Ordonnance sur les exigences relatives à l’efficacité énergétique ( OEEE ) , appendice 4 . 2 Règlement ( CE ) No 1222 / 2009 du 25 novembre 2009 sur l’étiquetage des pneumatiques en relation avec l’efficacité en carburant et d’autres paramètres essentiels",
+            "kind": "CHANGE",
+            "severity": 3
+          },
+          {
+            "a": "Last modification 08 . 12 . 2020",
+            "b": "Dernière modification 08 . 12 . 2020",
+            "kind": "OMISSION",
+            "severity": 1
+          }
+        ]
+      },
+      "source_a": "Safe , quiet and energy - efficient tyres Tyres account for around 20 percent of a vehicle ' s fuel consumption . The main factor here is rolling resistance . Lower rolling resistance reduces fuel consumption as well as CO2 emissions . The energy label is intended to help people choose the best tyres , i . e . those that save energy and are also safe and quiet . Use of the energy label for tyres has been mandatory",
+      "source_b": "Des pneus sûrs , silencieux et énergétiquement efficaces Les pneus comptent pour près de 20 % de la consommation de carburant d ' un véhicule et ce , principalement en raison de la résistance au roulement . Améliorer la résistance au roulement réduit la consommation de carburant et les émissions de CO2 . Le problème pour les automobilistes est de savoir comment se procurer des pneus sûrs , silencieux et efficaces énergétiquement . L ' étiquette pour les pneus ,",
+      "p0_projection": {
+        "parse": "json",
+        "items": 8,
+        "projected": 7,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 12,
+        "spans_normalised": 0,
+        "spans_not_found": 0,
+        "spans_too_long": 4,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 143,
+        "marked_tokens_b": 103
+      },
+      "p1_projection": {
+        "parse": "json",
+        "items": 8,
+        "projected": 8,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 16,
+        "spans_normalised": 0,
+        "spans_not_found": 0,
+        "spans_too_long": 0,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 201,
+        "marked_tokens_b": 255
+      }
+    },
+    "regression": {
+      "id": "admin_fr_197",
+      "pair": "en-fr",
+      "p0_spearman": -0.06344421976908131,
+      "p1_spearman": -0.2681950806574019,
+      "delta": -0.20475086088832056,
+      "decision": {
+        "differences": [
+          {
+            "a": "Download ( JPG , 11 MB , 27 . 01 . 2020 ) Download ( JPG , 11 MB , 27 . 01 . 2020 ) Download ( JPG , 12 MB , 27 . 01 . 2020 ) Download ( JPG , 12 MB , 27 . 01 . 2020 ) Download ( JPG , 11 MB , 27 . 01 . 2020 ) Download ( JPG , 11 MB , 27 . 01 . 2020 ) Download ( JPG , 12 MB , 27 . 01 . 2020 ) Download ( JPG , 12 MB , 27 . 01 . 2020 )",
+            "b": "Download ( JPG , 11 MB , 27 . 01 . 2020 ) Télécharger ( JPG , 11 MB , 27 . 01 . 2020 ) Download ( JPG , 12 MB , 27 . 01 . 2020 ) Télécharger ( JPG , 12 MB , 27 . 01 . 2020 ) Download ( JPG , 11 MB , 27 . 01 . 2020 ) Télécharger ( JPG , 11 MB , 27 . 01 . 2020 ) Download ( JPG , 12 MB , 27 . 01 . 2020 ) Télécharger ( JPG , 12 MB , 27 . 01 . 2020 )",
+            "kind": "CHANGE",
+            "severity": 3
+          },
+          {
+            "a": "Last modification 28 . 04 . 2025",
+            "b": "Dernière modification 28 . 04 . 2025",
+            "kind": "OMISSION",
+            "severity": 1
+          }
+        ]
+      },
+      "source_a": "Eric Scheidegger Ambassador Eric Scheidegger ( * 1961 ) , Dr . rer . pol . , head of the Economic Policy Directorate since 01 . 02 . 2012 and SECO Deputy Director since 01 . 02 . 2007 . Before this head of the Promotion Activities Directorate from 01 . 10 . 2003 untill 31 . 01 . 2012 . Previously head of SECO ' s Location Promotion Division from 01 . 06 . 2002 untill 30 . 09",
+      "source_b": "Eric Scheidegger L ' ambassadeur Eric Scheidegger ( * 1961 ) , Dr rer . pol . , depuis le 01 . 02 . 2012 chef de la Direction de la politique économique et depuis le 01 . 02 . 2007 directeur suppléant du SECO . Précédemment , du 01 . 10 . 2003 au 31 . 01 . 2012 , chef de la Direction de la promotion économique du SECO . Auparavant , depuis le 01 . 06 .",
+      "p0_projection": {
+        "parse": "json",
+        "items": 2,
+        "projected": 1,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 2,
+        "spans_normalised": 0,
+        "spans_not_found": 0,
+        "spans_too_long": 2,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 7,
+        "marked_tokens_b": 7
+      },
+      "p1_projection": {
+        "parse": "json",
+        "items": 2,
+        "projected": 2,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 4,
+        "spans_normalised": 0,
+        "spans_not_found": 0,
+        "spans_too_long": 0,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 111,
+        "marked_tokens_b": 111
+      }
+    },
+    "unchanged_failure": {
+      "id": "admin_fr_43",
+      "pair": "en-fr",
+      "p0_spearman": -0.09260029490963885,
+      "p1_spearman": -0.09260029490963885,
+      "delta": 0.0,
+      "decision": {
+        "differences": [
+          {
+            "a": "Vocational education and training The Federal Chancellery offers commercial apprenticeships that allow young people to gain professional experience in various areas of the Federal Chancellery and take their first steps into the working world .",
+            "b": "Apprentissages La Chancellerie fédérale propose des places d'apprentis employés de commerce .",
+            "kind": "CHANGE",
+            "severity": 4
+          },
+          {
+            "a": "Commercial apprenticeships are organised by a workplace trainer and may cover the following areas :",
+            "b": "Les apprentis employés de commerce peuvent travailler dans les domaines suivants , leurs missions étant planifiées par les formateurs :",
+            "kind": "CHANGE",
+            "severity": 4
+          },
+          {
+            "a": "If you are interested in an apprenticeship at the Federal Chancellery , you can apply for an advertised position or contact one of the Chancellery’s workplace trainers .",
+            "b": "N'h''esitez pas à présenter votre candidature pour les postes mis au concours sur le portail emploi de la Confédération ou à vous adresser aux formateurs de la Chancellerie fédérale .",
+            "kind": "CHANGE",
+            "severity": 4
+          },
+          {
+            "a": "Links www.stelle.admin.ch Specialist staff",
+            "b": "Liens www.stelle.admin.ch Contact spécialisé",
+            "kind": "CHANGE",
+            "severity": 3
+          }
+        ]
+      },
+      "source_a": "Vocational education and training The Federal Chancellery offers commercial apprenticeships that allow young people to gain professional experience in various areas of the Federal Chancellery and take their first steps into the working world . Commercial apprenticeships are organised by a workplace trainer and may cover the following areas : If you are interested in an apprenticeship at the Federal Chancellery , you can apply for an advertised position or contact one of the Chancellery’s workplace trainers . Links www",
+      "source_b": "Apprentissages La Chancellerie fédérale propose des places d’apprentis employés de commerce . Cette formation permet aux jeunes de faire leurs premières armes dans diverses sections et leur donne une première expérience professionnelle . Les apprentis employés de commerce peuvent travailler dans les domaines suivants , leurs missions étant planifiées par les formateurs : N’hésitez pas à présenter votre candidature pour les postes mis au concours sur le portail emploi de la Confédération ou à vous adresser aux formateurs de la",
+      "p0_projection": {
+        "parse": "json",
+        "items": 4,
+        "projected": 3,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 4,
+        "spans_normalised": 0,
+        "spans_not_found": 4,
+        "spans_too_long": 0,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 78,
+        "marked_tokens_b": 20
+      },
+      "p1_projection": {
+        "parse": "json",
+        "items": 4,
+        "projected": 3,
+        "invalid_item": 0,
+        "invalid_severity": 0,
+        "unknown_kind": 0,
+        "spans_exact": 4,
+        "spans_normalised": 0,
+        "spans_not_found": 4,
+        "spans_too_long": 0,
+        "spans_ambiguous": 0,
+        "marked_tokens_a": 78,
+        "marked_tokens_b": 20
+      }
+    },
+    "category_notes": {
+      "improvement": null,
+      "regression": null,
+      "unchanged_failure": null
+    }
+  }
+}

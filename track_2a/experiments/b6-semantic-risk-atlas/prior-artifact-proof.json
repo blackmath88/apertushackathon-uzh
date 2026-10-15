@@ -1,0 +1,16 @@
+{
+  "schema": "uzh-rsd.b6.prior-artifact-proof/v1",
+  "base_commit": "25a9813507b6d0ab541ed10a7f9fce379c42148a",
+  "scope": [
+    "track_2a/results",
+    "track_2a/diagnostics",
+    "track_2a/experiments/b2-projection-evidence",
+    "track_2a/experiments/b3-sdm",
+    "track_2a/experiments/b4-alignment-first-sdm",
+    "track_2a/experiments/b5-competitive-semantic-alignment"
+  ],
+  "tracked_blob_count": 65,
+  "canonical_git_ls_tree_sha256": "93c4f4d8a05e1b5e9caa2a3f1b76f7c8f54235f16b3c11615f9f359790db99c4",
+  "git_diff_name_only": [],
+  "conclusion": "All frozen B0-B5 result, diagnostic, and experiment artifacts in scope are byte-for-byte unchanged from the exact B5 base commit."
+}

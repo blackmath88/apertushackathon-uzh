@@ -1,0 +1,52 @@
+{
+  "schema": "uzh-rsd.b6.protocol/v1",
+  "version": "1.0.0",
+  "frozen_date": "2026-10-13",
+  "scope": "exact permitted B4 30-document development sample only",
+  "inputs": {
+    "base_commit": "25a9813507b6d0ab541ed10a7f9fce379c42148a",
+    "dataset_revision": "f16aa0536811b8c0cf975fede21eec5996e4b3c1",
+    "official_evaluator_commit": "1807a42100e742ed03d337c54c4b9ea86995f565",
+    "frozen_manifest_sha256": "523306bece722e61436b93760d10820fa541eab10c1858215d0c4c6873eca4c5",
+    "b4_baseline_macro": 0.1871166580894296,
+    "official_tokens": "Python str.split; token indices are zero-based half-open; source character offsets are zero-based Unicode-code-point half-open from uzh_rsd.tokens.tokenize",
+    "punctuation": "gold -1 positions excluded exactly as official evaluator; selectors never see this mask"
+  },
+  "stage_a": {
+    "budget": "five non-overlapping radius-2 official-token regions per document across both sides; clipped at boundaries",
+    "A0": "byte-exact first five groups from frozen B5 suspicious_v1 routing",
+    "A1": "risk-atlas routing: .60 risk + .25 B4 alignment confidence + .10 structural cue + .05 anomaly; explicitly permits high-confidence/low-anomaly risk regions",
+    "A2": "A1 plus .15 structured family agreement, with rebalanced fixed coefficients; agreement only for exact DE/FR/IT sibling sets whose shared English text hash and official tokens are identical, and only categories occurring on English plus every target side",
+    "controls": ["equal-budget SHA-256 uniform_random with seed b6-risk-atlas-random-v1", "existing frozen B5 cue_first_v1"],
+    "eligibility": "all official token positions; evaluation later removes official -1 mask",
+    "failure": "fail closed; no gold-based backfill, query, reranking, or repair",
+    "model_calls": 0,
+    "metrics": ["official macro/per-language baseline", "eligible-token coverage", "under-ranked gold-positive recall", "gold-positive enrichment", "B5 complementarity", "oracle-reachable official score/delta", "shared-English-family clustered bootstrap", "failures"],
+    "gate_primary": "A2_family",
+    "gate_thresholds": {
+      "under_ranked_positive_recall_margin_over_A0": 0.02,
+      "under_ranked_positive_recall_margin_over_uniform_random": 0.02,
+      "oracle_delta_margin_over_A0": 0.005,
+      "oracle_delta_margin_over_uniform_random": 0.005,
+      "minimum_gold_positive_enrichment": 1.25,
+      "languages_with_under_ranked_recall_strictly_above_A0": 2,
+      "logic": "all conditions required"
+    },
+    "failed_gate": "verdict NOT SUPPORTED; zero Apertus calls; Stage B and C prohibited"
+  },
+  "stage_b_if_authorized": {
+    "cases": 24,
+    "labels": {"0": "equivalent", "1": "materially different", "2": "insufficient evidence"},
+    "controls": ["option-order permutation", "label-map permutation", "deterministic atlas", "unchanged DiffAlign", "meaning-preserving", "shuffled probabilities"],
+    "acceptance": "at least 90% valid one-token responses, at least 0.85 semantic stability under each permutation, balanced accuracy at least 0.70 on synthetic controls, and at least +0.10 over best deterministic control",
+    "no_rescue": true
+  },
+  "stage_c_if_authorized": {
+    "matched_arms": ["B4 unchanged", "lexicon-only", "lexicon+shuffled Apertus", "lexicon+actual Apertus"],
+    "candidate_set": "identical A2 selections",
+    "update": "promote selected official-token B4 score by clipped 0.20 * P(materially different) only when P1-P0 >= 0.25; otherwise unchanged",
+    "attribution": "actual minus shuffled and lexicon controls",
+    "unselected": "byte-identical B4 numeric values and order"
+  },
+  "test_split": "refuse before path construction or I/O; no test path, metadata, or content may be listed or inspected"
+}

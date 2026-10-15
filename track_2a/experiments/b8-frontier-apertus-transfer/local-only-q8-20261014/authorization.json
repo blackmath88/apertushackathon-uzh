@@ -1,0 +1,14 @@
+{
+  "schema": "uzh-rsd.b8-local-only-authorization/v1",
+  "approved": true,
+  "amends_execution_authorized": true,
+  "authorization_id": "ctx_cdd486317cab:msg_bec0a50ab33b",
+  "source_message_id": "msg_bec0a50ab33b",
+  "dispatch_id": "ctx_cdd486317cab",
+  "scope": "local_only_derived",
+  "protocol_sha256": "26c00242bfb9369f5183fdbc109dfa51e0bb8186471778f8fda796a364b875a5",
+  "schedule_sha256": "61bea1f9c939a07b114dbfe8fdf11197cc47d62a3be61f1b7725b4e9b44bf45d",
+  "teacher_calls_authorized": false,
+  "frontier_calls_authorized": false,
+  "local_student_calls_authorized": true
+}

@@ -1,0 +1,452 @@
+{
+  "schema": "uzh-rsd.b4/v1",
+  "experiment": "A",
+  "name": "B4 — Alignment-First SDM",
+  "created_utc": "2026-10-13T17:11:25+00:00",
+  "split": "dev",
+  "frozen_manifest_sha256": "523306bece722e61436b93760d10820fa541eab10c1858215d0c4c6873eca4c5",
+  "official_evaluator": {
+    "commit": "1807a42100e742ed03d337c54c4b9ea86995f565",
+    "files": {
+      "scripts/evaluate_predictions_admin.py": "3e8101661621c51938e62d8d064e737e3e7d9bb16088dad754ba289c0aa083fa",
+      "evaluation/utils.py": "8da64aa6ec33f316eec2c65d0cbc3fe36d247c585a033d2ed04a7bebc175df0b",
+      "list_to_drop.txt": "3bd489505875ecc0800685f1b732f84dad7b7c25380f63612cadcfbe2732857a"
+    },
+    "punctuation": "gold label -1 positions masked exactly as official evaluator"
+  },
+  "safety": "gold-derived diagnostics only; forbidden from prompts, prediction features, routing, and submissions",
+  "rows": [
+    {
+      "variant": "A0_exact_gold",
+      "granularity": "token",
+      "description": "exact permitted dev gold; evaluator sanity check",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 1.0,
+          "ties": 4831,
+          "average_precision": 1.0
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 1.0,
+          "ties": 7516,
+          "average_precision": 1.0
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 1.0,
+          "ties": 6120,
+          "average_precision": 1.0
+        }
+      },
+      "macro_spearman": 1.0,
+      "macro_undefined_reason": null,
+      "ties": 18479,
+      "average_precision": 1.0
+    },
+    {
+      "variant": "A1_binary_locations",
+      "granularity": "token",
+      "description": "exact positive locations; binary severity",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.9997640487684111,
+          "ties": 4835,
+          "average_precision": 1.0
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.9994296859988147,
+          "ties": 7520,
+          "average_precision": 1.0
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.9986590306478892,
+          "ties": 6124,
+          "average_precision": 1.0
+        }
+      },
+      "macro_spearman": 0.9992842551383716,
+      "macro_undefined_reason": null,
+      "ties": 18483,
+      "average_precision": 1.0
+    },
+    {
+      "variant": "A2_three_severity_buckets",
+      "granularity": "token",
+      "description": "exact locations; low/mid/high buckets",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.9999874350439881,
+          "ties": 4833,
+          "average_precision": 1.0
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.9999786045721859,
+          "ties": 7518,
+          "average_precision": 1.0
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.9999671309928472,
+          "ties": 6122,
+          "average_precision": 1.0
+        }
+      },
+      "macro_spearman": 0.9999777235363404,
+      "macro_undefined_reason": null,
+      "ties": 18481,
+      "average_precision": 1.0
+    },
+    {
+      "variant": "A3_sentence_max",
+      "granularity": "sentence",
+      "description": "maximum severity broadcast within deterministic sentence",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.590342603496494,
+          "ties": 4831,
+          "average_precision": 0.5602394600839088
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.5645721443413061,
+          "ties": 7517,
+          "average_precision": 0.40977566236375723
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.44771760422777096,
+          "ties": 6120,
+          "average_precision": 0.31136149927712564
+        }
+      },
+      "macro_spearman": 0.5342107840218571,
+      "macro_undefined_reason": null,
+      "ties": 18479,
+      "average_precision": 0.36320428259640886
+    },
+    {
+      "variant": "A4_passage_max",
+      "granularity": "passage<=8",
+      "description": "maximum severity broadcast within frozen B3 passages",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.4283274184293795,
+          "ties": 4831,
+          "average_precision": 0.33895294770922557
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.3455825497184139,
+          "ties": 7517,
+          "average_precision": 0.19885690777511833
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.36225499820593027,
+          "ties": 6121,
+          "average_precision": 0.2390804722867428
+        }
+      },
+      "macro_spearman": 0.3787216554512412,
+      "macro_undefined_reason": null,
+      "ties": 18479,
+      "average_precision": 0.2287288919303042
+    },
+    {
+      "variant": "A5_expand_1",
+      "granularity": "span+1",
+      "description": "positive spans expanded one token per boundary",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.8949903066601751,
+          "ties": 4831,
+          "average_precision": 0.8282022361679543
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.9263468951049175,
+          "ties": 7516,
+          "average_precision": 0.8990057403901616
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.8717666705856592,
+          "ties": 6120,
+          "average_precision": 0.8386484649269415
+        }
+      },
+      "macro_spearman": 0.897701290783584,
+      "macro_undefined_reason": null,
+      "ties": 18479,
+      "average_precision": 0.8583779561344319
+    },
+    {
+      "variant": "A5_expand_3",
+      "granularity": "span+3",
+      "description": "positive spans expanded three tokens per boundary",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.7760189205060191,
+          "ties": 4831,
+          "average_precision": 0.658137819110647
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.7625254224231516,
+          "ties": 7516,
+          "average_precision": 0.6627769327486132
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.67625378916221,
+          "ties": 6120,
+          "average_precision": 0.5533050579068665
+        }
+      },
+      "macro_spearman": 0.7382660440304601,
+      "macro_undefined_reason": null,
+      "ties": 18479,
+      "average_precision": 0.6042657365710915
+    },
+    {
+      "variant": "A5_expand_5",
+      "granularity": "span+5",
+      "description": "positive spans expanded five tokens per boundary",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.7073161710649744,
+          "ties": 4831,
+          "average_precision": 0.5647768040107266
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.6720364898895644,
+          "ties": 7516,
+          "average_precision": 0.5387528427466747
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.5866780181963843,
+          "ties": 6120,
+          "average_precision": 0.44735612477434744
+        }
+      },
+      "macro_spearman": 0.6553435597169743,
+      "macro_undefined_reason": null,
+      "ties": 18479,
+      "average_precision": 0.49171518680172943
+    },
+    {
+      "variant": "A6_contract_1",
+      "granularity": "span-1",
+      "description": "positive spans contracted one token per boundary",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.6750696352936296,
+          "ties": 4832,
+          "average_precision": 0.4853320966200851
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.7599739896218194,
+          "ties": 7517,
+          "average_precision": 0.6128284697475028
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.6614780124175064,
+          "ties": 6120,
+          "average_precision": 0.5035153664928396
+        }
+      },
+      "macro_spearman": 0.6988405457776518,
+      "macro_undefined_reason": null,
+      "ties": 18479,
+      "average_precision": 0.5380198293705203
+    },
+    {
+      "variant": "A6_contract_3",
+      "granularity": "span-3",
+      "description": "positive spans contracted three tokens per boundary",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.38672829404034925,
+          "ties": 4833,
+          "average_precision": 0.18900815224983097
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.3839288663171771,
+          "ties": 7517,
+          "average_precision": 0.20251081540382365
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.35517210051408665,
+          "ties": 6122,
+          "average_precision": 0.20857400005294227
+        }
+      },
+      "macro_spearman": 0.37527642029053765,
+      "macro_undefined_reason": null,
+      "ties": 18479,
+      "average_precision": 0.19744741689281525
+    },
+    {
+      "variant": "A7_soft_boundary_decay",
+      "granularity": "soft span",
+      "description": "five-token exponential boundary decay",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.7250873749819715,
+          "ties": 4807,
+          "average_precision": 0.9054868833807207
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.7114051425616844,
+          "ties": 7491,
+          "average_precision": 0.9779358048108705
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.6653367281647243,
+          "ties": 6095,
+          "average_precision": 0.9614531426952297
+        }
+      },
+      "macro_spearman": 0.7006097485694601,
+      "macro_undefined_reason": null,
+      "ties": 18454,
+      "average_precision": 0.9559983454944707
+    },
+    {
+      "variant": "A8_continuous_token_attribution",
+      "granularity": "token",
+      "description": "gold severity modulated by deterministic token salience",
+      "coverage": "30/30",
+      "per_language": {
+        "de": {
+          "documents": 10,
+          "positions": 4837,
+          "masked_punctuation": 631,
+          "spearman": 0.999984081122104,
+          "ties": 4807,
+          "average_precision": 1.0
+        },
+        "fr": {
+          "documents": 10,
+          "positions": 7522,
+          "masked_punctuation": 1153,
+          "spearman": 0.999913421929797,
+          "ties": 7485,
+          "average_precision": 1.0
+        },
+        "it": {
+          "documents": 10,
+          "positions": 6126,
+          "masked_punctuation": 885,
+          "spearman": 0.9997432224617145,
+          "ties": 6087,
+          "average_precision": 1.0
+        }
+      },
+      "macro_spearman": 0.9998802418378719,
+      "macro_undefined_reason": null,
+      "ties": 18442,
+      "average_precision": 1.0
+    }
+  ]
+}

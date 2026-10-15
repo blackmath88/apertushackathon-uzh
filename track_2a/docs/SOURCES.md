@@ -36,7 +36,8 @@ The `dev` gold directory in the GitHub repo is further split by
 - ACL 2026 paper: https://aclanthology.org/2026.acl-long.1437/
 - Hugging Face dataset: https://huggingface.co/datasets/ZurichNLP/SwissGov-RSD
 - Multi-parallel translation subset: https://github.com/miwytt/multi-parallel-swissgov
-- Published prompts: https://github.com/ZurichNLP/SwissGov-RSD/tree/master/prompt_templates (`template_{de,fr,it}_admin.txt` are the B0 reference candidates for S2)
+- Published prompts: https://github.com/ZurichNLP/SwissGov-RSD/tree/master/prompt_templates. B0 uses `template_{de,fr,it}_admin.txt` at commit `1807a42`, fetched at run time and sha256-verified (`ace9e0f8…`, `3d65ebd9…`, `79e6cd0c…`; see `prompts.py`). They are not vendored, because of the missing licence.
+- HF Jobs image for measured runs: `ghcr.io/swiss-ai/vllm_apertus_1.5_release:latest-amd64` (Swiss AI release image). `latest` is a moving tag, so each run records the transformers/torch/CUDA versions it actually used.
 
 ## Architectural parent
 

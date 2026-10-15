@@ -1,0 +1,33 @@
+{
+  "schema": "uzh-rsd.local-runtime-provenance/v1",
+  "host": "Nebuchadnezzar",
+  "endpoint": "http://127.0.0.1:11436/v1",
+  "endpoint_scope": "loopback-only",
+  "model_alias": "apertus-v1.5-8b-text-q8_0",
+  "gguf": {
+    "path": "/home/achim/.local/share/apertus-local/models/apertus-v1.5-8b-text-q8_0.gguf",
+    "sha256": "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d",
+    "quantized_source": "andreasmartin/apertus-v1.5-8b-text-Q8_0-GGUF",
+    "quantized_revision": "2028c3184c0fa060b4259b33ee25e836da6896e5",
+    "conversion_source": "andreasmartin/apertus-v1.5-8b-text",
+    "conversion_revision": "c0e7eeb69c55c7810c91de3a1f97dde4d4b14b01"
+  },
+  "runtime": {
+    "llama_cpp_commit": "7ab4ee7baad2d920464cbacfad4f4b07cf111fd2",
+    "backend": "SYCL",
+    "arguments": ["--host", "127.0.0.1", "--port", "11436", "--ctx-size", "8192", "--parallel", "1", "--n-gpu-layers", "99", "--device", "SYCL0", "--flash-attn", "on", "--no-ui"]
+  },
+  "run": {
+    "started_utc": "2026-10-13T15:58:27+00:00",
+    "finished_utc": "2026-10-13T16:09:48+00:00",
+    "max_attempts": 1,
+    "monetary_cost_usd": 0
+  },
+  "shutdown_evidence": {
+    "port_11436_listener_after_stop": false,
+    "morrow_port_11435_listener_after_stop": true,
+    "morrow_pid_before_and_after": 1240,
+    "morrow_executable_sha256_before_and_after": "d0538ae0a50a97ede6c4fece9054ed8d3b891a82e230a1defe810249ee7b93f1"
+  },
+  "configuration_note": "Q8 GGUF is a distinct local configuration; no numerical equivalence to the frozen BF16/HF pilot is claimed."
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "uzh-rsd.b8-local-only-schedule/v1",
+  "stage": "frozen_before_local_inference",
+  "derivation": "student matched_direct + student controls + deterministic_no_teacher transfer",
+  "base_schedule_sha256": "e936729c4873ddb6c3bfaf928c6b6eb86c2ae8817f762de0f104af71f8694709",
+  "schedule_sha256": "61bea1f9c939a07b114dbfe8fdf11197cc47d62a3be61f1b7725b4e9b44bf45d",
+  "calls": 234,
+  "estimated_prompt_tokens": 31122,
+  "projected_wall_seconds": 936,
+  "ceilings": {
+    "total_calls": 600,
+    "prompt_tokens": 120000,
+    "wall_seconds": 2700,
+    "downloads": 0,
+    "unapproved_spend": 0
+  },
+  "by_arm": {
+    "control": 144,
+    "matched_direct": 72,
+    "transfer": 18
+  },
+  "by_representation": {
+    "R0": 18,
+    "R1": 90,
+    "R2": 108,
+    "R3": 18
+  },
+  "excluded_calls": 270,
+  "teacher_status": "NOT RUN — AUTHORIZATION/PROVIDER",
+  "model_calls_performed": 0
+}

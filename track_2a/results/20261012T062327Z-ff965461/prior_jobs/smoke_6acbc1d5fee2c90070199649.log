@@ -1,0 +1,85 @@
+GPU: NVIDIA L40S
+Loading Apertus...
+
+processor_config.json:   0%|          | 0.00/763 [00:00<?, ?B/s][Aprocessor_config.json: 100%|██████████| 763/763 [00:00<00:00, 4.08MB/s]
+
+chat_template.jinja:   0%|          | 0.00/16.6k [00:00<?, ?B/s][Achat_template.jinja: 100%|██████████| 16.6k/16.6k [00:00<00:00, 62.3MB/s]
+
+config.json:   0%|          | 0.00/2.61k [00:00<?, ?B/s][Aconfig.json: 100%|██████████| 2.61k/2.61k [00:00<00:00, 18.2MB/s]
+
+tokenizer_config.json:   0%|          | 0.00/2.03k [00:00<?, ?B/s][Atokenizer_config.json: 100%|██████████| 2.03k/2.03k [00:00<00:00, 13.6MB/s]
+
+tokenizer.json: reconstructing file:   0%|          |  0.00B / 44.0MB            [Atokenizer.json: downloading bytes:           |  0.00B            tokenizer.json: downloading bytes: ██████████| 5.93MB,  587kB/s  tokenizer.json: downloading bytes: ██████████| 5.93MB,  587kB/s  
+tokenizer.json: reconstructing file: 100%|██████████| 44.0MB / 44.0MB, 4.36MB/s  
+
+special_tokens_map.json:   0%|          | 0.00/552 [00:00<?, ?B/s][Aspecial_tokens_map.json: 100%|██████████| 552/552 [00:00<00:00, 3.40MB/s]
+
+model.safetensors.index.json:   0%|          | 0.00/100k [00:00<?, ?B/s][Amodel.safetensors.index.json: 100%|██████████| 100k/100k [00:00<00:00, 134MB/s]
+
+Downloading bytes:           |  0.00B            [A
+Reconstructing (incomplete total...): |          |  0.00B /  0.00B            [A
+Fetching 6 files:   0%|          | 0/6 [00:00<?, ?it/s][A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 4.03GB            [A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 7.82GB            [A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 12.5GB            [A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 12.8GB            [A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 17.5GB            [A
+Reconstructing (incomplete total...):   0%|          |  0.00B / 18.4GB            [A
+Downloading bytes: ▏         |  242MB,   ???B/s  [A
+Reconstructing (incomplete total...):   1%|▏         |  241MB / 18.4GB,   ???B/s  [A
+Downloading bytes: ▍         |  717MB,  231MB/s  [A
+Reconstructing (incomplete total...):   3%|▎         |  603MB / 18.4GB,  228MB/s  [A
+Downloading bytes: ▊         | 1.41GB,  371MB/s  [A
+Reconstructing (incomplete total...):   8%|▊         | 1.50GB / 18.4GB,  288MB/s  [A
+Downloading bytes: █▎        | 2.31GB,  511MB/s  [A
+Reconstructing (incomplete total...):  13%|█▎        | 2.40GB / 18.4GB,  552MB/s  [A
+Downloading bytes: █▊        | 3.33GB,  660MB/s  [A
+Reconstructing (incomplete total...):  17%|█▋        | 3.21GB / 18.4GB,  682MB/s  [A
+Downloading bytes: ██▍       | 4.57GB,  790MB/s  [A
+Downloading bytes: ██▍       | 4.57GB, 1.10GB/s  [A
+Downloading bytes: ██▍       | 4.57GB, 1.10GB/s  [A
+Downloading bytes: ██▍       | 4.57GB, 1.10GB/s  [A
+Reconstructing (incomplete total...):  28%|██▊       | 5.23GB / 18.4GB,  656MB/s  [A
+Downloading bytes: ███       | 5.75GB, 1.10GB/s  [A
+Reconstructing (incomplete total...):  36%|███▌      | 6.60GB / 18.4GB, 1.08GB/s  [A
+Reconstructing (incomplete total...):  36%|███▌      | 6.61GB / 18.4GB, 1.14GB/s  [A
+Downloading bytes: ███▉      | 7.18GB, 1.12GB/s  [A
+Downloading bytes: ███▉      | 7.32GB, 1.38GB/s  [A
+Downloading bytes: ███▉      | 7.32GB, 1.38GB/s  [A
+Downloading bytes: ███▉      | 7.32GB, 1.38GB/s  [A
+Reconstructing (incomplete total...):  46%|████▌     | 8.42GB / 18.4GB, 1.14GB/s  [A
+Downloading bytes: ████▋     | 8.72GB, 1.38GB/s  [A
+Reconstructing (incomplete total...):  54%|█████▍    | 9.92GB / 18.4GB, 1.33GB/s  [A
+Downloading bytes: █████▌    | 10.3GB, 1.37GB/s  [A
+Downloading bytes: █████▌    | 10.3GB, 1.47GB/s  [A
+Downloading bytes: █████▌    | 10.3GB, 1.47GB/s  [A
+Downloading bytes: █████▌    | 10.3GB, 1.47GB/s  [A
+Downloading bytes: ██████▍   | 11.8GB, 1.47GB/s  [A
+Downloading bytes: ███████▏  | 13.2GB, 1.42GB/s  [A
+Reconstructing (incomplete total...):  63%|██████▎   | 11.6GB / 18.4GB, 1.29GB/s  [A
+Reconstructing (incomplete total...):  69%|██████▉   | 12.7GB / 18.4GB,  777MB/s  [A
+Downloading bytes: ███████▉  | 14.6GB, 1.30GB/s  [A
+Reconstructing (incomplete total...):  73%|███████▎  | 13.5GB / 18.4GB,  428MB/s  [A
+Downloading bytes: ████████▏ | 15.0GB,  458MB/s  [A
+Reconstructing (incomplete total...):  79%|███████▉  | 14.5GB / 18.4GB,  210MB/s  [A
+Fetching 6 files:  17%|█▋        | 1/6 [00:34<02:54, 34.91s/it][A
+Downloading bytes: ████████▏ | 15.0GB,  458MB/s  [A
+Downloading bytes: ████████▌ | 15.8GB,  175MB/s  [A
+Reconstructing (incomplete total...):  87%|████████▋ | 16.1GB / 18.4GB,  230MB/s  [A
+Reconstructing (incomplete total...):  93%|█████████▎| 17.1GB / 18.4GB,  274MB/s  [A
+Reconstructing (incomplete total...): 100%|██████████| 18.4GB / 18.4GB,  272MB/s  [A
+Fetching 6 files:  33%|███▎      | 2/6 [00:47<01:27, 21.90s/it][AFetching 6 files: 100%|██████████| 6/6 [00:47<00:00,  7.95s/it]
+
+Downloading bytes: ██████████| 16.1GB,  211MB/s  [A
+Download complete: : ██████████| 16.1GB,  211MB/s  [A
+Reconstruction complete: 100%|██████████| 18.4GB / 18.4GB,  265MB/s               [A[transformers] CUDA-fused xIELU not available (No module named 'xielu') – falling back to a Python version.
+For CUDA xIELU (experimental), `pip install git+https://github.com/nickjbrowning/XIELU`
+Download complete: : ██████████| 16.1GB,  211MB/s  
+Reconstruction complete: 100%|██████████| 18.4GB / 18.4GB,  265MB/s  
+
+Loading weights:   0%|          | 0/924 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 924/924 [00:00<00:00, 4996.27it/s]
+
+generation_config.json:   0%|          | 0.00/157 [00:00<?, ?B/s][Ageneration_config.json: 100%|██████████| 157/157 [00:00<00:00, 996kB/s]
+Generating...
+ANSWER: Eine Übersetzung ist die Übertragung des Sinns eines Textes in eine andere Sprache.
+SMOKE_TEST_OK

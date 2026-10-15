@@ -1,0 +1,65 @@
+{
+  "schema": "uzh-rsd.b5/v1",
+  "route": {
+    "run_id": "run_158bac75bf36",
+    "task_id": "task_6e2fa3b39103",
+    "dispatch_id": "ctx_9bf06ed898d3",
+    "worker_terminal": "term_952ae3a7-947f-4d22-95d0-b2d5dade9f23",
+    "coordinator_terminal": "term_cd63a69b-33ce-4197-bd48-722351837e4a"
+  },
+  "delivery": {
+    "branch": "blackmath88/b5-competitive-semantic-alignment",
+    "base": "blackmath88/b4-alignment-first-sdm",
+    "draft_pr": "https://github.com/blackmath88/apertushackathon-uzh/pull/19",
+    "evidence_package_commit": "430d777"
+  },
+  "downloads": [
+    {
+      "artifact": "ZurichNLP/SwissGov-RSD pinned dev files plus official evaluator source",
+      "bytes": 7207577,
+      "revision": "f16aa0536811b8c0cf975fede21eec5996e4b3c1 / evaluator 1807a42100e742ed03d337c54c4b9ea86995f565",
+      "license_or_rights": "labels CC BY 4.0; text copyright Swiss federal authorities; evaluator repository has no top-level license"
+    },
+    {
+      "artifact": "Qwen/Qwen3-Embedding-4B",
+      "bytes": 8059521975,
+      "weight_bytes": 8043592088,
+      "revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+      "license": "Apache-2.0",
+      "source": "https://huggingface.co/Qwen/Qwen3-Embedding-4B"
+    },
+    {
+      "artifact": "task-scoped PyTorch XPU and Python dependencies",
+      "installed_size": "7.2 GiB",
+      "primary_source": "https://download.pytorch.org/whl/xpu",
+      "versions": "torch 2.10.0+xpu; transformers 5.2.0; tokenizers 0.22.2; numpy 2.4.2; scipy 1.17.0"
+    }
+  ],
+  "hardware": {
+    "accelerator": "Intel Arc Pro B60 / Battlemage G21",
+    "accelerator_memory_mb": 24480,
+    "backend": "PyTorch XPU / oneAPI Unified Runtime over Level-Zero V2",
+    "cpu": "AMD Ryzen 7 3700X, 8 cores/16 threads",
+    "ram": "31 GiB total, 20 GiB available before download",
+    "disk": "354 GiB available before download; 341 GiB after model and environment"
+  },
+  "measured": {
+    "valid_embedding_run_wall_s": 11.082091886999478,
+    "embedding_cache_bytes": 37873365,
+    "matcher_wall_s": 38.55373754299944,
+    "matcher_max_rss_kib": 367600,
+    "apertus_calls": 0,
+    "paid_or_cloud_compute": false
+  },
+  "bounded_failures": [
+    "Hugging Face snapshot API returned HTTP 429 before any model byte was downloaded; direct immutable-revision URLs were the single download repair.",
+    "The first generated cache used tokenizer-internal word_ids and scoring rejected an out-of-range official-token index before results; the single implementation repair rebuilt maps from exact character offsets. The rejected cache was never scored.",
+    "Regenerated M0 did not match published rounded B4 scores exactly (mean absolute difference 0.001527; maximum 0.130091), so direct published-B4 comparability is explicitly limited."
+  ],
+  "services_after_b": {
+    "port_11436": "closed; never started in B5",
+    "morrow_port_11435": "listening",
+    "morrow_pid": 1240,
+    "morrow_command": "unchanged llama-server Qwen3-14B-Q4_K_M on SYCL0"
+  }
+}

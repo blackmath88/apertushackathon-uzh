@@ -1,0 +1,91 @@
+{
+  "schema": "uzh-rsd.b7-audit-key/v1",
+  "not_for_blinded_reviewer": true,
+  "items": [
+    {
+      "audit_id": "audit-01",
+      "sample_category": "model_discrepancy_absent_official_positive",
+      "candidate_id": "3b31303832de1f42dca2"
+    },
+    {
+      "audit_id": "audit-02",
+      "sample_category": "model_discrepancy_absent_official_positive",
+      "candidate_id": "20986f01a08f1cf85dd1"
+    },
+    {
+      "audit_id": "audit-03",
+      "sample_category": "model_discrepancy_absent_official_positive",
+      "candidate_id": "18775f4a83a963d8429a"
+    },
+    {
+      "audit_id": "audit-04",
+      "sample_category": "model_discrepancy_absent_official_positive",
+      "candidate_id": "f25ecae2f3efa7dca22e"
+    },
+    {
+      "audit_id": "audit-05",
+      "sample_category": "model_discrepancy_absent_official_positive",
+      "candidate_id": "53b76bb93f804c2dda3f"
+    },
+    {
+      "audit_id": "audit-06",
+      "sample_category": "gold_positive_missed_by_all",
+      "document_id": "admin_it_116",
+      "side": "a",
+      "token_id": 389
+    },
+    {
+      "audit_id": "audit-07",
+      "sample_category": "gold_positive_missed_by_all",
+      "document_id": "admin_fr_167",
+      "side": "b",
+      "token_id": 114
+    },
+    {
+      "audit_id": "audit-08",
+      "sample_category": "gold_positive_missed_by_all",
+      "document_id": "admin_fr_202",
+      "side": "a",
+      "token_id": 95
+    },
+    {
+      "audit_id": "audit-09",
+      "sample_category": "gold_positive_missed_by_all",
+      "document_id": "admin_it_116",
+      "side": "b",
+      "token_id": 265
+    },
+    {
+      "audit_id": "audit-10",
+      "sample_category": "gold_positive_missed_by_all",
+      "document_id": "admin_it_92",
+      "side": "b",
+      "token_id": 133
+    },
+    {
+      "audit_id": "audit-11",
+      "sample_category": "random_control",
+      "candidate_id": "c533bc40fdc893352e68"
+    },
+    {
+      "audit_id": "audit-12",
+      "sample_category": "random_control",
+      "candidate_id": "9f94432a2b107749cfd0"
+    },
+    {
+      "audit_id": "audit-13",
+      "sample_category": "random_control",
+      "candidate_id": "a5e0aa75652078fb7ded"
+    },
+    {
+      "audit_id": "audit-14",
+      "sample_category": "random_control",
+      "candidate_id": "04728ebc252f51d3074d"
+    },
+    {
+      "audit_id": "audit-15",
+      "sample_category": "random_control",
+      "candidate_id": "3201d53fa3bc8cb1d834"
+    }
+  ]
+}

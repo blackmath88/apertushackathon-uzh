@@ -1,0 +1,10 @@
+{
+  "calls": 234,
+  "estimated_prompt_tokens": 31122,
+  "reported_prompt_tokens": 24601,
+  "reported_completion_tokens": 468,
+  "wall_seconds": 75.43712814200012,
+  "ledger_sha256": "ddd47339d4394cd28c0d2799579f5e7d14731f37ad5901e97a0d3b3c0df33c83",
+  "schema": "uzh-rsd.b8-local-execution/v1",
+  "status": "complete"
+}

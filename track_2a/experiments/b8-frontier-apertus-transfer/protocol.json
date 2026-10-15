@@ -1,0 +1,68 @@
+{
+  "schema": "uzh-rsd.b8-protocol/v1",
+  "stage": "pre_inference_freeze",
+  "frozen_at": "2026-10-14T00:00:00+02:00",
+  "handoff": {
+    "pull_request": 26,
+    "url": "https://github.com/blackmath88/apertushackathon-uzh/pull/26",
+    "head_sha": "2a83afdc3e6238cd6d37da395b80e212a62bbb13"
+  },
+  "data": {
+    "kind": "independently_authored_synthetic",
+    "case_count": 27,
+    "family_count": 9,
+    "optimization_families": 3,
+    "evaluation_families": 6,
+    "languages": ["de", "fr", "it"],
+    "forbid_protected_test_data": true,
+    "required_review_status": "provisionally_reviewed",
+    "forbidden_review_status": "human_verified"
+  },
+  "representations": ["R0", "R1", "R2", "R3"],
+  "relations": ["equivalent", "commitment", "missing", "incorrect", "unresolved"],
+  "schedule": {
+    "teacher_discovery_optimization": 36,
+    "matched_direct_evaluation": 144,
+    "controls_evaluation": 288,
+    "transfer_evaluation": 36,
+    "expected_total_calls": 504,
+    "control_representations": ["R1", "R2"],
+    "controls": ["passage_reversed", "labels_permuted", "source_ablated", "counterpart_shuffled"]
+  },
+  "student": {
+    "name": "Apertus-v1.5-8B-Q8_0",
+    "gguf_sha256": "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d",
+    "llama_cpp_commit": "7ab4ee7",
+    "endpoint": "http://127.0.0.1:11436",
+    "temperature": 0,
+    "seed": 20261014,
+    "attempts": 1
+  },
+  "teacher": {
+    "provider": null,
+    "model_revision": null,
+    "execution_blocked_until_approved_amendment": true,
+    "private_reasoning_transfer_forbidden": true
+  },
+  "ceilings": {
+    "total_calls": 600,
+    "prompt_tokens": 120000,
+    "wall_seconds": 2700,
+    "downloads": 0,
+    "unapproved_spend": 0
+  },
+  "estimation": {
+    "prompt_token_method": "ceil(unicode_codepoints/3)+24",
+    "wall_seconds_per_call": 4
+  },
+  "thresholds": {
+    "minimum_transfer_accuracy_delta": 0.05,
+    "label_stability": 0.85,
+    "passage_order_stability": 0.85,
+    "source_sensitivity": 0.75,
+    "valid_rate": 0.98,
+    "maximum_family_regression": 0.10
+  },
+  "execution_authorized": false,
+  "network_client_included": false
+}

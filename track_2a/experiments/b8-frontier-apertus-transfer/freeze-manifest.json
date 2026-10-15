@@ -1,0 +1,22 @@
+{
+  "schema": "uzh-rsd.b8-freeze/v1",
+  "stage": "pre_inference_freeze",
+  "frozen_at": "2026-10-14T00:00:00+02:00",
+  "model_calls_before_freeze": 0,
+  "case_sha256": "9030f3dc5723266084c3901de39538c6242bd8c86ac35b7ada29dd308d3ff540",
+  "family_sha256": "71fecbc76bfe35ee05b57e8f00a032d4b19245c26229b5f093d6a5347b667060",
+  "files": {
+    "FEASIBILITY.md": "7b9dbfe34b6d8a7891aa5c8e620163e90243d92124b51bb4be29aea24e67a03a",
+    "PROTOCOL.md": "95708ac2334954f3aa6ed8e920e618bbf776ec98c128a04a4a63f6192424f7ec",
+    "protocol.json": "6477131bbee9f6ebc4ddf856e7751ff03fb1f24c614af867c46df91f7df4331c",
+    "families.json": "71fecbc76bfe35ee05b57e8f00a032d4b19245c26229b5f093d6a5347b667060",
+    "synthetic-cases.json": "9030f3dc5723266084c3901de39538c6242bd8c86ac35b7ada29dd308d3ff540",
+    "schemas/R0.schema.json": "2d3b25f2f843f7ed832453fea0ba394f2480640a57cb38c931b47cd2664759b2",
+    "schemas/R1.schema.json": "c05acbbfd3f70a1a4400ac17675fd7df254fe7573d3e3213f7bb52c2d70281d8",
+    "schemas/R2.schema.json": "cf553824faf7667f91002f0b3d4bad4d32a9d513ab86c4f538995b334aa6c901",
+    "schemas/R3.schema.json": "00610569f2af0933d03ce2e91cc5b6e36bfb3d0d369022265aa9136a08cf95c5"
+  },
+  "inference_authorized": false,
+  "frontier_calls": 0,
+  "local_model_calls": 0
+}

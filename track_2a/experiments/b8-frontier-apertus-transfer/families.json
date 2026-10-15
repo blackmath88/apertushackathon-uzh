@@ -1,0 +1,15 @@
+{
+  "schema": "uzh-rsd.b8-families/v1",
+  "split_unit": "source_family_id",
+  "families": [
+    {"source_family_id": "opt-modality", "split": "optimization", "category": "modality"},
+    {"source_family_id": "opt-negation", "split": "optimization", "category": "negation"},
+    {"source_family_id": "opt-quantity", "split": "optimization", "category": "quantity"},
+    {"source_family_id": "eval-deadline", "split": "evaluation", "category": "deadline"},
+    {"source_family_id": "eval-condition", "split": "evaluation", "category": "condition"},
+    {"source_family_id": "eval-exception", "split": "evaluation", "category": "exception"},
+    {"source_family_id": "eval-omission", "split": "evaluation", "category": "omission"},
+    {"source_family_id": "eval-faithful", "split": "evaluation", "category": "faithful_paraphrase"},
+    {"source_family_id": "eval-scope", "split": "evaluation", "category": "scope"}
+  ]
+}
