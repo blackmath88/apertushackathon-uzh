@@ -4,8 +4,10 @@ Implemented 15 October 2026. This is a static companion to the Python applicatio
 
 ## Included
 
-- The same sourced 34-entry federal catalogue and shared visual styling.
-- Browser-local campaign name and scope.
+- The same sourced 34-entry federal catalogue and a dedicated control-center visual theme.
+- Browser-local case portfolio, per-case scope, review queue, evidence, activity and reports.
+- Event-stepped theatre character and explicitly scripted Apertus preview; no runtime connection.
+- Migration of the earlier single campaign into the case portfolio, preserving its reviews.
 - Existing project-authored DE/FR evidence, exact candidate data, source hashes and fixture provenance.
 - Human review history, filters, readable report and JSON evidence export.
 - Explicit demonstration labels; no live findings, crawler, model calls, uploads, analytics or shared persistence.

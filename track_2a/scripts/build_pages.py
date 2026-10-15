@@ -21,9 +21,7 @@ def build(out):
     template = (ROOT / 'web/pages/index.html').read_text()
     out.joinpath('index.html').write_text(template.replace('__PUBLIC_FIXTURE__', encoded))
     out.joinpath('app.js').write_text((ROOT / 'web/pages/app.js').read_text())
-    # Share the existing app's visual language without copying its network UI.
-    app = (ROOT / 'src/uzh_rsd/campaign_center.html').read_text()
-    out.joinpath('style.css').write_text(app.split('<style>', 1)[1].split('</style>', 1)[0] + '\ntextarea{width:100%;min-height:90px;font:inherit;padding:10px}pre{white-space:pre-wrap;overflow-wrap:anywhere}button:focus-visible,a:focus-visible{outline:3px solid #a87823} .toolbar{height:auto;min-height:69px;gap:12px;flex-wrap:wrap} .evidence{overflow-wrap:anywhere}\n')
+    out.joinpath('style.css').write_text((ROOT / 'web/pages/style.css').read_text())
     out.joinpath('.nojekyll').touch()
     return payload
 
