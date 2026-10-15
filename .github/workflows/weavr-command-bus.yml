@@ -28,11 +28,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [[ -z "${WEAVR_INGRESS_TOKEN:-}" ]]; then
-            echo "Missing repository secret WEAVR_GITHUB_INGRESS_TOKEN" >&2
-            exit 1
-          fi
-
           if [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
             mapfile -t files < <(
               git diff-tree --no-commit-id --name-only --diff-filter=A -r "$GITHUB_SHA" -- '.weavr/inbox/*.json'
@@ -46,6 +41,11 @@ jobs:
           if [[ "${#files[@]}" -eq 0 ]]; then
             echo "No Weavr command files to reconcile."
             exit 0
+          fi
+
+          if [[ -z "${WEAVR_INGRESS_TOKEN:-}" ]]; then
+            echo "Missing repository secret WEAVR_GITHUB_INGRESS_TOKEN" >&2
+            exit 1
           fi
 
           for file in "${files[@]}"; do
