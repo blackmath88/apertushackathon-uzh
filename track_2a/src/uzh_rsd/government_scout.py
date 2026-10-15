@@ -290,6 +290,9 @@ def scout(profile: str | SourceProfile, *, seeds: list[str] | tuple[str, ...] | 
                                            ProxyHandler({}), NoRedirects(), PinnedHTTPSHandler(resolver))))
     audit: list[dict[str, object]] = []
     robots: dict[str, RobotFileParser | None] = {}
+    from .robots_policy import RobotsPolicy, RobotsDenied
+    request_policy = RobotsPolicy(robots)
+    transport.request_policy = request_policy
     pages: list[Captured] = []
     candidates = 0
     stop_reason = "frontier_exhausted"
@@ -345,6 +348,9 @@ def scout(profile: str | SourceProfile, *, seeds: list[str] | tuple[str, ...] | 
                             continue
                         if store.enqueue(run_id, dedup_key(target), target, depth + 1, actual):
                             candidates += 1
+            except RobotsDenied as exc:
+                audit.append({"url": exc.url, "state": "ROBOTS_DISALLOW" if exc.reason == "robots_disallow" else "ROBOTS_UNAVAILABLE", "source": url})
+                store.set_state(run_id, key, "blocked", exc.reason)
             except BudgetExceeded as exc:
                 stop_reason = exc.reason
                 store.set_state(run_id, key, "queued")
@@ -368,7 +374,7 @@ def scout(profile: str | SourceProfile, *, seeds: list[str] | tuple[str, ...] | 
             "audit": audit, "request_count": snapshot["total_attempts"], "page_request_count": snapshot["page_attempts"],
             "model_calls": 0, "stop_reason": stop_reason, "unvisited_count": unvisited, "run_id": run_id,
             "accounting": snapshot, "frontier": {"counts": store.counts(run_id), "entries": store.entries(run_id)},
-            "attempts": store.attempts(run_id),
+            "attempts": store.attempts(run_id), "policy_decisions": request_policy.decisions,
             "interrupted_from_earlier_runs": store.foreign_interrupted(run_id),
             "disclaimer": "Unlabelled live sources; candidates are not semantic findings or benchmark results.",
         }
@@ -385,6 +391,8 @@ def _load_robots(transport, host: str, audit: list[dict[str, object]]) -> RobotF
         response = transport.fetch(robots_url, Purpose.ROBOTS, RESPONSE_CEILING[Purpose.ROBOTS])
         if response.status != 200:
             raise RuntimeError(f"robots returned HTTP {response.status}")
+        if urlsplit(response.url).hostname != host:
+            raise ValueError("robots redirect changed host")
         robot = RobotFileParser()
         robot.parse(decode_html(response.body, response.headers.get("Content-Type", "")).splitlines())
         audit.append({"url": robots_url, "state": "ROBOTS_LOADED", "sha256": sha256(response.body).hexdigest()})

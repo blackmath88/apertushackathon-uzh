@@ -23,7 +23,7 @@ for(const [name,viewport] of [['desktop',{width:1440,height:1050}],['mobile',{wi
   // reload persistence: state comes from the server, not the page
   await p.reload();await p.getByRole('button',{name:'Open campaign →'}).first().click();await p.getByRole('button',{name:'Scope',exact:true}).click();
   await p.locator('#preparation [data-status="captured"]').waitFor();
-  await p.getByText(/Live original \(left\)/).waitFor();await p.getByText(/Captured evidence \(left\): sha256:/).waitFor();
+  await p.getByText(/Fixture URL \(left\)/).waitFor();await p.getByText(/Captured evidence \(left\): sha256:/).waitFor();
   if(name==='desktop'){
     const downloading=p.waitForEvent('download');
     await p.getByRole('link',{name:'Download captured left HTML',exact:true}).click();

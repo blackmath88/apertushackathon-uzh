@@ -31,7 +31,7 @@ class Store:
             self.lease.close(); raise
         self.lock = threading.RLock(); self.inference = inference
         # No fetcher means no live discovery: reviewed-profile network use needs explicit authorisation.
-        self.discovery_fetcher = discovery_fetcher; self.capture_fetcher = capture_fetcher; self.capture_fixture = False; self.capture_delay = 2.0; self.threads = []
+        self.discovery_fetcher = discovery_fetcher; self.capture_fetcher = capture_fetcher; self.capture_fixture = False; self.demo_discovery = False; self.capture_delay = 2.0; self.threads = []
         self.guard = self.root / 'unsettled-attempt.json'
         self.batch_guard = self.root / 'active-batch.json'
         # A process restart never silently retries an interrupted model request.
@@ -106,12 +106,14 @@ class Store:
         with self.lock:
             c = self.read(cid); self._site(c, site_id)
             plan = discovery.preview(site_id)
-            run = {'id': uuid.uuid4().hex, 'site_id': site_id, 'started_at': now(), 'progress': {}, 'snapshot_id': None, 'plan': plan}
+            run = {'id': uuid.uuid4().hex, 'site_id': site_id, 'started_at': now(), 'progress': {}, 'snapshot_id': None, 'plan': plan, 'fixture': self.demo_discovery}
             if not plan['eligible']:
                 run.update(state='blocked', reason=plan['reason'], finished_at=now())
             elif not self.discovery_fetcher:
                 run.update(state='blocked', reason='live_discovery_not_authorised', finished_at=now(),
                            detail='No authorised transport is connected; BFE content restrictions are preserved. Nothing was requested.')
+            elif any(r.get('state') == 'running' for other in self.list() for r in other.get('discovery_runs', [])):
+                raise ValueError('Discovery is already running. Wait for it to finish before starting another run.')
             else:
                 run['state'] = 'running'
             c.setdefault('discovery_runs', []).append(run)
@@ -131,6 +133,7 @@ class Store:
         try:
             snap = discovery.discover(site_id, fetcher=self.discovery_fetcher, delay_seconds=self.discovery_delay,
                                       progress=lambda p: self._update_run(cid, rid, progress=p))
+            snap['fixture'] = self.demo_discovery
             (self.root / ('snapshot-' + snap['id'] + '.json')).write_text(json.dumps(snap, ensure_ascii=False))
             self._update_run(cid, rid, state='complete', snapshot_id=snap['id'], finished_at=now(),
                              stop_reason=snap['stop_reason'], summary={'families': len(snap['families']),
@@ -173,6 +176,8 @@ class Store:
             if not any(f['snapshot_id'] == snapshot_id and f['family_id'] == family_id for f in c['scope'].get('page_families', [])):
                 raise ValueError('Page family is not in the saved campaign scope')
             snap = self.snapshot(cid, snapshot_id)
+            if any(r.get('state') == 'running' for other in self.list() for r in other.get('discovery_runs', [])):
+                raise ValueError('Discovery is still running. Wait before capturing evidence.')
             if len(c['pairs']) >= 20: raise ValueError('Campaign limit: 20 page pairs')
             if self.capture_fetcher is None and not self.capture_fixture:
                 result = captures._blocked(['live_capture_not_authorised'], family_id=family_id, snapshot_id=snapshot_id, site_id=snap['site_id'])
@@ -374,7 +379,7 @@ def handler(store, token):
                     return self.send(html,kind='text/html')
                 if path == '/api/campaigns':
                     return self.send({'campaigns':store.list(),'catalogue':inventory.inventory(),
-                                      'inference_enabled':bool(store.inference),'capture_mode':{'fixture':bool(store.capture_fixture),'transport':store.capture_fetcher is not None}, 'unsettled':store.guard.exists() or store.batch_guard.exists()})
+                                      'inference_enabled':bool(store.inference),'demo_discovery':store.demo_discovery,'capture_mode':{'fixture':bool(store.capture_fixture),'transport':store.capture_fetcher is not None}, 'unsettled':store.guard.exists() or store.batch_guard.exists()})
                 match=re.fullmatch('/api/campaigns/([a-f0-9]{32})/pairs/([a-f0-9]{32})/evidence/(left|right)',path)
                 if match:
                     body, digest = store.evidence(match[1], match[2], match[3])
@@ -438,15 +443,27 @@ addEventListener('message',e=>{if(e.origin===location.origin&&e.source===parent&
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data',required=True);p.add_argument('--port',type=int,default=8766)
+    p.add_argument('--demo-discovery', action='store_true', help='Authored offline website responses; no government or model requests')
     p.add_argument('--enable-inference',action='store_true');p.add_argument('--model');p.add_argument('--weight-hash');p.add_argument('--runtime-revision')
     a=p.parse_args(); config=None
+    if a.demo_discovery and a.enable_inference: p.error('--demo-discovery cannot enable model inference')
     if a.enable_inference:
         if not a.model or not a.runtime_revision or not re.fullmatch('[a-f0-9]{64}',a.weight_hash or ''): p.error('Explicit model, weight hash and runtime revision required')
         config={'model':a.model,'weight_hash':a.weight_hash,'runtime_revision':a.runtime_revision}
-    store=Store(a.data,config); server=ThreadingHTTPServer(('127.0.0.1',a.port),handler(store,secrets.token_urlsafe(32)))
-    print(f'Federal campaign center: http://127.0.0.1:{server.server_port}',flush=True)
-    try: server.serve_forever()
-    except KeyboardInterrupt: pass
-    finally: server.server_close();store.lease.close()
+    store=Store(a.data,config)
+    server=None
+    try:
+        if a.demo_discovery:
+            from .federal_demo import configure
+            try: configure(store)
+            except ValueError as exc: p.error(str(exc))
+            if not store.list(): store.create('Discovery walkthrough · authored example', site_ids=['bfe'])
+        server=ThreadingHTTPServer(('127.0.0.1',a.port),handler(store,secrets.token_urlsafe(32)))
+        print(f'Federal campaign center: http://127.0.0.1:{server.server_port}',flush=True)
+        try: server.serve_forever()
+        except KeyboardInterrupt: pass
+    finally:
+        if server is not None: server.server_close()
+        store.lease.close()
 
 if __name__=='__main__': main()

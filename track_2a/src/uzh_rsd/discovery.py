@@ -19,6 +19,7 @@ import xml.etree.ElementTree as ET
 import zlib
 
 from . import government_scout as gs
+from .robots_policy import RobotsPolicy, RobotsDenied
 from .discovery_transport import (
     Budgets, BudgetExceeded, DiscoveryStore, GuardedTransport, LegacyFetcherTransport, Purpose, RequestLedger,
     RESPONSE_CEILING, bounded_body,
@@ -230,6 +231,8 @@ def discover(site_id: str, *, fetcher=None, budgets: Budgets = DISCOVERY_BUDGETS
     transport = (LegacyFetcherTransport(ledger, fetcher, profile, scope, timeout=timeout) if fetcher
                  else GuardedTransport(ledger, scope, timeout=timeout, resolver=resolver))
     col = Collector(profile, budgets.max_candidates)
+    request_policy = RobotsPolicy({})
+    transport.request_policy = request_policy
     notes: list[dict[str, object]] = []
     stop = "completed"
 
@@ -245,6 +248,8 @@ def discover(site_id: str, *, fetcher=None, budgets: Budgets = DISCOVERY_BUDGETS
             r = transport.fetch(robots_url, Purpose.ROBOTS)
             if r.status != 200:
                 raise RuntimeError(f"robots HTTP {r.status}")
+            if urlsplit(r.url).hostname != host:
+                raise ValueError("robots redirect changed host")
             robot = RobotFileParser()
             robot.parse(gs.decode_html(r.body, r.headers.get("Content-Type", "")).splitlines())
             sitemaps_declared = robot.site_maps() or []
@@ -256,6 +261,7 @@ def discover(site_id: str, *, fetcher=None, budgets: Budgets = DISCOVERY_BUDGETS
         if robot is None:
             stop = "robots_unavailable"
             raise _Stop
+        request_policy.rules[host] = robot
         # sitemaps (index recursion, cycle guard, depth/count ceilings)
         queue = [(u, 0, "robots") for u in sitemaps_declared]
         seen_maps: set[str] = set()
@@ -286,6 +292,9 @@ def discover(site_id: str, *, fetcher=None, budgets: Budgets = DISCOVERY_BUDGETS
                 kind, entries = parse_sitemap(_body(resp, RESPONSE_CEILING[Purpose.SITEMAP]))
             except BudgetExceeded:
                 raise
+            except RobotsDenied as exc:
+                notes.append({"source": "request_policy", "url": exc.url, "state": "blocked", "detail": exc.reason})
+                continue
             except (Exception, zlib.error) as exc:
                 notes.append({"source": "sitemap", "url": clean, "state": "failed", "detail": type(exc).__name__})
                 continue
@@ -317,6 +326,9 @@ def discover(site_id: str, *, fetcher=None, budgets: Budgets = DISCOVERY_BUDGETS
                     raise RuntimeError(f"HTTP {resp.status} / not HTML")
             except BudgetExceeded:
                 raise
+            except RobotsDenied as exc:
+                col.candidates[seed_url].update(state="blocked", reason=exc.reason, blocked_url=exc.url)
+                continue
             except Exception as exc:
                 col.candidates[seed_url].update(state="failed", reason=type(exc).__name__)
                 continue
@@ -350,6 +362,9 @@ def discover(site_id: str, *, fetcher=None, budgets: Budgets = DISCOVERY_BUDGETS
                 links = parse_feed(_body(resp, RESPONSE_CEILING[Purpose.FEED]))
             except BudgetExceeded:
                 raise
+            except RobotsDenied as exc:
+                notes.append({"source": "request_policy", "url": exc.url, "state": "blocked", "detail": exc.reason})
+                continue
             except (Exception, zlib.error) as exc:
                 notes.append({"source": "feed", "url": feed, "state": "failed", "detail": type(exc).__name__})
                 continue
@@ -366,6 +381,7 @@ def discover(site_id: str, *, fetcher=None, budgets: Budgets = DISCOVERY_BUDGETS
             "schema": SCHEMA, "id": uuid.uuid4().hex, "site_id": site_id, "profile": profile.id,
             "profile_version": profile.version, "observed_at": datetime.now(timezone.utc).isoformat(),
             "stop_reason": stop, "budgets": asdict(budgets), "accounting": ledger.snapshot(),
+            "policy_decisions": request_policy.decisions,
             "sources": notes, "candidates": sorted(col.candidates.values(), key=lambda c: c["url"]),
             "unvisited_count": counts_unvisited, "families": families(col), "languages": list(LANGUAGES),
             "model_calls": 0,

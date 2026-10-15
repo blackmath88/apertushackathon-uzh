@@ -14,6 +14,7 @@ from urllib.parse import urlsplit
 
 from . import discovery, federal_desk as desk
 from . import government_scout as gs
+from .robots_policy import RobotsPolicy, RobotsDenied
 from .discovery_transport import DiscoveryStore, GuardedTransport, LegacyFetcherTransport, Purpose, RequestLedger, RESPONSE_CEILING
 from .live_government_pilot import (
     BLOCK_TAGS, EXTRACTION_REVISION, IGNORED_TAGS, MainContentParser, capture_html,
@@ -84,6 +85,8 @@ def capture_family(snapshot, family_id, pairing, *, fetcher=None, raw_dir, fixtu
         return _blocked(blockers, **base)
     if fixture and fetcher is None:
         return _blocked(["fixture_fetcher_required"], **base)
+    if not fixture and fetcher is not None:
+        return _blocked(["legacy_fetcher_fixture_only"], **base)
     with DiscoveryStore() as store:
         return _capture(profile, fam, left, right, pairing, base, store, fetcher=fetcher, raw_dir=raw_dir,
                         fixture=fixture, delay_seconds=delay_seconds, resolver=resolver, timeout=timeout, clock=clock)
@@ -94,6 +97,20 @@ def _capture(profile, fam, left, right, pairing, base, store, *, fetcher, raw_di
     scope = gs._scope_check(profile)
     transport = (LegacyFetcherTransport(ledger, fetcher, profile, scope, timeout=timeout) if fetcher
                  else GuardedTransport(ledger, scope, timeout=timeout, **({"resolver": resolver} if resolver else {})))
+    policy_audit = []
+    request_policy = RobotsPolicy({})
+    if not fixture:
+        transport.request_policy = request_policy
+        try:
+            for host in sorted({urlsplit(side["url"]).hostname for side in (left, right)}):
+                request_policy.rules[host] = gs._load_robots(transport, host, policy_audit)
+            # Refuse the whole pair before content requests if either side is disallowed.
+            for side in (left, right):
+                request_policy(side["url"], Purpose.HTML)
+        except (RobotsDenied, discovery.BudgetExceeded) as exc:
+            return {**_blocked([exc.reason], **base), "requests": ledger.total,
+                    "evidence": {"schema": SCHEMA, **base, "robots": policy_audit,
+                                 "policy_decisions": request_policy.decisions, "accounting": ledger.snapshot(), "model_calls": 0}}
     retrievals, bodies, failures = {}, {}, []
     for key, side in (("left", left), ("right", right)):
         at = clock().isoformat()
@@ -102,6 +119,10 @@ def _capture(profile, fam, left, right, pairing, base, store, *, fetcher, raw_di
             ctype = next((v for k, v in resp.headers.items() if k.lower() == "content-type"), "")
             if resp.status != 200 or not ctype.lower().startswith("text/html"):
                 raise RuntimeError(f"HTTP {resp.status} {ctype}")
+        except RobotsDenied as exc:
+            failures.append(f"{exc.reason}:{key}")
+            retrievals[key] = {"requested_url": side["url"], "retrieved_at_utc": at, "state": "blocked", "blocked_url": exc.url, "reason": exc.reason}
+            continue
         except Exception as exc:
             failures.append(f"fetch_failed:{key}:{type(exc).__name__}")
             retrievals[key] = {"requested_url": side["url"], "retrieved_at_utc": at, "state": "failed", "error": type(exc).__name__}
@@ -126,6 +147,8 @@ def _capture(profile, fam, left, right, pairing, base, store, *, fetcher, raw_di
     evidence = {"schema": SCHEMA, **base, "retrievals": retrievals, "accounting": ledger.snapshot(),
                 "extraction": {}, "family": {"status": fam["status"], "edges": fam["edges"],
                                              "language_availability": fam["language_availability"]},
+                "robots": policy_audit, "policy_decisions": request_policy.decisions,
+                "robots_mode": "authored_fixture_no_network" if fixture else "per_host_fail_closed",
                 "model_calls": 0}
     if failures:
         return {**base, "schema": SCHEMA, "status": "failed", "blockers": failures, "requests": ledger.total, "bundle": None, "evidence": evidence}

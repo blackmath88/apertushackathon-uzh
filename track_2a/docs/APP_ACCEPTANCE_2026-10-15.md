@@ -61,3 +61,13 @@ node track_2a/tests/campaign_capture_browser.cjs http://127.0.0.1:8767 /tmp/lis-
 ## Execution and governance
 
 Direct foreground coordinator work in ChatGPT's isolated runtime. Orca is unavailable here; no Orca workers or other agents were launched or claimed. The Weavr operating contract was consulted; no Mission/Need, staged intake, baseline, inference runtime, merge or deployment state was changed. No new application dependency or upstream code was adopted. This update stays in draft PR #39.
+
+## Follow-up: redirect policy and a launchable offline walkthrough
+
+The next repair pass closes the implementation gaps in item 4 above: a shared `RobotsPolicy` checks each guarded content hop before reservation/dispatch; Scout and discovery persist denied decisions as blocked; direct non-fixture capture loads per-host robots and prechecks both sides before content retrieval. Robots fetch failures deny content, and a robots redirect cannot supply another host's rules. Captures using legacy injected fetchers are fixture-only because those callbacks cannot enforce internal redirect hops before dispatch. Source/content-use permission remains a separate prerequisite, and the campaign live gate is unchanged.
+
+New `--demo-discovery` mode exercises the normal app with fixed authored DE/FR/IT/EN responses and no network fallback. It creates an initial campaign, labels its runs/snapshots as fixtures, prevents mixing in existing non-demo discovery, and refuses simultaneous inference. See [OFFLINE_DISCOVERY_WALKTHROUGH.md](OFFLINE_DISCOVERY_WALKTHROUGH.md). Discovery starts are serialised across campaigns, and capture waits until active discovery finishes.
+
+Follow-up verification: 105 focused Python tests pass, zero skips, including nine guarded robots/redirect tests and four offline-demo tests. Normal app CLI/loopback state smoke check passes; report-export smoke and JavaScript syntax checks pass. All upstream responses are authored. Full repository gates, real browser rendering, independent review, eligible live source policy and real Apertus acceptance remain open. The prior browser-download rejection was not retried.
+
+The attached Hack Apertus resource notes were read as background: benchmark measurement and application workflow remain separate, deterministic code owns discovery/policy/provenance, and no benchmark claim or held-out-data access was introduced. Their early-stage checklist is not substituted for current repository status.

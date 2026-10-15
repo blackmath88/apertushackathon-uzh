@@ -136,3 +136,13 @@ Verification: **92 focused Python tests passed, zero skips**, including a real l
 Browser remains open: Chromium absent; automatic approval review rejected downloading it under the retained no-dependency-download instruction. No alternate installation attempted. Updated browser harness is ready for an environment with an existing approved browser. Prior desktop/mobile observations are not re-labelled as validation of these new changes.
 
 No live federal crawl, model call, protected test access, new application dependency, merge or deployment. Baseline untouched. Self-review only. The live campaign gate stays closed; redirected-target robots enforcement, direct-capture robots checks, eligible policy and broader adapters remain prerequisites. #37/#38 unchanged. See [APP_ACCEPTANCE_2026-10-15.md](APP_ACCEPTANCE_2026-10-15.md) for exact acceptance scope and next commands.
+
+---
+
+# Federal policy + offline walkthrough follow-up — 15 Oct 2026
+
+Base: PR #39 `ae6e2d52c8841d272817b929461acc9d757c4a8e`. User requested continued implementation. Fresh PR and canonical Weavr contract read; Observatory snapshot and AGENTS files absent at checked paths, staged intake remains staged-not-applied. Orca executable unavailable; direct foreground work, no delegated workers and no canonical Weavr changes.
+
+Scope delivered: request-time per-host robots checks on guarded redirects; blocked-decision provenance in Scout/discovery; robots-first direct capture with both-side preflight; fixture-only legacy capture injection; normal app `--demo-discovery` mode, clear authored labels and a walkthrough document; serial discovery/capture scheduling within the campaign store.
+
+Evidence: 105 focused tests passed, zero skips; normal app CLI launched against loopback and verified demo/initial campaign/inference-off state; actual report function and JavaScript syntax checks pass. No external requests in the authored-response tests. Self-review only. No Chromium download retry, real browser result, live government crawl, model call, protected benchmark access, new dependency, merge or deployment. No claim of benchmark improvement. Remaining gates and local commands are in APP_ACCEPTANCE_2026-10-15.md and OFFLINE_DISCOVERY_WALKTHROUGH.md.

@@ -319,6 +319,7 @@ class GuardedTransport:
                  opener_factory: Callable[[], object] | None = None) -> None:
         self.ledger, self.scope, self.timeout, self.resolver = ledger, scope, timeout, resolver
         self.opener_factory = opener_factory or (lambda: build_guarded_opener(resolver))
+        self.request_policy = None
 
     def fetch(self, url: str, purpose: Purpose = Purpose.HTML, max_bytes: int | None = None) -> FetchResponse:
         ceiling = min(max_bytes or RESPONSE_CEILING[purpose], RESPONSE_CEILING[purpose])
@@ -327,6 +328,8 @@ class GuardedTransport:
         redirects: list[dict[str, object]] = []
         seen = {current}
         for hop in range(MAX_REDIRECTS + 1):
+            if self.request_policy is not None:
+                self.request_policy(current, purpose)
             attempt = self.ledger.reserve(purpose, current, hop)
             response = None
             received = 0
@@ -406,9 +409,12 @@ class LegacyFetcherTransport:
     def __init__(self, ledger: RequestLedger, fetcher: Callable[..., FetchResponse], profile, scope: ScopeCheck,
                  *, timeout: float) -> None:
         self.ledger, self.fetcher, self.profile, self.scope, self.timeout = ledger, fetcher, profile, scope, timeout
+        self.request_policy = None
 
     def fetch(self, url: str, purpose: Purpose = Purpose.HTML, max_bytes: int | None = None) -> FetchResponse:
         url = self.scope(url, None, purpose)
+        if self.request_policy is not None:
+            self.request_policy(url, purpose)
         attempt = self.ledger.reserve(purpose, url)
         try:
             self.ledger.pace(url)
@@ -419,4 +425,10 @@ class LegacyFetcherTransport:
         self.ledger.complete(attempt, status=response.status, nbytes=len(response.body))
         for number, hop in enumerate(response.redirects, 1):
             self.ledger.charge(purpose, str(hop.get("to", url)), number, int(hop.get("status") or 0), "reported_by_fetcher")
+        # Legacy injections are trusted test adapters: validation here prevents acceptance,
+        # but cannot undo requests the callback already followed internally.
+        if self.request_policy is not None:
+            for target in [str(hop.get("to", url)) for hop in response.redirects] + [response.url]:
+                target = self.scope(target or url, url, purpose)
+                self.request_policy(target, purpose)
         return response
