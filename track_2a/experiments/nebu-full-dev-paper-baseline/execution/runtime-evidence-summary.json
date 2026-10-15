@@ -1,0 +1,47 @@
+{
+  "schema": "uzh-rsd.full-dev-b0-runtime-evidence-summary/v1",
+  "private_evidence_file_count": 11,
+  "preflight": {
+    "checked": 489,
+    "context_tokens": 8192,
+    "output_tokens": 4096,
+    "overflow_count": 155,
+    "prompt_tokens_total": 1820256
+  },
+  "prompts": {
+    "count": 489,
+    "unique_sha256_keys": 489
+  },
+  "execution": {
+    "intended": 489,
+    "resolved": 489,
+    "endpoint_attempted": 334,
+    "returned": 333,
+    "context_overflow": 155,
+    "transport_or_runtime_failure": 1,
+    "unresolved": 0,
+    "unstarted": 0
+  },
+  "runtime_identity": {
+    "endpoint_alias": "Apertus-v1.5-8B-Q8_0",
+    "model_type": "Q8_0",
+    "model_sha256": "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d",
+    "llama_cpp_commit": "7ab4ee7baad2d920464cbacfad4f4b07cf111fd2",
+    "server_binary_sha256": "d0538ae0a50a97ede6c4fece9054ed8d3b891a82e230a1defe810249ee7b93f1",
+    "chat_template_sha256": "d23af2850029e9df88bb017e06e0c14a0462604588f1dbe4f519cdfac3e260e0",
+    "context_tokens": 8192,
+    "slots": 1,
+    "baseline_port": 11436
+  },
+  "morrow_boundary": {
+    "pre_restart_pid": 1240,
+    "pre_restart_start_ticks": 8199,
+    "post_restart_pid": 1224,
+    "post_restart_start_ticks": 11150,
+    "port": 11435,
+    "baseline_port_closed_afterward": true,
+    "same_command_observed_after_restart": true,
+    "process_continuity_claimed": false,
+    "mutation_free_continuity_claimed": false
+  }
+}

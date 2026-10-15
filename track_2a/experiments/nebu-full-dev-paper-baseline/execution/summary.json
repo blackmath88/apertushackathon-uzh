@@ -1,0 +1,101 @@
+{
+  "all_manifest": {
+    "implementation_macro": 0.01021567996488429,
+    "macro": 0.01021567996488429,
+    "macro_undefined_reason": null,
+    "per_language": {
+      "de": {
+        "documents": 163,
+        "implementation_spearman": -0.001040831972944346,
+        "official_spearman": -0.0010408319729443458,
+        "positions": 104305,
+        "spearman": -0.0010408319729443458
+      },
+      "fr": {
+        "documents": 163,
+        "implementation_spearman": 0.031078262067367367,
+        "official_spearman": 0.031078262067367367,
+        "positions": 119183,
+        "spearman": 0.031078262067367367
+      },
+      "it": {
+        "documents": 163,
+        "implementation_spearman": 0.000609609800229849,
+        "official_spearman": 0.0006096098002298491,
+        "positions": 113999,
+        "spearman": 0.0006096098002298491
+      }
+    }
+  },
+  "available_only": {
+    "denominators": {
+      "de": 18,
+      "fr": 18,
+      "it": 23
+    },
+    "implementation_macro": 0.0875492679378083,
+    "macro": 0.0875492679378083,
+    "macro_undefined_reason": null,
+    "per_language": {
+      "de": {
+        "documents": 18,
+        "implementation_spearman": 0.11645337633000477,
+        "official_spearman": 0.11645337633000478,
+        "positions": 4109,
+        "spearman": 0.11645337633000478
+      },
+      "fr": {
+        "documents": 18,
+        "implementation_spearman": 0.10500198581969834,
+        "official_spearman": 0.10500198581969833,
+        "positions": 4214,
+        "spearman": 0.10500198581969833
+      },
+      "it": {
+        "documents": 23,
+        "implementation_spearman": 0.0411924416637218,
+        "official_spearman": 0.0411924416637218,
+        "positions": 5736,
+        "spearman": 0.0411924416637218
+      }
+    }
+  },
+  "counts": {
+    "attempted": 334,
+    "fallback_documents": 430,
+    "fallback_tokens": 378364,
+    "generation_status": {
+      "context_overflow": 155,
+      "returned": 333,
+      "transport_or_runtime_failure": 1
+    },
+    "intended": 489,
+    "parse_status": {
+      "context_overflow": 155,
+      "ok": 59,
+      "transport_or_runtime_failure": 1,
+      "unparseable": 274
+    },
+    "parseable": 59,
+    "parsed_tokens": 15995,
+    "returned": 333,
+    "strictly_valid": 1,
+    "unstarted": 0
+  },
+  "integrity": {
+    "ledger_sha256": "ef8c79744d33467f5efede8179252aaac048b7cd1124f825d3d35611fab21050",
+    "official_evaluator_pinned": true,
+    "predictions_sha256": "954d4698f4b8a3cf5b4ed11727e840cc81776798961748d9023256c079242a06",
+    "response_hashes_verified": true
+  },
+  "manifest_sha256": "053d2ac8cf0714ba1ad1d909eb437dff1e99a5958673ac4e89bd740afa699551",
+  "schema": "uzh-rsd.full-dev-b0-results/v1",
+  "usage": {
+    "combined_tokens_total": 1826142,
+    "completion_tokens_total": 936390,
+    "generation_wall_s": 28565.194,
+    "latency_s_median": 84.008,
+    "latency_s_total": 28563.873,
+    "prompt_tokens_total": 889752
+  }
+}

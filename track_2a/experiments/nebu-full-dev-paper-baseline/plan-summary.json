@@ -1,0 +1,26 @@
+{
+  "schema": "uzh-rsd.full-dev-b0-plan-summary/v1",
+  "requests": 489,
+  "order": "language order de,fr,it; original row order within language",
+  "first": {
+    "sequence": 0,
+    "id": "admin_de_0",
+    "pair": "en-de",
+    "prompt_sha256": "c095a2f6db61610b75049dee2ce5f327c3c3eca30a6ad59ae86714a43d37c3cb",
+    "manifest_sha256": "053d2ac8cf0714ba1ad1d909eb437dff1e99a5958673ac4e89bd740afa699551",
+    "config_sha256": "9e9b00edd7ec2d75ded7b3bff02170eeaa4da45a5d8d49be6f5cb9640a3d1c91",
+    "max_new_tokens": 4096
+  },
+  "last": {
+    "sequence": 488,
+    "id": "admin_it_223",
+    "pair": "en-it",
+    "prompt_sha256": "8833570584ce71b2ab60940c5b5bcc4d8a385168445fb9db2ae70afef4ed7491",
+    "manifest_sha256": "053d2ac8cf0714ba1ad1d909eb437dff1e99a5958673ac4e89bd740afa699551",
+    "config_sha256": "9e9b00edd7ec2d75ded7b3bff02170eeaa4da45a5d8d49be6f5cb9640a3d1c91",
+    "max_new_tokens": 4096
+  },
+  "plan_sha256": "836855d724bea5f3015ef8230da4486d34b63e1a9aa7492ed787f0303da849e1",
+  "manifest_sha256": "053d2ac8cf0714ba1ad1d909eb437dff1e99a5958673ac4e89bd740afa699551",
+  "config_file_sha256": "9e9b00edd7ec2d75ded7b3bff02170eeaa4da45a5d8d49be6f5cb9640a3d1c91"
+}
