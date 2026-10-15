@@ -1,0 +1,36 @@
+// Real-browser acceptance: guidance must preserve cases and avoid network/model work.
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+(async()=>{
+const browser=await chromium.launch({headless:true,args:['--no-sandbox'],...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
+const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];
+page.on('pageerror',e=>errors.push(e.message));
+await page.goto(process.argv[2]);
+const dialog=page.getByRole('dialog');await dialog.waitFor();
+const initial=await page.evaluate(()=>localStorage.getItem('lost-in-switzerland:pages:v2'));
+await dialog.getByRole('button',{name:'Show me around',exact:true}).click();
+for(let i=0;i<5;i++)await dialog.getByRole('button',{name:'Next',exact:true}).click();
+await dialog.getByRole('heading',{name:'Take the evidence and decisions with you'}).waitFor();
+await dialog.getByRole('button',{name:'Finish tour',exact:true}).click();
+assert.equal(await dialog.isVisible(),false);
+assert.equal(await page.evaluate(()=>localStorage.getItem('lost-in-switzerland:pages:v2')),initial);
+await page.reload();assert.equal(await dialog.isVisible(),false);
+await page.getByRole('button',{name:'Settings',exact:true}).click();
+await page.getByLabel('Offer the introduction on a first visit').uncheck();
+await page.getByRole('button',{name:'Replay introduction',exact:true}).click();
+assert.equal(await dialog.getByLabel('Do not show this introduction automatically').isChecked(),true);
+await page.keyboard.press('Escape');assert.equal(await dialog.isVisible(),false);
+await page.getByRole('button',{name:'Replay guided example',exact:true}).click();
+await dialog.getByRole('button',{name:'Next',exact:true}).click();
+await dialog.getByRole('button',{name:'Back',exact:true}).click();
+await page.setViewportSize({width:390,height:844});
+assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+await page.screenshot({path:'/tmp/apertus-guidance-mobile.png',fullPage:true});
+await dialog.getByRole('button',{name:'Skip tour',exact:true}).click();
+await page.getByRole('heading',{name:'Settings',exact:true}).waitFor();
+await page.reload();assert.equal(await dialog.isVisible(),false);
+assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('lost-in-switzerland:guidance:v1')).welcome),false);
+assert.deepEqual(errors,[]);
+console.log('PASS first visit, six steps, back, finish, skip, Escape, replay, preferences, case isolation and mobile overflow');
+await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});
