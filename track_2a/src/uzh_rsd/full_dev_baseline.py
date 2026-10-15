@@ -257,6 +257,30 @@ def ledger_state(path: Path) -> dict:
     return {"intents": intents, "terminal": terminal, "unresolved": sorted(set(intents) - set(terminal))}
 
 
+def reconcile_unresolved_failure(run_dir: Path, sequence: int, *, error: str) -> None:
+    """Terminate one interrupted intent without ever resending it.
+
+    This recovery operation is deliberately narrower than ``run_resumable``:
+    it accepts only an already persisted, uniquely unresolved intent and writes
+    one auditable no-response result under the runner lock.
+    """
+    ledger = Path(run_dir) / "ledger.jsonl"
+    with exclusive_runner(Path(run_dir) / "runner.lock"):
+        state = ledger_state(ledger)
+        if state["unresolved"] != [sequence]:
+            raise ValueError(f"expected sole unresolved intent {sequence}, got {state['unresolved']}")
+        intent = state["intents"][sequence]
+        result = {
+            "schema": LEDGER_SCHEMA,
+            "event": "result",
+            "sequence": sequence,
+            "id": intent["id"],
+            "status": "transport_or_runtime_failure",
+            "generation": asdict(Generation(None, error, token_count_source="unavailable")),
+        }
+        _append_fsync(ledger, result)
+
+
 @contextmanager
 def exclusive_runner(lock_path: Path):
     lock_path.parent.mkdir(parents=True, exist_ok=True)
@@ -279,12 +303,13 @@ def run_resumable(
     prompts: Mapping[str, str],
     run_dir: Path,
     *,
+    prompt_tokens: Mapping[int, int] | None = None,
     clock: Callable[[], float] = time.monotonic,
 ) -> dict:
     """Run never-started requests once, sequentially; never resend intents."""
     ledger = Path(run_dir) / "ledger.jsonl"
     deadline = clock() + TOTAL_WALL_SECONDS
-    attempted = returned = failed = 0
+    intended = attempted = returned = failed = context_overflow = 0
     with exclusive_runner(Path(run_dir) / "runner.lock"):
         existing = ledger_state(ledger)
         for row in plan:
@@ -295,20 +320,35 @@ def run_resumable(
                 break
             intent = {"schema": LEDGER_SCHEMA, "event": "intent", **row}
             _append_fsync(ledger, intent)
-            attempted += 1
-            generation: Generation = backend.generate(prompts[row["prompt_sha256"]], OUTPUT_TOKENS)
-            status = "returned" if generation.text is not None else "transport_or_runtime_failure"
+            intended += 1
+            exact_prompt_tokens = None if prompt_tokens is None else prompt_tokens.get(sequence)
+            if exact_prompt_tokens is not None and exact_prompt_tokens + OUTPUT_TOKENS > CONTEXT_TOKENS:
+                generation = Generation(
+                    None,
+                    "context_overflow",
+                    prompt_tokens=exact_prompt_tokens,
+                    completion_tokens=0,
+                    token_count_source="endpoint tokenizer",
+                )
+                status = "context_overflow"
+                context_overflow += 1
+            else:
+                attempted += 1
+                generation = backend.generate(prompts[row["prompt_sha256"]], OUTPUT_TOKENS)
+                status = "returned" if generation.text is not None else "transport_or_runtime_failure"
             result = {"schema": LEDGER_SCHEMA, "event": "result", "sequence": sequence, "id": row["id"], "status": status,
                       "generation": asdict(generation)}
             if generation.text is not None:
                 result["response_sha256"] = _sha(generation.text.encode())
                 returned += 1
-            else:
+            elif status == "transport_or_runtime_failure":
                 failed += 1
             _append_fsync(ledger, result)
-            if generation.text is None:  # checkpoint and pause; no self-retry
+            if status == "transport_or_runtime_failure":  # checkpoint and pause; no self-retry
                 break
     final = ledger_state(ledger)
-    return {"planned": len(plan), "attempted_this_invocation": attempted, "returned_this_invocation": returned,
-            "failed_this_invocation": failed, "resolved_total": len(final["terminal"]), "unresolved": final["unresolved"],
+    return {"planned": len(plan), "intended_this_invocation": intended,
+            "attempted_this_invocation": attempted, "returned_this_invocation": returned,
+            "failed_this_invocation": failed, "context_overflow_this_invocation": context_overflow,
+            "resolved_total": len(final["terminal"]), "unresolved": final["unresolved"],
             "unstarted": len(plan) - len(final["intents"])}

@@ -15,6 +15,7 @@ from uzh_rsd.full_dev_baseline import (
     context_preflight,
     exclusive_runner,
     ledger_state,
+    reconcile_unresolved_failure,
     run_resumable,
     validate_backend_contract,
 )
@@ -75,6 +76,17 @@ class ResumeTests(unittest.TestCase):
         self.assertEqual(result["unstarted"], 1)
         self.assertTrue(all(cap == OUTPUT_TOKENS for _, cap in backend.calls))
 
+    def test_context_overflow_is_resolved_without_endpoint_call(self):
+        backend = FakeBackend()
+        prompt_tokens = {0: CONTEXT_TOKENS - OUTPUT_TOKENS + 1, 1: 1, 2: 1}
+        result = run_resumable(backend, self.plan, self.prompts, self.tmp, prompt_tokens=prompt_tokens)
+        self.assertEqual([prompt for prompt, _ in backend.calls], ["synthetic prompt 1", "synthetic prompt 2"])
+        self.assertEqual(result["intended_this_invocation"], 3)
+        self.assertEqual(result["attempted_this_invocation"], 2)
+        self.assertEqual(result["context_overflow_this_invocation"], 1)
+        state = ledger_state(self.tmp / "ledger.jsonl")
+        self.assertEqual(state["terminal"][0]["status"], "context_overflow")
+
     def test_resume_only_runs_never_started(self):
         first = FakeBackend(fail_at=2)
         run_resumable(first, self.plan, self.prompts, self.tmp)
@@ -91,6 +103,16 @@ class ResumeTests(unittest.TestCase):
         run_resumable(backend, self.plan, self.prompts, self.tmp)
         self.assertEqual([p for p, _ in backend.calls], ["synthetic prompt 1", "synthetic prompt 2"])
         self.assertEqual(ledger_state(ledger)["unresolved"], [0])
+
+    def test_interrupted_intent_can_be_reconciled_without_resend(self):
+        ledger = self.tmp / "ledger.jsonl"
+        row = {"schema": "uzh-rsd.full-dev-b0-ledger/v1", "event": "intent", **self.plan[0]}
+        ledger.write_text(json.dumps(row) + "\n")
+        reconcile_unresolved_failure(self.tmp, 0, error="confirmed process exit after host restart")
+        state = ledger_state(ledger)
+        self.assertEqual(state["unresolved"], [])
+        self.assertEqual(state["terminal"][0]["status"], "transport_or_runtime_failure")
+        self.assertIsNone(state["terminal"][0]["generation"]["text"])
 
     def test_raw_response_integrity_is_verified(self):
         run_resumable(FakeBackend(), self.plan[:1], self.prompts, self.tmp)
