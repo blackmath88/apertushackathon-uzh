@@ -1,5 +1,6 @@
 """Build an allowlisted, authored-only GitHub Pages demonstration. No network."""
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -19,6 +20,9 @@ def build(out):
     payload = {'catalogue': federal_inventory.inventory(), 'bundle': bundle}
     encoded = json.dumps(payload, ensure_ascii=False).replace('<', '\\u003c')
     template = (ROOT / 'web/pages/index.html').read_text()
+    for asset in ('app.js', 'style.css'):
+        digest = hashlib.sha256((ROOT / 'web/pages' / asset).read_bytes()).hexdigest()[:16]
+        template = template.replace('./' + asset, './' + asset + '?v=' + digest)
     out.joinpath('index.html').write_text(template.replace('__PUBLIC_FIXTURE__', encoded))
     out.joinpath('app.js').write_text((ROOT / 'web/pages/app.js').read_text())
     out.joinpath('style.css').write_text((ROOT / 'web/pages/style.css').read_text())
