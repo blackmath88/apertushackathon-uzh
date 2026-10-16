@@ -1,6 +1,16 @@
-> **Development entry point: `main`.** Federal campaign app, discovery, Pages demo and research are consolidated here. Start with [PROJECT_MAP.md](PROJECT_MAP.md) and the [GitHub Pages guide](track_2a/docs/GITHUB_PAGES.md). Historical feature branches are no longer app entry points. Live operations and scientific acceptance retain their documented gates.
+<!-- BEGIN public-repo-header -->
+<div align="center">
 
 # Lost in Switzerland — UZH SwissGov-RSD
+
+<a href="https://github.com/blackmath88/apertushackathon-uzh"><img alt="Primary language: Python" src="https://img.shields.io/badge/language-Python-526078?style=flat"></a>
+<a href="https://github.com/blackmath88/apertushackathon-uzh/tree/main/docs"><img alt="Documentation" src="https://img.shields.io/badge/docs-guide-16796f?style=flat"></a>
+<a href="https://github.com/blackmath88/apertushackathon-uzh/commits/main"><img alt="Last commit" src="https://img.shields.io/github/last-commit/blackmath88/apertushackathon-uzh?style=flat&amp;color=737373"></a>
+
+</div>
+<!-- END public-repo-header -->
+
+> **Development entry point: `main`.** Federal campaign app, discovery, Pages demo and research are consolidated here. Start with [PROJECT_MAP.md](PROJECT_MAP.md) and the [GitHub Pages guide](track_2a/docs/GITHUB_PAGES.md). Historical feature branches are no longer app entry points. Live operations and scientific acceptance retain their documented gates.
 
 Hack Apertus 2026 · Track 2A · one submission, one measured B0/B2 comparison.
 
