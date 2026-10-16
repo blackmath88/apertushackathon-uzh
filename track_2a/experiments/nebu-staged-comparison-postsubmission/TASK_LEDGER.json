@@ -3,7 +3,7 @@
   "candidate_digest": "e370abfc13bf982c735980216798fc1e5952fda51a1e586df5b9848fb2e2c413",
   "schedule_digest": "8e39cf4cd5573bb3352ef64f04ab0bd88da1011d2c532c4375eeb302c780ec65",
   "schema": "uzh-rsd.nebu-staged-comparison/v1",
-  "runner_commit": "f712364",
+  "runner_commit": "4b3d921",
   "stage": "stage0-frozen",
   "status": "post-submission research; no inference yet",
   "subset_digest": "888684cd95cce07298d4e63c5b37751ea95175a558e2d2206c341d7f09de5a71"
