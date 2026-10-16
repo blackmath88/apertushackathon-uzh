@@ -237,7 +237,10 @@ def _load_items_for_stage(package_dir: Path, private_dir: Path, baseline_manifes
 
 
 def runtime_identity(model_path: Path, server_binary: Path, base_url: str) -> dict:
-    with urllib.request.urlopen(base_url.rstrip("/") + "/props", timeout=10) as response:
+    root_url = base_url.rstrip("/")
+    if root_url.endswith("/v1"):
+        root_url = root_url[:-3]
+    with urllib.request.urlopen(root_url + "/props", timeout=10) as response:
         props = json.loads(response.read())
     model_hash = file_sha256(model_path)
     server_hash = file_sha256(server_binary)
