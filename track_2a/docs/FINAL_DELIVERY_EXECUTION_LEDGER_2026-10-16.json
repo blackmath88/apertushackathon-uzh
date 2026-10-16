@@ -1,0 +1,51 @@
+{
+  "schema": "uzh-rsd.final-delivery-ledger/v1",
+  "created_local": "2026-10-16T13:55:00+02:00",
+  "repository": "blackmath88/apertushackathon-uzh",
+  "starting_pr": 44,
+  "starting_commit": "be482a97dd610c940b0169722d68698b26cf2e8f",
+  "priority": "final delivery; preserve across checkpoints and handoffs",
+  "deadlines": {
+    "documented_official": "2026-10-16T12:00:00+02:00",
+    "official_status_at_start": "passed; extension not yet evidenced",
+    "owner_cutoff_text": "tonight",
+    "owner_cutoff_assumption": "2026-10-16T23:59:00+02:00"
+  },
+  "gates": {
+    "gate_a": "closed",
+    "test_input_access": "not authorized",
+    "final_test_inference": "not authorized",
+    "merge_deploy_submit_message_weavr": "not authorized"
+  },
+  "preservation": {
+    "existing_submission_snapshot": "must remain immutable",
+    "pr40_baseline": "must remain byte-for-byte preserved",
+    "pr44_experiment_outputs": "must remain byte-for-byte preserved",
+    "later_work_label": "final-delivery preparation or post-submission"
+  },
+  "reserve_under_assumed_cutoff": {
+    "final_inference_hours": 4.0,
+    "verification_hours": 1.0,
+    "packaging_handoff_hours": 0.75,
+    "full_dev_gate_a_run": "prohibited"
+  },
+  "optional_experiment": {
+    "candidate": "paired-evidence keep/drop verifier from PR #44",
+    "maximum_local_calls": 36,
+    "status": "not started; preflight required",
+    "adaptive_prompting": false
+  },
+  "checkpoints": [
+    {
+      "time_local": "2026-10-16T13:55:00+02:00",
+      "status": "plan-created",
+      "evidence": "PR #44 is open draft at be482a9; worktree clean; exact current state inspected",
+      "next": "read required evidence and audit critical path"
+    }
+  ],
+  "candidate": null,
+  "final_run_package": null,
+  "remaining_owner_decision": "pending readiness audit",
+  "worker_state": "Orca runtime available; no delivery workers dispatched yet",
+  "model_service_state": "pending inspection"
+}
