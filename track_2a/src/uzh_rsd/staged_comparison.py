@@ -17,7 +17,6 @@ import json
 import math
 import random
 import statistics
-import subprocess
 import time
 import urllib.request
 from collections import Counter, defaultdict
@@ -45,6 +44,9 @@ REQUEST_TIMEOUT_S = 600.0
 INFERENCE_LIMIT_S = 3600.0
 BOOTSTRAP_SEED = 0
 BOOTSTRAP_REPLICATES = 2000
+EXPECTED_MODEL_SHA256 = "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d"
+EXPECTED_SERVER_SHA256 = "d0538ae0a50a97ede6c4fece9054ed8d3b891a82e230a1defe810249ee7b93f1"
+EXPECTED_LLAMA_CPP_COMMIT = "7ab4ee7baad2d920464cbacfad4f4b07cf111fd2"
 
 
 def canonical(value: object) -> bytes:
@@ -237,11 +239,16 @@ def _load_items_for_stage(package_dir: Path, private_dir: Path, baseline_manifes
 def runtime_identity(model_path: Path, server_binary: Path, base_url: str) -> dict:
     with urllib.request.urlopen(base_url.rstrip("/") + "/props", timeout=10) as response:
         props = json.loads(response.read())
-    version = subprocess.run([str(server_binary), "--version"], check=True, capture_output=True, text=True).stdout.strip()
+    model_hash = file_sha256(model_path)
+    server_hash = file_sha256(server_binary)
+    if model_hash != EXPECTED_MODEL_SHA256:
+        raise ValueError(f"unexpected installed model hash: {model_hash}")
+    if server_hash != EXPECTED_SERVER_SHA256:
+        raise ValueError(f"unexpected installed llama.cpp binary hash: {server_hash}")
     chat_template = props.get("chat_template", "")
     return {
-        "model_sha256": file_sha256(model_path), "model_size": model_path.stat().st_size,
-        "server_binary_sha256": file_sha256(server_binary), "server_version": version,
+        "model_sha256": model_hash, "model_size": model_path.stat().st_size,
+        "server_binary_sha256": server_hash, "llama_cpp_commit": EXPECTED_LLAMA_CPP_COMMIT,
         "endpoint_model_alias": props.get("model_alias"), "context_tokens": props.get("n_ctx"),
         "chat_template_sha256": hashlib.sha256(str(chat_template).encode()).hexdigest(),
         "endpoint_props_sha256": digest(props),
