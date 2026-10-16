@@ -32,7 +32,19 @@
   "optional_experiment": {
     "candidate": "paired-evidence keep/drop verifier from PR #44",
     "maximum_local_calls": 36,
-    "status": "not started; preflight required",
+    "freeze_commit": "0eb419471373381db2a01c22732c06aa8965b8b1",
+    "status": "settled_rejected",
+    "actual_calls": 24,
+    "generator": {"attempted": 18, "parseable": 6, "unparseable_at_1024_cap": 12},
+    "verifier": {"attempted": 6, "valid": 6, "kept_items": 17, "proposed_items": 25},
+    "control_macro": 0.0614828432243805,
+    "treatment_macro": 0.058055590748616104,
+    "delta": -0.003427252475764399,
+    "paired_ci95": [-0.016852907489412594, 0.014307762538867702],
+    "audit": {"control_precision": 0.21428571428571427, "control_recall": 1.0, "treatment_precision": 0.18181818181818182, "treatment_recall": 0.6666666666666666},
+    "request_latency_s": 510.525,
+    "private_ledger_sha256": "3c55347f6c6ac1680b004c95f18e29aca46e9a0dc4d564a8578e8dfbcf6a2020",
+    "decision": "reject; do not promote verifier",
     "adaptive_prompting": false
   },
   "checkpoints": [
@@ -46,6 +58,6 @@
   "candidate": null,
   "final_run_package": null,
   "remaining_owner_decision": "pending readiness audit",
-  "worker_state": "Orca runtime available; no delivery workers dispatched yet",
-  "model_service_state": "pending inspection"
+  "worker_state": "three read-only Orca audits settled and released",
+  "model_service_state": "experiment Apertus service stopped; port 11436 closed; Morrow unchanged on 11435"
 }

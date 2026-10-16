@@ -221,7 +221,9 @@ def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence
                      "owner_approval": contract.get("owner_approval")},
         "input": {"sha256": _sha256(input_bytes), "documents": len(items),
                   "per_language": dict(Counter(item.language for item in items)),
-                  "order": [item.id for item in items]},
+                  "order": [item.id for item in items],
+                  "language_order": {language: [item.id for item in items if item.language == language]
+                                     for language in LANGUAGES}},
         "output_schema": PREDICTION_SCHEMA,
         "started_utc": _now(),
         **dict(extra_meta or {}),
@@ -302,7 +304,12 @@ def _execute(backend, items: Sequence[InferenceInput], out_dir: Path, run_id: st
 
 
 def verify_run(out_dir: Path) -> tuple[bool, list[str]]:
-    """Accept a run only from its committed metadata, never from the presence of files."""
+    """Verify the committed metadata plus every official-format record.
+
+    This is intentionally self-contained: the exported records carry the exact
+    tokenized texts, so counts, order, vector lengths, ranges and hashes can be
+    checked without reopening protected source inputs.
+    """
     out_dir = Path(out_dir)
     reasons: list[str] = []
     meta_path = out_dir / "final_meta.json"
@@ -329,8 +336,12 @@ def verify_run(out_dir: Path) -> tuple[bool, list[str]]:
         if _sha256(path.read_bytes()) != info.get("sha256"):
             reasons.append(f"{name}: sha256 differs from metadata")
         try:
-            ids = [json.loads(line)["id"] for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
-        except (ValueError, KeyError, TypeError):
+            records = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+            if any(not isinstance(record, dict) or set(record) != {"id", "text_a", "text_b", "labels_a", "labels_b"}
+                   for record in records):
+                raise InvalidFinalInput("unexpected prediction fields")
+            ids = [record["id"] for record in records]
+        except (ValueError, KeyError, TypeError, InvalidFinalInput):
             reasons.append(f"{name}: malformed prediction record")
             continue
         if len(ids) != info.get("records"):
@@ -338,6 +349,18 @@ def verify_run(out_dir: Path) -> tuple[bool, list[str]]:
         expected = [identifier for identifier in order if identifier in set(ids)]
         if ids != expected:
             reasons.append(f"{name}: record order differs from the contract order")
+        language = name.removeprefix("predictions_").removesuffix(".jsonl")
+        expected_language_ids = ((meta.get("input") or {}).get("language_order") or {}).get(language)
+        if expected_language_ids and ids != expected_language_ids:
+            reasons.append(f"{name}: ids differ from recorded language order")
+        for position, record in enumerate(records, 1):
+            try:
+                if not all(isinstance(record[key], str) for key in ("id", "text_a", "text_b")):
+                    raise InvalidFinalInput("id/text fields are not strings")
+                item = InferenceInput(record["id"], language, tokenize(record["text_a"]), tokenize(record["text_b"]), "", "")
+                validate_prediction(item, record["labels_a"], record["labels_b"])
+            except (KeyError, TypeError, InvalidFinalInput) as error:
+                reasons.append(f"{name}:{position}: invalid prediction: {error}")
         seen.extend(ids)
     if listed and sorted(seen) != sorted(order):
         reasons.append("predicted ids differ from the input order recorded in metadata")

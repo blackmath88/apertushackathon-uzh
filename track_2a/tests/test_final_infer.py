@@ -306,6 +306,19 @@ class ExecutionTests(FinalTestCase):
             with self.subTest(labels=labels), self.assertRaises(final.InvalidFinalInput):
                 final.validate_prediction(item, labels, [0.0] * len(item.text_b))
 
+    def test_verify_checks_vectors_even_when_hash_metadata_is_updated(self):
+        self.assertEqual(self.run_main(backend=FakeBackend())[0], final.EXIT_OK)
+        path = self.out / "predictions" / "predictions_de.jsonl"
+        records = [json.loads(line) for line in path.read_text().splitlines()]
+        records[0]["labels_a"].pop()
+        path.write_text("".join(json.dumps(record) + "\n" for record in records))
+        meta = self.meta()
+        meta["prediction_files"][path.name]["sha256"] = final._sha256(path.read_bytes())
+        (self.out / "final_meta.json").write_text(json.dumps(meta))
+        accepted, reasons = final.verify_run(self.out)
+        self.assertFalse(accepted)
+        self.assertTrue(any("values for" in reason for reason in reasons))
+
 
 class MockEndpoint(http.server.BaseHTTPRequestHandler):
     requests = []
