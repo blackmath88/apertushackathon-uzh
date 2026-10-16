@@ -1,10 +1,17 @@
 {
   "base_commit": "92be5ff",
+  "artifacts": {
+    "baseline_predictions_sha256": "954d4698f4b8a3cf5b4ed11727e840cc81776798961748d9023256c079242a06",
+    "exploration_ledger_sha256": "5cf1855640abfefebc639bf76abc3eacd68f3bd2c4df6bcfde3bc24cf22de420",
+    "exploration_predictions_sha256": "b23e7a4e88fb3cd9730b7088082c8b7bcdb5820097cf2a4e63af3a86314389b1",
+    "validation_ledger_sha256": "01b2b35fce36d80197b82c09dcf8056ea5f5efb5efccf7e329d5f8f0596bbf51",
+    "validation_predictions_sha256": "2fb6bf82ed3f17f3edd2a833789a5860f106128a40855e7381acc13359ac7805"
+  },
   "candidate_digest": "e370abfc13bf982c735980216798fc1e5952fda51a1e586df5b9848fb2e2c413",
   "schedule_digest": "8e39cf4cd5573bb3352ef64f04ab0bd88da1011d2c532c4375eeb302c780ec65",
   "schema": "uzh-rsd.nebu-staged-comparison/v1",
   "runner_commit": "e76097c",
-  "stage": "stage0-frozen",
-  "status": "post-submission research; no inference yet",
+  "stage": "stage2-complete",
+  "status": "post-submission research complete; stopped before Gate A",
   "subset_digest": "888684cd95cce07298d4e63c5b37751ea95175a558e2d2206c341d7f09de5a71"
 }
