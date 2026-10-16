@@ -18,6 +18,7 @@ Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not s
 | Demo | ✅ READY | Offline authored source → comparison → evidence → human-review viewer; not benchmark validation |
 | Secrets/private material | ✅ READY | Raw source, prompts/responses, gold and audit annotations remain ignored/private |
 | Portal submission | ⛔ BLOCKED | No portal action authorized and no receipt present |
+| Complete final predictions | ⛔ BLOCKED | Frozen `b2-windowed-v2` acceptance failed (0/6 strict complete); conditional final run not started and final inputs not accessed |
 
 ## Event and template
 

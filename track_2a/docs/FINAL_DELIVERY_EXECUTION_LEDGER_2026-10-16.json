@@ -71,12 +71,18 @@
       "status": "long-input-protocol-frozen-pre-inference",
       "evidence": "isolated Orca worktree base 5c7d06c; b2-windowed-v2 code, 320/32 window policy, exact maps, fail-closed merge, fixed 6-document gold-blind manifest and 39-request plan; 336 repository tests pass with 14 pre-existing capability skips",
       "next": "commit freeze, verify exclusive GPU ownership, then execute the 39-request dev acceptance only"
+    },
+    {
+      "time_local": "2026-10-16T15:56:00+02:00",
+      "status": "long-input-acceptance-rejected",
+      "evidence": "39/39 requests returned in 952.878 s; 0 transport failures; 5 truncated; 34 invalid-evidence; 0/6 strict complete; context maximum 2344/8192 including reserved output; diagnostic zero-fallback macro 0.004474 is not a candidate score",
+      "next": "do not access final inputs or start final inference; package rejection and measured estimate"
     }
   ],
   "candidate": {
     "method": "b2-windowed-v2",
-    "method_code_commit": "pending pre-inference freeze commit",
-    "status": "implemented and synthetically verified; development acceptance not yet executed",
+    "method_code_commit": "70fc85ef973f9fa82f6b15207a4b4f4cb038ed29",
+    "status": "rejected by frozen development acceptance; 0/6 strict complete",
     "frozen_protocol": "track_2a/experiments/final-long-input-20261016/PROTOCOL.md",
     "acceptance_manifest_sha256": "a961d3def7b1cfa66558884b2477aa2a630a29cc8fd20e1a417466010bb8cfe3",
     "acceptance_request_count": 39,
@@ -87,7 +93,7 @@
     "path": "track_2a/docs/FINAL_EXECUTION_PACKAGE_2026-10-16.md",
     "request_count": "one per contract record; historical expected 168",
     "estimate": "78.3 minutes linear local request latency; reserve 4.5 hours including verification/package/contingency",
-    "owner_gate": "closed",
+    "owner_gate": "closed after failed conditional acceptance; final inputs not accessed and final inference not started",
     "verification": "status, files, counts, order, IDs, hashes, schema, vector lengths and finite [0,1] values"
   },
   "integrity": {
@@ -99,7 +105,21 @@
     "b8_checksums": "pass",
     "b0_freeze_checksum_note": "expected source-file mismatch on later branch; private ledger absent here; rely on PR #40 exact-commit independent review"
   },
-  "remaining_owner_decision": "portal eligibility/extension remains unresolved; one gold-blind final prediction run is owner-authorized only if frozen dev acceptance and the measured fit check pass",
+  "long_input_result": {
+    "public_summary": "track_2a/experiments/final-long-input-20261016/summary.json",
+    "private_run_id": "final-long-input-dev-v1-70fc85e",
+    "returned_requests": 39,
+    "strict_valid_requests": 0,
+    "strict_complete_documents": 0,
+    "truncated_requests": 5,
+    "invalid_evidence_requests": 34,
+    "estimated_final_requests": 330,
+    "estimated_inference_minutes_median_to_max": [134.73, 174.53],
+    "estimated_with_verification_minutes_median_to_max": [164.73, 204.53],
+    "final_input_accessed": false,
+    "final_inference_started": false
+  },
+  "remaining_owner_decision": "portal eligibility/extension, licensing, team metadata and submission remain owner-only; no final artifact exists because the authorized conditional run gate failed",
   "worker_state": "prior three audits plus one long-input design audit settled and released",
-  "model_service_state": "experiment Apertus service stopped; port 11436 closed; Morrow unchanged on 11435"
+  "model_service_state": "owned Apertus PID 91570 stopped; port 11436 closed; Morrow PID 1477 unchanged on 11435"
 }

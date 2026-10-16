@@ -188,7 +188,7 @@ def validate_window_response(local: InferenceInput, generation: Generation):
     rejected = [name for name in ("invalid_item", "invalid_severity", "unknown_kind", "spans_not_found", "spans_too_long")
                 if diagnostics.get(name, 0)]
     if rejected:
-        return None, "invalid_evidence:" + ",".join(rejected)
+        return output, "invalid_evidence:" + ",".join(rejected)
     return output, None
 
 
@@ -245,7 +245,9 @@ def execute_document(backend, item: InferenceInput, ledger_path: Path, *, run_id
         output, error = validate_window_response(local, generation)
         if error:
             problems.append(f"{pair.task_id}:{error}")
-            tasks.append({"task_id": pair.task_id, "status": error, "diagnostics": getattr(output, "diagnostics", {})})
+            tasks.append({"task_id": pair.task_id, "status": error, "diagnostics": getattr(output, "diagnostics", {}),
+                          "prompt_tokens": generation.prompt_tokens, "completion_tokens": generation.completion_tokens,
+                          "latency_s": generation.latency_s, "finish_reason": generation.finish_reason})
             continue
         assert output is not None and output.diff_a is not None and output.diff_b is not None
         for local_index, value in enumerate(output.diff_a):
@@ -315,4 +317,3 @@ def replay_document(item: InferenceInput, ledger_records: Sequence[Mapping]) -> 
         problems.append(f"unprocessed_tokens:a={processed_a.count(False)},b={processed_b.count(False)}")
     return {"id": item.id, "status": "complete" if not problems else "incomplete", "problems": problems,
             "labels_a": scores_a if not problems else None, "labels_b": scores_b if not problems else None}
-

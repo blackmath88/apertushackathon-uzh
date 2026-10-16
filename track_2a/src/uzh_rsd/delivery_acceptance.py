@@ -14,6 +14,7 @@ import os
 import statistics
 import sys
 import time
+from collections import Counter
 from pathlib import Path
 
 from .data_adapter import GoldLabels, LANGUAGES
@@ -161,6 +162,95 @@ def score(manifest: dict, run_dir: Path, scoring_dir: Path, official_dir: Path) 
     return result
 
 
+def diagnostic_score(manifest: dict, full_manifest: dict, private_dir: Path, run_dir: Path,
+                     scoring_dir: Path, official_dir: Path) -> dict:
+    """Score permissive partial replay after strict acceptance has failed.
+
+    This never creates candidate predictions. It measures the legacy B2
+    parser's usable-window view and an explicitly labelled zero-fallback
+    sensitivity view from already saved dev responses.
+    """
+    from .backends import Generation
+    from .methods import parse_b2
+    from .windowed_b2 import _slice_item
+
+    items = _selected_items(manifest, full_manifest, private_dir)
+    ledger = [json.loads(line) for line in (run_dir / "window-ledger.jsonl").read_text().splitlines()]
+    returns = {(row["document_id"], row["task_id"]): row for row in ledger if row["event"] == "return"}
+    gold = {}
+    for language in LANGUAGES:
+        for line in (scoring_dir / f"dev_{language}.jsonl").read_text().splitlines():
+            row = json.loads(line)
+            if any(entry["id"] == row["id"] for entry in manifest["entries"]):
+                gold[row["id"]] = GoldLabels(row["id"], tuple(row["labels_a"]), tuple(row["labels_b"]))
+    all_rows = {language: [] for language in LANGUAGES}
+    usable_rows = {language: [] for language in LANGUAGES}
+    documents, issue_counts = [], Counter()
+    latencies, prompt_tokens, completion_tokens = [], [], []
+    for item in items:
+        a, b = [0.0] * len(item.text_a), [0.0] * len(item.text_b)
+        processed_a, processed_b = [False] * len(a), [False] * len(b)
+        problems, diagnostics = [], Counter()
+        pairs = plan_document(item)
+        for pair in pairs:
+            row = returns.get((item.id, pair.task_id))
+            if row is None:
+                problems.append(f"{pair.task_id}:missing_return")
+                issue_counts["missing_return"] += 1
+                continue
+            generation = Generation(**row["generation"])
+            if generation.latency_s is not None:
+                latencies.append(generation.latency_s)
+            if generation.prompt_tokens is not None:
+                prompt_tokens.append(generation.prompt_tokens)
+            if generation.completion_tokens is not None:
+                completion_tokens.append(generation.completion_tokens)
+            if generation.finish_reason == "length":
+                problems.append(f"{pair.task_id}:truncated")
+                issue_counts["truncated"] += 1
+                continue
+            output = parse_b2(_slice_item(item, pair), generation.text)
+            if output.diff_a is None:
+                problems.append(f"{pair.task_id}:{output.status}")
+                issue_counts[output.status] += 1
+                continue
+            diagnostics.update({key: value for key, value in output.diagnostics.items() if isinstance(value, int)})
+            for offset, value in enumerate(output.diff_a):
+                index = pair.left.start + offset
+                a[index], processed_a[index] = max(a[index], float(value)), True
+            for offset, value in enumerate(output.diff_b):
+                index = pair.right.start + offset
+                b[index], processed_b[index] = max(b[index], float(value)), True
+        usable = not problems and all(processed_a) and all(processed_b)
+        row = (gold[item.id], a, b)
+        all_rows[item.language].append(row)
+        if usable:
+            usable_rows[item.language].append(row)
+        documents.append({"id": item.id, "language": item.language, "usable": usable, "problems": problems,
+                          "processed_tokens_a": sum(processed_a), "total_tokens_a": len(a),
+                          "processed_tokens_b": sum(processed_b), "total_tokens_b": len(b),
+                          "parser_diagnostics": dict(diagnostics)})
+    from .evaluation import load_official_compute_correlations
+    official = load_official_compute_correlations(official_dir)
+    result = {
+        "schema": SCHEMA, "stage": "post_generation_dev_diagnostic_scoring", "method": METHOD_VERSION,
+        "manifest_sha256": manifest["manifest_sha256"],
+        "warning": "NOT candidate predictions: permissive legacy B2 parsing; failed/unprocessed windows are zero only in the labelled sensitivity view",
+        "strict_acceptance": False, "documents": documents,
+        "coverage": {"usable_documents": sum(document["usable"] for document in documents),
+                     "total_documents": len(documents), "issues": dict(sorted(issue_counts.items()))},
+        "usable_only": _score(usable_rows, official),
+        "zero_fallback_sensitivity": _score(all_rows, official),
+        "usage": {"requests_returned": len(returns), "latency_s_total": round(sum(latencies), 3),
+                  "latency_s_median": statistics.median(latencies), "latency_s_max": max(latencies),
+                  "prompt_tokens_total": sum(prompt_tokens), "prompt_tokens_max": max(prompt_tokens),
+                  "completion_tokens_total": sum(completion_tokens), "completion_tokens_max": max(completion_tokens),
+                  "context_plus_reserved_output_max": max(prompt_tokens) + 1024},
+    }
+    _write(run_dir / "diagnostic-score-summary.json", result)
+    return result
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="command", required=True)
@@ -179,6 +269,13 @@ def main(argv=None) -> int:
     scoring.add_argument("--run-dir", type=Path, required=True)
     scoring.add_argument("--scoring-dir", type=Path, required=True)
     scoring.add_argument("--official-dir", type=Path, required=True)
+    diagnostic = sub.add_parser("diagnose-score")
+    diagnostic.add_argument("--manifest", type=Path, required=True)
+    diagnostic.add_argument("--full-manifest", type=Path, required=True)
+    diagnostic.add_argument("--private-dir", type=Path, required=True)
+    diagnostic.add_argument("--run-dir", type=Path, required=True)
+    diagnostic.add_argument("--scoring-dir", type=Path, required=True)
+    diagnostic.add_argument("--official-dir", type=Path, required=True)
     args = parser.parse_args(argv)
     if args.command == "freeze":
         body = freeze_manifest(json.loads(args.full_manifest.read_text()))
@@ -194,8 +291,12 @@ def main(argv=None) -> int:
                      args.private_dir, args.out, backend, total_timeout_s=args.total_timeout_s)
         print(json.dumps(body, indent=2))
         return 0 if body["accepted"] else 4
-    else:
+    elif args.command == "score":
         body = score(json.loads(args.manifest.read_text()), args.run_dir, args.scoring_dir, args.official_dir)
+        print(json.dumps(body, indent=2))
+    else:
+        body = diagnostic_score(json.loads(args.manifest.read_text()), json.loads(args.full_manifest.read_text()),
+                                args.private_dir, args.run_dir, args.scoring_dir, args.official_dir)
         print(json.dumps(body, indent=2))
     return 0
 

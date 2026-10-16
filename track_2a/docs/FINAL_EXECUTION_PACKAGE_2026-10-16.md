@@ -2,6 +2,21 @@
 
 ## Delivery decision
 
+### 15:56 CEST long-input update
+
+The owner-authorized `b2-windowed-v2` completion candidate was frozen at
+`70fc85ef973f9fa82f6b15207a4b4f4cb038ed29` and evaluated on the fixed
+six-document all-language long/asymmetric dev set. It failed acceptance: 0/6
+strict complete documents, 5/39 truncated responses and 34/39 non-truncated
+responses with invalid/unlocatable evidence. The context bound passed; output
+discipline and evidence location did not. No candidate predictions were
+produced and the conditional final run was not started. See
+`experiments/final-long-input-20261016/REPORT.md`.
+
+The package below remains historical documentation for unchanged B2/C0. It is
+not newly promoted: unchanged B2 is still incomplete on the historical final
+execution, while windowed v2 is rejected by its development gate.
+
 The frozen delivery method is **unchanged B2/C0** (`b2-spans-v1`) at method
 code commit `e51a58cbb511eb9058f0235657e9cec61eb3cda4`. C1 is not selected: its
 validation macro was below saved B0 and its confidence interval crossed zero.
@@ -35,7 +50,7 @@ file set, record counts and order, SHA-256 hashes, exact record schema, vector
 lengths against the carried official-token text, finite [0,1] values, and the
 complete input ID set.
 
-## Owner-gated final command
+## Historical owner-gated final command (not runnable after failed acceptance)
 
 Do not execute this until the owner explicitly opens the final-test gate and
 supplies an authorised, gold-free input plus a confirmed or explicitly
