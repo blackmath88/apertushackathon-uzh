@@ -77,6 +77,12 @@
       "status": "long-input-acceptance-rejected",
       "evidence": "39/39 requests returned in 952.878 s; 0 transport failures; 5 truncated; 34 invalid-evidence; 0/6 strict complete; context maximum 2344/8192 including reserved output; diagnostic zero-fallback macro 0.004474 is not a candidate score",
       "next": "do not access final inputs or start final inference; package rejection and measured estimate"
+    },
+    {
+      "time_local": "2026-10-16T15:58:00+02:00",
+      "status": "package-verified",
+      "evidence": "336 dependency-complete repository tests pass with 14 pre-existing capability skips; focused long-input/final suite 30/30; clean committed Docker final path 13/13; public and private evidence checksums recorded",
+      "next": "push focused PR #44 update and hand off exact blockers"
     }
   ],
   "candidate": {
