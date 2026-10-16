@@ -8,6 +8,15 @@
     "validation_predictions_sha256": "2fb6bf82ed3f17f3edd2a833789a5860f106128a40855e7381acc13359ac7805"
   },
   "candidate_digest": "e370abfc13bf982c735980216798fc1e5952fda51a1e586df5b9848fb2e2c413",
+  "error_analysis": {
+    "case_traces_sha256": "9b7949b9d6ddf6a59d77442a49c93df85a2cff86ec6854432b989bb9a20497f5",
+    "documents": 18,
+    "exposure_registry_sha256": "f8b0622f11404341c61e18ed6bec71a7fe54ebee93e76581a546f0f1d3fccf35",
+    "gate_a": "closed",
+    "mode": "offline existing development outputs only; no inference; no test access",
+    "status": "complete; sampled validation cases are exposed and ineligible as untouched validation",
+    "summary_sha256": "e31e3f58be4572464cb968c2d2a338c47f2b664b1b677b603ee869cb9cbf6d75"
+  },
   "schedule_digest": "8e39cf4cd5573bb3352ef64f04ab0bd88da1011d2c532c4375eeb302c780ec65",
   "schema": "uzh-rsd.nebu-staged-comparison/v1",
   "runner_commit": "e76097c",

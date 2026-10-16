@@ -1,0 +1,2333 @@
+{
+  "cases": [
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "2"
+        ],
+        "rationale": "The response treats two faithful translated paragraphs as changes and misses the only annotated target-side footer addition."
+      },
+      "group_key": "18ab4cc39a4578211d2d789bad6e9bf7f74ea66575a910a3f58f5d7928682254",
+      "id": "admin_de_27",
+      "input": {
+        "text_a_sha256": "06ead0850dfae88b6303801708347cf924480ed8b63f41e2cd721476f577597c",
+        "text_b_sha256": "6745b86d9aaf9ba010d1364f2f76c0094071c5c97056ff9beda3f4462bbe3ec9",
+        "tokens_a": 75,
+        "tokens_b": 53
+      },
+      "language": "de",
+      "model_response": {
+        "completion_tokens": 194,
+        "finish_reason": "stop",
+        "sha256": "da1d8d0d6557713917d28d09ac32d244edbf7b2d06e8e8e11a213e81ba79b610"
+      },
+      "official_evaluation": {
+        "gold_positive": 2,
+        "masked": 16,
+        "overlap": 0,
+        "per_document_diagnostic_spearman": -0.2727272727272727,
+        "positions": 112,
+        "positive_precision": 0.0,
+        "positive_recall": 0.0,
+        "predicted_positive": 90
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 0,
+          "items": 2,
+          "marked_tokens_a": 62,
+          "marked_tokens_b": 40,
+          "parse": "json",
+          "projected": 2,
+          "spans_ambiguous": 0,
+          "spans_exact": 4,
+          "spans_normalised": 0,
+          "spans_not_found": 0,
+          "spans_too_long": 0,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "71d5e379d90cc0a0474979257dfdedc7213298143b540a554fe9188589c44cfb",
+                "excerpt_tokens": 28,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    28
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "5909eed93719ecc0d94a12a0a7c980d6e2da393c7d9bae575c8c961556ae0208",
+                "excerpt_tokens": 20,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    20
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "c38b73f07944184fa70688d47a84bdecb5ffdaa3c8346645ff5c1adede105435",
+                "excerpt_tokens": 34,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    28,
+                    62
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "4f612ba5ba526a9e083674349559d6fb1fcdc1fd70a2041ebc9688db3ca21cb5",
+                "excerpt_tokens": 20,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    20,
+                    40
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 62,
+        "nonzero_b": 40,
+        "sha256_a": "f4fdc1725028e58ab443a212bb3b4366221452f9d1c6e7f4d05ac03f2024f333",
+        "sha256_b": "ce16678050ae4357fe772f0eccdbf1bea8ea45d8efeea105fa10070172107413"
+      },
+      "stratum": "short"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "2",
+          "4"
+        ],
+        "rationale": "The response overstates paragraph-level change; where the first paragraph contains annotated evidence, whole-paragraph projection marks substantially more tokens than the evidence."
+      },
+      "group_key": "18ab4cc39a4578211d2d789bad6e9bf7f74ea66575a910a3f58f5d7928682254",
+      "id": "admin_fr_27",
+      "input": {
+        "text_a_sha256": "06ead0850dfae88b6303801708347cf924480ed8b63f41e2cd721476f577597c",
+        "text_b_sha256": "d67adb7f1e617e055fc12084e749e447c12f7936bbff3bdb4fe020239f255b04",
+        "tokens_a": 75,
+        "tokens_b": 96
+      },
+      "language": "fr",
+      "model_response": {
+        "completion_tokens": 228,
+        "finish_reason": "stop",
+        "sha256": "e0cbfca95d02f67cf7c7735916d0c90357427f354a39cff6a1e5e22b67207f86"
+      },
+      "official_evaluation": {
+        "gold_positive": 27,
+        "masked": 21,
+        "overlap": 10,
+        "per_document_diagnostic_spearman": -0.21266371276448048,
+        "positions": 150,
+        "positive_precision": 0.11235955056179775,
+        "positive_recall": 0.37037037037037035,
+        "predicted_positive": 89
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 0,
+          "items": 2,
+          "marked_tokens_a": 62,
+          "marked_tokens_b": 35,
+          "parse": "json",
+          "projected": 2,
+          "spans_ambiguous": 0,
+          "spans_exact": 3,
+          "spans_normalised": 0,
+          "spans_not_found": 0,
+          "spans_too_long": 1,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "71d5e379d90cc0a0474979257dfdedc7213298143b540a554fe9188589c44cfb",
+                "excerpt_tokens": 28,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    28
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "552f257da4c4f3ff3788a1bf35900360adcba775c474cd24a118f8c5db609d9d",
+                "excerpt_tokens": 41,
+                "locate_mode": "too_long",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "c38b73f07944184fa70688d47a84bdecb5ffdaa3c8346645ff5c1adede105435",
+                "excerpt_tokens": 34,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    28,
+                    62
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "1b31ab1b9c5c559429a94f0475a68f2b2ba3ec70ecff59d48bd7b7a7c8214f52",
+                "excerpt_tokens": 35,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    41,
+                    76
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 62,
+        "nonzero_b": 35,
+        "sha256_a": "8ff8591b8bb6ef5e0d6e65a07685155346627512cd73b017cf165eba3560dc9b",
+        "sha256_b": "1f6f3ba0dff3f8336ab065438730392dca100c6e57fda94b689612d47c73a24e"
+      },
+      "stratum": "short"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "2",
+          "4"
+        ],
+        "rationale": "The response marks faithful translated prose and navigation text, while its broad excerpts dilute the genuine localized differences."
+      },
+      "group_key": "18ab4cc39a4578211d2d789bad6e9bf7f74ea66575a910a3f58f5d7928682254",
+      "id": "admin_it_27",
+      "input": {
+        "text_a_sha256": "06ead0850dfae88b6303801708347cf924480ed8b63f41e2cd721476f577597c",
+        "text_b_sha256": "667d0098b19ec269f88803371231aa2744caf07ea9589f198a252d2f6496579b",
+        "tokens_a": 75,
+        "tokens_b": 76
+      },
+      "language": "it",
+      "model_response": {
+        "completion_tokens": 299,
+        "finish_reason": "stop",
+        "sha256": "27f4a631ceabecf76ae4a77b96922e5d58027bcd6b7f4555e07b8c2d32d6149d"
+      },
+      "official_evaluation": {
+        "gold_positive": 25,
+        "masked": 19,
+        "overlap": 25,
+        "per_document_diagnostic_spearman": null,
+        "positions": 132,
+        "positive_precision": 0.1893939393939394,
+        "positive_recall": 1.0,
+        "predicted_positive": 132
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 0,
+          "items": 3,
+          "marked_tokens_a": 75,
+          "marked_tokens_b": 76,
+          "parse": "json",
+          "projected": 3,
+          "spans_ambiguous": 0,
+          "spans_exact": 6,
+          "spans_normalised": 0,
+          "spans_not_found": 0,
+          "spans_too_long": 0,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "71d5e379d90cc0a0474979257dfdedc7213298143b540a554fe9188589c44cfb",
+                "excerpt_tokens": 28,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    28
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "81e629ab52d104dcef9211288bf3e2b552f0a2ce1f0f31d4e0dd5bd7b9daeed0",
+                "excerpt_tokens": 27,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    27
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "c38b73f07944184fa70688d47a84bdecb5ffdaa3c8346645ff5c1adede105435",
+                "excerpt_tokens": 34,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    28,
+                    62
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "e296d819469f2679b9bd4577ab00dafc59f43db6fe4b51979d215b3fa4ced4cd",
+                "excerpt_tokens": 33,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    27,
+                    60
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 2,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "6b3cf08b8fb97ad004a9cb705b57fd3b2701ec53830808c6a1651edd4825f2e6",
+                "excerpt_tokens": 13,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    62,
+                    75
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "4dc7a25588850927011b1d62130c8e8678031f2543f274dfadd7f081d68b422c",
+                "excerpt_tokens": 16,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    60,
+                    76
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 75,
+        "nonzero_b": 76,
+        "sha256_a": "1a573c17897f028af3ea604681942bb7d23e49f0098511efe4e556244cde0bd1",
+        "sha256_b": "8e5911467e5a3a126a2beb810c276faf99922a1ed60811e07182250ad0b5eb94"
+      },
+      "stratum": "short"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "2",
+          "4"
+        ],
+        "rationale": "The response finds the year and link-area changes but omits several annotated content differences and projects each finding over a larger phrase than necessary."
+      },
+      "group_key": "2862c33555ba215c0dadc96e629816c53ad4ad71a478645dc34b08581f4a21b5",
+      "id": "admin_de_52",
+      "input": {
+        "text_a_sha256": "e752de0c076ba1efa5591aa1eda9c87a3c69775ece1894c2154147b08db03866",
+        "text_b_sha256": "1d5eadac953b8f88870f57879e98d95ed1230849963eb2d7e9d2812ab53fd915",
+        "tokens_a": 157,
+        "tokens_b": 118
+      },
+      "language": "de",
+      "model_response": {
+        "completion_tokens": 98,
+        "finish_reason": "stop",
+        "sha256": "3deddb54548226bbfc7b1524a5b28c1e60307d826a78e735d53e24121a6ac5f6"
+      },
+      "official_evaluation": {
+        "gold_positive": 68,
+        "masked": 29,
+        "overlap": 15,
+        "per_document_diagnostic_spearman": 0.15108844375031877,
+        "positions": 246,
+        "positive_precision": 0.4411764705882353,
+        "positive_recall": 0.22058823529411764,
+        "predicted_positive": 34
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 0,
+          "items": 2,
+          "marked_tokens_a": 21,
+          "marked_tokens_b": 14,
+          "parse": "json",
+          "projected": 2,
+          "spans_ambiguous": 1,
+          "spans_exact": 4,
+          "spans_normalised": 0,
+          "spans_not_found": 0,
+          "spans_too_long": 0,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "OMISSION",
+            "severity": 5,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "dd3e229a0f52b2f5cf8484110f2ca0b55c46193bcb42d2d52be326fd40b8bb07",
+                "excerpt_tokens": 8,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    8
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "50bf7d7af6977b3bef399c169cf98a4f8e73144aed4152c250004970eba9efb5",
+                "excerpt_tokens": 5,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    5
+                  ],
+                  [
+                    97,
+                    102
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "OMISSION",
+            "severity": 5,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "c2e103cae096d3586faf551bb830f327c84810bcb7263bc784d6d2f1682543a4",
+                "excerpt_tokens": 13,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    144,
+                    157
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "e1e7e6ef99385bf623b962095d334d51dd2ad549fe3b78fe85ac734946e20a97",
+                "excerpt_tokens": 4,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    114,
+                    118
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 21,
+        "nonzero_b": 14,
+        "sha256_a": "961a51d8058490582518d7499ec7a39bed44a59d34327ae288f42d5cc6b6c2c8",
+        "sha256_b": "1ef2d8bfd13259edaa31b0f0b386d22f5bda87194d49511becf2e4d1bc8d13f3"
+      },
+      "stratum": "short"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "2",
+          "4"
+        ],
+        "rationale": "Most proposed changes are faithful translations; genuine title/date/file-metadata evidence is embedded in sentence-sized excerpts and projected too broadly."
+      },
+      "group_key": "2862c33555ba215c0dadc96e629816c53ad4ad71a478645dc34b08581f4a21b5",
+      "id": "admin_fr_52",
+      "input": {
+        "text_a_sha256": "e752de0c076ba1efa5591aa1eda9c87a3c69775ece1894c2154147b08db03866",
+        "text_b_sha256": "ffb0b914e786d862601c23972fc3f32fb5d89320181d5e8173bdcae8b34ef2da",
+        "tokens_a": 157,
+        "tokens_b": 170
+      },
+      "language": "fr",
+      "model_response": {
+        "completion_tokens": 866,
+        "finish_reason": "stop",
+        "sha256": "39f5c88b6dfff9838b4c7ff3fd203cab3943cdb6032de9d614e6138259fcc2a3"
+      },
+      "official_evaluation": {
+        "gold_positive": 55,
+        "masked": 37,
+        "overlap": 44,
+        "per_document_diagnostic_spearman": 0.3050285593040522,
+        "positions": 290,
+        "positive_precision": 0.2716049382716049,
+        "positive_recall": 0.8,
+        "predicted_positive": 162
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 0,
+          "items": 8,
+          "marked_tokens_a": 154,
+          "marked_tokens_b": 29,
+          "parse": "json",
+          "projected": 8,
+          "spans_ambiguous": 1,
+          "spans_exact": 8,
+          "spans_normalised": 3,
+          "spans_not_found": 4,
+          "spans_too_long": 1,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "OMISSION",
+            "severity": 5,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "dd3e229a0f52b2f5cf8484110f2ca0b55c46193bcb42d2d52be326fd40b8bb07",
+                "excerpt_tokens": 8,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    8
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "3ad8e7d333af0a07a49720d1b826bec9c282cde2de067f242d1ce4b257bd9765",
+                "excerpt_tokens": 5,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    5
+                  ],
+                  [
+                    148,
+                    153
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "12b12ddfaf97760c801717df0aaf6209b7c64eb13f5de2002fa24719bea0f4fd",
+                "excerpt_tokens": 35,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    8,
+                    43
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "ccf7736de077322b27d8f5debb6c85bffc1ec186a3a7667ccf6cc4a94d0a22e7",
+                "excerpt_tokens": 53,
+                "locate_mode": "too_long",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 2,
+            "kind": "OMISSION",
+            "severity": 5,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "9210ccff25000ca75cf9f3cf542976a494bd4a141858d8d1015e2bcc88b96866",
+                "excerpt_tokens": 10,
+                "locate_mode": "normalised",
+                "spans": [
+                  [
+                    43,
+                    53
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "a104b127981cd6709a9e12cff4c75233f018c0652667337126905b1601321cc6",
+                "excerpt_tokens": 10,
+                "locate_mode": "not_found",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 3,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "8459441aa6acad6a3f3ae1fe0b713cd1623611970df92f802109be73400007a4",
+                "excerpt_tokens": 25,
+                "locate_mode": "normalised",
+                "spans": [
+                  [
+                    53,
+                    78
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "58e55f60adebecbe0d3728feadd5ea8e744bb9526d3b07fc4548ca0d2366e821",
+                "excerpt_tokens": 24,
+                "locate_mode": "not_found",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 4,
+            "kind": "OMISSION",
+            "severity": 5,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "b27f0fe2639657de3736dee24bfdde14969e6aa3e3abd8e7378c6bdad4e04c12",
+                "excerpt_tokens": 9,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    78,
+                    87
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "d9fa8b12134bae01591e17cfea284c1f1c0875ac75713b24f7f521eba248be44",
+                "excerpt_tokens": 12,
+                "locate_mode": "not_found",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 5,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "773c57185616a3e17c781e38b519ab8d5dab3df4851be675c4e14cb57e30824a",
+                "excerpt_tokens": 34,
+                "locate_mode": "normalised",
+                "spans": [
+                  [
+                    87,
+                    121
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "4d1e274a505153d3d78e9e52634fe6f0c63452c761efecaf84d8916c287490a7",
+                "excerpt_tokens": 34,
+                "locate_mode": "not_found",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 6,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "858e36365dde87a34cb0b21192cd032a53e5c6dda50775a18567ad52a0b47fe7",
+                "excerpt_tokens": 23,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    121,
+                    144
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "af6cc9dcf6e83ee90a9f6691ef8a94994dcaaa2f71cda43cb81558d1d6f3f902",
+                "excerpt_tokens": 20,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    145,
+                    165
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 7,
+            "kind": "OMISSION",
+            "severity": 5,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "2a0c08b1333e8d3a08514d4b4c340506405b15a39c20cc8b44e85193f3672d64",
+                "excerpt_tokens": 10,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    144,
+                    154
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "626cabbea582a7f719c24b81954bed6f53c45ac94987dccfb1a9b10885bb4c29",
+                "excerpt_tokens": 4,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    166,
+                    170
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 154,
+        "nonzero_b": 29,
+        "sha256_a": "4054c471c1e7c7b01522ba666f0e881a9817352ad08438004cc2073d530354d9",
+        "sha256_b": "1eef9656eaa484c298f7d21dcf0426e22c44645e0840a61bbf29345c06316ec5"
+      },
+      "stratum": "short"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "2",
+          "3",
+          "4"
+        ],
+        "rationale": "The omitted teaching-material block is real, but one correct source excerpt exceeds the frozen locator cap; another item pairs that omission with unrelated target text, and the located evidence is overly broad."
+      },
+      "group_key": "2862c33555ba215c0dadc96e629816c53ad4ad71a478645dc34b08581f4a21b5",
+      "id": "admin_it_52",
+      "input": {
+        "text_a_sha256": "e752de0c076ba1efa5591aa1eda9c87a3c69775ece1894c2154147b08db03866",
+        "text_b_sha256": "a822831fc285323e2bed4b75f158c2b4d5309b5e73d20ef824d2373d807dfdfd",
+        "tokens_a": 157,
+        "tokens_b": 79
+      },
+      "language": "it",
+      "model_response": {
+        "completion_tokens": 449,
+        "finish_reason": "stop",
+        "sha256": "cdbbee853824ab8648c852bac79ac8891ee2e1aaf6ffb818f7fcba8c74b4ab61"
+      },
+      "official_evaluation": {
+        "gold_positive": 82,
+        "masked": 25,
+        "overlap": 6,
+        "per_document_diagnostic_spearman": -0.456097235473928,
+        "positions": 211,
+        "positive_precision": 0.08571428571428572,
+        "positive_recall": 0.07317073170731707,
+        "predicted_positive": 70
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 0,
+          "items": 4,
+          "marked_tokens_a": 43,
+          "marked_tokens_b": 35,
+          "parse": "json",
+          "projected": 3,
+          "spans_ambiguous": 1,
+          "spans_exact": 4,
+          "spans_normalised": 0,
+          "spans_not_found": 0,
+          "spans_too_long": 3,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "OMISSION",
+            "severity": 5,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "dd3e229a0f52b2f5cf8484110f2ca0b55c46193bcb42d2d52be326fd40b8bb07",
+                "excerpt_tokens": 8,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    8
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "d367b4353b0234eac5405a86ff2aa03c2b508098408a36de0aa50792ce2be6df",
+                "excerpt_tokens": 5,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    0,
+                    5
+                  ],
+                  [
+                    52,
+                    57
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "12b12ddfaf97760c801717df0aaf6209b7c64eb13f5de2002fa24719bea0f4fd",
+                "excerpt_tokens": 35,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    8,
+                    43
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "69abec259fdbcb13800d9f0ac345677ea705631005e920d7e8d02a04abd285ca",
+                "excerpt_tokens": 44,
+                "locate_mode": "too_long",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 2,
+            "kind": "OMISSION",
+            "severity": 5,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "acff06b0290380c6e0479aff07cab4d1ed375c7dada0aded4dc05a47a996a051",
+                "excerpt_tokens": 44,
+                "locate_mode": "too_long",
+                "spans": []
+              },
+              "b": {
+                "excerpt_sha256": "9e0caee4d8a0837ce69a1f17766ef0cb776a4689bb96c320ab8cbb7320e7ccc2",
+                "excerpt_tokens": 30,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    49,
+                    79
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 3,
+            "kind": "OMISSION",
+            "severity": 5,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "c47a26ddaca31e0af1573eadec0fcdf1c108231ac38e4473258290312b20622f",
+                "excerpt_tokens": 70,
+                "locate_mode": "too_long",
+                "spans": []
+              },
+              "b": {
+                "excerpt_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "excerpt_tokens": 0,
+                "locate_mode": "empty",
+                "spans": []
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 43,
+        "nonzero_b": 35,
+        "sha256_a": "546f87cba9a50156ab8c494b07670efbc29be0be322816b1de6e3b4441731a05",
+        "sha256_b": "ac17243f8e15b7ebd61906d5f299e54ffbcf658aa7ea5e12bbb10cdf87300f29"
+      },
+      "stratum": "short"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "2"
+        ],
+        "rationale": "The response mostly flags faithful biography translations and misses the localized annotated changes."
+      },
+      "group_key": "b901c23a809d95769c4c921f054061c351cb7ab07aed9501d367e45197183f0f",
+      "id": "admin_de_197",
+      "input": {
+        "text_a_sha256": "50f58b3e8a1aa133334694a734699ffdfa427888dba0ebd5bf09cd83fda890be",
+        "text_b_sha256": "7109c2083560d8a9cfd0442fb9c60336aef5144b7cb9856489c76bf942363616",
+        "tokens_a": 250,
+        "tokens_b": 233
+      },
+      "language": "de",
+      "model_response": {
+        "completion_tokens": 378,
+        "finish_reason": "stop",
+        "sha256": "5341d787cc888bc706460177a4aabb3405d71c881728b41e63849fad1239e984"
+      },
+      "official_evaluation": {
+        "gold_positive": 7,
+        "masked": 158,
+        "overlap": 4,
+        "per_document_diagnostic_spearman": 0.04042127088030101,
+        "positions": 325,
+        "positive_precision": 0.03305785123966942,
+        "positive_recall": 0.5714285714285714,
+        "predicted_positive": 121
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 0,
+          "items": 4,
+          "marked_tokens_a": 84,
+          "marked_tokens_b": 66,
+          "parse": "json",
+          "projected": 4,
+          "spans_ambiguous": 0,
+          "spans_exact": 8,
+          "spans_normalised": 0,
+          "spans_not_found": 0,
+          "spans_too_long": 0,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "962421fbb9bec29c7f4b4395f024206b8385b00539ff4a1bb1385579ae552437",
+                "excerpt_tokens": 21,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    40,
+                    61
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "c291a38e7588c459fb2271969c0a75eeb8e63c7f90a5b59ba32070ff1d95b9be",
+                "excerpt_tokens": 19,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    40,
+                    59
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "8f92db4c56ae3ea0c7323840524e98e903a1f46b57c55d3c2ef8bdf9668d3c52",
+                "excerpt_tokens": 22,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    61,
+                    83
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "8733caea53220fed6f479961bc8de5fa67ae61dbcb7e43ddd60a70f313b9d936",
+                "excerpt_tokens": 20,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    59,
+                    79
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 2,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "2bcc4e238c8e22ff037d22916171616e9763d1d19feda3cc5802e1fbd81022c1",
+                "excerpt_tokens": 16,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    98,
+                    114
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "0d3e4bf87008e7d19cb18c5f0e2be5de41498f9e3e31be6dfba747e6fd1c0eff",
+                "excerpt_tokens": 12,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    89,
+                    101
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 3,
+            "kind": "OMISSION",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "99ac9a6f531b8ba32d378973d22f3ef494635831eafe173332010b832741d47a",
+                "excerpt_tokens": 25,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    114,
+                    139
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "a93f542d1d787b27ffee944273cd2e9577245f1c450f85e2281a43560b981981",
+                "excerpt_tokens": 15,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    104,
+                    119
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 84,
+        "nonzero_b": 66,
+        "sha256_a": "853fcb2680de6b8090d887f13b98aa5c78b9099020e23cf75fed312a0b238f89",
+        "sha256_b": "c46d3eac2d67e9e546d47d732288def3959b44751c7c64ce1220e7cb5e08008d"
+      },
+      "stratum": "medium"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "1",
+          "2",
+          "4"
+        ],
+        "rationale": "One item violates the severity contract with severity zero, several faithful translations are called changes, and genuine date/role evidence is projected over long sentences."
+      },
+      "group_key": "b901c23a809d95769c4c921f054061c351cb7ab07aed9501d367e45197183f0f",
+      "id": "admin_fr_197",
+      "input": {
+        "text_a_sha256": "50f58b3e8a1aa133334694a734699ffdfa427888dba0ebd5bf09cd83fda890be",
+        "text_b_sha256": "9e11c9b12427cae5abdc28b662430f800cba9c8e725a054623a10d2bca54a183",
+        "tokens_a": 250,
+        "tokens_b": 267
+      },
+      "language": "fr",
+      "model_response": {
+        "completion_tokens": 984,
+        "finish_reason": "stop",
+        "sha256": "611933bb0fa6ee98924948231925358bc46003c030ab9eec4b6c7a0b3610e925"
+      },
+      "official_evaluation": {
+        "gold_positive": 43,
+        "masked": 164,
+        "overlap": 35,
+        "per_document_diagnostic_spearman": 0.26347192621467236,
+        "positions": 353,
+        "positive_precision": 0.23809523809523808,
+        "positive_recall": 0.813953488372093,
+        "predicted_positive": 147
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 1,
+          "items": 7,
+          "marked_tokens_a": 99,
+          "marked_tokens_b": 79,
+          "parse": "json",
+          "projected": 5,
+          "spans_ambiguous": 0,
+          "spans_exact": 8,
+          "spans_normalised": 0,
+          "spans_not_found": 2,
+          "spans_too_long": 2,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "962421fbb9bec29c7f4b4395f024206b8385b00539ff4a1bb1385579ae552437",
+                "excerpt_tokens": 21,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    40,
+                    61
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "d87add037dcc86759cd10deafb7cd9704620d9d3a34bb8192c342f069434e64e",
+                "excerpt_tokens": 26,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    46,
+                    72
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "8f92db4c56ae3ea0c7323840524e98e903a1f46b57c55d3c2ef8bdf9668d3c52",
+                "excerpt_tokens": 22,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    61,
+                    83
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "634239da6cf2a5de5ad4b180855d198a181bda9842f18697019db5a4f943672e",
+                "excerpt_tokens": 31,
+                "locate_mode": "not_found",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 2,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "52a0c0bdd73b6e77e620e41d6930fd329b08fd72323c164f730227f02362c53d",
+                "excerpt_tokens": 15,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    83,
+                    98
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "c14e141afab212b3d9190522df8489beb5eef4a6eeaa727d7a0fc11699c2d9f1",
+                "excerpt_tokens": 13,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    103,
+                    116
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 3,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "2bcc4e238c8e22ff037d22916171616e9763d1d19feda3cc5802e1fbd81022c1",
+                "excerpt_tokens": 16,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    98,
+                    114
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "5e3455353d26edfd63c461b818ad3c8b58af73fe2c20cba748065649adfadef0",
+                "excerpt_tokens": 40,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    116,
+                    156
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 4,
+            "kind": "OMISSION",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "99ac9a6f531b8ba32d378973d22f3ef494635831eafe173332010b832741d47a",
+                "excerpt_tokens": 25,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    114,
+                    139
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "32c6db9cb3ffcc4d5e324769d44f5ea56765973e00bf49de64f5f4da5c8d8477",
+                "excerpt_tokens": 15,
+                "locate_mode": "not_found",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 5,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "f389c6f36bf77dc3fafe7e6ffdba4c4c31ecb679dc0c87a5583034980cd00726",
+                "excerpt_tokens": 104,
+                "locate_mode": "too_long",
+                "spans": []
+              },
+              "b": {
+                "excerpt_sha256": "57cde6af16b15e18538e571f61311dc80def7e70893d8f44f42cf552cf548e23",
+                "excerpt_tokens": 104,
+                "locate_mode": "too_long",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 6,
+            "kind": "NO_DIFFERENCE",
+            "severity": 0,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "152778135859ae58bf6d262a10863728c7c0b4c5227bfa9b95d61cd0170e5b84",
+                "excerpt_tokens": 7,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    243,
+                    250
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "9cb33845b7f53dcb41cd3b3cab816ce96f23d61b52598e00c43df7347d0f621c",
+                "excerpt_tokens": 7,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    260,
+                    267
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 99,
+        "nonzero_b": 79,
+        "sha256_a": "9c33cbd651a86fe0072f8df8009d5ff0bdaf878d5bf916342d850a05f482c217",
+        "sha256_b": "f6ffdb4bdd22fb5b736aff70a193024ff819037cc5bf8feea721724e30de3d80"
+      },
+      "stratum": "medium"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "2",
+          "4"
+        ],
+        "rationale": "The response includes genuine date-boundary evidence but also treats faithful translated career statements as changes and uses sentence-wide spans."
+      },
+      "group_key": "b901c23a809d95769c4c921f054061c351cb7ab07aed9501d367e45197183f0f",
+      "id": "admin_it_197",
+      "input": {
+        "text_a_sha256": "50f58b3e8a1aa133334694a734699ffdfa427888dba0ebd5bf09cd83fda890be",
+        "text_b_sha256": "7e9f0279f2e016a097fb73609feb943afff6dddbc94bf2373c44eb39cd99d8d9",
+        "tokens_a": 250,
+        "tokens_b": 254
+      },
+      "language": "it",
+      "model_response": {
+        "completion_tokens": 475,
+        "finish_reason": "stop",
+        "sha256": "f17eef3046ba42c6717602a68726dd4a6178ca4955d5b45939c2fa78b30bdb73"
+      },
+      "official_evaluation": {
+        "gold_positive": 35,
+        "masked": 160,
+        "overlap": 35,
+        "per_document_diagnostic_spearman": 0.3439618386128657,
+        "positions": 344,
+        "positive_precision": 0.20833333333333334,
+        "positive_recall": 1.0,
+        "predicted_positive": 168
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 0,
+          "items": 5,
+          "marked_tokens_a": 99,
+          "marked_tokens_b": 103,
+          "parse": "json",
+          "projected": 5,
+          "spans_ambiguous": 0,
+          "spans_exact": 10,
+          "spans_normalised": 0,
+          "spans_not_found": 0,
+          "spans_too_long": 0,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "962421fbb9bec29c7f4b4395f024206b8385b00539ff4a1bb1385579ae552437",
+                "excerpt_tokens": 21,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    40,
+                    61
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "9bf0630a518f735ac14db5d1a4b218a2f8d5fde3d08a9a4f0d743a6363586987",
+                "excerpt_tokens": 25,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    40,
+                    65
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "8f92db4c56ae3ea0c7323840524e98e903a1f46b57c55d3c2ef8bdf9668d3c52",
+                "excerpt_tokens": 22,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    61,
+                    83
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "1bea985963e51400c8ad0a458e3c428cb7de6ed2bfc462b71b2fcf9a0c7286a4",
+                "excerpt_tokens": 28,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    65,
+                    93
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 2,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "52a0c0bdd73b6e77e620e41d6930fd329b08fd72323c164f730227f02362c53d",
+                "excerpt_tokens": 15,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    83,
+                    98
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "1d0013677f8a10e1309d9a41c3d21cd05b8d1105d7e9f6722ded26e2c7d7f6ff",
+                "excerpt_tokens": 15,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    93,
+                    108
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 3,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "2bcc4e238c8e22ff037d22916171616e9763d1d19feda3cc5802e1fbd81022c1",
+                "excerpt_tokens": 16,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    98,
+                    114
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "0db23327bb3c4c521133d6db1024c81eeb5d3fa4d2af6e98d449d6d6368af8ab",
+                "excerpt_tokens": 19,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    108,
+                    127
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 4,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "99ac9a6f531b8ba32d378973d22f3ef494635831eafe173332010b832741d47a",
+                "excerpt_tokens": 25,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    114,
+                    139
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "22091a21eeeec1d82454628a29b37e6ca3e41fffb49ca951101fe60635f06929",
+                "excerpt_tokens": 16,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    127,
+                    143
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 99,
+        "nonzero_b": 103,
+        "sha256_a": "66807b36caffefe733e9883753740fba8b0997347e7b00015899f497f6fc2c14",
+        "sha256_b": "9faefdc80fb029d2839f57e1805c48e059cf64a70de97cfbf659a2b23476c18b"
+      },
+      "stratum": "medium"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "2"
+        ],
+        "rationale": "The response treats reordered or faithful career-history translations as omissions or changes and does not isolate the annotated differences."
+      },
+      "group_key": "5eb5f4e3e10babd863dea7d42abeec7bc3d6c1341a4b806f34cbbe47a48b8389",
+      "id": "admin_de_85",
+      "input": {
+        "text_a_sha256": "d8e47284f60c019bdd6bf312fb1c21a13096914deb15d644553624f704b26c9f",
+        "text_b_sha256": "a534f6981a5abdd13666c24bb9d813ee13c1e84f7094b99c088def10b6ec83f4",
+        "tokens_a": 290,
+        "tokens_b": 263
+      },
+      "language": "de",
+      "model_response": {
+        "completion_tokens": 311,
+        "finish_reason": "stop",
+        "sha256": "092d0635ca14e2ddab944e9f7865b06a9f57f237779452621fa3443f3db8d584"
+      },
+      "official_evaluation": {
+        "gold_positive": 13,
+        "masked": 148,
+        "overlap": 10,
+        "per_document_diagnostic_spearman": 0.24303424270596907,
+        "positions": 405,
+        "positive_precision": 0.08928571428571429,
+        "positive_recall": 0.7692307692307693,
+        "predicted_positive": 112
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 0,
+          "items": 3,
+          "marked_tokens_a": 75,
+          "marked_tokens_b": 58,
+          "parse": "json",
+          "projected": 3,
+          "spans_ambiguous": 0,
+          "spans_exact": 6,
+          "spans_normalised": 0,
+          "spans_not_found": 0,
+          "spans_too_long": 0,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "OMISSION",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "d96799226fac163c7f53a119805af96b8b6bf325962778ba6fc562e775614459",
+                "excerpt_tokens": 18,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    89,
+                    107
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "3489fd6645e1f09cdef7dd190db5cf8dbc1034047966c2efc14b9a8c33130e4f",
+                "excerpt_tokens": 13,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    76,
+                    89
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "OMISSION",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "b7a4660130f7cac97558fae166e8ae7a1397901219a508e1bcc084e251194cac",
+                "excerpt_tokens": 36,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    122,
+                    158
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "d359b5b1876c3e40c7e785b3a286ee5c07ddea59559dcfad4f2f348692e10d5a",
+                "excerpt_tokens": 27,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    104,
+                    131
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 2,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "e0a0ad1619ad98c4c3eeacf50359c2f9119664d30c4e7ecb8d74a8223f4234b6",
+                "excerpt_tokens": 21,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    158,
+                    179
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "1a142a9dba25669ad480cd09e2d6209a188c1f8d5ef7e5a5d6a5ceb56bc30c16",
+                "excerpt_tokens": 18,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    131,
+                    149
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 75,
+        "nonzero_b": 58,
+        "sha256_a": "e92609b489671173ca16e33fd905608980b3897891490cb43c041ec783d7a780",
+        "sha256_b": "2caed97fd8467309bfe011901bc720f874e80407c6b64c9fdaa3001583b519b0"
+      },
+      "stratum": "medium"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "2",
+          "4"
+        ],
+        "rationale": "Most career statements are faithful translations; the real last-modification change is found but projected over the full metadata phrase."
+      },
+      "group_key": "5eb5f4e3e10babd863dea7d42abeec7bc3d6c1341a4b806f34cbbe47a48b8389",
+      "id": "admin_fr_85",
+      "input": {
+        "text_a_sha256": "d8e47284f60c019bdd6bf312fb1c21a13096914deb15d644553624f704b26c9f",
+        "text_b_sha256": "c86ec0adcf0f935b2c2fea912569fbff7d3e9e9f10b50864d35467d51be33eb5",
+        "tokens_a": 290,
+        "tokens_b": 335
+      },
+      "language": "fr",
+      "model_response": {
+        "completion_tokens": 741,
+        "finish_reason": "stop",
+        "sha256": "9ceffb11edde03bbf1ef46052f5da2c95fa3a0f485fa110dbbf0f48aaa21e0c0"
+      },
+      "official_evaluation": {
+        "gold_positive": 108,
+        "masked": 155,
+        "overlap": 67,
+        "per_document_diagnostic_spearman": 0.11713070465139715,
+        "positions": 470,
+        "positive_precision": 0.2528301886792453,
+        "positive_recall": 0.6203703703703703,
+        "predicted_positive": 265
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "invalid_item": 0,
+          "invalid_severity": 0,
+          "items": 8,
+          "marked_tokens_a": 157,
+          "marked_tokens_b": 140,
+          "parse": "json",
+          "projected": 8,
+          "spans_ambiguous": 0,
+          "spans_exact": 15,
+          "spans_normalised": 0,
+          "spans_not_found": 0,
+          "spans_too_long": 1,
+          "unknown_kind": 0
+        },
+        "items": [
+          {
+            "index": 0,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "f8d69b0e4024fe91e3a02a5dc7738697faccfa12a592ecb8739899f485abd5ad",
+                "excerpt_tokens": 18,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    14,
+                    32
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "30cf4be4aac97ed78519f8cc7f11dfbbc0bc3fb158c6046c3118e3ad4bd102a8",
+                "excerpt_tokens": 21,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    18,
+                    39
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "03040622ba3af8c941b6461b87345cf550edcfcdf1640d839e4d6a322312e52d",
+                "excerpt_tokens": 20,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    32,
+                    52
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "d943a3b5da9756c516bc868c56068360b9b92f839c8714904c90bdf97b14c205",
+                "excerpt_tokens": 23,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    39,
+                    62
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 2,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "9b9b13248b482b6b74f8e54babf964f4251343d2704144f73acbce49d2e1548d",
+                "excerpt_tokens": 25,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    52,
+                    77
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "e719b52fd996c6374422446a56920dbaca881afcadafe52c6d6c1a6b21d2ac8a",
+                "excerpt_tokens": 27,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    62,
+                    89
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 3,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "051c65ac653b20b35bd8385eb558549d168a1bff9899660362b81767c40e916c",
+                "excerpt_tokens": 12,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    77,
+                    89
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "ee8fa3c17d5c1e87cf2fbef55ac2cceda484ea52f20215e0e383d356a8d426d6",
+                "excerpt_tokens": 16,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    89,
+                    105
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 4,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "d96799226fac163c7f53a119805af96b8b6bf325962778ba6fc562e775614459",
+                "excerpt_tokens": 18,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    89,
+                    107
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "b49c9d507223a6f7a623c73addc2a788072cb6150bfeba693e227d9f55ea2e67",
+                "excerpt_tokens": 19,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    105,
+                    124
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 5,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "b7a4660130f7cac97558fae166e8ae7a1397901219a508e1bcc084e251194cac",
+                "excerpt_tokens": 36,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    122,
+                    158
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "4d829bd502a4c0166ca3cb4e34d058bb41a5160ad38661ffdc5d84d5ec2e34b4",
+                "excerpt_tokens": 49,
+                "locate_mode": "too_long",
+                "spans": []
+              }
+            }
+          },
+          {
+            "index": 6,
+            "kind": "CHANGE",
+            "severity": 3,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "e0a0ad1619ad98c4c3eeacf50359c2f9119664d30c4e7ecb8d74a8223f4234b6",
+                "excerpt_tokens": 21,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    158,
+                    179
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "98ae6d907be990111eabc1c7b1e9f672995ca5f651de0335ccce949454a6494b",
+                "excerpt_tokens": 27,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    197,
+                    224
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "index": 7,
+            "kind": "CHANGE",
+            "severity": 4,
+            "sides": {
+              "a": {
+                "excerpt_sha256": "e8cae9710971bcee63b816b8d8719450de68841f9385b664342fa257a963bd3f",
+                "excerpt_tokens": 7,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    283,
+                    290
+                  ]
+                ]
+              },
+              "b": {
+                "excerpt_sha256": "5954512475b6ea658dc201a0c20e9e378c58334128c90e035bafba8e8e565642",
+                "excerpt_tokens": 7,
+                "locate_mode": "exact",
+                "spans": [
+                  [
+                    328,
+                    335
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "status": "ok"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 157,
+        "nonzero_b": 140,
+        "sha256_a": "b4d665688c97f5b5238a2238b2aa12354e3ac17f9fd338a63222f6fecee83e76",
+        "sha256_b": "df905d6ee9b6b67c4eeb6afd05f3251e69ce60d8acb08907fb134f2588fc446e"
+      },
+      "stratum": "medium"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "1"
+        ],
+        "rationale": "Generation reached the 1024-token cap and ended inside a JSON string, so the document is unparseable."
+      },
+      "group_key": "5eb5f4e3e10babd863dea7d42abeec7bc3d6c1341a4b806f34cbbe47a48b8389",
+      "id": "admin_it_85",
+      "input": {
+        "text_a_sha256": "d8e47284f60c019bdd6bf312fb1c21a13096914deb15d644553624f704b26c9f",
+        "text_b_sha256": "1300cf6b98e87ce0ae3966c996884fe7f5c765bf5e6fc571b1c906fbc1880420",
+        "tokens_a": 290,
+        "tokens_b": 282
+      },
+      "language": "it",
+      "model_response": {
+        "completion_tokens": 1024,
+        "finish_reason": "length",
+        "sha256": "f518f62ae3431885fcb6c7b48d2a805cf42de02ef79f7a3aac0027e78cf6f337"
+      },
+      "official_evaluation": {
+        "gold_positive": 9,
+        "masked": 146,
+        "overlap": 0,
+        "per_document_diagnostic_spearman": null,
+        "positions": 426,
+        "positive_precision": null,
+        "positive_recall": 0.0,
+        "predicted_positive": 0
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "parse": "unparseable"
+        },
+        "items": [],
+        "status": "unparseable"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 0,
+        "nonzero_b": 0,
+        "sha256_a": "b246ec1e98c194a993a06bec0e77586518d966715e152ec23a89e92b93afbc63",
+        "sha256_b": "66952f96b0abcd503783709e14ef45c8cdeb534967b1ba31e5af6fdfb9fcc65d"
+      },
+      "stratum": "medium"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "1"
+        ],
+        "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."
+      },
+      "group_key": "ec8f26e4b96b65adf71bcbb5df24a84bb8cec7c06c4aa16dff5344fa028fa6cb",
+      "id": "admin_de_102",
+      "input": {
+        "text_a_sha256": "9e68b19b8fb2a4504bc0d4f18bd20137bf2bef19d0c964dbcab3be6187233b27",
+        "text_b_sha256": "5904ed2a68a95320577bf9e7c82e04533c785e3380e48bbe78238603c9721d6d",
+        "tokens_a": 501,
+        "tokens_b": 447
+      },
+      "language": "de",
+      "model_response": {
+        "completion_tokens": 1024,
+        "finish_reason": "length",
+        "sha256": "84f265f8e95cc2593e9e92d937a331d633848600c1c88c87e8d5b2453eafcb3c"
+      },
+      "official_evaluation": {
+        "gold_positive": 270,
+        "masked": 119,
+        "overlap": 0,
+        "per_document_diagnostic_spearman": null,
+        "positions": 829,
+        "positive_precision": null,
+        "positive_recall": 0.0,
+        "predicted_positive": 0
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "parse": "unparseable"
+        },
+        "items": [],
+        "status": "unparseable"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 0,
+        "nonzero_b": 0,
+        "sha256_a": "2ab7ecd69332c6cd9ee70a1228caa9af13dc96018d3ced04fb2f7a16b80a4d13",
+        "sha256_b": "d66308afe256fcf1ca18c6f39e23f17f2ebbdc48cf671f184e289251d41c25fe"
+      },
+      "stratum": "long"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "1"
+        ],
+        "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."
+      },
+      "group_key": "ec8f26e4b96b65adf71bcbb5df24a84bb8cec7c06c4aa16dff5344fa028fa6cb",
+      "id": "admin_fr_102",
+      "input": {
+        "text_a_sha256": "9e68b19b8fb2a4504bc0d4f18bd20137bf2bef19d0c964dbcab3be6187233b27",
+        "text_b_sha256": "ed61c7f09367cc6e4bae9afc2b2115f04a240da95a237ef828af74cbf16293d1",
+        "tokens_a": 501,
+        "tokens_b": 556
+      },
+      "language": "fr",
+      "model_response": {
+        "completion_tokens": 1024,
+        "finish_reason": "length",
+        "sha256": "0b2312c24bedf195aad37a01ac259989927e7da99f087618901963e09f0410de"
+      },
+      "official_evaluation": {
+        "gold_positive": 301,
+        "masked": 124,
+        "overlap": 0,
+        "per_document_diagnostic_spearman": null,
+        "positions": 933,
+        "positive_precision": null,
+        "positive_recall": 0.0,
+        "predicted_positive": 0
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "parse": "unparseable"
+        },
+        "items": [],
+        "status": "unparseable"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 0,
+        "nonzero_b": 0,
+        "sha256_a": "2ab7ecd69332c6cd9ee70a1228caa9af13dc96018d3ced04fb2f7a16b80a4d13",
+        "sha256_b": "f39b5ff78430d77ed5f5a80eca0a18793ecb70a475235da57cc06e69b6f99f36"
+      },
+      "stratum": "long"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "1"
+        ],
+        "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."
+      },
+      "group_key": "ec8f26e4b96b65adf71bcbb5df24a84bb8cec7c06c4aa16dff5344fa028fa6cb",
+      "id": "admin_it_102",
+      "input": {
+        "text_a_sha256": "9e68b19b8fb2a4504bc0d4f18bd20137bf2bef19d0c964dbcab3be6187233b27",
+        "text_b_sha256": "b7ea98faab8ce8fa4bec5b93cafd61f5df921c21290b7d49eb11b80769136032",
+        "tokens_a": 501,
+        "tokens_b": 507
+      },
+      "language": "it",
+      "model_response": {
+        "completion_tokens": 1024,
+        "finish_reason": "length",
+        "sha256": "643a51f810f59618e285e98708557456fa42ed9e3bcab79bb33be96b597ae1e7"
+      },
+      "official_evaluation": {
+        "gold_positive": 302,
+        "masked": 107,
+        "overlap": 0,
+        "per_document_diagnostic_spearman": null,
+        "positions": 901,
+        "positive_precision": null,
+        "positive_recall": 0.0,
+        "predicted_positive": 0
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "parse": "unparseable"
+        },
+        "items": [],
+        "status": "unparseable"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 0,
+        "nonzero_b": 0,
+        "sha256_a": "2ab7ecd69332c6cd9ee70a1228caa9af13dc96018d3ced04fb2f7a16b80a4d13",
+        "sha256_b": "a2d10f7900369adbef162e4da09de7909a7a20600e5af1c2d277d9dbaeafcfd3"
+      },
+      "stratum": "long"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "1"
+        ],
+        "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."
+      },
+      "group_key": "9adcc0037acee30964ea4640cd27247345b0424f64854ac641fe0e170d0955a6",
+      "id": "admin_de_29",
+      "input": {
+        "text_a_sha256": "1489c4007f056759a6ee4180df77d61e928b4aa961072afcef4436eefac28d17",
+        "text_b_sha256": "120b08056bc3c59078ab661222a7077b37c7e1ed444069e64c8bc6059a06ebb7",
+        "tokens_a": 444,
+        "tokens_b": 438
+      },
+      "language": "de",
+      "model_response": {
+        "completion_tokens": 1024,
+        "finish_reason": "length",
+        "sha256": "a3b57467d1a3cf3e27c6828b959c55b0bab36ebcc2d8f43878fa14d6fd82d575"
+      },
+      "official_evaluation": {
+        "gold_positive": 29,
+        "masked": 232,
+        "overlap": 0,
+        "per_document_diagnostic_spearman": null,
+        "positions": 650,
+        "positive_precision": null,
+        "positive_recall": 0.0,
+        "predicted_positive": 0
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "parse": "unparseable"
+        },
+        "items": [],
+        "status": "unparseable"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 0,
+        "nonzero_b": 0,
+        "sha256_a": "9a210543e44b587e25f0c538396c7904274421a17674576ec05dd8a001b6d67c",
+        "sha256_b": "264a87341ee6f5b488208e8ff56c96915da8c1068be186d2a24a41fd432dd459"
+      },
+      "stratum": "long"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "1"
+        ],
+        "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."
+      },
+      "group_key": "9adcc0037acee30964ea4640cd27247345b0424f64854ac641fe0e170d0955a6",
+      "id": "admin_fr_29",
+      "input": {
+        "text_a_sha256": "1489c4007f056759a6ee4180df77d61e928b4aa961072afcef4436eefac28d17",
+        "text_b_sha256": "6c5bd2f0ba479b399f61eea7daa1c90e702433e731f6511185d2abb5d612ec6c",
+        "tokens_a": 444,
+        "tokens_b": 495
+      },
+      "language": "fr",
+      "model_response": {
+        "completion_tokens": 1024,
+        "finish_reason": "length",
+        "sha256": "ad256a5d7eef6084e86e54f34ac5664e7ecf3ba1412cfa68a914a20f7758562e"
+      },
+      "official_evaluation": {
+        "gold_positive": 47,
+        "masked": 233,
+        "overlap": 0,
+        "per_document_diagnostic_spearman": null,
+        "positions": 706,
+        "positive_precision": null,
+        "positive_recall": 0.0,
+        "predicted_positive": 0
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "parse": "unparseable"
+        },
+        "items": [],
+        "status": "unparseable"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 0,
+        "nonzero_b": 0,
+        "sha256_a": "9a210543e44b587e25f0c538396c7904274421a17674576ec05dd8a001b6d67c",
+        "sha256_b": "ca0a2aa0b58e9595206eedfecc9ab2bdb8fffe4cd3a62e0e46067ef9cc970cd9"
+      },
+      "stratum": "long"
+    },
+    {
+      "classification": {
+        "confidence": "high",
+        "labels": [
+          "1"
+        ],
+        "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."
+      },
+      "group_key": "9adcc0037acee30964ea4640cd27247345b0424f64854ac641fe0e170d0955a6",
+      "id": "admin_it_29",
+      "input": {
+        "text_a_sha256": "1489c4007f056759a6ee4180df77d61e928b4aa961072afcef4436eefac28d17",
+        "text_b_sha256": "90d709740fe207d4d7408e18ba70278b355bd113e43926f1be38142b68dbe124",
+        "tokens_a": 444,
+        "tokens_b": 579
+      },
+      "language": "it",
+      "model_response": {
+        "completion_tokens": 1024,
+        "finish_reason": "length",
+        "sha256": "9bb0c26073aed8bf4dd3efffbc78ebc5e58a47a79bcccfc9f2b6302b47fffdd0"
+      },
+      "official_evaluation": {
+        "gold_positive": 180,
+        "masked": 256,
+        "overlap": 0,
+        "per_document_diagnostic_spearman": null,
+        "positions": 767,
+        "positive_precision": null,
+        "positive_recall": 0.0,
+        "predicted_positive": 0
+      },
+      "parsed_difference": {
+        "diagnostics": {
+          "parse": "unparseable"
+        },
+        "items": [],
+        "status": "unparseable"
+      },
+      "projected_token_scores": {
+        "nonzero_a": 0,
+        "nonzero_b": 0,
+        "sha256_a": "9a210543e44b587e25f0c538396c7904274421a17674576ec05dd8a001b6d67c",
+        "sha256_b": "cd1e05ec51e70e722d5d457180553acbb0ac122973568857aeb9cee21d835e91"
+      },
+      "stratum": "long"
+    }
+  ],
+  "schema": "uzh-rsd.nebu-staged-error-analysis/v1"
+}
