@@ -1,0 +1,131 @@
+{
+  "schema": "uzh-rsd.final-delivery-ledger/v1",
+  "created_local": "2026-10-16T13:55:00+02:00",
+  "repository": "blackmath88/apertushackathon-uzh",
+  "starting_pr": 44,
+  "starting_commit": "be482a97dd610c940b0169722d68698b26cf2e8f",
+  "priority": "final delivery; preserve across checkpoints and handoffs",
+  "deadlines": {
+    "documented_official": "2026-10-16T12:00:00+02:00",
+    "official_status_at_start": "passed; extension not yet evidenced",
+    "owner_cutoff_text": "tonight",
+    "owner_cutoff_assumption": "2026-10-16T23:59:00+02:00"
+  },
+  "gates": {
+    "gate_a": "closed",
+    "test_input_access": "authorized only after frozen dev acceptance, for mechanical validation of existing gold-free final input",
+    "final_test_inference": "one run authorized only after frozen dev acceptance and feasible measured estimate",
+    "merge_deploy_submit_message_weavr": "not authorized"
+  },
+  "preservation": {
+    "existing_submission_snapshot": "must remain immutable",
+    "pr40_baseline": "must remain byte-for-byte preserved",
+    "pr44_experiment_outputs": "must remain byte-for-byte preserved",
+    "later_work_label": "final-delivery preparation or post-submission"
+  },
+  "reserve_under_assumed_cutoff": {
+    "final_inference_hours": 4.0,
+    "verification_hours": 1.0,
+    "packaging_handoff_hours": 0.75,
+    "full_dev_gate_a_run": "prohibited"
+  },
+  "optional_experiment": {
+    "candidate": "paired-evidence keep/drop verifier from PR #44",
+    "maximum_local_calls": 36,
+    "freeze_commit": "0eb419471373381db2a01c22732c06aa8965b8b1",
+    "status": "settled_rejected",
+    "actual_calls": 24,
+    "generator": {"attempted": 18, "parseable": 6, "unparseable_at_1024_cap": 12},
+    "verifier": {"attempted": 6, "valid": 6, "kept_items": 17, "proposed_items": 25},
+    "control_macro": 0.0614828432243805,
+    "treatment_macro": 0.058055590748616104,
+    "delta": -0.003427252475764399,
+    "paired_ci95": [-0.016852907489412594, 0.014307762538867702],
+    "audit": {"control_precision": 0.21428571428571427, "control_recall": 1.0, "treatment_precision": 0.18181818181818182, "treatment_recall": 0.6666666666666666},
+    "request_latency_s": 510.525,
+    "private_ledger_sha256": "3c55347f6c6ac1680b004c95f18e29aca46e9a0dc4d564a8578e8dfbcf6a2020",
+    "decision": "reject; do not promote verifier",
+    "adaptive_prompting": false
+  },
+  "checkpoints": [
+    {
+      "time_local": "2026-10-16T13:55:00+02:00",
+      "status": "plan-created",
+      "evidence": "PR #44 is open draft at be482a9; worktree clean; exact current state inspected",
+      "next": "read required evidence and audit critical path"
+    },
+    {
+      "time_local": "2026-10-16T14:18:27+02:00",
+      "status": "optional-experiment-settled",
+      "evidence": "24 calls; control 0.061483, treatment 0.058056, audit precision/recall both worse; verifier rejected",
+      "next": "freeze unchanged B2/C0 delivery and finish package"
+    },
+    {
+      "time_local": "2026-10-16T14:30:00+02:00",
+      "status": "delivery-checks-complete",
+      "evidence": "337 tests pass; synthetic Docker final path 13/13; final verifier hardened",
+      "next": "owner gate remains closed"
+    },
+    {
+      "time_local": "2026-10-16T15:36:21+02:00",
+      "status": "long-input-protocol-frozen-pre-inference",
+      "evidence": "isolated Orca worktree base 5c7d06c; b2-windowed-v2 code, 320/32 window policy, exact maps, fail-closed merge, fixed 6-document gold-blind manifest and 39-request plan; 336 repository tests pass with 14 pre-existing capability skips",
+      "next": "commit freeze, verify exclusive GPU ownership, then execute the 39-request dev acceptance only"
+    },
+    {
+      "time_local": "2026-10-16T15:56:00+02:00",
+      "status": "long-input-acceptance-rejected",
+      "evidence": "39/39 requests returned in 952.878 s; 0 transport failures; 5 truncated; 34 invalid-evidence; 0/6 strict complete; context maximum 2344/8192 including reserved output; diagnostic zero-fallback macro 0.004474 is not a candidate score",
+      "next": "do not access final inputs or start final inference; package rejection and measured estimate"
+    },
+    {
+      "time_local": "2026-10-16T15:58:00+02:00",
+      "status": "package-verified",
+      "evidence": "336 dependency-complete repository tests pass with 14 pre-existing capability skips; focused long-input/final suite 30/30; clean committed Docker final path 13/13; public and private evidence checksums recorded",
+      "next": "push focused PR #44 update and hand off exact blockers"
+    }
+  ],
+  "candidate": {
+    "method": "b2-windowed-v2",
+    "method_code_commit": "70fc85ef973f9fa82f6b15207a4b4f4cb038ed29",
+    "status": "rejected by frozen development acceptance; 0/6 strict complete",
+    "frozen_protocol": "track_2a/experiments/final-long-input-20261016/PROTOCOL.md",
+    "acceptance_manifest_sha256": "a961d3def7b1cfa66558884b2477aa2a630a29cc8fd20e1a417466010bb8cfe3",
+    "acceptance_request_count": 39,
+    "historical_final_coverage": "88/168 parseable; no prediction files",
+    "no_new_fallback": true
+  },
+  "final_run_package": {
+    "path": "track_2a/docs/FINAL_EXECUTION_PACKAGE_2026-10-16.md",
+    "request_count": "one per contract record; historical expected 168",
+    "estimate": "78.3 minutes linear local request latency; reserve 4.5 hours including verification/package/contingency",
+    "owner_gate": "closed after failed conditional acceptance; final inputs not accessed and final inference not started",
+    "verification": "status, files, counts, order, IDs, hashes, schema, vector lengths and finite [0,1] values"
+  },
+  "integrity": {
+    "historical_final_meta_sha256": "d3deecc0fd3ae1d99be7b9ca94b514a8f8a36291184e7dc982372acb81ceb10a",
+    "historical_final_diagnostics_sha256": "89135b486fb9ad9a7de4d31a6fcdd12a5c36f00defcea6fa20b862033f3040b6",
+    "historical_final_run_summary_sha256": "7313fbc72ebe691cbfc07d570198c8be77ebaeff376807f8e66c44339cc71a90",
+    "b2_projection_checksums": "pass",
+    "b7_checksums": "pass",
+    "b8_checksums": "pass",
+    "b0_freeze_checksum_note": "expected source-file mismatch on later branch; private ledger absent here; rely on PR #40 exact-commit independent review"
+  },
+  "long_input_result": {
+    "public_summary": "track_2a/experiments/final-long-input-20261016/summary.json",
+    "private_run_id": "final-long-input-dev-v1-70fc85e",
+    "returned_requests": 39,
+    "strict_valid_requests": 0,
+    "strict_complete_documents": 0,
+    "truncated_requests": 5,
+    "invalid_evidence_requests": 34,
+    "estimated_final_requests": 330,
+    "estimated_inference_minutes_median_to_max": [134.73, 174.53],
+    "estimated_with_verification_minutes_median_to_max": [164.73, 204.53],
+    "final_input_accessed": false,
+    "final_inference_started": false
+  },
+  "remaining_owner_decision": "portal eligibility/extension, licensing, team metadata and submission remain owner-only; no final artifact exists because the authorized conditional run gate failed",
+  "worker_state": "prior three audits plus one long-input design audit settled and released",
+  "model_service_state": "owned Apertus PID 91570 stopped; port 11436 closed; Morrow PID 1477 unchanged on 11435"
+}

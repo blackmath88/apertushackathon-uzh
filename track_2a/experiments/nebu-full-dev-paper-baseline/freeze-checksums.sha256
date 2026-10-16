@@ -1,0 +1,6 @@
+e839a92a2c5cd94431927c73a1d13117992eab19b16638fcdb81ed0d24259952  PROTOCOL.md
+7943b068051df948dee5cfa9fb46c6f2cc7689999a208876c5a6486116fb2edf  manifest.json
+9e9b00edd7ec2d75ded7b3bff02170eeaa4da45a5d8d49be6f5cb9640a3d1c91  run-config.json
+f33df748a3ad10b278e6b5b6e08ccdaa917d66af6da5d1c57fbe1c36e9e40d6c  plan-summary.json
+7f257fa8bd5be9e6ae4f4137ef4f20ad1de3c634fbce15712d839f33f178e961  ../../src/uzh_rsd/full_dev_baseline.py
+5519b90c9b697b32d3fd05e29959823857428fef929d95872618a985f0819b4d  ../../tests/test_full_dev_baseline.py

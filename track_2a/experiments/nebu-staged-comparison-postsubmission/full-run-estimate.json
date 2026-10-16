@@ -1,0 +1,33 @@
+{
+  "basis": {
+    "cached_c1_calls": 72,
+    "measured_c1_completion_tokens": 50113,
+    "measured_c1_inference_seconds": 1504.566,
+    "measured_c1_prompt_tokens": 118228,
+    "measured_c1_requests": 72,
+    "method": "Per-stratum mean from 8 frozen source groups (24 pairs) in each of short, medium and long; multiplied by full or remaining stratum counts.",
+    "no_chunking": true
+  },
+  "full_uncached_equivalent": {
+    "completion_tokens_estimate": 339360,
+    "combined_tokens_estimate": 1140129,
+    "inference_hours_estimate": 2.830321,
+    "prompt_tokens_estimate": 800770,
+    "requests": 489,
+    "wall_time_reserve_hours_with_25_percent_margin": 3.537902
+  },
+  "incremental_after_exact_cache_reuse": {
+    "completion_tokens_estimate": 289247,
+    "combined_tokens_estimate": 971788,
+    "inference_hours_estimate": 2.412386,
+    "new_requests": 417,
+    "prompt_tokens_estimate": 682542,
+    "wall_time_reserve_hours_with_25_percent_margin": 3.015483
+  },
+  "observed_latency_seconds": {
+    "median": 21.3075,
+    "p95": 32.387
+  },
+  "schema": "uzh-rsd.nebu-staged-comparison-full-run-estimate/v1",
+  "status": "estimate only; Gate A not authorized"
+}

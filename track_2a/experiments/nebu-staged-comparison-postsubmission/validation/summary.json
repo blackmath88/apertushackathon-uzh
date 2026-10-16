@@ -1,0 +1,170 @@
+{
+  "baseline_predictions_sha256": "954d4698f4b8a3cf5b4ed11727e840cc81776798961748d9023256c079242a06",
+  "ledger_sha256": "01b2b35fce36d80197b82c09dcf8056ea5f5efb5efccf7e329d5f8f0596bbf51",
+  "metrics": {
+    "B0-saved": {
+      "all_subset_fallback_based": {
+        "macro": 0.0016632129736544737,
+        "per_language": {
+          "de": {
+            "documents": 12,
+            "positions": 7956,
+            "spearman": -0.008250629998752779,
+            "undefined_reason": null
+          },
+          "fr": {
+            "documents": 12,
+            "positions": 8878,
+            "spearman": 0.024478032238838845,
+            "undefined_reason": null
+          },
+          "it": {
+            "documents": 12,
+            "positions": 8486,
+            "spearman": -0.011237763319122645,
+            "undefined_reason": null
+          }
+        },
+        "undefined_reason": null
+      },
+      "cost": {
+        "cache_hits": 0,
+        "calls": 25,
+        "completion_tokens": 0,
+        "inference_s": 0,
+        "latency_median_s": null,
+        "latency_p95_s": null,
+        "prompt_tokens": 0
+      },
+      "coverage": {
+        "attempted": 25,
+        "context_overflow": 11,
+        "intended": 36,
+        "malformed": 22,
+        "parseable": 3,
+        "returned": 25,
+        "strictly_valid": 0,
+        "transport_failure": 0,
+        "usable": 3
+      }
+    },
+    "C1": {
+      "all_subset_fallback_based": {
+        "macro": -0.01324589521941677,
+        "per_language": {
+          "de": {
+            "documents": 12,
+            "positions": 7956,
+            "spearman": -0.026986402522502336,
+            "undefined_reason": null
+          },
+          "fr": {
+            "documents": 12,
+            "positions": 8878,
+            "spearman": 0.04749290877764937,
+            "undefined_reason": null
+          },
+          "it": {
+            "documents": 12,
+            "positions": 8486,
+            "spearman": -0.060244191913397346,
+            "undefined_reason": null
+          }
+        },
+        "undefined_reason": null
+      },
+      "cost": {
+        "cache_hits": 0,
+        "calls": 36,
+        "completion_tokens": 25414,
+        "inference_s": 766.346,
+        "latency_median_s": 22.1505,
+        "latency_p95_s": 32.807,
+        "prompt_tokens": 61951
+      },
+      "coverage": {
+        "attempted": 36,
+        "intended": 36,
+        "malformed": 13,
+        "parseable": 23,
+        "partially_projected": 9,
+        "returned": 36,
+        "strictly_valid": 14,
+        "transport_failure": 0,
+        "unresolved": 0,
+        "usable": 23
+      },
+      "delta_vs_B0_bootstrap": {
+        "ci95": [
+          -0.10439689872178441,
+          0.06629830690463606
+        ],
+        "defined": 818,
+        "replicates": 2000,
+        "seed": 0,
+        "undefined": 1182
+      },
+      "shared_usable_with_B0": {
+        "baseline": {
+          "macro": -0.031018545681589682,
+          "per_language": {
+            "de": {
+              "documents": 1,
+              "positions": 112,
+              "spearman": -0.029143338564198786,
+              "undefined_reason": null
+            },
+            "fr": {
+              "documents": 1,
+              "positions": 270,
+              "spearman": -0.006064249725594972,
+              "undefined_reason": null
+            },
+            "it": {
+              "documents": 1,
+              "positions": 262,
+              "spearman": -0.05784804875497529,
+              "undefined_reason": null
+            }
+          },
+          "undefined_reason": null
+        },
+        "candidate": {
+          "macro": 0.006274630166243987,
+          "per_language": {
+            "de": {
+              "documents": 1,
+              "positions": 112,
+              "spearman": -0.2727272727272727,
+              "undefined_reason": null
+            },
+            "fr": {
+              "documents": 1,
+              "positions": 270,
+              "spearman": -0.033717060719526785,
+              "undefined_reason": null
+            },
+            "it": {
+              "documents": 1,
+              "positions": 262,
+              "spearman": 0.32526822394553145,
+              "undefined_reason": null
+            }
+          },
+          "undefined_reason": null
+        },
+        "documents": {
+          "de": 1,
+          "fr": 1,
+          "it": 1
+        },
+        "fallback_tokens": 0
+      }
+    }
+  },
+  "predictions_sha256": "2fb6bf82ed3f17f3edd2a833789a5860f106128a40855e7381acc13359ac7805",
+  "schema": "uzh-rsd.nebu-staged-comparison/v1",
+  "selection": null,
+  "stage": "validation",
+  "subset_digest": "888684cd95cce07298d4e63c5b37751ea95175a558e2d2206c341d7f09de5a71"
+}

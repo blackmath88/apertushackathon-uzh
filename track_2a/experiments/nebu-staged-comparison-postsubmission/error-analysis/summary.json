@@ -1,0 +1,122 @@
+{
+  "category_by_language": {
+    "1": {
+      "de": 2,
+      "fr": 3,
+      "it": 3
+    },
+    "2": {
+      "de": 4,
+      "fr": 4,
+      "it": 3
+    },
+    "3": {
+      "it": 1
+    },
+    "4": {
+      "de": 1,
+      "fr": 4,
+      "it": 3
+    }
+  },
+  "category_by_stratum": {
+    "1": {
+      "long": 6,
+      "medium": 2
+    },
+    "2": {
+      "medium": 5,
+      "short": 6
+    },
+    "3": {
+      "short": 1
+    },
+    "4": {
+      "medium": 3,
+      "short": 5
+    }
+  },
+  "category_document_incidence": {
+    "1": 8,
+    "2": 11,
+    "3": 1,
+    "4": 8
+  },
+  "format_failures": {
+    "additional_item_level_malformed": 1,
+    "fatal_truncated_unparseable": 7
+  },
+  "gate_a": "closed",
+  "implementation_defects_found": 0,
+  "mode": "offline replay of existing C1 development outputs; no inference; no test access",
+  "official_parity": {
+    "de": {
+      "absolute_difference": 0.0,
+      "official": -0.07408422946917051,
+      "ours": -0.07408422946917051
+    },
+    "fr": {
+      "absolute_difference": 3.469446951953614e-18,
+      "official": 0.02332661455161106,
+      "ours": 0.023326614551611058
+    },
+    "it": {
+      "absolute_difference": 1.3877787807814457e-17,
+      "official": -0.06666382412637233,
+      "ours": -0.06666382412637234
+    }
+  },
+  "official_sample_score": {
+    "macro": -0.0391404796813106,
+    "per_language": {
+      "de": {
+        "documents": 6,
+        "masked": 702,
+        "positions": 2567,
+        "spearman": -0.07408422946917051,
+        "undefined_reason": null
+      },
+      "fr": {
+        "documents": 6,
+        "masked": 734,
+        "positions": 2902,
+        "spearman": 0.023326614551611058,
+        "undefined_reason": null
+      },
+      "it": {
+        "documents": 6,
+        "masked": 713,
+        "positions": 2781,
+        "spearman": -0.06666382412637234,
+        "undefined_reason": null
+      }
+    },
+    "undefined_reason": null
+  },
+  "provenance_sha256": {
+    "/home/achim/orca/workspaces/apertushackathon-uzh/nebu-full-dev-apertus-baseline/track_2a/experiments/nebu-full-dev-paper-baseline/manifest.json": "7943b068051df948dee5cfa9fb46c6f2cc7689999a208876c5a6486116fb2edf",
+    "track_2a/data/private/nebu-staged-comparison-postsubmission/validation/ledger.jsonl": "01b2b35fce36d80197b82c09dcf8056ea5f5efb5efccf7e329d5f8f0596bbf51",
+    "track_2a/experiments/b2-projection-evidence/replay-final/report.md": "867f54d11045681ac8a576ae7a82a7684683fbf94ff76fd4e32f5dd07099882c",
+    "track_2a/experiments/b4-alignment-first-sdm/oracle-20261013/results.json": "0f9155505b54aa459782ad8cd24abc82c0beab4610fec5c7a95f0fd91af33fc4",
+    "track_2a/experiments/b4-alignment-first-sdm/report.md": "b4142d505ad87fad53e56a94325c1bab5feddb4c04ca75f2de805a5c4560ecc6",
+    "track_2a/experiments/nebu-staged-comparison-postsubmission/subset-manifest.json": "e24d263f1a1d0358837d2b82b8fbeae8991d75f6212200ffd056f3360bca9daa",
+    "track_2a/experiments/nebu-staged-comparison-postsubmission/validation/predictions.jsonl": "2fb6bf82ed3f17f3edd2a833789a5860f106128a40855e7381acc13359ac7805",
+    "track_2a/experiments/nebu-staged-comparison-postsubmission/validation/summary.json": "05a9fec0845fb054079eaf5c6561acbefc99ad2d773aa153cce95d0ba1b1ec37"
+  },
+  "recommendation": "Bound response cardinality and require compact minimal evidence spans before considering any further semantic prompt expansion.",
+  "sample": {
+    "by_language": {
+      "de": 6,
+      "fr": 6,
+      "it": 6
+    },
+    "by_stratum": {
+      "long": 6,
+      "medium": 6,
+      "short": 6
+    },
+    "documents": 18,
+    "source_groups": 6
+  },
+  "schema": "uzh-rsd.nebu-staged-error-analysis/v1"
+}
