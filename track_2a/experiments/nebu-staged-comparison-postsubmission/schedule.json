@@ -1,0 +1,24 @@
+{
+  "automatic_retries": 0,
+  "exploration": {
+    "candidates": [
+      "C0",
+      "C1"
+    ],
+    "pairs": 36,
+    "requests": 72
+  },
+  "global_concurrency": 1,
+  "kind": "request-schedule",
+  "per_request_timeout_s": 600.0,
+  "request_ceiling": 120,
+  "reserved_unused_requests": 12,
+  "schedule_digest": "8e39cf4cd5573bb3352ef64f04ab0bd88da1011d2c532c4375eeb302c780ec65",
+  "schema": "uzh-rsd.nebu-staged-comparison/v1",
+  "total_inference_limit_s": 3600.0,
+  "validation": {
+    "candidate": "winner frozen after exploration",
+    "pairs": 36,
+    "requests": 36
+  }
+}
