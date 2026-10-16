@@ -24,6 +24,7 @@ docker-build:
 #   The contract must be confirmed, otherwise uzh_rsd.final stops with BLOCKED.
 MODE ?= pilot
 FINAL_ARGS ?=
+FINAL_DOCKER_ARGS ?=
 SOURCE_COMMIT := $(shell git rev-parse HEAD 2>/dev/null)
 SOURCE_DIRTY := $(if $(SOURCE_COMMIT),$(if $(shell git status --porcelain -- src 2>/dev/null),true,false))
 
@@ -41,7 +42,7 @@ else ifeq ($(MODE),final)
 	@test ! -e "$(FINAL_OUT_DIR)/$(FINAL_RUN_ID)" || { echo "BLOCKED: $(FINAL_OUT_DIR)/$(FINAL_RUN_ID) exists; final runs never overwrite"; exit 3; }
 	$(MAKE) docker-build
 	mkdir -p "$(FINAL_OUT_DIR)"
-	docker run --rm --user "$$(id -u):$$(id -g)" --add-host=host.docker.internal:host-gateway \
+	docker run --rm --user "$$(id -u):$$(id -g)" --add-host=host.docker.internal:host-gateway $(FINAL_DOCKER_ARGS) \
 	  -e LLM_NAME -e LLM_BASE_URL -e LLM_API_KEY -e UZH_SOURCE_COMMIT=$(SOURCE_COMMIT) -e UZH_SOURCE_DIRTY=$(SOURCE_DIRTY) \
 	  -v "$(abspath $(FINAL_CONTRACT)):/final/contract.json:ro" \
 	  -v "$(abspath $(FINAL_INPUT)):/final/input.jsonl:ro" \

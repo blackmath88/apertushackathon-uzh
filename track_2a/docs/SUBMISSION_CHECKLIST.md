@@ -1,8 +1,23 @@
 # Submission checklist — Hack Apertus Track 2A, UZH SwissGov-RSD
 
-These rules come from the pinned sources in [SOURCES.md](SOURCES.md): the UZH brief in `docs/challenge-source/CHALLENGE.md` and the HackApertus template at `7f23822`. Status is as of 13 October 2026 (second pass), on the B0/B2 MVP branch (review pass: [ORCA_TASK_LEDGER.md](ORCA_TASK_LEDGER.md)).
+These rules come from the pinned sources in [SOURCES.md](SOURCES.md): the UZH brief in `docs/challenge-source/CHALLENGE.md` and the HackApertus template at `7f23822`. Final-delivery status is as of 16 October 2026 on PR #44. Historical detail below is retained rather than rewritten.
 
 Legend: ✅ done and verified · 🟡 implemented, evidence pending · ⬜ not started · ⛔ blocked / owner decision
+
+## Final delivery status — 16 October
+
+| Deliverable | Status | Evidence |
+|---|---|---|
+| Documented deadline / eligibility | ⛔ BLOCKED | 16 Oct 12:00 CEST has passed; official page says no extensions; no extension or timely portal receipt found |
+| Frozen method | ✅ READY | Unchanged B2/C0; exact model, prompt, parser, projection and failure policy in [final execution package](FINAL_EXECUTION_PACKAGE_2026-10-16.md) |
+| Complete official-format predictions | ⛔ BLOCKED | Historical final run 88/168 parseable; fail-closed, so no prediction files |
+| Reproducible entry point | ✅ READY | Root Docker `make run MODE=final`; synthetic Docker E2E passed all 13 checks |
+| Prediction verification | ✅ READY | Status, file set, counts, order, IDs, hashes, exact schema, vector lengths and finite [0,1] values |
+| Technical report | 🟡 OWNER INPUT | Evidence updated; team name/members and licensing remain unresolved |
+| Honest measured results | ✅ READY | B0, B2/C1, B7/B8 and rejected paired verifier reported with coverage and limits |
+| Demo | ✅ READY | Offline authored source → comparison → evidence → human-review viewer; not benchmark validation |
+| Secrets/private material | ✅ READY | Raw source, prompts/responses, gold and audit annotations remain ignored/private |
+| Portal submission | ⛔ BLOCKED | No portal action authorized and no receipt present |
 
 ## Event and template
 

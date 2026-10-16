@@ -53,11 +53,44 @@
       "status": "plan-created",
       "evidence": "PR #44 is open draft at be482a9; worktree clean; exact current state inspected",
       "next": "read required evidence and audit critical path"
+    },
+    {
+      "time_local": "2026-10-16T14:18:27+02:00",
+      "status": "optional-experiment-settled",
+      "evidence": "24 calls; control 0.061483, treatment 0.058056, audit precision/recall both worse; verifier rejected",
+      "next": "freeze unchanged B2/C0 delivery and finish package"
+    },
+    {
+      "time_local": "2026-10-16T14:30:00+02:00",
+      "status": "delivery-checks-complete",
+      "evidence": "337 tests pass; synthetic Docker final path 13/13; final verifier hardened",
+      "next": "owner gate remains closed"
     }
   ],
-  "candidate": null,
-  "final_run_package": null,
-  "remaining_owner_decision": "pending readiness audit",
+  "candidate": {
+    "method": "unchanged B2/C0",
+    "method_code_commit": "e51a58cbb511eb9058f0235657e9cec61eb3cda4",
+    "status": "implemented but not complete on historical test execution",
+    "historical_final_coverage": "88/168 parseable; no prediction files",
+    "no_new_fallback": true
+  },
+  "final_run_package": {
+    "path": "track_2a/docs/FINAL_EXECUTION_PACKAGE_2026-10-16.md",
+    "request_count": "one per contract record; historical expected 168",
+    "estimate": "78.3 minutes linear local request latency; reserve 4.5 hours including verification/package/contingency",
+    "owner_gate": "closed",
+    "verification": "status, files, counts, order, IDs, hashes, schema, vector lengths and finite [0,1] values"
+  },
+  "integrity": {
+    "historical_final_meta_sha256": "d3deecc0fd3ae1d99be7b9ca94b514a8f8a36291184e7dc982372acb81ceb10a",
+    "historical_final_diagnostics_sha256": "89135b486fb9ad9a7de4d31a6fcdd12a5c36f00defcea6fa20b862033f3040b6",
+    "historical_final_run_summary_sha256": "7313fbc72ebe691cbfc07d570198c8be77ebaeff376807f8e66c44339cc71a90",
+    "b2_projection_checksums": "pass",
+    "b7_checksums": "pass",
+    "b8_checksums": "pass",
+    "b0_freeze_checksum_note": "expected source-file mismatch on later branch; private ledger absent here; rely on PR #40 exact-commit independent review"
+  },
+  "remaining_owner_decision": "provide authoritative extension/timely-submission evidence and, only if eligible, explicitly authorize one fail-closed final-test run plus provisional contract decisions",
   "worker_state": "three read-only Orca audits settled and released",
   "model_service_state": "experiment Apertus service stopped; port 11436 closed; Morrow unchanged on 11435"
 }

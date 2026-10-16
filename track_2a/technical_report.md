@@ -1,13 +1,22 @@
 # Technical report — Lost in Switzerland
 
-**Draft, 12 October 2026.** Method, setup and evaluation protocol are implemented and tested. The first measured Apertus run is committed: run `20261012T062327Z-ff965461` (HF job `6acc7ce1095c578089328f6d`), stored in [`results/20261012T062327Z-ff965461/`](results/20261012T062327Z-ff965461/results.md). It is a nine-document dev pilot; it is not a benchmark result.
+**Final-delivery candidate, updated 16 October 2026; BLOCKED.** Method, setup and evaluation protocol are implemented and tested, but no complete held-out prediction set exists and no submission-readiness claim is made. The documented deadline has passed without extension evidence. The first measured Apertus run remains committed as run `20261012T062327Z-ff965461` (HF job `6acc7ce1095c578089328f6d`), stored in [`results/20261012T062327Z-ff965461/`](results/20261012T062327Z-ff965461/results.md). It is a nine-document dev pilot; it is not a benchmark result.
 
 - **Track:** Track 2A — UZH: Detecting Cross-Lingual Semantic Differences in Swiss Government Websites (SwissGov-RSD)
 - **Event:** Online
 - **Team:** `team name` — `members` (owner to fill)
-- **Demo:** none yet (optional results viewer deferred)
+- **Demo:** offline authored source → comparison → evidence → human-review viewer at `live_government_pilot/v1/demo/viewer.html`; it is product demonstration evidence, not benchmark validation.
 
 ## 1. Summary
+
+Final delivery keeps the original B2/C0 method. Later evidence does not support
+a semantic-accuracy improvement: the larger PR #44 validation measured C1
+macro −0.01325 versus saved B0 0.00166, and the final paired-evidence verifier
+reduced its unchanged C1 control from 0.06148 to 0.05806 on 18 fixed dev cases.
+Only 6/18 generators were parseable in that verifier experiment. The historical
+held-out run likewise parsed 88/168 and emitted no prediction files. These are
+coverage and readiness failures, not scores to hide or repair. Full results and
+the frozen execution contract are in `docs/FINAL_EXECUTION_PACKAGE_2026-10-16.md`.
 
 SwissGov-RSD asks for a semantic-difference score for every token of an English government page and its German, French or Italian version. We compare two ways of using Apertus v1.5 8B on identical dev documents. **B0** reproduces the paper's prompted baseline: the model re-emits every token with a 0–5 similarity label. **B2** asks the model only for the passages whose meaning differs (verbatim excerpts, kind, severity 1–5). Deterministic code then locates those excerpts in the benchmark tokens and projects severities onto them. Uncovered tokens score 0.
 
