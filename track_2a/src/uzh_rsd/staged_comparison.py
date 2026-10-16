@@ -245,11 +245,15 @@ def runtime_identity(model_path: Path, server_binary: Path, base_url: str) -> di
         raise ValueError(f"unexpected installed model hash: {model_hash}")
     if server_hash != EXPECTED_SERVER_SHA256:
         raise ValueError(f"unexpected installed llama.cpp binary hash: {server_hash}")
+    if props.get("build_info") != "b1-7ab4ee7":
+        raise ValueError(f"unexpected endpoint build: {props.get('build_info')}")
+    defaults = props.get("default_generation_settings") or {}
     chat_template = props.get("chat_template", "")
     return {
         "model_sha256": model_hash, "model_size": model_path.stat().st_size,
         "server_binary_sha256": server_hash, "llama_cpp_commit": EXPECTED_LLAMA_CPP_COMMIT,
-        "endpoint_model_alias": props.get("model_alias"), "context_tokens": props.get("n_ctx"),
+        "endpoint_model_alias": props.get("model_alias"), "model_type": props.get("model_ftype"),
+        "context_tokens": defaults.get("n_ctx"), "slots": props.get("total_slots"),
         "chat_template_sha256": hashlib.sha256(str(chat_template).encode()).hexdigest(),
         "endpoint_props_sha256": digest(props),
     }
