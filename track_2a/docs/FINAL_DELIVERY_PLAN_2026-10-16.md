@@ -8,6 +8,18 @@ The documented official deadline is **16 October 2026 at 12:00 CEST**. At plan c
 
 No merge, deployment, portal submission, external message, Weavr dispatch, test-input access, or final-test inference is authorized by this plan. Existing submitted or frozen snapshots remain immutable. Work after a submission freeze is labelled post-submission or final-delivery preparation.
 
+**15:29 CEST owner update.** The owner subsequently authorized implementation,
+bounded development inference, and one gold-blind final prediction run only if
+the frozen development acceptance and runtime-feasibility checks pass. Portal
+submission, merge, deployment, external messages, Weavr dispatch and Need
+waivers remain forbidden. The official 12:00 deadline discrepancy remains
+unresolved; the 23:59 time is an owner working cutoff, not organiser evidence.
+
+The newly frozen candidate is `b2-windowed-v2`; its exact protocol and fixed
+six-document development acceptance manifest are under
+`experiments/final-long-input-20261016/`. This does not reopen the 489-document
+Gate A run.
+
 ## Critical-path order
 
 1. Inspect current PR #44 state, applicable instructions, current `main`, fresh Observatory evidence, PR #40 baseline evidence, B7/B8 results, judge contract, submission checklist, technical report, private artifact integrity, runtime ownership, and available compute.
@@ -48,4 +60,3 @@ The verifier may replace its unchanged control only if the frozen acceptance rul
 ## Completion definition
 
 Final-delivery preparation is complete when the adjacent ledger names the exact candidate commit and PR, the frozen method and command, successful clean-checkout/synthetic/integrity checks, all remaining blockers, the optional-experiment decision, a bounded runtime estimate, the smallest required owner decision, and settled worker/model-service state. Gate A stays closed unless separately and explicitly authorized.
-

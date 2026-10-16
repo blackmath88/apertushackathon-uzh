@@ -13,8 +13,8 @@
   },
   "gates": {
     "gate_a": "closed",
-    "test_input_access": "not authorized",
-    "final_test_inference": "not authorized",
+    "test_input_access": "authorized only after frozen dev acceptance, for mechanical validation of existing gold-free final input",
+    "final_test_inference": "one run authorized only after frozen dev acceptance and feasible measured estimate",
     "merge_deploy_submit_message_weavr": "not authorized"
   },
   "preservation": {
@@ -65,12 +65,21 @@
       "status": "delivery-checks-complete",
       "evidence": "337 tests pass; synthetic Docker final path 13/13; final verifier hardened",
       "next": "owner gate remains closed"
+    },
+    {
+      "time_local": "2026-10-16T15:36:21+02:00",
+      "status": "long-input-protocol-frozen-pre-inference",
+      "evidence": "isolated Orca worktree base 5c7d06c; b2-windowed-v2 code, 320/32 window policy, exact maps, fail-closed merge, fixed 6-document gold-blind manifest and 39-request plan; 336 repository tests pass with 14 pre-existing capability skips",
+      "next": "commit freeze, verify exclusive GPU ownership, then execute the 39-request dev acceptance only"
     }
   ],
   "candidate": {
-    "method": "unchanged B2/C0",
-    "method_code_commit": "e51a58cbb511eb9058f0235657e9cec61eb3cda4",
-    "status": "implemented but not complete on historical test execution",
+    "method": "b2-windowed-v2",
+    "method_code_commit": "pending pre-inference freeze commit",
+    "status": "implemented and synthetically verified; development acceptance not yet executed",
+    "frozen_protocol": "track_2a/experiments/final-long-input-20261016/PROTOCOL.md",
+    "acceptance_manifest_sha256": "a961d3def7b1cfa66558884b2477aa2a630a29cc8fd20e1a417466010bb8cfe3",
+    "acceptance_request_count": 39,
     "historical_final_coverage": "88/168 parseable; no prediction files",
     "no_new_fallback": true
   },
@@ -90,7 +99,7 @@
     "b8_checksums": "pass",
     "b0_freeze_checksum_note": "expected source-file mismatch on later branch; private ledger absent here; rely on PR #40 exact-commit independent review"
   },
-  "remaining_owner_decision": "provide authoritative extension/timely-submission evidence and, only if eligible, explicitly authorize one fail-closed final-test run plus provisional contract decisions",
-  "worker_state": "three read-only Orca audits settled and released",
+  "remaining_owner_decision": "portal eligibility/extension remains unresolved; one gold-blind final prediction run is owner-authorized only if frozen dev acceptance and the measured fit check pass",
+  "worker_state": "prior three audits plus one long-input design audit settled and released",
   "model_service_state": "experiment Apertus service stopped; port 11436 closed; Morrow unchanged on 11435"
 }

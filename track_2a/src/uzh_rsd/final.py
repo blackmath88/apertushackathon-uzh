@@ -201,17 +201,37 @@ def _write_meta(out_dir: Path, meta: Mapping) -> None:
 
 
 def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence[InferenceInput], input_bytes: bytes,
-              out_dir: Path, *, run_id: str, invocation: str, model: Mapping, after_call=None, extra_meta: Mapping | None = None) -> tuple[dict, int]:
+              out_dir: Path, *, run_id: str, invocation: str, model: Mapping, method: str = "b2",
+              total_timeout_s: float | None = None, clock=None, after_call=None,
+              extra_meta: Mapping | None = None) -> tuple[dict, int]:
+    if method not in {"b2", "b2-windowed-v2"}:
+        raise ValueError(f"unsupported final method {method!r}")
+    if method == "b2-windowed-v2":
+        from .windowed_b2 import (MAX_NEW_TOKENS as WINDOWED_MAX_NEW_TOKENS,
+                                  METHOD_VERSION, PROMPT_VERSION, WINDOW_OVERLAP,
+                                  WINDOW_TOKENS)
+        strategy = {
+            "method": METHOD_VERSION, "prompt_version": PROMPT_VERSION,
+            "segmentation": {"unit": "official whitespace tokens", "window_tokens": WINDOW_TOKENS,
+                             "overlap_tokens": WINDOW_OVERLAP, "sentence_boundary_preferred": True},
+            "alignment": "bidirectional deterministic best match; shared structural anchors dominate proportional fallback; crossings allowed",
+            "projection": "local B2 max-severity scores mapped by exact original token index; overlaps merged by max",
+            "completion": "all planned calls valid and every token processed; explicit empty differences is processed zero; failures are never filled",
+            "excerpt_cap_tokens": B2_MAX_EXCERPT_TOKENS, "max_new_tokens": WINDOWED_MAX_NEW_TOKENS,
+            "decoding": "greedy (temperature 0), one attempt per window, no retries",
+        }
+    else:
+        strategy = {"method": "b2", "prompt_version": B2_PROMPT_VERSION, "parser": "uzh_rsd.methods.parse_b2",
+                    "projection": "uzh_rsd.projection.project_differences (max severity per token, difference = severity/5)",
+                    "excerpt_cap_tokens": B2_MAX_EXCERPT_TOKENS, "max_new_tokens": MAX_NEW_TOKENS["b2"],
+                    "decoding": "greedy (temperature 0), one attempt per call, no retries"}
     out_dir.mkdir(parents=True, exist_ok=False)
     meta = {
         "schema": META_SCHEMA,
         "status": "incomplete",
         "run_id": run_id,
         "note": "Final inference only: no labels, no scores, no evaluator.",
-        "strategy": {"method": "b2", "prompt_version": B2_PROMPT_VERSION, "parser": "uzh_rsd.methods.parse_b2",
-                     "projection": "uzh_rsd.projection.project_differences (max severity per token, difference = severity/5)",
-                     "excerpt_cap_tokens": B2_MAX_EXCERPT_TOKENS, "max_new_tokens": MAX_NEW_TOKENS["b2"],
-                     "decoding": "greedy (temperature 0), one attempt per call, no retries"},
+        "strategy": strategy,
         "model": dict(model),
         "backend": backend.describe(),
         "source": _source_commit(),
@@ -230,6 +250,10 @@ def run_final(backend, contract: Mapping, contract_bytes: bytes, items: Sequence
     }
     _write_meta(out_dir, meta)
     try:
+        if method == "b2-windowed-v2":
+            import time
+            deadline = None if total_timeout_s is None else (clock or time.monotonic)() + total_timeout_s
+            return _execute_windowed(backend, items, out_dir, run_id, meta, deadline, clock, after_call)
         return _execute(backend, items, out_dir, run_id, meta, after_call)
     except BaseException as error:
         # Any exception or interrupt before the final metadata commit leaves the run
@@ -297,6 +321,58 @@ def _execute(backend, items: Sequence[InferenceInput], out_dir: Path, run_id: st
     # An interruption here leaves predictions/ present with an "incomplete" meta;
     # verify_run() rejects that state.
     _write_meta(out_dir, {**meta, "status": "complete", "prediction_files": files})
+    return {"status": "complete", "out_dir": str(out_dir), "prediction_files": files, "counts": counts}, EXIT_OK
+
+
+def _write_predictions(items: Sequence[InferenceInput], predictions: Mapping[str, tuple[Sequence[float], Sequence[float]]],
+                       out_dir: Path, meta: dict) -> dict:
+    target = out_dir / "predictions.partial"
+    target.mkdir()
+    files = {}
+    for language in LANGUAGES:
+        lines = [json.dumps({"id": item.id, "text_a": item.text_a.text, "text_b": item.text_b.text,
+                             "labels_a": predictions[item.id][0], "labels_b": predictions[item.id][1]}, ensure_ascii=False)
+                 for item in items if item.language == language]
+        if lines:
+            path = target / f"predictions_{language}.jsonl"
+            path.write_text("".join(line + "\n" for line in lines), encoding="utf-8")
+            files[path.name] = {"records": len(lines), "sha256": _sha256(path.read_bytes())}
+    target.rename(out_dir / "predictions")
+    _write_meta(out_dir, {**meta, "status": "complete", "prediction_files": files})
+    return files
+
+
+def _execute_windowed(backend, items: Sequence[InferenceInput], out_dir: Path, run_id: str, meta: dict,
+                      deadline: float | None, clock=None, after_call=None) -> tuple[dict, int]:
+    import time
+    from .windowed_b2 import execute_document
+
+    ledger = out_dir / "window-ledger.jsonl"
+    predictions: dict[str, tuple[Sequence[float], Sequence[float]]] = {}
+    documents, problems = [], []
+    counts = {"documents": len(items), "complete_documents": 0, "planned_requests": 0,
+              "completed_requests": 0, "call_failed_or_invalid": 0}
+    for item in items:
+        result = execute_document(backend, item, ledger, run_id=run_id, total_deadline=deadline,
+                                  clock=clock or time.monotonic, after_call=after_call)
+        counts["planned_requests"] += result["planned_requests"]
+        counts["completed_requests"] += result["completed_requests"]
+        counts["call_failed_or_invalid"] += len(result["problems"])
+        document = {key: value for key, value in result.items() if key not in {"labels_a", "labels_b"}}
+        documents.append(document)
+        if result["status"] != "complete":
+            problems.extend(f"{item.id}:{problem}" for problem in result["problems"])
+            continue
+        validate_prediction(item, result["labels_a"], result["labels_b"])
+        predictions[item.id] = (result["labels_a"], result["labels_b"])
+        counts["complete_documents"] += 1
+    (out_dir / "diagnostics.json").write_text(json.dumps({"counts": counts, "documents": documents}, indent=2,
+                                                           ensure_ascii=False) + "\n", encoding="utf-8")
+    meta.update(counts=counts, problems=problems, finished_utc=_now())
+    if problems:
+        _write_meta(out_dir, meta)
+        return {"status": "incomplete", "out_dir": str(out_dir), "problems": problems[:20], "counts": counts}, EXIT_INCOMPLETE
+    files = _write_predictions(items, predictions, out_dir, meta)
     return {"status": "complete", "out_dir": str(out_dir), "prediction_files": files, "counts": counts}, EXIT_OK
 
 
@@ -378,6 +454,10 @@ def main(argv: list[str] | None = None, *, backend_factory=None, after_call=None
     parser.add_argument("--input", type=Path, help="gold-blind input JSONL: id, language, text_a, text_b")
     parser.add_argument("--out", type=Path, help="new run directory (must not exist)")
     parser.add_argument("--timeout-s", type=float, default=300.0, help="per-request timeout; one attempt per call")
+    parser.add_argument("--total-timeout-s", type=float, default=None,
+                        help="optional total inference wall-clock ceiling; checked before each request")
+    parser.add_argument("--method", choices=("b2", "b2-windowed-v2"), default="b2",
+                        help="preserved original B2 or bounded long-input candidate")
     parser.add_argument("--model-revision", default=None, help="declared model revision, recorded as declared (not verified)")
     args = parser.parse_args(argv)
 
@@ -401,6 +481,8 @@ def main(argv: list[str] | None = None, *, backend_factory=None, after_call=None
             raise FinalBlocked(f"missing environment variables: {missing}")
         if args.timeout_s <= 0:
             raise FinalBlocked("--timeout-s must be positive")
+        if args.total_timeout_s is not None and args.total_timeout_s <= 0:
+            raise FinalBlocked("--total-timeout-s must be positive")
         out_dir = check_output_dir(args.out)
     except FinalBlocked as error:
         return emit({"status": "BLOCKED", "reason": str(error)}, EXIT_BLOCKED)
@@ -432,7 +514,8 @@ def main(argv: list[str] | None = None, *, backend_factory=None, after_call=None
     invocation = "python -m uzh_rsd.final " + " ".join(argv if argv is not None else sys.argv[1:])
     try:
         result, code = run_final(backend, contract, contract_bytes, items, input_bytes, out_dir, run_id=run_id, invocation=invocation,
-                                 model=model, after_call=after_call, extra_meta=extra_meta)
+                                 model=model, method=args.method, total_timeout_s=args.total_timeout_s,
+                                 after_call=after_call, extra_meta=extra_meta)
     except KeyboardInterrupt:
         return emit({"status": "interrupted", "out_dir": str(out_dir), "note": "final_meta.json marked incomplete"}, EXIT_INTERRUPTED)
     return emit(result, code)

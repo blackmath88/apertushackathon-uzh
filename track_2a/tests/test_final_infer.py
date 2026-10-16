@@ -186,6 +186,16 @@ class InputBoundaryTests(FinalTestCase):
 
 
 class ExecutionTests(FinalTestCase):
+    def test_windowed_v2_runs_through_final_contract_and_records_completion_policy(self):
+        backend = FakeBackend()
+        code, result = self.run_main("--method", "b2-windowed-v2", backend=backend)
+        self.assertEqual((code, result["status"]), (final.EXIT_OK, "complete"))
+        meta = json.loads((self.out / "final_meta.json").read_text())
+        self.assertEqual(meta["strategy"]["method"], "b2-windowed-v2")
+        self.assertIn("explicit empty differences", meta["strategy"]["completion"])
+        self.assertEqual(meta["counts"]["complete_documents"], len(DOCS))
+        self.assertTrue((self.out / "window-ledger.jsonl").exists())
+
     def test_valid_run_preserves_contract_order_and_records_provenance(self):
         backend = FakeBackend()
         code, result = self.run_main(backend=backend)
