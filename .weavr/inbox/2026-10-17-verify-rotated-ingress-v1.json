@@ -1,0 +1,8 @@
+{
+  "schema": "weavr.github-command/v0",
+  "id": "2026-10-17-verify-apertus-rotated-ingress-v1",
+  "kind": "refresh_observstory",
+  "payload": {
+    "projectId": "blackmath88-apertushackathon-uzh"
+  }
+}
