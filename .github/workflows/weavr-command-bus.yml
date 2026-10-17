@@ -5,8 +5,6 @@ on:
     paths:
       - ".weavr/inbox/*.json"
   workflow_dispatch:
-  schedule:
-    - cron: "*/5 * * * *"
 
 permissions:
   contents: read
@@ -23,6 +21,8 @@ jobs:
       - name: Forward Weavr commands
         env:
           WEAVR_INGRESS_TOKEN: ${{ secrets.WEAVR_GITHUB_INGRESS_TOKEN }}
+          WEAVR_CF_ACCESS_CLIENT_ID: ${{ secrets.WEAVR_CF_ACCESS_CLIENT_ID }}
+          WEAVR_CF_ACCESS_CLIENT_SECRET: ${{ secrets.WEAVR_CF_ACCESS_CLIENT_SECRET }}
           WEAVR_INGRESS_URL: https://weavr-control.imbodi55.workers.dev/api/github/commands
         shell: bash
         run: |
@@ -47,6 +47,10 @@ jobs:
             echo "Missing repository secret WEAVR_GITHUB_INGRESS_TOKEN" >&2
             exit 1
           fi
+          if [[ -z "${WEAVR_CF_ACCESS_CLIENT_ID:-}" || -z "${WEAVR_CF_ACCESS_CLIENT_SECRET:-}" ]]; then
+            echo "Missing Cloudflare Access service credentials" >&2
+            exit 1
+          fi
 
           for file in "${files[@]}"; do
             file="${file#./}"
@@ -68,12 +72,23 @@ jobs:
                 }
               }' "$file" > /tmp/weavr-command.json
 
-            curl --fail-with-body --silent --show-error \
+            response_file="$(mktemp)"
+            status="$(curl --silent --show-error \
               --request POST \
               --header "Authorization: Bearer $WEAVR_INGRESS_TOKEN" \
+              --header "CF-Access-Client-Id: $WEAVR_CF_ACCESS_CLIENT_ID" \
+              --header "CF-Access-Client-Secret: $WEAVR_CF_ACCESS_CLIENT_SECRET" \
               --header "Content-Type: application/json" \
               --data-binary @/tmp/weavr-command.json \
-              "$WEAVR_INGRESS_URL"
+              --output "$response_file" \
+              --write-out "%{http_code}" \
+              "$WEAVR_INGRESS_URL")"
 
+            cat "$response_file"
             echo
+            if [[ ! "$status" =~ ^2 ]]; then
+              echo "Weavr command delivery failed with HTTP $status" >&2
+              exit 1
+            fi
+
           done
