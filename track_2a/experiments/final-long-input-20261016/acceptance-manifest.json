@@ -1,0 +1,26 @@
+{
+  "acceptance": {
+    "context": "max(prompt_tokens + 1024) <= 8192 when endpoint usage is available",
+    "documents_complete": "6/6",
+    "official_tokens_processed": "all",
+    "replay": "offline replay vectors byte-equivalent to generated vectors",
+    "responses": "no call failure, length finish, malformed JSON, invalid evidence, or unlocated non-empty excerpt",
+    "semantics": "official per-language and macro Spearman measured and disclosed; not a promotion gate",
+    "vector_contract": "exact lengths; finite [0,1]"
+  },
+  "entries": [
+    {"id":"admin_de_174","language":"de","original_order":132,"pair":"en-de","selection_role":"longest_group","text_a_sha256":"e47cb3c609a45c771b81529bca2b5818321eeeec10158a7490e7014da8b8ca72","text_b_sha256":"35e1d25dd353ec95fff7095964460334504eb7bac2ec93e8c503f19306376413","token_count_a":1717,"token_count_b":1565},
+    {"id":"admin_fr_174","language":"fr","original_order":132,"pair":"en-fr","selection_role":"longest_group","text_a_sha256":"e47cb3c609a45c771b81529bca2b5818321eeeec10158a7490e7014da8b8ca72","text_b_sha256":"a989b4079a38edcbf7e6b41663c76f57d388e7b530b497dd1bc388c06f86c374","token_count_a":1717,"token_count_b":1993},
+    {"id":"admin_it_174","language":"it","original_order":132,"pair":"en-it","selection_role":"longest_group","text_a_sha256":"e47cb3c609a45c771b81529bca2b5818321eeeec10158a7490e7014da8b8ca72","text_b_sha256":"ab6b5b9a593f62d7e845197815332adf9d8237110269eaba5847ed33380d91fe","token_count_a":1717,"token_count_b":1877},
+    {"id":"admin_de_127","language":"de","original_order":95,"pair":"en-de","selection_role":"asymmetric_long_group","text_a_sha256":"61fc1f695d139c94190f7c6e9a8ef61ed564b0f1716fc789c8725b18429b4f57","text_b_sha256":"bf0f45dba3662a913d6b2d0820cfd9a9abb72122a608fc28798c106ddbc72aa5","token_count_a":201,"token_count_b":656},
+    {"id":"admin_fr_127","language":"fr","original_order":95,"pair":"en-fr","selection_role":"asymmetric_long_group","text_a_sha256":"61fc1f695d139c94190f7c6e9a8ef61ed564b0f1716fc789c8725b18429b4f57","text_b_sha256":"284be064fe04ea2d26672ee7e81d46a3bd7e669b204334c295a4b1b6177c095e","token_count_a":201,"token_count_b":1031},
+    {"id":"admin_it_127","language":"it","original_order":95,"pair":"en-it","selection_role":"asymmetric_long_group","text_a_sha256":"61fc1f695d139c94190f7c6e9a8ef61ed564b0f1716fc789c8725b18429b4f57","text_b_sha256":"b900126d31114d17c4a4bbfaa79738b6890c5e4f8b5d9ce45a369aaea3425a5f","token_count_a":201,"token_count_b":930}
+  ],
+  "manifest_sha256": "a961d3def7b1cfa66558884b2477aa2a630a29cc8fd20e1a417466010bb8cfe3",
+  "method": "b2-windowed-v2",
+  "private_inference_sha256": {"de":"f7bbe89a8675a18e9ed037d412b7a012451513b0e5b89551dac3fa24bf0e6561","fr":"5a60c1aeb7c86353c9bf23e2550730bc10916cf03a275ab780614d6794bfae63","it":"a5a11aa2d0ff1c519c1f68e99819eab5873527265e7db80d3ecd397af1848a0e"},
+  "schema": "uzh-rsd.long-input-acceptance/v1",
+  "selection": "gold-blind: all-language group with maximum total length, plus highest side-ratio group among remaining groups at or above median total length",
+  "source_manifest_sha256": "053d2ac8cf0714ba1ad1d909eb437dff1e99a5958673ac4e89bd740afa699551",
+  "split": "dev"
+}

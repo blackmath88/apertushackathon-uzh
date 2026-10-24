@@ -1,0 +1,54 @@
+{
+  "schema": "uzh-rsd.long-input-delivery-result/v1",
+  "method": "b2-windowed-v2",
+  "freeze_commit": "70fc85ef973f9fa82f6b15207a4b4f4cb038ed29",
+  "acceptance_manifest_sha256": "a961d3def7b1cfa66558884b2477aa2a630a29cc8fd20e1a417466010bb8cfe3",
+  "accepted": false,
+  "final_run": "not_started",
+  "development": {
+    "documents": 6,
+    "languages": {"de": 2, "fr": 2, "it": 2},
+    "planned_requests": 39,
+    "returned_requests": 39,
+    "transport_failures": 0,
+    "strict_valid_requests": 0,
+    "truncated_requests": 5,
+    "invalid_evidence_requests": 34,
+    "strict_complete_documents": 0,
+    "strict_prediction_records": 0,
+    "wall_s": 952.878,
+    "request_latency_s": {"total": 952.385, "median": 24.535, "max": 31.783},
+    "tokens": {"prompt_total": 44252, "prompt_max": 1320, "completion_total": 31128, "completion_max": 1024},
+    "context_plus_reserved_output_max": 2344,
+    "parser_diagnostics": {"items": 160, "projected": 80, "spans_not_found": 17, "spans_too_long": 146, "unknown_kind": 1},
+    "permissive_legacy_parser_usable_documents": 2,
+    "diagnostic_scores": {
+      "usable_only": {"de": -0.4987673276583203, "fr": 0.18464933786372756, "it": null, "macro": null},
+      "zero_fallback_sensitivity": {"de": -0.018194357506737292, "fr": 0.07997281065732673, "it": -0.04835653307685458, "macro": 0.0044739733579116266},
+      "warning": "post-generation dev diagnostic only; permissive parsing and zero-filled failed windows are not candidate predictions"
+    }
+  },
+  "estimate": {
+    "basis": "959 deterministic requests across all 489 gold-free dev inputs; scaled to the historical 168-document final count without accessing final inputs",
+    "estimated_final_requests": 330,
+    "median_latency_inference_minutes": 134.73,
+    "max_observed_latency_inference_minutes": 174.53,
+    "with_30_minute_verification_minutes": {"median_basis": 164.73, "conservative_max_basis": 204.53},
+    "decision": "do not launch: acceptance failed and conservative run plus verification does not fit the remaining three-hour envelope"
+  },
+  "private_evidence": {
+    "run_id": "final-long-input-dev-v1-70fc85e",
+    "ledger_sha256": "a14bbd6b25303fa5e217af2dfe9b7ee4220d0dc2c6744d1d7603254f9e4c3435",
+    "inference_summary_sha256": "7fc88810ca9196791246eff7f805c70ce7a36a0a222a209b5d7b22e7841ab91b",
+    "diagnostic_score_summary_sha256": "405978b48f2dd0a9efb9056bc8c02ed0ef0e006045002dadae32685e36642dde"
+  },
+  "runtime": {
+    "gguf_sha256": "dea904ad80cd725ec89962abae464477f5d8114d1f4377514f381f7dc2ed202d",
+    "quantization": "Q8_0",
+    "llama_cpp_revision": "7ab4ee7baad2d920464cbacfad4f4b07cf111fd2",
+    "llama_server_sha256": "d0538ae0a50a97ede6c4fece9054ed8d3b891a82e230a1defe810249ee7b93f1",
+    "context_tokens": 8192,
+    "parallel": 1,
+    "device": "SYCL0"
+  }
+}

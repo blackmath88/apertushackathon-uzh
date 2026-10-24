@@ -1,0 +1,93 @@
+{
+  "accepted": false,
+  "audit": {
+    "control_precision": 0.21428571428571427,
+    "control_recall": 1.0,
+    "fn": 1,
+    "fp": 9,
+    "precision": 0.18181818181818182,
+    "recall": 0.6666666666666666,
+    "tn": 2,
+    "tp": 2,
+    "uncertain": 0
+  },
+  "bootstrap": {
+    "ci95": [
+      -0.016852907489412594,
+      0.014307762538867702
+    ],
+    "defined": 1828,
+    "replicates": 2000,
+    "seed": 0,
+    "undefined": 172
+  },
+  "control": {
+    "macro": 0.0614828432243805,
+    "per_language": {
+      "de": {
+        "documents": 6,
+        "positions": 4868,
+        "spearman": 0.0751066075775595,
+        "undefined_reason": null
+      },
+      "fr": {
+        "documents": 6,
+        "positions": 5529,
+        "spearman": 0.05201728975025898,
+        "undefined_reason": null
+      },
+      "it": {
+        "documents": 6,
+        "positions": 5282,
+        "spearman": 0.05732463234532304,
+        "undefined_reason": null
+      }
+    },
+    "undefined_reason": null
+  },
+  "cost": {
+    "calls": 24,
+    "completion_tokens": 14263,
+    "latency_median_s": 23.04,
+    "latency_p95_s": 41.672,
+    "latency_sum_s": 510.525,
+    "prompt_tokens": 38581
+  },
+  "coverage": {
+    "generator_unparseable": 12,
+    "kept_items": 17,
+    "proposed_items": 25,
+    "usable_documents": 6,
+    "verifier_invalid": 0,
+    "verifier_valid": 6
+  },
+  "decision": "reject",
+  "ledger_sha256": "3c55347f6c6ac1680b004c95f18e29aca46e9a0dc4d564a8578e8dfbcf6a2020",
+  "macro_delta": -0.003427252475764399,
+  "predictions_sha256": "3bb12c526b074deafa74fef25b7ea65ce850a99a27a40cb3640056c7f8ec913e",
+  "schema": "uzh-rsd.paired-verifier/v1",
+  "treatment": {
+    "macro": 0.058055590748616104,
+    "per_language": {
+      "de": {
+        "documents": 6,
+        "positions": 4868,
+        "spearman": 0.0833849040753793,
+        "undefined_reason": null
+      },
+      "fr": {
+        "documents": 6,
+        "positions": 5529,
+        "spearman": 0.01104717148970744,
+        "undefined_reason": null
+      },
+      "it": {
+        "documents": 6,
+        "positions": 5282,
+        "spearman": 0.07973469668076158,
+        "undefined_reason": null
+      }
+    },
+    "undefined_reason": null
+  }
+}

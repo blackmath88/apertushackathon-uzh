@@ -1,0 +1,6 @@
+{
+  "exploration_summary_sha256": "a8a9bd12840ffc9065410cdccb658687beacd8ae97e2edcfc08459612193ee0a",
+  "frozen_before_validation": true,
+  "rule": "coverage >= C0; highest all-subset macro; within 0.01 lower uncached inference time",
+  "selected": "C1"
+}

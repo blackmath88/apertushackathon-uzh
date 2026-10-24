@@ -1,0 +1,31 @@
+{
+  "schema": "uzh-rsd.nebu-staged-error-analysis-classification/v1",
+  "classification_unit": "document; multiple categories are allowed",
+  "categories": {
+    "1": "output truncated or malformed",
+    "2": "model judgement wrong or unsupported",
+    "3": "correct difference, but excerpt cannot be located",
+    "4": "correct evidence, but token projection loses precision",
+    "5": "scoring or token-order implementation defect"
+  },
+  "cases": {
+    "admin_de_27": {"labels": ["2"], "confidence": "high", "rationale": "The response treats two faithful translated paragraphs as changes and misses the only annotated target-side footer addition."},
+    "admin_fr_27": {"labels": ["2", "4"], "confidence": "high", "rationale": "The response overstates paragraph-level change; where the first paragraph contains annotated evidence, whole-paragraph projection marks substantially more tokens than the evidence."},
+    "admin_it_27": {"labels": ["2", "4"], "confidence": "high", "rationale": "The response marks faithful translated prose and navigation text, while its broad excerpts dilute the genuine localized differences."},
+    "admin_de_52": {"labels": ["2", "4"], "confidence": "high", "rationale": "The response finds the year and link-area changes but omits several annotated content differences and projects each finding over a larger phrase than necessary."},
+    "admin_fr_52": {"labels": ["2", "4"], "confidence": "high", "rationale": "Most proposed changes are faithful translations; genuine title/date/file-metadata evidence is embedded in sentence-sized excerpts and projected too broadly."},
+    "admin_it_52": {"labels": ["2", "3", "4"], "confidence": "high", "rationale": "The omitted teaching-material block is real, but one correct source excerpt exceeds the frozen locator cap; another item pairs that omission with unrelated target text, and the located evidence is overly broad."},
+    "admin_de_197": {"labels": ["2"], "confidence": "high", "rationale": "The response mostly flags faithful biography translations and misses the localized annotated changes."},
+    "admin_fr_197": {"labels": ["1", "2", "4"], "confidence": "high", "rationale": "One item violates the severity contract with severity zero, several faithful translations are called changes, and genuine date/role evidence is projected over long sentences."},
+    "admin_it_197": {"labels": ["2", "4"], "confidence": "high", "rationale": "The response includes genuine date-boundary evidence but also treats faithful translated career statements as changes and uses sentence-wide spans."},
+    "admin_de_85": {"labels": ["2"], "confidence": "high", "rationale": "The response treats reordered or faithful career-history translations as omissions or changes and does not isolate the annotated differences."},
+    "admin_fr_85": {"labels": ["2", "4"], "confidence": "high", "rationale": "Most career statements are faithful translations; the real last-modification change is found but projected over the full metadata phrase."},
+    "admin_it_85": {"labels": ["1"], "confidence": "high", "rationale": "Generation reached the 1024-token cap and ended inside a JSON string, so the document is unparseable."},
+    "admin_de_102": {"labels": ["1"], "confidence": "high", "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."},
+    "admin_fr_102": {"labels": ["1"], "confidence": "high", "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."},
+    "admin_it_102": {"labels": ["1"], "confidence": "high", "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."},
+    "admin_de_29": {"labels": ["1"], "confidence": "high", "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."},
+    "admin_fr_29": {"labels": ["1"], "confidence": "high", "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."},
+    "admin_it_29": {"labels": ["1"], "confidence": "high", "rationale": "Generation reached the 1024-token cap and the saved response is not a complete JSON object."}
+  }
+}

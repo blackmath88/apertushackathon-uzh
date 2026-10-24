@@ -1,0 +1,133 @@
+{
+  "cases": [
+    {
+      "group_key": "18ab4cc39a4578211d2d789bad6e9bf7f74ea66575a910a3f58f5d7928682254",
+      "id": "admin_de_27",
+      "language": "de",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "short"
+    },
+    {
+      "group_key": "18ab4cc39a4578211d2d789bad6e9bf7f74ea66575a910a3f58f5d7928682254",
+      "id": "admin_fr_27",
+      "language": "fr",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "short"
+    },
+    {
+      "group_key": "18ab4cc39a4578211d2d789bad6e9bf7f74ea66575a910a3f58f5d7928682254",
+      "id": "admin_it_27",
+      "language": "it",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "short"
+    },
+    {
+      "group_key": "2862c33555ba215c0dadc96e629816c53ad4ad71a478645dc34b08581f4a21b5",
+      "id": "admin_de_52",
+      "language": "de",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "short"
+    },
+    {
+      "group_key": "2862c33555ba215c0dadc96e629816c53ad4ad71a478645dc34b08581f4a21b5",
+      "id": "admin_fr_52",
+      "language": "fr",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "short"
+    },
+    {
+      "group_key": "2862c33555ba215c0dadc96e629816c53ad4ad71a478645dc34b08581f4a21b5",
+      "id": "admin_it_52",
+      "language": "it",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "short"
+    },
+    {
+      "group_key": "b901c23a809d95769c4c921f054061c351cb7ab07aed9501d367e45197183f0f",
+      "id": "admin_de_197",
+      "language": "de",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "medium"
+    },
+    {
+      "group_key": "b901c23a809d95769c4c921f054061c351cb7ab07aed9501d367e45197183f0f",
+      "id": "admin_fr_197",
+      "language": "fr",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "medium"
+    },
+    {
+      "group_key": "b901c23a809d95769c4c921f054061c351cb7ab07aed9501d367e45197183f0f",
+      "id": "admin_it_197",
+      "language": "it",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "medium"
+    },
+    {
+      "group_key": "5eb5f4e3e10babd863dea7d42abeec7bc3d6c1341a4b806f34cbbe47a48b8389",
+      "id": "admin_de_85",
+      "language": "de",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "medium"
+    },
+    {
+      "group_key": "5eb5f4e3e10babd863dea7d42abeec7bc3d6c1341a4b806f34cbbe47a48b8389",
+      "id": "admin_fr_85",
+      "language": "fr",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "medium"
+    },
+    {
+      "group_key": "5eb5f4e3e10babd863dea7d42abeec7bc3d6c1341a4b806f34cbbe47a48b8389",
+      "id": "admin_it_85",
+      "language": "it",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "medium"
+    },
+    {
+      "group_key": "ec8f26e4b96b65adf71bcbb5df24a84bb8cec7c06c4aa16dff5344fa028fa6cb",
+      "id": "admin_de_102",
+      "language": "de",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "long"
+    },
+    {
+      "group_key": "ec8f26e4b96b65adf71bcbb5df24a84bb8cec7c06c4aa16dff5344fa028fa6cb",
+      "id": "admin_fr_102",
+      "language": "fr",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "long"
+    },
+    {
+      "group_key": "ec8f26e4b96b65adf71bcbb5df24a84bb8cec7c06c4aa16dff5344fa028fa6cb",
+      "id": "admin_it_102",
+      "language": "it",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "long"
+    },
+    {
+      "group_key": "9adcc0037acee30964ea4640cd27247345b0424f64854ac641fe0e170d0955a6",
+      "id": "admin_de_29",
+      "language": "de",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "long"
+    },
+    {
+      "group_key": "9adcc0037acee30964ea4640cd27247345b0424f64854ac641fe0e170d0955a6",
+      "id": "admin_fr_29",
+      "language": "fr",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "long"
+    },
+    {
+      "group_key": "9adcc0037acee30964ea4640cd27247345b0424f64854ac641fe0e170d0955a6",
+      "id": "admin_it_29",
+      "language": "it",
+      "status": "exposed by post-hoc error analysis; never again eligible as untouched validation",
+      "stratum": "long"
+    }
+  ],
+  "groups_per_stratum": 2,
+  "schema": "uzh-rsd.nebu-staged-error-analysis/v1",
+  "selection_rule": "first two already-frozen validation_execution source groups in each short/medium/long stratum; no outcomes or gold used"
+}

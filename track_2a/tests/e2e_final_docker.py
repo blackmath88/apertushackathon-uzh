@@ -80,25 +80,31 @@ def main() -> int:
                      decisions={"full_set_order": "synthetic", "dropped_ids": "synthetic", "output_layout": "per_language_jsonl"})
     (work / "contract.synthetic.json").write_text(json.dumps(confirmed, indent=2))
 
+    # Docker Desktop uses host.docker.internal. Linux uses host networking so
+    # this loopback-only synthetic server never has to be exposed externally.
     server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Mock)
     threading.Thread(target=server.serve_forever, daemon=True).start()
-    run_env = {**os.environ, "LLM_NAME": "mock-apertus", "LLM_BASE_URL": f"http://host.docker.internal:{server.server_port}/v1",
+    linux = sys.platform.startswith("linux")
+    endpoint_host = "127.0.0.1" if linux else "host.docker.internal"
+    run_env = {**os.environ, "LLM_NAME": "mock-apertus", "LLM_BASE_URL": f"http://{endpoint_host}:{server.server_port}/v1",
                "LLM_API_KEY": "e2e-dummy-key"}
+    docker_args = {"FINAL_DOCKER_ARGS": "--network host"} if linux else {}
     out_dir = work / "out"
     checks = {}
     try:
         blocked = make_run(run_env, FINAL_CONTRACT=work / "prepared" / "contract.draft.json", FINAL_INPUT=work / "prepared" / "final_input.jsonl",
-                           FINAL_OUT_DIR=out_dir, FINAL_RUN_ID="should-not-exist")
+                           FINAL_OUT_DIR=out_dir, FINAL_RUN_ID="should-not-exist", **docker_args)
         checks["unresolved_draft_blocked_in_docker"] = blocked.returncode != 0 and '"BLOCKED"' in blocked.stdout \
             and not (out_dir / "should-not-exist").exists() and not Mock.prompts
         good = make_run(run_env, FINAL_CONTRACT=work / "contract.synthetic.json", FINAL_INPUT=work / "prepared" / "final_input.jsonl",
-                        FINAL_OUT_DIR=out_dir, FINAL_RUN_ID="synthetic-1")
+                        FINAL_OUT_DIR=out_dir, FINAL_RUN_ID="synthetic-1", FINAL_ARGS="--timeout-s 10", **docker_args)
         checks["docker_final_exit_0"] = good.returncode == 0
         again = make_run(run_env, FINAL_CONTRACT=work / "contract.synthetic.json", FINAL_INPUT=work / "prepared" / "final_input.jsonl",
-                         FINAL_OUT_DIR=out_dir, FINAL_RUN_ID="synthetic-1")
+                         FINAL_OUT_DIR=out_dir, FINAL_RUN_ID="synthetic-1", **docker_args)
         checks["rerun_same_id_refused"] = again.returncode != 0 and "never overwrite" in again.stdout
     finally:
         server.shutdown()
+        server.server_close()
 
     run = out_dir / "synthetic-1"
     verify = subprocess.run(py + ["uzh_rsd.final", "--verify", str(run)], capture_output=True, text=True, env=env)

@@ -186,6 +186,16 @@ class InputBoundaryTests(FinalTestCase):
 
 
 class ExecutionTests(FinalTestCase):
+    def test_windowed_v2_runs_through_final_contract_and_records_completion_policy(self):
+        backend = FakeBackend()
+        code, result = self.run_main("--method", "b2-windowed-v2", backend=backend)
+        self.assertEqual((code, result["status"]), (final.EXIT_OK, "complete"))
+        meta = json.loads((self.out / "final_meta.json").read_text())
+        self.assertEqual(meta["strategy"]["method"], "b2-windowed-v2")
+        self.assertIn("explicit empty differences", meta["strategy"]["completion"])
+        self.assertEqual(meta["counts"]["complete_documents"], len(DOCS))
+        self.assertTrue((self.out / "window-ledger.jsonl").exists())
+
     def test_valid_run_preserves_contract_order_and_records_provenance(self):
         backend = FakeBackend()
         code, result = self.run_main(backend=backend)
@@ -305,6 +315,19 @@ class ExecutionTests(FinalTestCase):
         for labels in ([0.0] * (len(item.text_a) - 1), good[:-1] + [float("nan")], good[:-1] + [1.5], good[:-1] + [True]):
             with self.subTest(labels=labels), self.assertRaises(final.InvalidFinalInput):
                 final.validate_prediction(item, labels, [0.0] * len(item.text_b))
+
+    def test_verify_checks_vectors_even_when_hash_metadata_is_updated(self):
+        self.assertEqual(self.run_main(backend=FakeBackend())[0], final.EXIT_OK)
+        path = self.out / "predictions" / "predictions_de.jsonl"
+        records = [json.loads(line) for line in path.read_text().splitlines()]
+        records[0]["labels_a"].pop()
+        path.write_text("".join(json.dumps(record) + "\n" for record in records))
+        meta = self.meta()
+        meta["prediction_files"][path.name]["sha256"] = final._sha256(path.read_bytes())
+        (self.out / "final_meta.json").write_text(json.dumps(meta))
+        accepted, reasons = final.verify_run(self.out)
+        self.assertFalse(accepted)
+        self.assertTrue(any("values for" in reason for reason in reasons))
 
 
 class MockEndpoint(http.server.BaseHTTPRequestHandler):

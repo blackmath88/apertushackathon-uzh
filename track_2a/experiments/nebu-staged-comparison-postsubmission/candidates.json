@@ -1,0 +1,35 @@
+{
+  "alignment": "exact then case/quote-normalized excerpt matching",
+  "candidate_digest": "e370abfc13bf982c735980216798fc1e5952fda51a1e586df5b9848fb2e2c413",
+  "candidates": [
+    {
+      "added_block_sha256": null,
+      "id": "C0",
+      "name": "unchanged B2",
+      "prompt_version": "b2-spans-v1",
+      "template_sha256": "48ad162808d357d25602f262486e5bceadd00c4fa7fe806a16b61e30f7178926"
+    },
+    {
+      "added_block": "Additional comparison guidance:\nDifferent words can convey the same information. Compare the actor, action, affected object, permission or obligation, negation, conditions, exceptions, quantities and time expressed by each version. These are a checklist, not an exhaustive list of possible differences.\nDo not infer facts that neither passage states. Use surrounding sentences to understand what a condition or exception governs. Report only differences supported by the two supplied texts.\nDistinguish a changed assertion from a faithful paraphrase. An extra qualification can be a difference even when most words correspond. Select the smallest exact excerpts that carry the change; retain necessary negation and qualifiers. Keep the existing severity scale and JSON contract unchanged.\n",
+      "added_block_sha256": "86335f655a09f8ecae0ae2afeac5f271bd053bd22a5303f8b9c6c740f1a7a4b0",
+      "id": "C1",
+      "name": "B2 plus P1 semantic commitments",
+      "prompt_version": "b2-spans-v1+p1-semantic-commitments-v1",
+      "template_sha256": "48ad162808d357d25602f262486e5bceadd00c4fa7fe806a16b61e30f7178926"
+    }
+  ],
+  "decoding": {
+    "attempts": 1,
+    "temperature": 0.0
+  },
+  "failure_policy": "zero-difference fallback only in explicitly labelled all-subset score",
+  "kind": "candidate-freeze",
+  "max_new_tokens": 1024,
+  "omitted": {
+    "C2": "no existing safely supported chunk/aligned-span merge implementation"
+  },
+  "parser": "uzh_rsd.methods.parse_b2",
+  "projection": "max severity; uncovered tokens are predicted no-difference",
+  "schema": "uzh-rsd.nebu-staged-comparison/v1",
+  "segmentation": "none; full document"
+}
