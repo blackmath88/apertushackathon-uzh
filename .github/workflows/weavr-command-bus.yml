@@ -1,9 +1,8 @@
 name: Weavr command bus
 
+# Paused 2026-11-17: no scheduled or push-triggered Weavr jobs.
+# Manual dispatch only; restore event triggers deliberately after budget review.
 on:
-  push:
-    paths:
-      - ".weavr/inbox/*.json"
   workflow_dispatch:
 
 permissions:
