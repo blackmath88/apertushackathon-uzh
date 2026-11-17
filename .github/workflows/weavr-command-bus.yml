@@ -10,6 +10,8 @@ permissions:
 
 jobs:
   forward:
+    # Suspended by owner 2026-11-17: API/manual dispatch must not start a runner.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
